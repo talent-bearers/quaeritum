@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Random;
 
 public class BlockBlueprint extends BlockContainer implements IModObject {
-
+    public static final String NAME = "blueprint";
     Random random = new Random();
     public BlockBlueprint() {
         super(Material.iron);
@@ -117,6 +117,6 @@ public class BlockBlueprint extends BlockContainer implements IModObject {
 
     @Override
     public String getName() {
-        return "blueprint";
+        return NAME;
     }
 }
