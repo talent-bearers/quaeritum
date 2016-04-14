@@ -101,10 +101,7 @@ public class BlockBlueprint extends BlockContainer implements IModObject {
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
 
         TileEntity tile = worldIn.getTileEntity(pos);
-        if(tile instanceof TileEntityBlueprint) {
-            return ((TileEntityBlueprint) tile).onBlockActivated(worldIn, pos, state, playerIn, hand, heldItem, side, hitX, hitY, hitZ);
-        }
-        return false;
+        return tile instanceof TileEntityBlueprint && ((TileEntityBlueprint) tile).onBlockActivated(worldIn, pos, state, playerIn, hand, heldItem, side, hitX, hitY, hitZ);
     }
     @Override
     public IBlockState onBlockPlaced(World worldIn, BlockPos pos,
