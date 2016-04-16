@@ -1,4 +1,4 @@
-package eladkay.quartium.rituals;
+package eladkay.quaritum.api.rituals;
 
 import net.minecraft.entity.player.EntityPlayer;
 

@@ -1,12 +1,11 @@
-package eladkay.quartium.rituals.runners.diagram;
+package eladkay.quaritum.common.block.tile;
 
 import com.google.common.collect.Lists;
-import eladkay.quartium.IModObject;
-import eladkay.quartium.References;
-import eladkay.quartium.rituals.IRitual;
-import eladkay.quartium.rituals.IRitualRunner;
-import eladkay.quartium.rituals.RitualRegistry;
-import eladkay.quartium.rituals.RunHelper;
+import eladkay.quaritum.api.rituals.IRitual;
+import eladkay.quaritum.api.rituals.IRitualRunner;
+import eladkay.quaritum.api.rituals.RitualRegistry;
+import eladkay.quaritum.api.rituals.RunHelper;
+import eladkay.quaritum.common.lib.LibMisc;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -27,14 +26,10 @@ import net.minecraft.world.World;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TileEntityBlueprint extends TileEntity implements IInventory, IRitualRunner, ITickable, IModObject {
-    public static final String NAME = "blueprint";
+public class TileEntityBlueprint extends TileEntity implements IInventory, IRitualRunner, ITickable {
+
     public ArrayList<ItemStack> items = Lists.newArrayList();
 
-    @Override
-    public int[] getMetas() {
-        return new int[]{0};
-    }
     @Override
     public void update() {
        boolean dirty = false;
@@ -53,7 +48,7 @@ public class TileEntityBlueprint extends TileEntity implements IInventory, IRitu
 
     @Override
     public IRitual getValidRitual(EntityPlayer player) {
-        for (IRitual ritual : RitualRegistry.getInstance().ritualList) {
+        for (IRitual ritual : RitualRegistry.getRitualList()) {
             boolean foundAll = true;
             for (ItemStack stack : ritual.getRequiredItems()) {
                 if (!items.contains(stack)) foundAll = false;
@@ -61,8 +56,6 @@ public class TileEntityBlueprint extends TileEntity implements IInventory, IRitu
             if (items.size() == 0) foundAll = false;
             if (foundAll && ritual.canRitualRun(this.getWorld(), player, pos, this)) {
                 return ritual;
-            } else {
-                return null;
             }
         }
         return null;
@@ -79,7 +72,7 @@ public class TileEntityBlueprint extends TileEntity implements IInventory, IRitu
 
     @Override
     public int getSizeInventory() {
-        return References.INVENTORY_SIZE_BLUEPRINT;
+        return LibMisc.INVENTORY_SIZE_BLUEPRINT;
     }
 
     @Override
@@ -104,7 +97,7 @@ public class TileEntityBlueprint extends TileEntity implements IInventory, IRitu
 
     @Override
     public int getInventoryStackLimit() {
-        return References.INVENTORY_SIZE_BLUEPRINT;
+        return LibMisc.INVENTORY_SIZE_BLUEPRINT;
     }
 
     @Override
@@ -146,7 +139,7 @@ public class TileEntityBlueprint extends TileEntity implements IInventory, IRitu
 
     @Override
     public String getName() {
-        return "tile.quartium.blueprint";
+        return "tile.quaritum.blueprint";
     }
 
     @Override

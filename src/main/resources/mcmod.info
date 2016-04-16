@@ -2,13 +2,13 @@
 {
   "modid": "quartium",
   "name": "Quartium",
-  "description": "An immersive mod about manipulating the Rift..",
+  "description": "An immersive mod about manipulating the Flow..",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",
   "authorList": ["Eladkay"],
-  "credits": "wiresegal for writing basically the entire lore",
+  "credits": "wiresegal for writing basically the entire lore and a good deal of the base code",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []
