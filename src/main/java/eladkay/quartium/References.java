@@ -8,4 +8,5 @@ public class References {
     public static final String ACCEPTED_VERSION = "1.9";
     public static final String GUI_FACTORY = "";
     public static final int INVENTORY_SIZE_BLUEPRINT = 32;
+    public static final String STAR_TREK = "Beam me up, Scotty.";
 }

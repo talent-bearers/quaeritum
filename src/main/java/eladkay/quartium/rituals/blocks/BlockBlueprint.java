@@ -2,7 +2,7 @@ package eladkay.quartium.rituals.blocks;
 
 import eladkay.quartium.IModObject;
 import eladkay.quartium.rituals.runners.diagram.TileEntityBlueprint;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -23,7 +23,7 @@ import net.minecraft.world.World;
 import java.util.List;
 import java.util.Random;
 
-public class BlockBlueprint extends BlockContainer implements IModObject {
+public class BlockBlueprint extends Block implements IModObject {
     public static final String NAME = "blueprint";
     Random random = new Random();
     public BlockBlueprint() {
@@ -34,16 +34,16 @@ public class BlockBlueprint extends BlockContainer implements IModObject {
         this.stepSound = SoundType.STONE;
         this.blockParticleGravity = 1.0F;
         this.slipperiness = 0.6F;
-        this.setDefaultState(this.blockState.getBaseState());
+        // this.setDefaultState(this.blockState.getBaseState());
         this.fullBlock = false;
         this.lightOpacity = 0;
 
     }
 
-    @Override
-    public boolean hasTileEntity(IBlockState state) {
-        return true;
-    }
+    //  @Override
+    //  public boolean hasTileEntity(IBlockState state) {
+    //      return true;
+    //  }
 
     @Override
     public AxisAlignedBB getSelectedBoundingBox(IBlockState blockState, World worldIn, BlockPos pos)
@@ -51,10 +51,10 @@ public class BlockBlueprint extends BlockContainer implements IModObject {
        return new AxisAlignedBB(0, 0, 0, 1, 0.5f, 1);
     }
 
-    @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return new TileEntityBlueprint();
-    }
+    //  @Override
+    //  public TileEntity createNewTileEntity(World worldIn, int meta) {
+    //     return new TileEntityBlueprint();
+    // }
 
     @Override
     public void breakBlock(World par1World, BlockPos pos, IBlockState state) {
@@ -108,7 +108,7 @@ public class BlockBlueprint extends BlockContainer implements IModObject {
                                      EnumFacing facing, float hitX, float hitY, float hitZ, int meta,
                                      EntityLivingBase placer) {
 
-        return this.getDefaultState();
+        return super.onBlockPlaced(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer);
     }
     @Override
     public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
@@ -118,5 +118,10 @@ public class BlockBlueprint extends BlockContainer implements IModObject {
     @Override
     public String getName() {
         return NAME;
+    }
+
+    @Override
+    public int[] getMetas() {
+        return new int[]{0};
     }
 }

@@ -28,8 +28,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TileEntityBlueprint extends TileEntity implements IInventory, IRitualRunner, ITickable, IModObject {
+    public static final String NAME = "blueprint";
     public ArrayList<ItemStack> items = Lists.newArrayList();
 
+    @Override
+    public int[] getMetas() {
+        return new int[]{0};
+    }
     @Override
     public void update() {
        boolean dirty = false;
