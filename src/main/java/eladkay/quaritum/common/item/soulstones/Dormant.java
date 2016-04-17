@@ -43,6 +43,7 @@ public class Dormant extends ItemMod {
         NBTTagCompound tag = itemStackIn.getTagCompound();
         if (!tag.getBoolean(LibNames.TAG_ATTUNED) && !tag.getBoolean(LibNames.TAG_OPPERSSIVE)) {
             tag.setString(LibNames.TAG_OWNER, playerIn.getName());
+            tag.setUniqueId(LibNames.TAG_UUID, playerIn.getGameProfile().getId());
             tag.setBoolean(LibNames.TAG_ATTUNED, true);
             itemStackIn.setTagCompound(tag);
             itemStackIn.setStackDisplayName(TextFormatting.RESET + TooltipHelper.local("tile.quaritum:attunedSoulstone.name"));

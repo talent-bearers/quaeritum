@@ -14,12 +14,14 @@ public class ModItems {
     public static Awakened awakened;
     public static Passionate passionate;
     public static Worldsoul passive;
+    public static DebugItem debug;
 
     public static void init() {
         dormant = new Dormant();
         awakened = new Awakened();
         passionate = new Passionate();
         passive = new Worldsoul();
+        debug = new DebugItem();
 
         GameRegistry.registerFuelHandler(passionate);
         GameRegistry.addShapelessRecipe(new ItemStack(dormant), new ItemStack(Items.slime_ball));
