@@ -1,7 +1,7 @@
 package eladkay.quaritum.common.item.soulstones;
 
+import eladkay.quaritum.api.animus.ISoulstone;
 import eladkay.quaritum.client.core.TooltipHelper;
-import eladkay.quaritum.common.animus.ISoulstone;
 import eladkay.quaritum.common.item.base.ItemMod;
 import eladkay.quaritum.common.lib.LibNames;
 import net.minecraft.client.gui.GuiScreen;

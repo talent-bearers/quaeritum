@@ -1,7 +1,6 @@
 package eladkay.quaritum.common.item.soulstones;
 
 import eladkay.quaritum.client.core.TooltipHelper;
-import eladkay.quaritum.common.animus.ISoulstone;
 import eladkay.quaritum.common.item.base.ItemMod;
 import eladkay.quaritum.common.lib.LibNames;
 import net.minecraft.client.gui.GuiScreen;
@@ -17,7 +16,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class Dormant extends ItemMod implements ISoulstone {
+public class Dormant extends ItemMod {
     public Dormant() {
         super(LibNames.DORMANT_SOULSTONE);
         setMaxStackSize(1);
@@ -75,32 +74,4 @@ public class Dormant extends ItemMod implements ISoulstone {
         }
     }
 
-    @Override
-    public int getAnimusLevel(ItemStack stack) {
-        return 0;
-    }
-
-    @Override
-    public ItemStack deductAnimus(ItemStack stack, int amount) {
-        return stack;
-    }
-
-    @Override
-    public ItemStack addAnimus(ItemStack stack, int amount) {
-        return stack;
-    }
-
-    @Override
-    public int getMaxAnimus() {
-        return 0;
-    }
-
-    @Override
-    public boolean isRechargeable() {
-        return false;
-    }
-
-    @Override
-    public void doPassive(ItemStack stack) {
-    }
 }

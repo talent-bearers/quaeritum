@@ -1,4 +1,4 @@
-package eladkay.quaritum.common.animus;
+package eladkay.quaritum.api.animus;
 
 import net.minecraft.item.ItemStack;
 

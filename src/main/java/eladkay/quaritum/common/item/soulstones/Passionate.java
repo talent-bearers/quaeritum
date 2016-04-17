@@ -1,7 +1,7 @@
 package eladkay.quaritum.common.item.soulstones;
 
+import eladkay.quaritum.api.animus.ISoulstone;
 import eladkay.quaritum.client.core.TooltipHelper;
-import eladkay.quaritum.common.animus.ISoulstone;
 import eladkay.quaritum.common.item.base.ItemMod;
 import eladkay.quaritum.common.lib.LibNames;
 import net.minecraft.client.gui.GuiScreen;
@@ -9,15 +9,12 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.IFuelHandler;
 
 import java.util.List;
 
-public class Passionate extends ItemMod implements ISoulstone, IFuelHandler {
+public class Passionate extends ItemMod implements IFuelHandler, ISoulstone {
 
     public Passionate() {
         super(LibNames.PASSIONATE_SOULSTONE);
@@ -101,12 +98,6 @@ public class Passionate extends ItemMod implements ISoulstone, IFuelHandler {
 
     @Override
     public void doPassive(ItemStack stack) {
-    }
-
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
-        itemStackIn = addAnimus(itemStackIn, 200);
-        return ActionResult.newResult(EnumActionResult.SUCCESS, itemStackIn);
     }
 
     @Override
