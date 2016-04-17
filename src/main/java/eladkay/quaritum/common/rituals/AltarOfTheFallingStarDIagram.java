@@ -4,19 +4,14 @@ import com.google.common.collect.Lists;
 import eladkay.quaritum.api.rituals.EnumRitualDuration;
 import eladkay.quaritum.api.rituals.EnumRitualType;
 import eladkay.quaritum.api.rituals.IRitual;
-import eladkay.quaritum.common.item.soulstones.Awakened;
-import eladkay.quaritum.common.item.soulstones.Dormant;
-import eladkay.quaritum.common.lib.LibNames;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class AltarOfTheFallingStarDiagram implements IRitual {
     @Override
@@ -36,7 +31,7 @@ public class AltarOfTheFallingStarDiagram implements IRitual {
 
     @Override
     public boolean runOnce(World world, EntityPlayer player, BlockPos pos) {
-        List<EntityItem> list = world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos.add(8, 8, 8).add(-8, -8, -8)));
+        /*List<EntityItem> list = world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos.add(8, 8, 8).add(-8, -8, -8)));
         int total = 0;
         EntityPlayer receiver = null;
         for (EntityItem entity : list) {
@@ -60,7 +55,8 @@ public class AltarOfTheFallingStarDiagram implements IRitual {
         }
         if (receiver != null && total > 0) {
             receiver.getEntityData().setInteger(LibNames.TAG_ANIMUS_ON_ENTITY, 50);
-        }
+        }*/
+        player.addChatComponentMessage(new TextComponentString("Consider it done."));
         return true;
     }
 
@@ -71,7 +67,7 @@ public class AltarOfTheFallingStarDiagram implements IRitual {
 
     @Override
     public boolean canRitualRun(World world, EntityPlayer player, BlockPos pos, TileEntity tile) {
-        List<EntityItem> list = world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos.add(8, 8, 8).add(-8, -8, -8)));
+       /* List<EntityItem> list = world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos.add(8, 8, 8).add(-8, -8, -8)));
         boolean a = false;
         boolean b = false;
         for (EntityItem entity : list) {
@@ -80,11 +76,17 @@ public class AltarOfTheFallingStarDiagram implements IRitual {
             else if (entity.getEntityItem().getItem() instanceof Awakened) b = true;
         }
         return a && b;
+        */
+        return true;
     }
 
     @Override
     public ArrayList<ItemStack> getRequiredItems() {
-        return Lists.newArrayList();
+        ArrayList<ItemStack> list = Lists.newArrayList();
+        //  list.add(new ItemStack(Items.dark_oak_boat));
+        return list;
+        //return Lists.newArrayList();
+
     }
 
     @Override
