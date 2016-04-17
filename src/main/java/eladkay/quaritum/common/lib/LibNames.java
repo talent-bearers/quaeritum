@@ -12,4 +12,5 @@ public class LibNames {
     public static final String AWAKENED_SOULSTONE = "awakenedSoulstone";
     public static final String TAG_OPPERSSIVE = "oppersiveSoulstone";
     public static final String PASSIONATE_SOULSTONE = "passionateSoulstone";
+    public static final String STONE_OF_THE_WORLDSOUL = "worldSoulstone";
 }

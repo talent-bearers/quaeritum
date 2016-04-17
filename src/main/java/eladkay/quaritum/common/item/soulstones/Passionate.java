@@ -2,13 +2,11 @@ package eladkay.quaritum.common.item.soulstones;
 
 import eladkay.quaritum.client.core.TooltipHelper;
 import eladkay.quaritum.common.animus.ISoulstone;
-import eladkay.quaritum.common.item.ModItems;
 import eladkay.quaritum.common.item.base.ItemMod;
 import eladkay.quaritum.common.lib.LibNames;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
@@ -21,7 +19,7 @@ import java.util.List;
 
 public class Passionate extends ItemMod implements ISoulstone, IFuelHandler {
 
-    public Passionate(String name) {
+    public Passionate() {
         super(LibNames.PASSIONATE_SOULSTONE);
         setMaxStackSize(1);
     }
@@ -38,8 +36,17 @@ public class Passionate extends ItemMod implements ISoulstone, IFuelHandler {
     }
 
     @Override
-    public Item getContainerItem() {
-        return ModItems.passionate;
+    public ItemStack getContainerItem(ItemStack itemStack) {
+        itemStack = deductAnimus(itemStack, 20);
+        ItemStack copiedStack = itemStack.copy();
+        copiedStack.setItemDamage(copiedStack.getItemDamage());
+        copiedStack.stackSize = 1;
+        return copiedStack;
+    }
+
+    @Override
+    public boolean hasContainerItem(ItemStack itemStack) {
+        return true;
     }
 
     @Override
@@ -104,11 +111,7 @@ public class Passionate extends ItemMod implements ISoulstone, IFuelHandler {
 
     @Override
     public int getBurnTime(ItemStack fuel) {
-        if (getAnimusLevel(fuel) > 0) {
-            fuel = deductAnimus(fuel, 20);
-            return 200;
-        }
-        return 0;
+        return getAnimusLevel(fuel) > 20 ? 200 : 0;
 
     }
 }

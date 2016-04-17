@@ -14,8 +14,13 @@ import net.minecraft.world.World;
 import java.util.List;
 
 public class Awakened extends ItemMod implements ISoulstone {
-    public Awakened(String name) {
+    public Awakened() {
         super(LibNames.AWAKENED_SOULSTONE);
+        setMaxStackSize(1);
+    }
+
+    protected Awakened(String name) {
+        super(name);
         setMaxStackSize(1);
     }
 

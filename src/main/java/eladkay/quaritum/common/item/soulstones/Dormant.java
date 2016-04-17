@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 import java.util.List;
 
 public class Dormant extends ItemMod implements ISoulstone {
-    public Dormant(String name) {
+    public Dormant() {
         super(LibNames.DORMANT_SOULSTONE);
         setMaxStackSize(1);
     }
