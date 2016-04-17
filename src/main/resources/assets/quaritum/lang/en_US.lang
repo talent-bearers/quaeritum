@@ -5,3 +5,6 @@ itemGroup.quaritum=Quaritum
 tile.quaritum:blueprint.name=Blueprint
 tile.quaritum:dormantSoulstone.name=Dormant Soulstone
 tile.quaritum:attunedSoulstone.name=Attuned Soulstone
+tile.quaritum:awakenedSoulstone.name=Awakened Soulstone
+tile.quaritum:oppersiveSoulstone.name=Oppersive Soulstone
+tile.quaritum:passionateSoulstone.name=Passionate Soulstone
