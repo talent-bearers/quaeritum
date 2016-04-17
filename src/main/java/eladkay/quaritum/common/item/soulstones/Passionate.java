@@ -1,6 +1,6 @@
 package eladkay.quaritum.common.item.soulstones;
 
-import eladkay.quaritum.api.animus.ISoulstone;
+import eladkay.quaritum.api.animus.IFunctionalSoulstone;
 import eladkay.quaritum.client.core.TooltipHelper;
 import eladkay.quaritum.common.item.base.ItemMod;
 import eladkay.quaritum.common.lib.LibNames;
@@ -14,7 +14,7 @@ import net.minecraftforge.fml.common.IFuelHandler;
 
 import java.util.List;
 
-public class Passionate extends ItemMod implements IFuelHandler, ISoulstone {
+public class Passionate extends ItemMod implements IFuelHandler, IFunctionalSoulstone {
 
     public Passionate() {
         super(LibNames.PASSIONATE_SOULSTONE);

@@ -1,7 +1,9 @@
 package eladkay.quaritum.common.core;
 
+import eladkay.quaritum.api.rituals.RitualRegistry;
 import eladkay.quaritum.common.block.ModBlocks;
 import eladkay.quaritum.common.item.ModItems;
+import eladkay.quaritum.common.rituals.AltarOfTheFallingStarDiagram;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -14,6 +16,7 @@ public class CommonProxy {
     public void pre(FMLPreInitializationEvent e) {
         ModBlocks.init();
         ModItems.init();
+        RitualRegistry.registerRitual(new AltarOfTheFallingStarDiagram(), "altarOfTheFallingStar");
     }
 
     public void init(FMLInitializationEvent e) {

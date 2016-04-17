@@ -1,4 +1,4 @@
 package eladkay.quaritum.api.animus;
 
-public interface IFunctionalSoulstone {
+public interface IFunctionalSoulstone extends ISoulstone {
 }

@@ -13,7 +13,7 @@ public final class RitualRegistry {
     public static Map<String, IRitual> map = new HashMap<>();
     public static Map<String, List<ItemStack>> requiredItems = new HashMap<>();
 
-    public static IRitual registerRitual(IRitual ritual, String name)  throws Exception {
+    public static IRitual registerRitual(IRitual ritual, String name) {
         FMLLog.info("Registering ritual \"" + name + "\".");
 
         if (!map.containsKey(name)) {
