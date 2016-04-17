@@ -19,4 +19,7 @@ public class LibNames {
     public static final String STONE_OF_THE_WORLDSOUL = "worldSoulstone";
 
     public static final String DEBUG = "debug";
+
+    public static final String CHALK = "chalk";
+
 }

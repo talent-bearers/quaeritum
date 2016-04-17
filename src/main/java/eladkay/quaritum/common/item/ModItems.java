@@ -1,5 +1,6 @@
 package eladkay.quaritum.common.item;
 
+import eladkay.quaritum.common.item.chalk.ItemChalk;
 import eladkay.quaritum.common.item.soulstones.Awakened;
 import eladkay.quaritum.common.item.soulstones.Dormant;
 import eladkay.quaritum.common.item.soulstones.Passionate;
@@ -15,6 +16,7 @@ public class ModItems {
     public static Passionate passionate;
     public static Worldsoul passive;
     public static DebugItem debug;
+    public static ItemChalk chalk;
 
     public static void init() {
         dormant = new Dormant();
@@ -22,6 +24,7 @@ public class ModItems {
         passionate = new Passionate();
         passive = new Worldsoul();
         debug = new DebugItem();
+        chalk = new ItemChalk();
 
         GameRegistry.registerFuelHandler(passionate);
         GameRegistry.addShapelessRecipe(new ItemStack(dormant), new ItemStack(Items.slime_ball));
