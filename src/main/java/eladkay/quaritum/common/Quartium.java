@@ -8,8 +8,9 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
+//@Mod(modid = LibMisc.MOD_ID, name = LibMisc.NAME, version = LibMisc.VERSION, dependencies = LibMisc.DEPENDENCIES, acceptedMinecraftVersions = LibMisc.ACCEPTED_VERSION, guiFactory = LibMisc.GUI_FACTORY)
 @Mod(modid = LibMisc.MOD_ID, name = LibMisc.NAME, version = LibMisc.VERSION, dependencies = LibMisc.DEPENDENCIES)
-public class Quaritum {
+public class Quartium {
 
     @SidedProxy(clientSide = LibMisc.CLIENT_PROXY, serverSide = LibMisc.COMMON_PROXY)
     private static CommonProxy proxy;
@@ -28,6 +29,4 @@ public class Quaritum {
     public void post(FMLPostInitializationEvent e) {
         proxy.post(e);
     }
-
-
 }

@@ -36,7 +36,6 @@ public class ItemMod extends Item implements ModelHandler.IVariantHolder {
         TooltipHelper.tooltipIfShift(tooltip, r);
     }
 
-
     public static void addToTooltip(List<String> tooltip, String s, Object... format) {
         TooltipHelper.addToTooltip(tooltip, s, format);
     }
