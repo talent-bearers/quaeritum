@@ -17,20 +17,18 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import java.util.Random;
-
 public class BlockBlueprint extends BlockModContainer {
 
+    public static final AxisAlignedBB BOUNDS = new AxisAlignedBB(0, 0, 0, 1, 0.5f, 1);
+
     public BlockBlueprint(String name) {
-        super(name, Material.cloth);
+        super(name, Material.piston);
     }
 
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
         return new TileEntityBlueprint();
     }
-
-    public static final AxisAlignedBB BOUNDS = new AxisAlignedBB(0, 0, 0, 1, 0.5f, 1);
 
     @Override
     public AxisAlignedBB getSelectedBoundingBox(IBlockState blockState, World worldIn, BlockPos pos) {
