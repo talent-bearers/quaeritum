@@ -24,7 +24,6 @@ public class BlockMod extends Block implements ModelHandler.IModBlock {
             this.variants = new String[] {name};
         }
         this.bareName = name;
-        this.variants = variants;
         this.setUnlocalizedName(name);
 
         if (shouldRegisterInCreative())
