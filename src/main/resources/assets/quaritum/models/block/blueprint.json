@@ -1,7 +1,7 @@
 {
   "parent": "block/half_slab",
   "textures": {
-    "bottom": "quaritum:blocks/blueprint_bottom",
+    "bottom": "quaritum:blocks/blueprint_side",
     "top": "quaritum:blocks/blueprint_top",
     "side": "quaritum:blocks/blueprint_side"
   }

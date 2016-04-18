@@ -2,6 +2,7 @@ package eladkay.quaritum.common.item.soulstones;
 
 import eladkay.quaritum.api.animus.IFunctionalSoulstone;
 import eladkay.quaritum.client.core.TooltipHelper;
+import eladkay.quaritum.common.core.ItemNBTHelper;
 import eladkay.quaritum.common.item.base.ItemMod;
 import eladkay.quaritum.common.lib.LibNames;
 import net.minecraft.client.gui.GuiScreen;
@@ -11,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.IFuelHandler;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.List;
 
@@ -19,6 +21,7 @@ public class Passionate extends ItemMod implements IFuelHandler, IFunctionalSoul
     public Passionate() {
         super(LibNames.PASSIONATE_SOULSTONE);
         setMaxStackSize(1);
+        GameRegistry.registerFuelHandler(this);
     }
 
     public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean par4) {
@@ -65,7 +68,7 @@ public class Passionate extends ItemMod implements IFuelHandler, IFunctionalSoul
 
     @Override
     public int getAnimusLevel(ItemStack stack) {
-        return stack.getTagCompound().getInteger(LibNames.TAG_ANIMUS);
+        return stack != null ? ItemNBTHelper.getInt(stack, LibNames.TAG_ANIMUS, 0) : 0;
     }
 
     @Override
@@ -102,7 +105,7 @@ public class Passionate extends ItemMod implements IFuelHandler, IFunctionalSoul
 
     @Override
     public int getBurnTime(ItemStack fuel) {
-        return getAnimusLevel(fuel) > 20 ? 200 : 0;
+        return getAnimusLevel(fuel) > 20 && fuel.getItem() instanceof Passionate ? 200 : 0;
 
     }
 }

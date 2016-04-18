@@ -1,6 +1,7 @@
 package eladkay.quaritum.common.item.chalk;
 
 import eladkay.quaritum.client.core.ModelHandler;
+import eladkay.quaritum.common.block.ModBlocks;
 import eladkay.quaritum.common.item.base.ItemMod;
 import eladkay.quaritum.common.lib.LibNames;
 import net.minecraft.client.renderer.color.IItemColor;
@@ -17,12 +18,13 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemChalk extends ItemMod implements ModelHandler.IColorProvider {
-    public static final String[] COLORS = {};
+    public static final String[] COLORS;
 
     static {
+        COLORS = new String[17];
         for (EnumDyeColor dye : EnumDyeColor.values())
             COLORS[dye.ordinal()] = "chalk" + capitalizeFirst(dye.toString());
-        COLORS[COLORS.length] = "chalkTempest";
+        COLORS[16] = "chalkTempest";
 
     }
 
@@ -45,7 +47,7 @@ public class ItemChalk extends ItemMod implements ModelHandler.IColorProvider {
 
         if (world.isAirBlock(newPos)) {
             if (!world.isRemote) {
-                world.setBlockState(newPos, );
+                world.setBlockState(newPos, ModBlocks.chalk.getStateFromMeta(stack.getItemDamage()));
             }
 
             return EnumActionResult.SUCCESS;

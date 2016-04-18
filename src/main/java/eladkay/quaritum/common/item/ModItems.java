@@ -26,7 +26,7 @@ public class ModItems {
         debug = new DebugItem();
         chalk = new ItemChalk();
 
-        GameRegistry.registerFuelHandler(passionate);
+
         GameRegistry.addShapelessRecipe(new ItemStack(dormant), new ItemStack(Items.slime_ball));
     }
 }

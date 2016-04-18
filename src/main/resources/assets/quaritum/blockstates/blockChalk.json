@@ -1,0 +1,116 @@
+{
+  "variants": {
+    "variant=chalkBlack": [
+      {
+        "textures": {
+          "all": "quaritum:blocks/chalkBlack"
+        }
+      }
+    ],
+    "variant=chalkBlue": [
+      {
+        "textures": {
+          "all": "quaritum:blocks/chalkBlue"
+        }
+      }
+    ],
+    "variant=chalkBrown": [
+      {
+        "textures": {
+          "all": "quaritum:blocks/chalkBrown"
+        }
+      }
+    ],
+    "variant=chalkCyan": [
+      {
+        "textures": {
+          "all": "quaritum:blocks/chalkCyan"
+        }
+      }
+    ],
+    "variant=chalkGray": [
+      {
+        "textures": {
+          "all": "quaritum:blocks/chalkGray"
+        }
+      }
+    ],
+    "variant=chalkGreen": [
+      {
+        "textures": {
+          "all": "quaritum:blocks/chalkGreen"
+        }
+      }
+    ],
+    "variant=chalkLightBlue": [
+      {
+        "textures": {
+          "all": "quaritum:blocks/chalkLightBlue"
+        }
+      }
+    ],
+    "variant=chalkLightGray": [
+      {
+        "textures": {
+          "all": "quaritum:blocks/chalkLightGray"
+        }
+      }
+    ],
+    "variant=chalkLime": [
+      {
+        "textures": {
+          "all": "quaritum:blocks/chalkLime"
+        }
+      }
+    ],
+    "variant=chalkMagenta": [
+      {
+        "textures": {
+          "all": "quaritum:blocks/chalkMagenta"
+        }
+      }
+    ],
+    "variant=chalkOrange": [
+      {
+        "textures": {
+          "all": "quaritum:blocks/chalkOrange"
+        }
+      }
+    ],
+    "variant=chalkPink": [
+      {
+        "textures": {
+          "all": "quaritum:blocks/chalkPink"
+        }
+      }
+    ],
+    "variant=chalkPurple": [
+      {
+        "textures": {
+          "all": "quaritum:blocks/chalkPurple"
+        }
+      }
+    ],
+    "variant=chalkRed": [
+      {
+        "textures": {
+          "all": "quaritum:blocks/chalkRed"
+        }
+      }
+    ],
+    "variant=chalkWhite": [
+      {
+        "textures": {
+          "all": "quaritum:blocks/chalkWhite"
+        }
+      }
+    ],
+    "variant=chalkYellow": [
+      {
+        "textures": {
+          "all": "quaritum:blocks/chalkYellow"
+        }
+      }
+    ]
+  }
+}
