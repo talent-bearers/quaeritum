@@ -9,12 +9,20 @@ public class PositionedChalk {
     public int x;
     public int y;
     public int z;
-
     public PositionedChalk(EnumDyeColor color, int x, int y, int z) {
         this.color = color;
         this.x = x;
         this.y = y;
         this.z = z;
+    }
+
+    public IBlockState getState() {
+        return state;
+    }
+
+    public PositionedChalk setState(IBlockState state) {
+        this.state = state;
+        return this;
     }
 
     public int getZ() {

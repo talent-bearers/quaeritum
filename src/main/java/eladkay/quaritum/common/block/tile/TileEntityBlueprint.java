@@ -25,8 +25,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TileEntityBlueprint extends TileEntity implements IInventory, IRitualRunner, ITickable {
-
+    public boolean debug = true;
     public ArrayList<ItemStack> items = Lists.newArrayList();
+    public boolean debug2 = true;
 
     @Override
     public void update() {
@@ -47,13 +48,19 @@ public class TileEntityBlueprint extends TileEntity implements IInventory, IRitu
     @Override
     public IRitual getValidRitual(EntityPlayer player) {
         for (IRitual ritual : RitualRegistry.getRitualList()) {
-            boolean foundAll = true;
-            for (ItemStack stack : ritual.getRequiredItems()) {
-                if (!items.contains(stack)) foundAll = false;
-            }
-            if (items.size() == 0) foundAll = false;
-            if (foundAll && ritual.canRitualRun(this.getWorld(), player, pos, this)) {
+            boolean foundAll = items.toString().equals(ritual.getRequiredItems().toString()); //FOR NOW.
+            boolean requirementsMet = ritual.canRitualRun(this.getWorld(), player, pos, this);
+            boolean chalks = checkAllPosChalk(ritual.getRequiredPositionedChalk());
+            if (foundAll && requirementsMet && chalks) {
                 return ritual;
+            } else if (!requirementsMet) {
+                System.out.println("REQUIREMENTS FOR RITUAL " + ritual.getCanonicalName() + " WERE NOT MET.");
+            } else if (!foundAll) {
+                System.out.println("ITEM REQUIREMENTS FOR RITUAL " + ritual.getCanonicalName() + " WERE NOT MET. REQUIREMENTS ARE " + ritual.getRequiredItems() + " & THERE IS " + items);
+            } else if (!chalks) {
+                System.out.println("CHALK REQUIREMENTS FOR RITUAL " + ritual.getCanonicalName() + " WERE NOT MET. REQUIREMENTS ARE " + ritual.getRequiredItems() + " & THERE IS " + items);
+            } else {
+                System.out.println("GENERIC ERROR AT " + ritual.getCanonicalName());
             }
         }
         return null;
@@ -75,7 +82,13 @@ public class TileEntityBlueprint extends TileEntity implements IInventory, IRitu
 
     @Override
     public boolean checkAllPosChalk(ArrayList<PositionedChalk> chalks) {
-        return false;
+        if (chalks == null) return false;
+        if (chalks.size() == 0) return true;
+        boolean flag = true;
+        for (PositionedChalk chalk : chalks)
+            if (checkPosChalk(chalk))
+                flag = false;
+        return flag;
     }
 
     @Override

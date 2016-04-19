@@ -6,6 +6,7 @@ import eladkay.quaritum.api.rituals.EnumRitualType;
 import eladkay.quaritum.api.rituals.IRitual;
 import eladkay.quaritum.api.rituals.PositionedChalk;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -84,7 +85,7 @@ public class AltarOfTheFallingStarDiagram implements IRitual {
     @Override
     public ArrayList<ItemStack> getRequiredItems() {
         ArrayList<ItemStack> list = Lists.newArrayList();
-        //  list.add(new ItemStack(Items.dark_oak_boat));
+        list.add(new ItemStack(Items.diamond));
         return list;
         //return Lists.newArrayList();
 
@@ -97,6 +98,8 @@ public class AltarOfTheFallingStarDiagram implements IRitual {
 
     @Override
     public ArrayList<PositionedChalk> getRequiredPositionedChalk() {
-        return null;
+        ArrayList list = Lists.newArrayList();
+
+        return list;
     }
 }
