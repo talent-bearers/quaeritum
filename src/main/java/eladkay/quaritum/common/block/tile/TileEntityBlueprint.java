@@ -1,10 +1,8 @@
 package eladkay.quaritum.common.block.tile;
 
 import com.google.common.collect.Lists;
-import eladkay.quaritum.api.rituals.IRitual;
-import eladkay.quaritum.api.rituals.IRitualRunner;
-import eladkay.quaritum.api.rituals.RitualRegistry;
-import eladkay.quaritum.api.rituals.RunHelper;
+import eladkay.quaritum.api.rituals.*;
+import eladkay.quaritum.common.block.chalk.BlockChalk;
 import eladkay.quaritum.common.lib.LibMisc;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
@@ -68,6 +66,16 @@ public class TileEntityBlueprint extends TileEntity implements IInventory, IRitu
             clear();
             return RunHelper.runRitual(ritual, this.getWorld(), pos, player);
         }
+    }
+
+    @Override
+    public boolean checkPosChalk(PositionedChalk chalk) {
+        return worldObj.getBlockState(new BlockPos(pos.getX() + chalk.getX(), pos.getY() + chalk.getY(), pos.getZ() + chalk.getZ())).getBlock() instanceof BlockChalk && worldObj.getBlockState(new BlockPos(pos.getX() + chalk.getX(), pos.getY() + chalk.getY(), pos.getZ() + chalk.getZ())).equals(chalk.state);
+    }
+
+    @Override
+    public boolean checkAllPosChalk(ArrayList<PositionedChalk> chalks) {
+        return false;
     }
 
     @Override

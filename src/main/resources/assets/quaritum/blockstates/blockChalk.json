@@ -1,114 +1,114 @@
 {
-  "variants": {
-    "variant=chalkBlack": [
+  "colors": {
+    "color=black": [
       {
         "textures": {
-          "all": "quaritum:blocks/chalkBlack"
+          "all": "quaritum:block/chalkBlack"
         }
       }
     ],
-    "variant=chalkBlue": [
+    "color=blue": [
       {
         "textures": {
-          "all": "quaritum:blocks/chalkBlue"
+          "all": "quaritum:block/chalkBlue"
         }
       }
     ],
-    "variant=chalkBrown": [
+    "color=brown": [
       {
         "textures": {
-          "all": "quaritum:blocks/chalkBrown"
+          "all": "quaritum:block/chalkBrown"
         }
       }
     ],
-    "variant=chalkCyan": [
+    "color=cyan": [
       {
         "textures": {
-          "all": "quaritum:blocks/chalkCyan"
+          "all": "quaritum:block/chalkCyan"
         }
       }
     ],
-    "variant=chalkGray": [
+    "color=gray": [
       {
         "textures": {
-          "all": "quaritum:blocks/chalkGray"
+          "all": "quaritum:block/chalkGray"
         }
       }
     ],
-    "variant=chalkGreen": [
+    "color=green": [
       {
         "textures": {
-          "all": "quaritum:blocks/chalkGreen"
+          "all": "quaritum:block/chalkGreen"
         }
       }
     ],
-    "variant=chalkLightBlue": [
+    "color=lightBlue": [
       {
         "textures": {
-          "all": "quaritum:blocks/chalkLightBlue"
+          "all": "quaritum:block/chalkLightBlue"
         }
       }
     ],
-    "variant=chalkLightGray": [
+    "color=lightGray": [
       {
         "textures": {
-          "all": "quaritum:blocks/chalkLightGray"
+          "all": "quaritum:block/chalkLightGray"
         }
       }
     ],
-    "variant=chalkLime": [
+    "color=lime": [
       {
         "textures": {
-          "all": "quaritum:blocks/chalkLime"
+          "all": "quaritum:block/chalkLime"
         }
       }
     ],
-    "variant=chalkMagenta": [
+    "color=magenta": [
       {
         "textures": {
-          "all": "quaritum:blocks/chalkMagenta"
+          "all": "quaritum:block/chalkMagenta"
         }
       }
     ],
-    "variant=chalkOrange": [
+    "color=orange": [
       {
         "textures": {
-          "all": "quaritum:blocks/chalkOrange"
+          "all": "quaritum:block/chalkOrange"
         }
       }
     ],
-    "variant=chalkPink": [
+    "color=pink": [
       {
         "textures": {
-          "all": "quaritum:blocks/chalkPink"
+          "all": "quaritum:block/chalkPink"
         }
       }
     ],
-    "variant=chalkPurple": [
+    "color=purple": [
       {
         "textures": {
-          "all": "quaritum:blocks/chalkPurple"
+          "all": "quaritum:block/chalkPurple"
         }
       }
     ],
-    "variant=chalkRed": [
+    "color=red": [
       {
         "textures": {
-          "all": "quaritum:blocks/chalkRed"
+          "all": "quaritum:block/chalkRed"
         }
       }
     ],
-    "variant=chalkWhite": [
+    "color=white": [
       {
         "textures": {
-          "all": "quaritum:blocks/chalkWhite"
+          "all": "quaritum:block/chalkWhite"
         }
       }
     ],
-    "variant=chalkYellow": [
+    "color=yellow": [
       {
         "textures": {
-          "all": "quaritum:blocks/chalkYellow"
+          "all": "quaritum:block/chalkYellow"
         }
       }
     ]

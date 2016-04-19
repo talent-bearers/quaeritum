@@ -1,7 +1,7 @@
 package eladkay.quaritum.common.block.chalk;
 
 import com.google.common.collect.Lists;
-import eladkay.quaritum.common.block.base.BlockMod;
+import eladkay.quaritum.common.block.base.ModBlockColored;
 import eladkay.quaritum.common.lib.LibNames;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
@@ -21,7 +21,7 @@ import java.util.List;
 
 import static eladkay.quaritum.common.item.chalk.ItemChalk.capitalizeFirst;
 
-public class BlockChalk extends BlockMod {
+public class BlockChalk extends ModBlockColored {
     public static final String[] COLORS = new String[16];
     protected static final AxisAlignedBB CARPET_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.0625D, 1.0D);
 
@@ -30,7 +30,7 @@ public class BlockChalk extends BlockMod {
             COLORS[dye.ordinal()] = "chalk" + capitalizeFirst(dye.toString());
     }
     public BlockChalk() {
-        super("block" + capitalizeFirst(LibNames.CHALK), Material.cake, COLORS);
+        super("block" + capitalizeFirst(LibNames.CHALK), Material.cake/*, COLORS*/);
     }
 
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {

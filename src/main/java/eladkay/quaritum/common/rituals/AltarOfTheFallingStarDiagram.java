@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import eladkay.quaritum.api.rituals.EnumRitualDuration;
 import eladkay.quaritum.api.rituals.EnumRitualType;
 import eladkay.quaritum.api.rituals.IRitual;
+import eladkay.quaritum.api.rituals.PositionedChalk;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -92,5 +93,10 @@ public class AltarOfTheFallingStarDiagram implements IRitual {
     @Override
     public String getCanonicalName() {
         return "Altar of the Falling Star";
+    }
+
+    @Override
+    public ArrayList<PositionedChalk> getRequiredPositionedChalk() {
+        return null;
     }
 }
