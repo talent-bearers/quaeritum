@@ -22,8 +22,11 @@ public class ItemChalk extends ItemMod implements ModelHandler.IColorProvider {
 
     static {
         COLORS = new String[17];
-        for (EnumDyeColor dye : EnumDyeColor.values())
-            COLORS[dye.ordinal()] = "chalk" + capitalizeFirst(dye.toString());
+        for (EnumDyeColor dye : EnumDyeColor.values()) {
+            COLORS[dye.ordinal()] = "chalk" + (capitalizeFirst(dye.toString())).replace("Silver", "LightGray");
+            System.out.println("chalk" + capitalizeFirst(dye.toString()));
+        }
+
         COLORS[16] = "chalkTempest";
 
     }

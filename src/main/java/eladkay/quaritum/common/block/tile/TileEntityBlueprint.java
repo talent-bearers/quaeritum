@@ -50,7 +50,7 @@ public class TileEntityBlueprint extends TileEntity implements IInventory, IRitu
         for (IRitual ritual : RitualRegistry.getRitualList()) {
             boolean foundAll = items.toString().equals(ritual.getRequiredItems().toString()); //FOR NOW.
             boolean requirementsMet = ritual.canRitualRun(this.getWorld(), player, pos, this);
-            boolean chalks = checkAllPosChalk(ritual.getRequiredPositionedChalk());
+            boolean chalks = checkAllPossiblePosChalks(ritual.getPossibleRequiredPositionedChalks());
             if (foundAll && requirementsMet && chalks) {
                 return ritual;
             } else if (!requirementsMet) {
@@ -86,8 +86,17 @@ public class TileEntityBlueprint extends TileEntity implements IInventory, IRitu
         if (chalks.size() == 0) return true;
         boolean flag = true;
         for (PositionedChalk chalk : chalks)
-            if (checkPosChalk(chalk))
+            if (!checkPosChalk(chalk))
                 flag = false;
+        return flag;
+    }
+
+    @Override
+    public boolean checkAllPossiblePosChalks(ArrayList<ArrayList<PositionedChalk>> chalks) {
+        boolean flag = false;
+        for (ArrayList<PositionedChalk> array : chalks)
+            flag = checkAllPosChalk(array);
+
         return flag;
     }
 

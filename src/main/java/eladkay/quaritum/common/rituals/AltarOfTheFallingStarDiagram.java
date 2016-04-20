@@ -99,7 +99,12 @@ public class AltarOfTheFallingStarDiagram implements IRitual {
     @Override
     public ArrayList<PositionedChalk> getRequiredPositionedChalk() {
         ArrayList list = Lists.newArrayList();
+        return list;
+    }
 
+    @Override
+    public ArrayList<ArrayList<PositionedChalk>> getPossibleRequiredPositionedChalks() {
+        ArrayList list = Lists.newArrayList();
         return list;
     }
 }

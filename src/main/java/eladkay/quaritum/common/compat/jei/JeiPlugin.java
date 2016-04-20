@@ -4,7 +4,10 @@ import com.google.common.collect.Lists;
 import eladkay.quaritum.common.compat.jei.rituals.RitualRecipeCatagory;
 import eladkay.quaritum.common.compat.jei.rituals.RitualRecipeHandler;
 import eladkay.quaritum.common.compat.jei.rituals.RitualRecipeRecipe;
+import eladkay.quaritum.common.lib.LibMisc;
+import eladkay.quaritum.common.lib.LibNames;
 import mezz.jei.api.*;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.List;
@@ -27,8 +30,9 @@ public class JeiPlugin implements IModPlugin {
                 new RitualRecipeHandler()
         );
         RitualRecipeRecipe test = new RitualRecipeRecipe();
-        test.inputs.add(GameRegistry.makeItemStack("dormantSoulstone", 0, 1, "attuned:1b,owner:\"Eladkay\""));
-        test.inputs.add(GameRegistry.makeItemStack("passionateSoulstone", 0, 1, ""));
+        //test.inputs.add(GameRegistry.makeItemStack("dormantSoulstone", 0, 1, "attuned:1b,owner:Eladkay"));
+        test.inputs.add(GameRegistry.makeItemStack(new ResourceLocation(LibMisc.MOD_ID, LibNames.DORMANT_SOULSTONE).toString(), 0, 1, ""));
+        test.inputs.add(GameRegistry.makeItemStack(new ResourceLocation(LibMisc.MOD_ID, LibNames.PASSIONATE_SOULSTONE).toString(), 0, 1, ""));
         /*
         RitualRecipeRecipe shardedSky1 = new RitualRecipeRecipe();
         shardedSky1.inputs.add(new ItemStack(Blocks.red_flower));
@@ -43,3 +47,4 @@ public class JeiPlugin implements IModPlugin {
     }
 
 }
+
