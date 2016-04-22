@@ -19,6 +19,7 @@ public interface IRitual {
     ArrayList<ItemStack> getRequiredItems();
     String getCanonicalName();
     ArrayList<PositionedChalk> getRequiredPositionedChalk();
-
     ArrayList<ArrayList<PositionedChalk>> getPossibleRequiredPositionedChalks();
+
+    boolean ignoreChalk();
 }

@@ -96,4 +96,9 @@ public class SimpleTestRitualDiagram implements IRitual {
 
         return list1;
     }
+
+    @Override
+    public boolean ignoreChalk() {
+        return false;
+    }
 }

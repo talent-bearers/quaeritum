@@ -51,7 +51,7 @@ public class TileEntityBlueprint extends TileEntity implements IInventory, IRitu
             boolean foundAll = items.toString().equals(ritual.getRequiredItems().toString()); //FOR NOW.
             boolean requirementsMet = ritual.canRitualRun(this.getWorld(), player, pos, this);
             boolean chalks = checkAllPossiblePosChalks(ritual.getPossibleRequiredPositionedChalks());
-            if (foundAll && requirementsMet && chalks) {
+            if (foundAll && requirementsMet && (chalks || ritual.ignoreChalk())) {
                 return ritual;
             } else if (!requirementsMet) {
                 System.out.println("REQUIREMENTS FOR RITUAL " + ritual.getCanonicalName() + " WERE NOT MET.");

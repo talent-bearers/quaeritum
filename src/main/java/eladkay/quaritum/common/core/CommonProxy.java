@@ -4,6 +4,8 @@ import eladkay.quaritum.api.rituals.RitualRegistry;
 import eladkay.quaritum.common.block.ModBlocks;
 import eladkay.quaritum.common.item.ModItems;
 import eladkay.quaritum.common.rituals.AltarOfTheFallingStarDiagram;
+import eladkay.quaritum.common.rituals.ShardedSkiesDiagram;
+import eladkay.quaritum.common.rituals.ShardedSkiesTier2Diagram;
 import eladkay.quaritum.common.rituals.SimpleTestRitualDiagram;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -19,6 +21,8 @@ public class CommonProxy {
         ModItems.init();
         RitualRegistry.registerRitual(new AltarOfTheFallingStarDiagram(), "altarOfTheFallingStar");
         RitualRegistry.registerRitual(new SimpleTestRitualDiagram(), "test");
+        RitualRegistry.registerRitual(new ShardedSkiesDiagram(), "shardedSkies");
+        RitualRegistry.registerRitual(new ShardedSkiesTier2Diagram(), "shardedSkies2");
     }
 
     public void init(FMLInitializationEvent e) {

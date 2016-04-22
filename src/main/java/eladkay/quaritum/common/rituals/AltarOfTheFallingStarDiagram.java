@@ -107,4 +107,9 @@ public class AltarOfTheFallingStarDiagram implements IRitual {
         ArrayList list = Lists.newArrayList();
         return list;
     }
+
+    @Override
+    public boolean ignoreChalk() {
+        return false;
+    }
 }

@@ -4,6 +4,7 @@ import eladkay.quaritum.client.core.TooltipHelper;
 import eladkay.quaritum.common.item.base.ItemMod;
 import eladkay.quaritum.common.lib.LibNames;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -85,17 +86,17 @@ public class Dormant extends ItemMod {
         return Integer.MAX_VALUE;
     }
 
-   /* @Override
+    @Override
     public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-        if (((EntityItem) entityIn).getEntityItem().getTagCompound() == null) {
-            ((EntityItem) entityIn).getEntityItem().setTagCompound(new NBTTagCompound());
-        } else if (!(((EntityItem) entityIn).getEntityItem().getTagCompound().getBoolean(LibNames.TAG_ATTUNED)) && entityIn.isInWater() && !(((EntityItem) entityIn).getEntityItem().getTagCompound().getBoolean(LibNames.TAG_OPPERSSIVE))) {
+        if (stack.getTagCompound() == null) {
+            stack.setTagCompound(new NBTTagCompound());
+        } /*else if (!(((EntityItem) entityIn).getEntityItem().getTagCompound().getBoolean(LibNames.TAG_ATTUNED)) && entityIn.isInWater() && !(((EntityItem) entityIn).getEntityItem().getTagCompound().getBoolean(LibNames.TAG_OPPERSSIVE))) {
             NBTTagCompound tag = stack.getTagCompound();
             tag.setBoolean(LibNames.TAG_OPPERSSIVE, true);
             ((EntityItem) entityIn).getEntityItem().setTagCompound(tag);
             ((EntityItem) entityIn).getEntityItem().setStackDisplayName(TextFormatting.RESET + TooltipHelper.local("tile.quaritum:oppersiveSoulstone.name"));
-        }
-    }*/
+        }*/
+    }
 
     @Override
     public boolean onEntityItemUpdate(EntityItem entityItem) {
