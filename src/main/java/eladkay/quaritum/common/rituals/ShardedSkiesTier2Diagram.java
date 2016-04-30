@@ -20,7 +20,7 @@ import java.util.ArrayList;
 public class ShardedSkiesTier2Diagram implements IRitual {
     @Override
     public String getUnlocalizedName() {
-        return return "rituals.quaritum.shardedsky";
+        return "rituals.quaritum.shardedsky";
     }
 
     @Override
