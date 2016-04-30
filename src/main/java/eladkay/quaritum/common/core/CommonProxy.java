@@ -2,6 +2,7 @@ package eladkay.quaritum.common.core;
 
 import eladkay.quaritum.api.rituals.RitualRegistry;
 import eladkay.quaritum.common.block.ModBlocks;
+import eladkay.quaritum.common.entity.ModEntities;
 import eladkay.quaritum.common.item.ModItems;
 import eladkay.quaritum.common.rituals.AltarOfTheFallingStarDiagram;
 import eladkay.quaritum.common.rituals.ShardedSkiesDiagram;
@@ -19,6 +20,7 @@ public class CommonProxy {
     public void pre(FMLPreInitializationEvent e) {
         ModBlocks.init();
         ModItems.init();
+        ModEntities.init();
         RitualRegistry.registerRitual(new AltarOfTheFallingStarDiagram(), "altarOfTheFallingStar");
         RitualRegistry.registerRitual(new SimpleTestRitualDiagram(), "test");
         RitualRegistry.registerRitual(new ShardedSkiesDiagram(), "shardedSkies");

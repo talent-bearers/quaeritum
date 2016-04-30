@@ -24,4 +24,8 @@ public class LibNames {
 
     public static final String COMMON_FLOWER = "common";
     public static final String COMMON_ARCANE_FLOWER = "commonArcane";
+    public static final String ARCANE_FLOWER = "arcane";
+
+    public static final String CHAOSBORN = "chaosborn";
+
 }

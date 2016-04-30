@@ -14,9 +14,15 @@ public class Quartium {
 
     @SidedProxy(clientSide = LibMisc.CLIENT_PROXY, serverSide = LibMisc.COMMON_PROXY)
     private static CommonProxy proxy;
+    private static Quartium instance;
+
+    public static Object getInstance() {
+        return instance;
+    }
 
     @Mod.EventHandler
     public void pre(FMLPreInitializationEvent e) {
+        instance = this;
         proxy.pre(e);
     }
 
