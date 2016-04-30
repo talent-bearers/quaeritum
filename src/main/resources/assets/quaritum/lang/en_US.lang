@@ -10,6 +10,9 @@ tile.quaritum:oppersiveSoulstone.name=Oppersive Soulstone
 tile.quaritum:passionateSoulstone.name=Passionate Soulstone
 tile.quaritum:worldSoulstone.name=Stone of the Worldsoul
 
+tile.quaritum:common.name=Common Flower
+tile.quaritum:commonArcane.name=Common (Arcane) Flower
+
 tile.quaritum:debug.name=Debug Item
 
 rituals.quaritum.altarofthefallingstar=Altar of the Falling Star
