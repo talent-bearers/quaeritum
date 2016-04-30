@@ -17,7 +17,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class ModBlocks {
     public static BlockMod blueprint;
     public static BlockChalk chalk;
-    public static BlockModFlower flower;
+    public static BlockAnimusFlower flower;
 
     public static void init() {
         blueprint = new BlockBlueprint(LibNames.BLUEPRINT);

@@ -1,7 +1,7 @@
 package eladkay.quaritum.common.entity;
 
 import eladkay.quaritum.common.block.ModBlocks;
-import eladkay.quaritum.common.item.flowers.Arcane;
+import eladkay.quaritum.common.block.flowers.BlockAnimusFlower;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.ai.*;
@@ -38,7 +38,7 @@ public class EntityChaosborn extends EntityMob implements IRangedAttackMob {
     @Override
     protected void dropLoot(boolean wasRecentlyHit, int looting, DamageSource source) {
         if (source.getSourceOfDamage() instanceof EntityPlayer && wasRecentlyHit) {
-            ItemStack itemstack = new ItemStack((Arcane) ModBlocks.arcane, Math.min(3, looting));
+            ItemStack itemstack = new ItemStack(ModBlocks.flower, Math.min(3, looting), BlockAnimusFlower.Variants.ARCANE.ordinal());
             this.entityDropItem(itemstack, 0.0F);
         }
         super.dropLoot(wasRecentlyHit, looting, source);
@@ -69,7 +69,7 @@ public class EntityChaosborn extends EntityMob implements IRangedAttackMob {
         this.tasks.addTask(5, new EntityAIWander(this, 1.0D));
         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(7, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
     }
 
     @Override
