@@ -6,7 +6,7 @@ import eladkay.quaritum.api.rituals.EnumRitualType;
 import eladkay.quaritum.api.rituals.IRitual;
 import eladkay.quaritum.api.rituals.PositionedChalk;
 import eladkay.quaritum.common.block.ModBlocks;
-import eladkay.quaritum.common.block.flowers.BlockCommonFlower;
+import eladkay.quaritum.common.block.flowers.BlockAnimusFlower;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -35,7 +35,7 @@ public class ShardedSkiesDiagram implements IRitual {
 
     @Override
     public boolean runOnce(World world, EntityPlayer player, BlockPos pos) {
-        EntityItem item = new EntityItem(world, pos.getX(), pos.getY() + 2, pos.getZ(), new ItemStack((BlockCommonFlower) ModBlocks.common));
+        EntityItem item = new EntityItem(world, pos.getX(), pos.getY() + 2, pos.getZ(), new ItemStack(ModBlocks.flower, 1, BlockAnimusFlower.Variants.COMMON.ordinal()));
         return world.spawnEntityInWorld(item);
     }
 
