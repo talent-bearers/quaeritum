@@ -14,7 +14,7 @@ public class BlockAnimusFlower extends BlockModFlower {
     public static IProperty<Variants> FLOWER_TYPE = PropertyEnum.create("type", Variants.class);
 
     public enum Variants implements IStringSerializable {
-        COMMON(0, 20), COMMON_ARCANE(0, 20);
+        COMMON(0, 20), COMMON_ARCANE(1, 20), ARCANE(2, 20);
 
         public int rarity, amount;
 

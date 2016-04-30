@@ -12,7 +12,10 @@ tile.quaritum:worldSoulstone.name=Stone of the Worldsoul
 
 tile.quaritum:common.name=Common Flower
 tile.quaritum:commonArcane.name=Common (Arcane) Flower
+tile.quaritum:arcane.name=Arcane Flower
 
 tile.quaritum:debug.name=Debug Item
 
 rituals.quaritum.altarofthefallingstar=Altar of the Falling Star
+
+entity.quaritum.chaosborn.name=Chaosborn
