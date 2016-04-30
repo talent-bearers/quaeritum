@@ -45,6 +45,10 @@ public final class ItemNBTHelper {
         return stack.getTagCompound();
     }
 
+    public static void removeEntry(ItemStack stack, String key) {
+        getNBT(stack).removeTag(key);
+    }
+
     // SETTERS ///////////////////////////////////////////////////////////////////
 
     public static void setBoolean(ItemStack stack, String tag, boolean b) {

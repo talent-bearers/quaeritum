@@ -10,6 +10,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
@@ -30,6 +32,7 @@ public class ItemMod extends Item implements ModelHandler.IVariantHolder {
 
         bareName = name;
         this.variants = variants;
+        ModelHandler.variantCache.add(this);
     }
 
 
@@ -46,6 +49,7 @@ public class ItemMod extends Item implements ModelHandler.IVariantHolder {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public ItemMeshDefinition getCustomMeshDefinition() {
         return null;
     }

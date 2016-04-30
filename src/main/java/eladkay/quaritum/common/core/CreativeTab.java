@@ -32,7 +32,7 @@ public class CreativeTab extends CreativeTabs {
     }
 
 
-    List<ItemStack> list;
+    private List<ItemStack> list;
 
     public CreativeTab() {
         super(LibMisc.MOD_ID);

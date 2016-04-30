@@ -37,7 +37,7 @@ public class AltarOfTheFallingStarDiagram implements IRitual {
         int total = 0;
         EntityPlayer receiver = null;
         for (EntityItem entity : list) {
-            if (entity.getEntityItem().getItem() instanceof Dormant && entity.getEntityItem().getTagCompound().getBoolean(LibNames.TAG_ATTUNED)) {
+            if (entity.getEntityItem().getItem() instanceof ItemDormantSoulstone && entity.getEntityItem().getTagCompound().getBoolean(LibNames.TAG_ATTUNED)) {
                 receiver = new EntityPlayer(world, new com.mojang.authlib.GameProfile(entity.getEntityItem().getTagCompound().getUniqueId(LibNames.TAG_UUID), entity.getEntityItem().getTagCompound().getString(LibNames.TAG_OWNER))) {
                     @Override
                     public boolean isSpectator() {
@@ -50,7 +50,7 @@ public class AltarOfTheFallingStarDiagram implements IRitual {
                     }
                 };
                 entity.setDead();
-            } else if (entity.getEntityItem().getItem() instanceof Awakened) {
+            } else if (entity.getEntityItem().getItem() instanceof ItemAwakenedSoulstone) {
                 total += entity.getEntityItem().getTagCompound().getInteger(LibNames.TAG_ANIMUS);
                 entity.setDead();
             }
@@ -73,9 +73,9 @@ public class AltarOfTheFallingStarDiagram implements IRitual {
         boolean a = false;
         boolean b = false;
         for (EntityItem entity : list) {
-            if (entity.getEntityItem().getItem() instanceof Dormant && entity.getEntityItem().getTagCompound().getBoolean(LibNames.TAG_ATTUNED))
+            if (entity.getEntityItem().getItem() instanceof ItemDormantSoulstone && entity.getEntityItem().getTagCompound().getBoolean(LibNames.TAG_ATTUNED))
                 a = true;
-            else if (entity.getEntityItem().getItem() instanceof Awakened) b = true;
+            else if (entity.getEntityItem().getItem() instanceof ItemAwakenedSoulstone) b = true;
         }
         return a && b;
         */
@@ -98,14 +98,12 @@ public class AltarOfTheFallingStarDiagram implements IRitual {
 
     @Override
     public ArrayList<PositionedChalk> getRequiredPositionedChalk() {
-        ArrayList list = Lists.newArrayList();
-        return list;
+        return Lists.newArrayList();
     }
 
     @Override
     public ArrayList<ArrayList<PositionedChalk>> getPossibleRequiredPositionedChalks() {
-        ArrayList list = Lists.newArrayList();
-        return list;
+        return Lists.newArrayList();
     }
 
     @Override

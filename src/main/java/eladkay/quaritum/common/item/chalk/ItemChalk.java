@@ -17,14 +17,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemChalk extends ItemMod implements ModelHandler.IColorProvider {
-    public static final String[] COLORS;
+public class ItemChalk extends ItemMod implements ModelHandler.IColorProvider, ModelHandler.ICustomLogHolder {
+    public static final String[] COLORS = new String[17];
 
     static {
-        COLORS = new String[17];
         for (EnumDyeColor dye : EnumDyeColor.values()) {
             COLORS[dye.ordinal()] = "chalk" + (capitalizeFirst(dye.toString())).replace("Silver", "LightGray");
-            System.out.println("chalk" + capitalizeFirst(dye.toString()));
         }
 
         COLORS[16] = "chalkTempest";
@@ -59,6 +57,7 @@ public class ItemChalk extends ItemMod implements ModelHandler.IColorProvider {
         return EnumActionResult.FAIL;
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public IItemColor getColor() {
         return new IItemColor() {
@@ -67,5 +66,25 @@ public class ItemChalk extends ItemMod implements ModelHandler.IColorProvider {
                 return tintIndex == 1 && stack.getItemDamage() < 16 ? ItemDye.dyeColors[15 - stack.getItemDamage()] : 0xFFFFFF;
             }
         };
+    }
+
+    @Override
+    public String customLog() {
+        return null;
+    }
+
+    @Override
+    public String customLogVariant(int variantID, String variant) {
+        return ModelHandler.modlength + " |  Variants by dye color";
+    }
+
+    @Override
+    public int sortingPrecedence() {
+        return 1;
+    }
+
+    @Override
+    public boolean shouldLogForVariant(int variantID, String variant) {
+        return false;
     }
 }

@@ -5,6 +5,7 @@ import eladkay.quaritum.client.core.ModelHandler;
 import eladkay.quaritum.common.lib.LibMisc;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.ItemMeshDefinition;
+import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -12,10 +13,12 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public class ItemModBlock extends ItemBlock implements ModelHandler.IVariantHolder {
+public class ItemModBlock extends ItemBlock implements ModelHandler.IVariantHolder, ModelHandler.IColorProvider {
 
     private ModelHandler.IModBlock modBlock;
 
@@ -64,6 +67,13 @@ public class ItemModBlock extends ItemBlock implements ModelHandler.IVariantHold
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
+    public IItemColor getColor() {
+        return modBlock instanceof ModelHandler.IColorProvider ? ((ModelHandler.IColorProvider) modBlock).getColor() : null;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
     public ItemMeshDefinition getCustomMeshDefinition() {
         return this.modBlock.getCustomMeshDefinition();
     }

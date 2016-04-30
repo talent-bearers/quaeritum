@@ -6,8 +6,8 @@ import eladkay.quaritum.api.rituals.EnumRitualType;
 import eladkay.quaritum.api.rituals.IRitual;
 import eladkay.quaritum.api.rituals.PositionedChalk;
 import eladkay.quaritum.common.block.ModBlocks;
-import eladkay.quaritum.common.item.flowers.Common;
-import eladkay.quaritum.common.item.flowers.CommonArcane;
+import eladkay.quaritum.common.block.flowers.BlockCommonFlower;
+import eladkay.quaritum.common.block.flowers.BlockAnimusFlower;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -36,7 +36,7 @@ public class ShardedSkiesTier2Diagram implements IRitual {
 
     @Override
     public boolean runOnce(World world, EntityPlayer player, BlockPos pos) {
-        EntityItem item = new EntityItem(world, pos.getX(), pos.getY() + 2, pos.getZ(), new ItemStack((CommonArcane) ModBlocks.commonArcane));
+        EntityItem item = new EntityItem(world, pos.getX(), pos.getY() + 2, pos.getZ(), new ItemStack((BlockAnimusFlower) ModBlocks.commonArcane));
         return world.spawnEntityInWorld(item);
     }
 
@@ -53,7 +53,7 @@ public class ShardedSkiesTier2Diagram implements IRitual {
     @Override
     public ArrayList<ItemStack> getRequiredItems() {
         ArrayList<ItemStack> list = Lists.newArrayList();
-        list.add(new ItemStack((Common) ModBlocks.common));
+        list.add(new ItemStack((BlockCommonFlower) ModBlocks.common));
         list.add(new ItemStack(Items.nether_wart));
         list.add(new ItemStack(Items.blaze_powder));
         return list;

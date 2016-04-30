@@ -1,6 +1,7 @@
 package eladkay.quaritum.common.item;
 
 import eladkay.quaritum.common.item.base.ItemMod;
+import eladkay.quaritum.common.lib.LibNBT;
 import eladkay.quaritum.common.lib.LibNames;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -12,9 +13,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 
-public class DebugItem extends ItemMod {
+public class ItemDebug extends ItemMod {
 
-    public DebugItem() {
+    public ItemDebug() {
         super(LibNames.DEBUG);
     }
 
@@ -22,9 +23,9 @@ public class DebugItem extends ItemMod {
     public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
         if (worldIn.isRemote) {
             if (playerIn.isSneaking())
-                playerIn.addChatComponentMessage(new TextComponentString("Animus levels: " + playerIn.getEntityData().getInteger(LibNames.TAG_ANIMUS_ON_ENTITY)));
+                playerIn.addChatComponentMessage(new TextComponentString("Animus levels: " + playerIn.getEntityData().getInteger(LibNBT.TAG_ANIMUS_ON_ENTITY)));
             else
-                playerIn.getEntityData().setInteger(LibNames.TAG_ANIMUS_ON_ENTITY, playerIn.getEntityData().getInteger(LibNames.TAG_ANIMUS_ON_ENTITY) + 50);
+                playerIn.getEntityData().setInteger(LibNBT.TAG_ANIMUS_ON_ENTITY, playerIn.getEntityData().getInteger(LibNBT.TAG_ANIMUS_ON_ENTITY) + 50);
         }
         return super.onItemRightClick(itemStackIn, worldIn, playerIn, hand);
     }
