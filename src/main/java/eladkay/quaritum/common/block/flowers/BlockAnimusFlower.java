@@ -15,6 +15,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 public class BlockAnimusFlower extends BlockModFlower {
 
     public static IProperty<Variants> FLOWER_TYPE = PropertyEnum.create("type", Variants.class);
@@ -69,8 +72,12 @@ public class BlockAnimusFlower extends BlockModFlower {
         public static String[] vars = new String[Variants.values().length];
 
         static {
-            for (Variants var : Variants.values())
-                vars[var.ordinal()] = LibNames.FLOWER + capitalizeFirst(var.getName());
+            for (Variants var : Variants.values()) {
+                vars[var.ordinal()] = LibNames.FLOWER + String.join(",", Arrays.asList(var.getName().split("_")).stream().map(BlockAnimusFlower::capitalizeFirst).collect(Collectors.joining()));
+                System.out.println(LibNames.FLOWER + String.join(",", Arrays.asList(var.getName().split("_")).stream().map(BlockAnimusFlower::capitalizeFirst).collect(Collectors.joining())));
+
+            }
+
         }
 
         public int rarity;

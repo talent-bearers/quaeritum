@@ -6,12 +6,12 @@ tile.quaritum:blueprint.name=Blueprint
 tile.quaritum:dormantSoulstone.name=Dormant Soulstone
 tile.quaritum:attunedSoulstone.name=Attuned Soulstone
 tile.quaritum:awakenedSoulstone.name=Awakened Soulstone
-tile.quaritum:oppersiveSoulstone.name=Oppersive Soulstone
+tile.quaritum:oppressiveSoulstone.name=Oppersive Soulstone
 tile.quaritum:passionateSoulstone.name=Passionate Soulstone
 tile.quaritum:worldSoulstone.name=Stone of the Worldsoul
 
 tile.quaritum:flowerCommon.name=Common Flower
-tile.quaritum:flowerCommon_arcane.name=Common (Arcane) Flower
+tile.quaritum:flowerCommonArcane.name=Common (Arcane) Flower
 tile.quaritum:flowerArcane.name=Arcane Flower
 
 tile.quaritum:debug.name=Debug Item
@@ -19,3 +19,21 @@ tile.quaritum:debug.name=Debug Item
 rituals.quaritum.altarofthefallingstar=Altar of the Falling Star
 
 entity.quaritum.chaosborn.name=Chaosborn
+
+tile.quaritum:chalkWhite.name=Chalk (White)
+tile.quaritum:chalkOrange.name=Chalk (Orange)
+tile.quaritum:chalkMagenta.name=Chalk (Magenta)
+tile.quaritum:chalkLightBlue.name=Chalk (Light Blue)
+tile.quaritum:chalkYellow.name=Chalk (Yellow)
+tile.quaritum:chalkLime.name=Chalk (Lime)
+tile.quaritum:chalkPink.name=Chalk (Pink)
+tile.quaritum:chalkGray.name=Chalk (Gray)
+tile.quaritum:chalkLightGray.name=Chalk (Light Gray)
+tile.quaritum:chalkCyan.name=Chalk (Cyan)
+tile.quaritum:chalkPurple.name=Chalk (Purple)
+tile.quaritum:chalkBlue.name=Chalk (Blue)
+tile.quaritum:chalkBrown.name=Chalk (Brown)
+tile.quaritum:chalkGreen.name=Chalk (Green)
+tile.quaritum:chalkRed.name=Chalk (Red)
+tile.quaritum:chalkBlack.name=Chalk (Black)
+tile.quaritum:chalkTempest.name=Chalk of the Tempest

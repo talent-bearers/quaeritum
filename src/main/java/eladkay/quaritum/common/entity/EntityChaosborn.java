@@ -4,6 +4,7 @@ import eladkay.quaritum.common.block.ModBlocks;
 import eladkay.quaritum.common.block.flowers.BlockAnimusFlower;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,18 +16,25 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 
 public class EntityChaosborn extends EntityMob implements IRangedAttackMob {
-    int quality;
+    private int quality;
 
+    //public static final IAttribute myAttribute = new RangedAttribute();
     // private static final DataParameter<Integer> QUALITY = new DataParameter<Integer>();
     public EntityChaosborn(World worldIn, int quality) {
         super(worldIn);
         this.quality = quality;
-        setHealth(50);
+
     }
 
     //Obligatory.
     public EntityChaosborn(World worldIn) {
         this(worldIn, 0);
+    }
+
+    @Override
+    protected void applyEntityAttributes() {
+        super.applyEntityAttributes();
+        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(50.0D * (quality > 0 ? quality : 1));
     }
 
     @Override
@@ -38,7 +46,7 @@ public class EntityChaosborn extends EntityMob implements IRangedAttackMob {
     @Override
     protected void dropLoot(boolean wasRecentlyHit, int looting, DamageSource source) {
         if (source.getSourceOfDamage() instanceof EntityPlayer && wasRecentlyHit) {
-            ItemStack itemstack = new ItemStack(ModBlocks.flower, Math.min(3, looting), BlockAnimusFlower.Variants.ARCANE.ordinal());
+            ItemStack itemstack = new ItemStack(ModBlocks.flower, Math.max(Math.min(3, looting), 1) * quality + 1, BlockAnimusFlower.Variants.ARCANE.ordinal());
             this.entityDropItem(itemstack, 0.0F);
         }
         super.dropLoot(wasRecentlyHit, looting, source);

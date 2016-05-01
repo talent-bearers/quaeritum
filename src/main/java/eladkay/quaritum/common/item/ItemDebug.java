@@ -17,15 +17,19 @@ public class ItemDebug extends ItemMod {
 
     public ItemDebug() {
         super(LibNames.DEBUG);
+        setMaxStackSize(1);
     }
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
         if (worldIn.isRemote) {
-            if (playerIn.isSneaking())
+            if (!playerIn.isSneaking())
                 playerIn.addChatComponentMessage(new TextComponentString("Animus levels: " + playerIn.getEntityData().getInteger(LibNBT.TAG_ANIMUS_ON_ENTITY)));
-            else
+            else {
                 playerIn.getEntityData().setInteger(LibNBT.TAG_ANIMUS_ON_ENTITY, playerIn.getEntityData().getInteger(LibNBT.TAG_ANIMUS_ON_ENTITY) + 50);
+                playerIn.addChatComponentMessage(new TextComponentString("Added 50, current animus level for " + playerIn.getName() + " is: " + playerIn.getEntityData().getInteger(LibNBT.TAG_ANIMUS_ON_ENTITY)));
+            }
+
         }
         return super.onItemRightClick(itemStackIn, worldIn, playerIn, hand);
     }

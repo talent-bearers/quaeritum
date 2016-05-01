@@ -14,6 +14,8 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 
+import java.util.List;
+
 /**
  * @author WireSegal
  *         Created at 10:33 AM on 4/30/16.
@@ -22,6 +24,11 @@ public class ItemAttunedSoulstone extends ItemMod {
     public ItemAttunedSoulstone() {
         super(LibNames.ATTUNED_SOULSTONE);
         setMaxStackSize(1);
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
+        tooltipIfShift(tooltip, () -> tooltip.add("Attuned to " + ItemNBTHelper.getString(stack, LibNBT.TAG_OWNER, "nobody") + "."));
     }
 
     @Override

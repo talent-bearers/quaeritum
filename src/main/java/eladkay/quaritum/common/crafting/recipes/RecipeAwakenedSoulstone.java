@@ -4,9 +4,9 @@ import eladkay.quaritum.api.animus.IFlower;
 import eladkay.quaritum.common.core.ItemNBTHelper;
 import eladkay.quaritum.common.item.ModItems;
 import eladkay.quaritum.common.lib.LibNBT;
-import eladkay.quaritum.common.lib.LibNames;
-import net.minecraft.init.Items;
+import net.minecraft.block.Block;
 import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
@@ -27,17 +27,15 @@ public class RecipeAwakenedSoulstone implements IRecipe {
                     } else {
                         return false;
                     }
-                } else if (stack.getItem() instanceof IFlower) {
-                    totalAnimus += ((IFlower) stack.getItem()).getAnimusFromStack(stack);
+                } else if (stack.getItem() instanceof ItemBlock && Block.getBlockFromItem(stack.getItem()) instanceof IFlower) {
+                    totalAnimus += ((IFlower) Block.getBlockFromItem(stack.getItem())).getAnimusFromStack(stack);
                 } else
                     return false;
             }
         }
-
-        if (totalAnimus > 0) {
-            return true;
-        }
-        return true;
+        System.out.println(totalAnimus + " A");
+        System.out.println(foundSoulstone + " S");
+        return foundSoulstone;
 
     }
 
@@ -48,8 +46,8 @@ public class RecipeAwakenedSoulstone implements IRecipe {
         for (int index = 0; index < inv.getSizeInventory(); ++index) {
             ItemStack stack = inv.getStackInSlot(index);
             if (stack != null && stack.getItem() instanceof IFlower) {
-                totalAnimus += ((IFlower) stack.getItem()).getAnimusFromStack(stack);
-                lowestRarity = Math.min(((IFlower) stack.getItem()).getRarity(stack), lowestRarity);
+                totalAnimus += ((IFlower) Block.getBlockFromItem(stack.getItem())).getAnimusFromStack(stack);
+                lowestRarity = Math.min(((IFlower) Block.getBlockFromItem(stack.getItem())).getRarity(stack), lowestRarity);
             }
         }
 

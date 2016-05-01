@@ -21,16 +21,14 @@ public class ItemChalk extends ItemMod implements ModelHandler.IColorProvider, M
     public static final String[] COLORS = new String[17];
 
     static {
-        for (EnumDyeColor dye : EnumDyeColor.values()) {
+        for (EnumDyeColor dye : EnumDyeColor.values())
             COLORS[dye.ordinal()] = "chalk" + (capitalizeFirst(dye.toString())).replace("Silver", "LightGray");
-        }
-
         COLORS[16] = "chalkTempest";
-
     }
 
     public ItemChalk() {
         super(LibNames.CHALK, COLORS);
+        setMaxStackSize(1);
     }
 
     public static String capitalizeFirst(String str) {
@@ -70,12 +68,12 @@ public class ItemChalk extends ItemMod implements ModelHandler.IColorProvider, M
 
     @Override
     public String customLog() {
-        return null;
+        return ModelHandler.modlength + " |  Variants by dye color";
     }
 
     @Override
     public String customLogVariant(int variantID, String variant) {
-        return ModelHandler.modlength + " |  Variants by dye color";
+        return "";
     }
 
     @Override

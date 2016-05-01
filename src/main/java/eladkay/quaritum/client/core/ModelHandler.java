@@ -52,7 +52,7 @@ public class ModelHandler {
     }
 
     private static String variantToString(IVariantHolder var) {
-        return ((char) (255-getVariantCount(var))) + (var instanceof ItemBlock ? "b" : "I") + ((Item) var).getRegistryName().getResourcePath();
+        return ((char) (255 - getVariantCount(var))) + (var instanceof ItemBlock ? "b" : "I") + (var instanceof Block ? /*((Block) var).getRegistryName().getResourcePath()*/ "" : ((Item) var).getRegistryName().getResourcePath());
     }
 
     public static void init() {
@@ -120,9 +120,10 @@ public class ModelHandler {
                 print += item instanceof ItemBlock ? "block" : "item";
                 print += " " + item.getRegistryName().getResourcePath();
                 FMLLog.info(print);
-                if (item instanceof ICustomLogHolder) {
-                }
-                //    FMLLog.info(((ICustomLogHolder) item).customLog());
+                if (item instanceof ICustomLogHolder)
+                    FMLLog.info(((ICustomLogHolder) item).customLog());
+
+
             }
             if ((!variants[var11].equals(item.getRegistryName().getResourcePath()) || variants.length != 1)) {
                 if (item instanceof ICustomLogHolder) {
