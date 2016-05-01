@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=common": {
+      "model": "quaritum:common"
+    },
+    "type=common_arcane": {
+      "model": "quaritum:commonArcane"
+    },
+    "type=arcane": {
+      "model": "quaritum:arcane"
+    }
+  }
+}

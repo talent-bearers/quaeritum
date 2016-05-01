@@ -22,7 +22,10 @@ import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author WireSegal
@@ -30,50 +33,9 @@ import java.util.*;
  */
 public class ModelHandler {
 
-    public interface IVariantHolder {
-        @SideOnly(Side.CLIENT)
-        ItemMeshDefinition getCustomMeshDefinition();
-
-        String[] getVariants();
-    }
-
-    public interface IExtraVariantHolder extends IVariantHolder {
-        String[] getExtraVariants();
-    }
-
-    public interface IModBlock extends IVariantHolder {
-        Class<Enum> getVariantEnum();
-        IProperty[] getIgnoredProperties();
-        String getBareName();
-
-        EnumRarity getBlockRarity(ItemStack stack);
-    }
-
-    public interface IColorProvider {
-        @SideOnly(Side.CLIENT)
-        IItemColor getColor();
-    }
-
-    public interface IBlockColorProvider extends IColorProvider {
-        @SideOnly(Side.CLIENT)
-        IBlockColor getBlockColor();
-    }
-
-    public interface ICustomLogHolder extends IVariantHolder {
-        String customLog();
-
-        String customLogVariant(int variantID, String variant);
-
-        boolean shouldLogForVariant(int variantID, String variant);
-
-        int sortingPrecedence();
-    }
-
     public static String mod;
     public static String modlength;
-
     public static List<IVariantHolder> variantCache = new ArrayList<>();
-
     public static Map<String, ModelResourceLocation> resourceLocations = new HashMap<>();
 
     public static void preInit(String modid) {
@@ -113,8 +75,6 @@ public class ModelHandler {
             }
         }
     }
-
-    // The following is a blatant copy of Psi's ModelHandler.
 
     private static void registerModels(IVariantHolder holder) {
         if (!(holder instanceof Item)) return;
@@ -160,8 +120,9 @@ public class ModelHandler {
                 print += item instanceof ItemBlock ? "block" : "item";
                 print += " " + item.getRegistryName().getResourcePath();
                 FMLLog.info(print);
-                if (item instanceof ICustomLogHolder)
-                    FMLLog.info(((ICustomLogHolder) item).customLog());
+                if (item instanceof ICustomLogHolder) {
+                }
+                //    FMLLog.info(((ICustomLogHolder) item).customLog());
             }
             if ((!variants[var11].equals(item.getRegistryName().getResourcePath()) || variants.length != 1)) {
                 if (item instanceof ICustomLogHolder) {
@@ -218,5 +179,48 @@ public class ModelHandler {
 
     private static String getKey(Item item, int meta) {
         return "i_" + item.getRegistryName() + "@" + meta;
+    }
+
+    public interface IVariantHolder {
+        @SideOnly(Side.CLIENT)
+        ItemMeshDefinition getCustomMeshDefinition();
+
+        String[] getVariants();
+    }
+
+    public interface IExtraVariantHolder extends IVariantHolder {
+        String[] getExtraVariants();
+    }
+
+    // The following is a blatant copy of Psi's ModelHandler.
+
+    public interface IModBlock extends IVariantHolder {
+        Class<Enum> getVariantEnum();
+
+        IProperty[] getIgnoredProperties();
+
+        String getBareName();
+
+        EnumRarity getBlockRarity(ItemStack stack);
+    }
+
+    public interface IColorProvider {
+        @SideOnly(Side.CLIENT)
+        IItemColor getColor();
+    }
+
+    public interface IBlockColorProvider extends IColorProvider {
+        @SideOnly(Side.CLIENT)
+        IBlockColor getBlockColor();
+    }
+
+    public interface ICustomLogHolder extends IVariantHolder {
+        String customLog();
+
+        String customLogVariant(int variantID, String variant);
+
+        boolean shouldLogForVariant(int variantID, String variant);
+
+        int sortingPrecedence();
     }
 }

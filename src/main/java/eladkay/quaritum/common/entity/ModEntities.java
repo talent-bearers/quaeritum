@@ -12,8 +12,7 @@ public class ModEntities {
         registerModEntityWithEgg(EntityChaosborn.class, LibNames.CHAOSBORN, 15451, 45615);
     }
 
-    public static void registerModEntityWithEgg(Class<? extends Entity> parEntityClass, String parEntityName,
-                                                int parEggColor, int parEggSpotsColor) {
+    public static void registerModEntityWithEgg(Class<? extends Entity> parEntityClass, String parEntityName, int parEggColor, int parEggSpotsColor) {
         EntityRegistry.registerModEntity(parEntityClass, parEntityName, ++id,
                 Quartium.instance, 80, 3, false);
         EntityRegistry.registerEgg(parEntityClass, parEggColor, parEggSpotsColor);
