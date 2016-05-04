@@ -5,10 +5,6 @@ import eladkay.quaritum.common.lib.LibNames;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-/**
- * @author WireSegal
- *         Created at 10:48 AM on 4/30/16.
- */
 public class ItemOppressiveSoulstone extends ItemMod {
     public ItemOppressiveSoulstone() {
         super(LibNames.OPPRESSIVE_SOULSTONE);

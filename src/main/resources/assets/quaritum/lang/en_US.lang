@@ -17,6 +17,7 @@ tile.quaritum:flowerArcane.name=Arcane Flower
 tile.quaritum:debug.name=Debug Item
 
 rituals.quaritum.altarofthefallingstar=Altar of the Falling Star
+rituals.quaritum.trash=Ritual of Rubbish
 
 entity.quaritum.chaosborn.name=Chaosborn
 

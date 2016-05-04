@@ -16,10 +16,6 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-/**
- * @author WireSegal
- *         Created at 10:33 AM on 4/30/16.
- */
 public class ItemAttunedSoulstone extends ItemMod {
     public ItemAttunedSoulstone() {
         super(LibNames.ATTUNED_SOULSTONE);

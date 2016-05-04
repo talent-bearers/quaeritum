@@ -40,6 +40,7 @@ public class EntityChaosborn extends EntityMob implements IRangedAttackMob {
     @Override
     protected boolean processInteract(EntityPlayer player, EnumHand p_184645_2_, ItemStack stack) {
         player.addChatComponentMessage(new TextComponentString("Health: " + getHealth()));
+        if (player.isSneaking()) quality++;
         return super.processInteract(player, p_184645_2_, stack);
     }
 
