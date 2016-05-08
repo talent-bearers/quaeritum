@@ -14,8 +14,10 @@ public class LibNames {
     public static final String DEBUG = "debug";
 
     public static final String CHALK = "chalk";
+    public static final String CHALK_BLOCK = "chalkBlock";
 
     public static final String FLOWER = "flower";
 
     public static final String CHAOSBORN = "chaosborn";
+
 }

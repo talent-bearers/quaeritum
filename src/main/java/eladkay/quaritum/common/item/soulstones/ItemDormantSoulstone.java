@@ -5,10 +5,12 @@ import eladkay.quaritum.common.item.base.ItemMod;
 import eladkay.quaritum.common.lib.LibNames;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 
 public class ItemDormantSoulstone extends ItemMod {
@@ -19,8 +21,12 @@ public class ItemDormantSoulstone extends ItemMod {
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
-        if (playerIn.isSneaking())
+        if (playerIn.isSneaking()) {
+            worldIn.playSound(playerIn, playerIn.getPosition(), SoundEvents.item_armor_equip_iron, SoundCategory.PLAYERS, 1f, 1f);
             return new ActionResult<>(EnumActionResult.SUCCESS, new ItemStack(ModItems.attuned));
+        }
+
+
         return super.onItemRightClick(itemStackIn, worldIn, playerIn, hand);
     }
 
@@ -31,9 +37,8 @@ public class ItemDormantSoulstone extends ItemMod {
 
     @Override
     public boolean onEntityItemUpdate(EntityItem entityItem) {
-        if (entityItem.isInWater()) {
+        if (entityItem.isInWater())
             entityItem.setEntityItemStack(new ItemStack(ModItems.oppressive));
-        }
         return false;
     }
 }

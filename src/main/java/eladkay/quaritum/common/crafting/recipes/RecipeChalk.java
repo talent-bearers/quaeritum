@@ -1,36 +1,43 @@
 package eladkay.quaritum.common.crafting.recipes;
 
-import eladkay.quaritum.api.animus.IFlower;
-import eladkay.quaritum.common.item.soulstones.ItemAwakenedSoulstone;
-import eladkay.quaritum.common.item.soulstones.ItemDormantSoulstone;
-import net.minecraft.block.Block;
+import eladkay.quaritum.common.item.ModItems;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
-public class RecipeAwakenedSoulstone implements IRecipe {
+public class RecipeChalk implements IRecipe {
     @Override
     public boolean matches(InventoryCrafting inventoryCrafting, World world) {
-        boolean foundSoulstone = false;
+        boolean dye = false;
+        boolean clay = false;
         for (int index = 0; index < inventoryCrafting.getSizeInventory(); ++index) {
+
             ItemStack stack = inventoryCrafting.getStackInSlot(index);
-            if (stack != null && stack.getItem() instanceof ItemDormantSoulstone) foundSoulstone = true;
+            if (stack == null) continue;
+            if (stack.getItem() == Items.clay_ball) {
+                if (clay) return false;
+                clay = true;
+            }
+            if (stack.getItem() == Items.dye) {
+                if (dye) return false;
+                dye = true;
+            }
         }
-        return foundSoulstone;
+        return clay && dye;
     }
 
     @Override
     public ItemStack getCraftingResult(InventoryCrafting inventoryCrafting) {
-        int animus = 0;
+        int dye = 0;
         for (int index = 0; index < inventoryCrafting.getSizeInventory(); ++index) {
             ItemStack stack = inventoryCrafting.getStackInSlot(index);
-            if (stack != null && Block.getBlockFromItem(stack.getItem()) instanceof IFlower)
-                animus += ((IFlower) Block.getBlockFromItem(stack.getItem())).getAnimusFromStack(stack);
-
+            if (stack == null) continue;
+            if (stack.getItem() == Items.dye) dye = 15 - stack.getItemDamage();
         }
-        return ItemAwakenedSoulstone.withAnimus(animus);
+        return new ItemStack(ModItems.chalk, 1, dye);
     }
 
     @Override

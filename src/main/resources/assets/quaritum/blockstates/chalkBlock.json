@@ -1,0 +1,53 @@
+{
+  "forge_marker": 1,
+  "variants": {
+    "color=white": {
+      "model": "quaritum:chalkWhite"
+    },
+    "color=orange": {
+      "model": "quaritum:chalkOrange"
+    },
+    "color=magenta": {
+      "model": "quaritum:chalkMagenta"
+    },
+    "color=light_blue": {
+      "model": "quaritum:chalkLightBlue"
+    },
+    "color=yellow": {
+      "model": "quaritum:chalkYellow"
+    },
+    "color=lime": {
+      "model": "quaritum:chalkLime"
+    },
+    "color=pink": {
+      "model": "quaritum:chalkPink"
+    },
+    "color=gray": {
+      "model": "quaritum:chalkGray"
+    },
+    "color=silver": {
+      "model": "quaritum:chalkSilver"
+    },
+    "color=cyan": {
+      "model": "quaritum:chalkCyan"
+    },
+    "color=purple": {
+      "model": "quaritum:chalkPurple"
+    },
+    "color=blue": {
+      "model": "quaritum:chalkBlue"
+    },
+    "color=brown": {
+      "model": "quaritum:chalkBrown"
+    },
+    "color=green": {
+      "model": "quaritum:chalkGreen"
+    },
+    "color=red": {
+      "model": "quaritum:chalkRed"
+    },
+    "color=black": {
+      "model": "quaritum:chalkBlack"
+    }
+  }
+}

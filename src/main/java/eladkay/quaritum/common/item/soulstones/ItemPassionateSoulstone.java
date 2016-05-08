@@ -2,10 +2,12 @@ package eladkay.quaritum.common.item.soulstones;
 
 import eladkay.quaritum.api.animus.IFunctionalSoulstone;
 import eladkay.quaritum.common.core.ItemNBTHelper;
+import eladkay.quaritum.common.item.ModItems;
 import eladkay.quaritum.common.item.base.ItemMod;
 import eladkay.quaritum.common.lib.LibNBT;
 import eladkay.quaritum.common.lib.LibNames;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.IFuelHandler;
@@ -28,15 +30,12 @@ public class ItemPassionateSoulstone extends ItemMod implements IFuelHandler, IF
 
     @Override
     public ItemStack getContainerItem(ItemStack itemStack) {
-        itemStack = addAnimus(itemStack, -20);
-        ItemStack copiedStack = itemStack.copy();
-        copiedStack.setItemDamage(copiedStack.getItemDamage());
-        return copiedStack;
+        return addAnimus(itemStack, -4);
     }
 
     @Override
     public boolean hasContainerItem(ItemStack itemStack) {
-        return true;
+        return false;
     }
 
     @Override
@@ -59,7 +58,7 @@ public class ItemPassionateSoulstone extends ItemMod implements IFuelHandler, IF
 
     @Override
     public int getMaxAnimus(ItemStack stack) {
-        return 800;
+        return 6400;
     }
 
     @Override
@@ -72,8 +71,12 @@ public class ItemPassionateSoulstone extends ItemMod implements IFuelHandler, IF
     }
 
     @Override
-    public int getBurnTime(ItemStack fuel) {
-        return getAnimusLevel(fuel) > 20 && fuel.getItem() instanceof ItemPassionateSoulstone ? 200 : 0;
+    public Item getContainerItem() {
+        return ModItems.passionate;
+    }
 
+    @Override
+    public int getBurnTime(ItemStack fuel) {
+        return /*getAnimusLevel(fuel) > 20 && fuel.getItem() instanceof ItemPassionateSoulstone ? 200 : 0*/ getAnimusLevel(fuel) * 10;
     }
 }

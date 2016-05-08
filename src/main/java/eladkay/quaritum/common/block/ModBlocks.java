@@ -1,7 +1,6 @@
 package eladkay.quaritum.common.block;
 
 import eladkay.quaritum.common.block.base.BlockMod;
-import eladkay.quaritum.common.block.base.BlockModFlower;
 import eladkay.quaritum.common.block.chalk.BlockChalk;
 import eladkay.quaritum.common.block.flowers.BlockAnimusFlower;
 import eladkay.quaritum.common.block.tile.TileEntityBlueprint;

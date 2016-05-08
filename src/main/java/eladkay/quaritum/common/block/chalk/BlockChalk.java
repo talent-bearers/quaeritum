@@ -2,15 +2,18 @@ package eladkay.quaritum.common.block.chalk;
 
 import com.google.common.collect.Lists;
 import eladkay.quaritum.common.block.base.BlockModColored;
+import eladkay.quaritum.common.item.ModItems;
 import eladkay.quaritum.common.lib.LibNames;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -18,14 +21,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-import static eladkay.quaritum.common.item.chalk.ItemChalk.capitalizeFirst;
-
 public class BlockChalk extends BlockModColored {
-    public static final String[] COLORS = new String[16];
+
     protected static final AxisAlignedBB CARPET_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.0625D, 1.0D);
 
     public BlockChalk() {
-        super("block" + capitalizeFirst(LibNames.CHALK), Material.cake);
+        super(LibNames.CHALK_BLOCK, Material.piston);
     }
 
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
@@ -52,6 +53,11 @@ public class BlockChalk extends BlockModColored {
         this.checkForDrop(worldIn, pos, state);
     }
 
+    @Override
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+        return new ItemStack(ModItems.chalk, 1, getMetaFromState(state));
+    }
+
     private boolean checkForDrop(World worldIn, BlockPos pos, IBlockState state) {
         if (!this.canBlockStay(worldIn, pos)) {
             this.dropBlockAsItem(worldIn, pos, state, 0);
@@ -68,7 +74,7 @@ public class BlockChalk extends BlockModColored {
 
     @SideOnly(Side.CLIENT)
     public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
-        return side == EnumFacing.UP || (blockAccess.getBlockState(pos.offset(side)).getBlock() == this || super.shouldSideBeRendered(blockState, blockAccess, pos, side));
+        return side == EnumFacing.UP || blockAccess.getBlockState(pos.offset(side)).getBlock() == this || super.shouldSideBeRendered(blockState, blockAccess, pos, side);
     }
 
     @Override

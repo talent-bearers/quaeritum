@@ -2,6 +2,7 @@ package eladkay.quaritum.common.item.soulstones;
 
 import eladkay.quaritum.api.animus.ISoulstone;
 import eladkay.quaritum.common.core.ItemNBTHelper;
+import eladkay.quaritum.common.item.ModItems;
 import eladkay.quaritum.common.item.base.ItemMod;
 import eladkay.quaritum.common.lib.LibNBT;
 import eladkay.quaritum.common.lib.LibNames;
@@ -19,6 +20,12 @@ public class ItemAwakenedSoulstone extends ItemMod implements ISoulstone {
     public ItemAwakenedSoulstone(String name) {
         super(name);
         setMaxStackSize(1);
+    }
+
+    public static ItemStack withAnimus(int animus) {
+        ItemStack stack = new ItemStack(ModItems.awakened);
+        ItemNBTHelper.setInt(stack, LibNBT.TAG_ANIMUS, animus);
+        return stack;
     }
 
     @Override
