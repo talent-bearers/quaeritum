@@ -1,7 +1,6 @@
 package eladkay.quaritum.common.rituals;
 
 import com.google.common.collect.Lists;
-import com.sun.istack.internal.Nullable;
 import eladkay.quaritum.api.rituals.IDiagram;
 import eladkay.quaritum.api.rituals.PositionedChalk;
 import eladkay.quaritum.common.block.ModBlocks;
@@ -16,6 +15,7 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 

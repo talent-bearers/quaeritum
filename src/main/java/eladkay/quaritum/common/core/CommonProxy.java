@@ -21,11 +21,11 @@ public class CommonProxy {
         ModItems.init();
         ModEntities.init();
         ModRecipes.init();
-        RitualRegistry.registerRitual(new AltarOfTheFallingStarDiagram(), "altarOfTheFallingStar");
-        RitualRegistry.registerRitual(new SimpleTestRitualDiagram(), "test");
-        RitualRegistry.registerRitual(new ShardedSkiesDiagram(), "shardedSkies");
-        RitualRegistry.registerRitual(new ShardedSkiesTier2Diagram(), "shardedSkies2");
-        RitualRegistry.registerRitual(new RitualTrashDiagram(), "trash");
+        RitualRegistry.registerDiagram(new AltarOfTheFallingStarDiagram(), "altarOfTheFallingStar");
+        RitualRegistry.registerDiagram(new SimpleTestRitualDiagram(), "test");
+        RitualRegistry.registerDiagram(new ShardedSkiesDiagram(), "shardedSkies");
+        RitualRegistry.registerDiagram(new ShardedSkiesTier2Diagram(), "shardedSkies2");
+        RitualRegistry.registerDiagram(new RitualTrashDiagram(), "trash");
         FMLInterModComms.sendMessage("Waila", "register", "eladkay.quaritum.common.compat.waila.Waila.onWailaCall");
     }
 
