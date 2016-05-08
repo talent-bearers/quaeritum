@@ -1,10 +1,8 @@
 package eladkay.quaritum.common.block.tile;
 
 import com.google.common.collect.Lists;
-import eladkay.quaritum.api.rituals.IRitual;
-import eladkay.quaritum.api.rituals.IRitualRunner;
+import eladkay.quaritum.api.rituals.IDiagram;
 import eladkay.quaritum.api.rituals.RitualRegistry;
-import eladkay.quaritum.api.rituals.RunHelper;
 import eladkay.quaritum.common.lib.LibMisc;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
@@ -26,7 +24,7 @@ import net.minecraft.world.World;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TileEntityBlueprint extends TileEntity implements IInventory, IRitualRunner, ITickable {
+public class TileEntityBlueprint extends TileEntity implements IInventory, ITickable {
     public boolean debug = true;
     public ArrayList<ItemStack> items = Lists.newArrayList();
     public boolean debug2 = true;
@@ -47,34 +45,30 @@ public class TileEntityBlueprint extends TileEntity implements IInventory, IRitu
         if(dirty) markDirty();
     }
 
-    @Override
-    public IRitual getValidRitual(EntityPlayer player) {
-        for (IRitual ritual : RitualRegistry.getRitualList()) {
+
+    public IDiagram getValidRitual(EntityPlayer player) {
+        for (IDiagram ritual : RitualRegistry.getDiagramList()) {
             boolean foundAll = items.toString().equals(ritual.getRequiredItems().toString()); //FOR NOW.
             boolean requirementsMet = ritual.canRitualRun(this.getWorld(), player, pos, this);
             boolean chalks = true;//checkAllPossiblePosChalks(ritual.getPossibleRequiredPositionedChalks());
-            if (foundAll && requirementsMet && (chalks || ritual.ignoreChalk())) {
+            if (foundAll && requirementsMet && chalks) {
                 return ritual;
             } else if (!requirementsMet) {
-                System.out.println("REQUIREMENTS FOR RITUAL " + ritual.getCanonicalName() + " WERE NOT MET.");
+                System.out.println("REQUIREMENTS FOR RITUAL " + ritual.getUnlocalizedName() + " WERE NOT MET.");
             } else if (!foundAll) {
-                System.out.println("ITEM REQUIREMENTS FOR RITUAL " + ritual.getCanonicalName() + " WERE NOT MET. REQUIREMENTS ARE " + ritual.getRequiredItems() + " & THERE IS " + items);
+                System.out.println("ITEM REQUIREMENTS FOR RITUAL " + ritual.getUnlocalizedName() + " WERE NOT MET. REQUIREMENTS ARE " + ritual.getRequiredItems() + " & THERE IS " + items);
             } else if (!chalks) {
-                System.out.println("CHALK REQUIREMENTS FOR RITUAL " + ritual.getCanonicalName() + " WERE NOT MET. REQUIREMENTS ARE " + ritual.getRequiredItems() + " & THERE IS " + items);
+                System.out.println("CHALK REQUIREMENTS FOR RITUAL " + ritual.getUnlocalizedName() + " WERE NOT MET. REQUIREMENTS ARE " + ritual.getRequiredItems() + " & THERE IS " + items);
             } else {
-                System.out.println("GENERIC ERROR AT " + ritual.getCanonicalName());
+                System.out.println("GENERIC ERROR AT " + ritual.getUnlocalizedName());
             }
         }
         return null;
     }
 
-    @Override
-    public boolean runRitual(IRitual ritual, EntityPlayer player) {
-        if (ritual == null) return false;
-        else {
-            clear();
-            return RunHelper.runRitual(ritual, this.getWorld(), pos, player);
-        }
+    public boolean runRitual(IDiagram ritual, EntityPlayer player) {
+        clear();
+        return ritual.run(worldObj, player, pos);
     }
 
    /* @Override

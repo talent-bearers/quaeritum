@@ -68,7 +68,7 @@ public class Waila {
 
         @Override
         public List<String> getWailaHead(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-            //currenttip.addAll(((TileEntityBlueprint) accessor.getTileEntity()).items.stream().map(stack -> "Item: " + stack.getItem()).collect(Collectors.toList()));
+            //currenttip.addAll(((TileEntityBlueprint) accessor.getTileEntity()).items.stream().mapDiagrams(stack -> "Item: " + stack.getItem()).collect(Collectors.toList()));
             ItemStack[] stack = new ItemStack[]{};
             NBTTagList taglist = (NBTTagList) accessor.getNBTData().getTag("Inventory");
 

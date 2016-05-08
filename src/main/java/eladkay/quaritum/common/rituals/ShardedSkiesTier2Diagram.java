@@ -1,9 +1,9 @@
 package eladkay.quaritum.common.rituals;
 
 import com.google.common.collect.Lists;
-import eladkay.quaritum.api.rituals.EnumRitualDuration;
-import eladkay.quaritum.api.rituals.EnumRitualType;
-import eladkay.quaritum.api.rituals.IRitual;
+import com.sun.istack.internal.Nullable;
+import eladkay.quaritum.api.rituals.IDiagram;
+import eladkay.quaritum.api.rituals.PositionedChalk;
 import eladkay.quaritum.common.block.ModBlocks;
 import eladkay.quaritum.common.block.flowers.BlockAnimusFlower;
 import net.minecraft.entity.item.EntityItem;
@@ -14,33 +14,21 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
+import java.util.List;
 
-public class ShardedSkiesTier2Diagram implements IRitual {
+public class ShardedSkiesTier2Diagram implements IDiagram {
     @Override
     public String getUnlocalizedName() {
         return "rituals.quaritum.shardedsky";
     }
 
+    @Nonnull
     @Override
-    public EnumRitualType getRitualType() {
-        return EnumRitualType.DIAGRAM;
-    }
-
-    @Override
-    public EnumRitualDuration getRitualDuration() {
-        return EnumRitualDuration.INSTANT;
-    }
-
-    @Override
-    public boolean runOnce(World world, EntityPlayer player, BlockPos pos) {
+    public boolean run(@Nonnull World world, @Nullable EntityPlayer player, @Nonnull BlockPos pos) {
         EntityItem item = new EntityItem(world, pos.getX(), pos.getY() + 2, pos.getZ(), new ItemStack(ModBlocks.flower, 1, BlockAnimusFlower.Variants.COMMON_ARCANE.ordinal()));
         return world.spawnEntityInWorld(item);
-    }
-
-    @Override
-    public boolean runDurable(World world, EntityPlayer player, BlockPos pos) {
-        return false;
     }
 
     @Override
@@ -58,22 +46,8 @@ public class ShardedSkiesTier2Diagram implements IRitual {
     }
 
     @Override
-    public String getCanonicalName() {
-        return "Sharded Skies";
+    public void buildChalks(@Nonnull List<PositionedChalk> chalks) {
+
     }
 
-  /*  @Override
-    public ArrayList<PositionedChalk> getRequiredPositionedChalk() {
-        return Lists.newArrayList();
-    }
-
-    @Override
-    public ArrayList<ArrayList<PositionedChalk>> getPossibleRequiredPositionedChalks() {
-        return Lists.newArrayList();
-    }*/
-
-    @Override
-    public boolean ignoreChalk() {
-        return true;
-    }
 }

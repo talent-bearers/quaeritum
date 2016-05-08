@@ -1,14 +1,15 @@
 package eladkay.quaritum.api.animus;
 
-import com.sun.istack.internal.NotNull;
-import com.sun.istack.internal.Nullable;
 import net.minecraft.item.ItemStack;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public interface IFlower {
 
     @Nullable
-    int getRarity(@NotNull ItemStack stack);
+    int getRarity(@Nonnull ItemStack stack);
 
     @Nullable
-    int getAnimusFromStack(@NotNull ItemStack stack);
+    int getAnimusFromStack(@Nonnull ItemStack stack);
 }

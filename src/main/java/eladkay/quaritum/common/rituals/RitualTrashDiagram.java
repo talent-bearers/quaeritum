@@ -1,9 +1,9 @@
 package eladkay.quaritum.common.rituals;
 
 import com.google.common.collect.Lists;
-import eladkay.quaritum.api.rituals.EnumRitualDuration;
-import eladkay.quaritum.api.rituals.EnumRitualType;
-import eladkay.quaritum.api.rituals.IRitual;
+import com.sun.istack.internal.Nullable;
+import eladkay.quaritum.api.rituals.IDiagram;
+import eladkay.quaritum.api.rituals.PositionedChalk;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -11,33 +11,20 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
+import java.util.List;
 
-public class RitualTrashDiagram implements IRitual {
+public class RitualTrashDiagram implements IDiagram {
     @Override
     public String getUnlocalizedName() {
         return "rituals.quaritum.trash";
     }
 
+    @Nonnull
     @Override
-    public EnumRitualType getRitualType() {
-        return EnumRitualType.DIAGRAM;
-    }
-
-    @Override
-    public EnumRitualDuration getRitualDuration() {
-        return EnumRitualDuration.INSTANT;
-    }
-
-
-    @Override
-    public boolean runOnce(World world, EntityPlayer player, BlockPos pos) {
+    public boolean run(@Nonnull World world, @Nullable EntityPlayer player, @Nonnull BlockPos pos) {
         return true;
-    }
-
-    @Override
-    public boolean runDurable(World world, EntityPlayer player, BlockPos pos) {
-        return false;
     }
 
     @Override
@@ -51,22 +38,8 @@ public class RitualTrashDiagram implements IRitual {
     }
 
     @Override
-    public String getCanonicalName() {
-        return "Ritual of Rubbish";
+    public void buildChalks(@Nonnull List<PositionedChalk> chalks) {
+
     }
 
-  /*  @Override
-    public ArrayList<PositionedChalk> getRequiredPositionedChalk() {
-        return Lists.newArrayList();
-    }
-
-    @Override
-    public ArrayList<ArrayList<PositionedChalk>> getPossibleRequiredPositionedChalks() {
-        return Lists.newArrayList();
-    }*/
-
-    @Override
-    public boolean ignoreChalk() {
-        return true;
-    }
 }

@@ -1,42 +1,55 @@
 package eladkay.quaritum.api.rituals;
 
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Loader;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public final class RitualRegistry {
-    public static Map<String, IRitual> map = new HashMap<>();
-    public static Map<String, List<ItemStack>> requiredItems = new HashMap<>();
+    public static Map<String, IDiagram> mapDiagrams = new HashMap<>();
+    public static Map<String, IWork> mapWorks = new HashMap<>();
 
-    public static IRitual registerRitual(IRitual ritual, String name) {
-        FMLLog.info("Registering ritual \"" + name + "\".");
+    public static IDiagram registerDiagram(IDiagram ritual, String name) {
+        FMLLog.info("Registering diagram \"" + name + "\".");
 
-        if (!map.containsKey(name)) {
-            map.put(name, ritual);
-            if (ritual.getRequiredItems() != null && ritual.getRequiredItems().size() != 0)
-                requiredItems.put(name, ritual.getRequiredItems());
-            else {
-                FMLLog.warning("Ritual \"" + name + "\" has no identifier items. Report this to the author of " + Loader.instance().activeModContainer().getModId() + ".");
-                return null;
-            }
+        if (!mapDiagrams.containsKey(name)) {
+            mapDiagrams.put(name, ritual);
         } else {
-            FMLLog.warning("Ritual \"" + name + "\" registered twice. Report this to the author of " + Loader.instance().activeModContainer().getModId() + ".");
+            FMLLog.warning("Diagram \"" + name + "\" registered twice. Report this to the author of " + Loader.instance().activeModContainer().getModId() + ".");
             return null;
         }
 
         return ritual;
     }
 
-    public static Collection<IRitual> getRitualList() {
-        return map.values();
+    public static IWork registerWork(IWork ritual, String name) {
+        FMLLog.info("Registering work \"" + name + "\".");
+
+        if (!mapWorks.containsKey(name)) {
+            mapWorks.put(name, ritual);
+        } else {
+            FMLLog.warning("Work \"" + name + "\" registered twice. Report this to the author of " + Loader.instance().activeModContainer().getModId() + ".");
+            return null;
+        }
+
+        return ritual;
     }
 
-    public static IRitual getRitualByName(String name) {
-        return map.get(name);
+    public static Collection<IDiagram> getDiagramList() {
+        return mapDiagrams.values();
+    }
+
+    public static Collection<IWork> getWorkList() {
+        return mapWorks.values();
+    }
+
+    public static IDiagram getRitualByName(String name) {
+        return mapDiagrams.get(name);
+    }
+
+    public static IWork getWorkByName(String name) {
+        return mapWorks.get(name);
     }
 }
