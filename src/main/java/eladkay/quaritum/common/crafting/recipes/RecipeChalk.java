@@ -9,6 +9,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
 public class RecipeChalk implements IRecipe {
+    /*public RecipeChalk() {
+        super(ModItems.chalk, new ItemStack(Items.dye), new ItemStack(Items.clay_ball));
+    }*/
+
     @Override
     public boolean matches(InventoryCrafting inventoryCrafting, World world) {
         boolean dye = false;
