@@ -1,15 +1,22 @@
 package eladkay.quaritum.api.animus;
 
+import com.sun.istack.internal.NotNull;
+import com.sun.istack.internal.Nullable;
 import net.minecraft.item.ItemStack;
 
 public interface ISoulstone {
-    int getAnimusLevel(ItemStack stack);
+    @Nullable
+    int getAnimusLevel(@NotNull ItemStack stack);
 
-    ItemStack addAnimus(ItemStack stack, int amount);
+    @NotNull
+    ItemStack addAnimus(@NotNull ItemStack stack, @NotNull int amount);
 
-    int getMaxAnimus(ItemStack stack);
+    @Nullable
+    int getMaxAnimus(@NotNull ItemStack stack);
 
-    boolean isRechargeable(ItemStack stack);
+    @Nullable
+    boolean isRechargeable(@NotNull ItemStack stack);
 
-    void doPassive(ItemStack stack);
+    @Nullable
+    void doPassive(@NotNull ItemStack stack);
 }
