@@ -68,7 +68,7 @@ public class TileEntityBlueprint extends TileEntity implements IInventory, ITick
 
     public boolean runRitual(IDiagram ritual, EntityPlayer player) {
         clear();
-        return ritual.run(worldObj, player, pos);
+        return ritual == null ? false : ritual.run(worldObj, player, pos);
     }
 
    /* @Override
