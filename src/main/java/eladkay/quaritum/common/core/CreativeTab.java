@@ -55,6 +55,7 @@ public class CreativeTab extends CreativeTabs {
     }
 
     private void addItem(Item item) {
+        if (item == null) return;
         item.getSubItems(item, this, list);
     }
 
