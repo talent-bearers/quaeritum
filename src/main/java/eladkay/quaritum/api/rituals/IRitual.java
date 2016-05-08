@@ -18,8 +18,6 @@ public interface IRitual {
     boolean canRitualRun(World world, EntityPlayer player, BlockPos pos, TileEntity tile);
     ArrayList<ItemStack> getRequiredItems();
     String getCanonicalName();
-    ArrayList<PositionedChalk> getRequiredPositionedChalk();
-    ArrayList<ArrayList<PositionedChalk>> getPossibleRequiredPositionedChalks();
 
     boolean ignoreChalk();
 }

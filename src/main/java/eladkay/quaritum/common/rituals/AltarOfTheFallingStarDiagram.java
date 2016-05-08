@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import eladkay.quaritum.api.rituals.EnumRitualDuration;
 import eladkay.quaritum.api.rituals.EnumRitualType;
 import eladkay.quaritum.api.rituals.IRitual;
-import eladkay.quaritum.api.rituals.PositionedChalk;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -96,7 +95,7 @@ public class AltarOfTheFallingStarDiagram implements IRitual {
         return "Altar of the Falling Star";
     }
 
-    @Override
+   /* @Override
     public ArrayList<PositionedChalk> getRequiredPositionedChalk() {
         return Lists.newArrayList();
     }
@@ -104,7 +103,7 @@ public class AltarOfTheFallingStarDiagram implements IRitual {
     @Override
     public ArrayList<ArrayList<PositionedChalk>> getPossibleRequiredPositionedChalks() {
         return Lists.newArrayList();
-    }
+    }*/
 
     @Override
     public boolean ignoreChalk() {

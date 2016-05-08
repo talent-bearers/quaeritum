@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import eladkay.quaritum.api.rituals.EnumRitualDuration;
 import eladkay.quaritum.api.rituals.EnumRitualType;
 import eladkay.quaritum.api.rituals.IRitual;
-import eladkay.quaritum.api.rituals.PositionedChalk;
 import eladkay.quaritum.common.block.ModBlocks;
 import eladkay.quaritum.common.block.tile.TileEntityBlueprint;
 import net.minecraft.entity.player.EntityPlayer;
@@ -68,7 +67,7 @@ public class SimpleTestRitualDiagram implements IRitual {
         return "Test";
     }
 
-    @Override
+   /* @Override
     public ArrayList<PositionedChalk> getRequiredPositionedChalk() {
         ArrayList list = Lists.newArrayList();
         list.add(PositionedChalk.constructPosChalk(EnumDyeColor.BLUE, 1, 0, 0));
@@ -95,7 +94,7 @@ public class SimpleTestRitualDiagram implements IRitual {
         list1.add(list4);
 
         return list1;
-    }
+    }*/
 
     @Override
     public boolean ignoreChalk() {

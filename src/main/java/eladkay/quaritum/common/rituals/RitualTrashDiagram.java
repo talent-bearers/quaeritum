@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import eladkay.quaritum.api.rituals.EnumRitualDuration;
 import eladkay.quaritum.api.rituals.EnumRitualType;
 import eladkay.quaritum.api.rituals.IRitual;
-import eladkay.quaritum.api.rituals.PositionedChalk;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -56,7 +55,7 @@ public class RitualTrashDiagram implements IRitual {
         return "Ritual of Rubbish";
     }
 
-    @Override
+  /*  @Override
     public ArrayList<PositionedChalk> getRequiredPositionedChalk() {
         return Lists.newArrayList();
     }
@@ -64,7 +63,7 @@ public class RitualTrashDiagram implements IRitual {
     @Override
     public ArrayList<ArrayList<PositionedChalk>> getPossibleRequiredPositionedChalks() {
         return Lists.newArrayList();
-    }
+    }*/
 
     @Override
     public boolean ignoreChalk() {

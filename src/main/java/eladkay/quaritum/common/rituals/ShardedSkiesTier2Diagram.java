@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import eladkay.quaritum.api.rituals.EnumRitualDuration;
 import eladkay.quaritum.api.rituals.EnumRitualType;
 import eladkay.quaritum.api.rituals.IRitual;
-import eladkay.quaritum.api.rituals.PositionedChalk;
 import eladkay.quaritum.common.block.ModBlocks;
 import eladkay.quaritum.common.block.flowers.BlockAnimusFlower;
 import net.minecraft.entity.item.EntityItem;
@@ -63,7 +62,7 @@ public class ShardedSkiesTier2Diagram implements IRitual {
         return "Sharded Skies";
     }
 
-    @Override
+  /*  @Override
     public ArrayList<PositionedChalk> getRequiredPositionedChalk() {
         return Lists.newArrayList();
     }
@@ -71,7 +70,7 @@ public class ShardedSkiesTier2Diagram implements IRitual {
     @Override
     public ArrayList<ArrayList<PositionedChalk>> getPossibleRequiredPositionedChalks() {
         return Lists.newArrayList();
-    }
+    }*/
 
     @Override
     public boolean ignoreChalk() {
