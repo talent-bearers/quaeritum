@@ -7,6 +7,7 @@ import eladkay.quaritum.common.entity.ModEntities;
 import eladkay.quaritum.common.item.ModItems;
 import eladkay.quaritum.common.rituals.*;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
@@ -25,6 +26,7 @@ public class CommonProxy {
         RitualRegistry.registerRitual(new ShardedSkiesDiagram(), "shardedSkies");
         RitualRegistry.registerRitual(new ShardedSkiesTier2Diagram(), "shardedSkies2");
         RitualRegistry.registerRitual(new RitualTrashDiagram(), "trash");
+        FMLInterModComms.sendMessage("Waila", "register", "eladkay.quaritum.common.compat.waila.Waila.onWailaCall");
     }
 
     public void init(FMLInitializationEvent e) {
