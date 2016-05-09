@@ -53,8 +53,9 @@ public class TileEntityBlueprint extends TileEntity implements IInventory, ITick
         for (IDiagram ritual : RitualRegistry.getDiagramList()) {
             boolean foundAll = items.toString().equals(ritual.getRequiredItems().toString()); //FOR NOW.
             boolean requirementsMet = ritual.canRitualRun(this.getWorld(), player, pos, this);
-            boolean chalks = checkChalk(ritual.buildChalks(Lists.newArrayList()));
-            //boolean chalks = worldObj.getBlockState(pos.offset(EnumFacing.UP)).equals(ModBlocks.chalk.getStateFromMeta(EnumDyeColor.BROWN.ordinal()));
+            //boolean chalks = checkChalk(ritual.buildChalks(Lists.newArrayList()));
+            //boolean chalks = worldObj.getBlockState(pos.offset(EnumFacing.UP)).equals(ModBlocks.chalk.getStateFromMeta(EnumDyeColor.BLUE.ordinal()));
+            boolean chalks = PositionedBlockHelper.isChalkSetupValid(ritual.buildChalks(Lists.newArrayList()), this);
             if (foundAll && requirementsMet && chalks) {
                 return ritual;
             } else if (!requirementsMet) {

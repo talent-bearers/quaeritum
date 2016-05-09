@@ -10,7 +10,7 @@ public final class PositionedBlock {
     public BlockPos pos;
     private IBlockState state;
 
-    public PositionedBlock(@Nullable IBlockState state, int x, int y, int z) {
+    private PositionedBlock(@Nullable IBlockState state, int x, int y, int z) {
         pos = new BlockPos(x, y, z);
     }
 

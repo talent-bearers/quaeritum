@@ -3,8 +3,10 @@ package eladkay.quaritum.common.rituals;
 import com.google.common.collect.Lists;
 import eladkay.quaritum.api.rituals.IDiagram;
 import eladkay.quaritum.api.rituals.PositionedBlock;
+import eladkay.quaritum.common.core.PositionedBlockHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -39,6 +41,7 @@ public class RitualTrashDiagram implements IDiagram {
 
     @Override
     public List<PositionedBlock> buildChalks(@Nonnull List<PositionedBlock> chalks) {
+        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(1, 0, 0), EnumDyeColor.BLACK));
         return chalks;
     }
 
