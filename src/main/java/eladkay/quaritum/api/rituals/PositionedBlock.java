@@ -10,11 +10,11 @@ public final class PositionedBlock {
     public BlockPos pos;
     private IBlockState state;
 
-    protected PositionedBlock(@Nullable IBlockState state, int x, int y, int z) {
+    public PositionedBlock(@Nullable IBlockState state, int x, int y, int z) {
         pos = new BlockPos(x, y, z);
     }
 
-    protected PositionedBlock(@Nullable IBlockState state, BlockPos pos) {
+    public PositionedBlock(@Nullable IBlockState state, BlockPos pos) {
         this.pos = pos;
     }
 

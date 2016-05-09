@@ -2,7 +2,10 @@ package eladkay.quaritum.common.block.tile;
 
 import com.google.common.collect.Lists;
 import eladkay.quaritum.api.rituals.IDiagram;
+import eladkay.quaritum.api.rituals.PositionedBlock;
 import eladkay.quaritum.api.rituals.RitualRegistry;
+import eladkay.quaritum.common.block.ModBlocks;
+import eladkay.quaritum.common.core.PositionedBlockHelper;
 import eladkay.quaritum.common.lib.LibMisc;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
@@ -46,11 +49,12 @@ public class TileEntityBlueprint extends TileEntity implements IInventory, ITick
     }
 
 
-    public IDiagram getValidRitual(EntityPlayer player) {
+    private IDiagram getValidRitual(EntityPlayer player) {
         for (IDiagram ritual : RitualRegistry.getDiagramList()) {
             boolean foundAll = items.toString().equals(ritual.getRequiredItems().toString()); //FOR NOW.
             boolean requirementsMet = ritual.canRitualRun(this.getWorld(), player, pos, this);
-            boolean chalks = true;//checkAllPossiblePosChalks(ritual.getPossibleRequiredPositionedChalks());
+            boolean chalks = checkChalk(ritual.buildChalks(Lists.newArrayList()));
+            //boolean chalks = worldObj.getBlockState(pos.offset(EnumFacing.UP)).equals(ModBlocks.chalk.getStateFromMeta(EnumDyeColor.BROWN.ordinal()));
             if (foundAll && requirementsMet && chalks) {
                 return ritual;
             } else if (!requirementsMet) {
@@ -66,35 +70,31 @@ public class TileEntityBlueprint extends TileEntity implements IInventory, ITick
         return null;
     }
 
-    public boolean runRitual(IDiagram ritual, EntityPlayer player) {
-        clear();
-        return ritual == null ? false : ritual.run(worldObj, player, pos);
+    private boolean runRitual(IDiagram ritual, EntityPlayer player) {
+        if (ritual != null) {
+            clear();
+            return ritual.run(worldObj, player, pos);
+        } else
+            return false;
+
+
     }
 
-   /* @Override
-    public boolean checkPosChalk(PositionedBlock chalk) {
-        return worldObj.getBlockState(new BlockPos(pos.getX() + chalk.getX(), pos.getY() + chalk.getY(), pos.getZ() + chalk.getZ())).getBlock() instanceof BlockChalk && worldObj.getBlockState(new BlockPos(pos.getX() + chalk.getX(), pos.getY() + chalk.getY(), pos.getZ() + chalk.getZ())).equals(chalk.state);
+    private boolean checkChalk(List<PositionedBlock> list) {
+        for (PositionedBlock block : list) {
+            IBlockState state = worldObj.getBlockState(PositionedBlockHelper.blockPosSum(getPos(), block.getPos()));
+            if (state.getBlock() != ModBlocks.chalk) {
+                System.out.println("BLOCK");
+                return false;
+            }
+            if (!state.equals(block.getState())) {
+                System.out.println("CHALK");
+                return false;
+            }
+        }
+        return true;
     }
 
-    @Override
-    public boolean checkAllPosChalk(ArrayList<PositionedBlock> chalks) {
-        if (chalks == null) return false;
-        if (chalks.size() == 0) return true;
-        boolean flag = true;
-        for (PositionedBlock chalk : chalks)
-            if (!checkPosChalk(chalk))
-                flag = false;
-        return flag;
-    }
-
-    @Override
-    public boolean checkAllPossiblePosChalks(ArrayList<ArrayList<PositionedBlock>> chalks) {
-        boolean flag = false;
-        for (ArrayList<PositionedBlock> array : chalks)
-            flag = checkAllPosChalk(array);
-
-        return flag;
-    }*/
 
     @Override
     public int getSizeInventory() {

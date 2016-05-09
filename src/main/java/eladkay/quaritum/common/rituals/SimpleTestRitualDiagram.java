@@ -5,6 +5,7 @@ import eladkay.quaritum.api.rituals.IDiagram;
 import eladkay.quaritum.api.rituals.PositionedBlock;
 import eladkay.quaritum.common.block.ModBlocks;
 import eladkay.quaritum.common.block.tile.TileEntityBlueprint;
+import eladkay.quaritum.common.core.PositionedBlockHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
@@ -50,8 +51,12 @@ public class SimpleTestRitualDiagram implements IDiagram {
     }
 
     @Override
-    public void buildChalks(@Nonnull List<PositionedBlock> chalks) {
-
+    public List<PositionedBlock> buildChalks(@Nonnull List<PositionedBlock> chalks) {
+        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(1, 0, 0), EnumDyeColor.RED));
+        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(0, 0, -1), EnumDyeColor.RED));
+        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(-1, 0, 0), EnumDyeColor.RED));
+        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(0, 0, 1), EnumDyeColor.RED));
+        return chalks;
     }
 
 }

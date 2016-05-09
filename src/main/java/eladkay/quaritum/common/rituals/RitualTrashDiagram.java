@@ -38,8 +38,8 @@ public class RitualTrashDiagram implements IDiagram {
     }
 
     @Override
-    public void buildChalks(@Nonnull List<PositionedBlock> chalks) {
-
+    public List<PositionedBlock> buildChalks(@Nonnull List<PositionedBlock> chalks) {
+        return chalks;
     }
 
 }
