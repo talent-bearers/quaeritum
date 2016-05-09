@@ -23,7 +23,8 @@ public enum EnumChalkColor implements IStringSerializable {
     BROWN,
     GREEN,
     RED,
-    BLACK;
+    BLACK,
+    TEMPEST;
     public static String[] vars = new String[EnumChalkColor.values().length];
 
     static {

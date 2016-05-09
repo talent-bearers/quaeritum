@@ -24,5 +24,5 @@ public interface IDiagram {
     @Nullable
     ArrayList<ItemStack> getRequiredItems();
 
-    void buildChalks(@Nonnull List<PositionedChalk> chalks);
+    void buildChalks(@Nonnull List<PositionedBlock> chalks);
 }

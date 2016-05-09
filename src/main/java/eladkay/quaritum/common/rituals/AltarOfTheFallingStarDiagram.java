@@ -2,7 +2,7 @@ package eladkay.quaritum.common.rituals;
 
 import com.google.common.collect.Lists;
 import eladkay.quaritum.api.rituals.IDiagram;
-import eladkay.quaritum.api.rituals.PositionedChalk;
+import eladkay.quaritum.api.rituals.PositionedBlock;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -79,7 +79,7 @@ public class AltarOfTheFallingStarDiagram implements IDiagram {
     }
 
     @Override
-    public void buildChalks(@Nonnull List<PositionedChalk> chalks) {
+    public void buildChalks(@Nonnull List<PositionedBlock> chalks) {
 
     }
 }

@@ -2,7 +2,7 @@ package eladkay.quaritum.common.rituals;
 
 import com.google.common.collect.Lists;
 import eladkay.quaritum.api.rituals.IDiagram;
-import eladkay.quaritum.api.rituals.PositionedChalk;
+import eladkay.quaritum.api.rituals.PositionedBlock;
 import eladkay.quaritum.common.block.ModBlocks;
 import eladkay.quaritum.common.block.flowers.BlockAnimusFlower;
 import net.minecraft.entity.item.EntityItem;
@@ -44,7 +44,7 @@ public class ShardedSkiesDiagram implements IDiagram {
     }
 
     @Override
-    public void buildChalks(@Nonnull List<PositionedChalk> chalks) {
+    public void buildChalks(@Nonnull List<PositionedBlock> chalks) {
 
     }
 

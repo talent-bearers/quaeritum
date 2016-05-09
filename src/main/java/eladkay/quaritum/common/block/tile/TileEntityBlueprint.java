@@ -72,25 +72,25 @@ public class TileEntityBlueprint extends TileEntity implements IInventory, ITick
     }
 
    /* @Override
-    public boolean checkPosChalk(PositionedChalk chalk) {
+    public boolean checkPosChalk(PositionedBlock chalk) {
         return worldObj.getBlockState(new BlockPos(pos.getX() + chalk.getX(), pos.getY() + chalk.getY(), pos.getZ() + chalk.getZ())).getBlock() instanceof BlockChalk && worldObj.getBlockState(new BlockPos(pos.getX() + chalk.getX(), pos.getY() + chalk.getY(), pos.getZ() + chalk.getZ())).equals(chalk.state);
     }
 
     @Override
-    public boolean checkAllPosChalk(ArrayList<PositionedChalk> chalks) {
+    public boolean checkAllPosChalk(ArrayList<PositionedBlock> chalks) {
         if (chalks == null) return false;
         if (chalks.size() == 0) return true;
         boolean flag = true;
-        for (PositionedChalk chalk : chalks)
+        for (PositionedBlock chalk : chalks)
             if (!checkPosChalk(chalk))
                 flag = false;
         return flag;
     }
 
     @Override
-    public boolean checkAllPossiblePosChalks(ArrayList<ArrayList<PositionedChalk>> chalks) {
+    public boolean checkAllPossiblePosChalks(ArrayList<ArrayList<PositionedBlock>> chalks) {
         boolean flag = false;
-        for (ArrayList<PositionedChalk> array : chalks)
+        for (ArrayList<PositionedBlock> array : chalks)
             flag = checkAllPosChalk(array);
 
         return flag;

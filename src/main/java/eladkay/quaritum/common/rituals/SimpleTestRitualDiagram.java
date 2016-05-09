@@ -2,7 +2,7 @@ package eladkay.quaritum.common.rituals;
 
 import com.google.common.collect.Lists;
 import eladkay.quaritum.api.rituals.IDiagram;
-import eladkay.quaritum.api.rituals.PositionedChalk;
+import eladkay.quaritum.api.rituals.PositionedBlock;
 import eladkay.quaritum.common.block.ModBlocks;
 import eladkay.quaritum.common.block.tile.TileEntityBlueprint;
 import net.minecraft.entity.player.EntityPlayer;
@@ -50,7 +50,7 @@ public class SimpleTestRitualDiagram implements IDiagram {
     }
 
     @Override
-    public void buildChalks(@Nonnull List<PositionedChalk> chalks) {
+    public void buildChalks(@Nonnull List<PositionedBlock> chalks) {
 
     }
 
