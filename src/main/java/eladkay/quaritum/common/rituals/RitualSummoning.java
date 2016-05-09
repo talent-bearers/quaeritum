@@ -8,6 +8,7 @@ import eladkay.quaritum.common.block.flowers.BlockAnimusFlower;
 import eladkay.quaritum.common.core.PositionedBlockHelper;
 import eladkay.quaritum.common.entity.EntityChaosborn;
 import eladkay.quaritum.common.item.ModItems;
+import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
@@ -25,14 +26,18 @@ public class RitualSummoning implements IDiagram {
     @Nonnull
     @Override
     public String getUnlocalizedName() {
-        return "rituals.quaritum.summoning";
+        return "rituals.quaritum.templeoftherift";
     }
 
     @Nonnull
     @Override
     public boolean run(@Nonnull World world, @Nullable EntityPlayer player, @Nonnull BlockPos pos) {
-        EntityChaosborn chaosborn = new EntityChaosborn(world, pos);
-        return world.spawnEntityInWorld(chaosborn);
+        BlockPos pos2 = pos;//.add(0.5, 0, 0.5);
+        //EntityChaosborn chaosborn = new EntityChaosborn(world, pos2);
+        EntityChaosborn chaosborn = new EntityChaosborn(world, pos.getX(), pos.getY() + 2, pos.getZ());
+        EntityLightningBolt lightningBolt = new EntityLightningBolt(world, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, true);
+        world.setWorldTime(23000);
+        return world.spawnEntityInWorld(chaosborn) && world.addWeatherEffect(lightningBolt);
     }
 
     @Nonnull

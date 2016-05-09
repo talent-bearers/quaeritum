@@ -34,15 +34,18 @@ public class EntityChaosborn extends EntityMob implements IRangedAttackMob {
 
     public EntityChaosborn(World worldIn, int quality, BlockPos pos) {
         super(worldIn);
-        this.posX = pos.getX();
-        this.posY = pos.getY();
-        this.posZ = pos.getZ();
+        setPosition(pos.getX(), pos.getY(), pos.getZ());
         this.quality = quality;
 
     }
 
     public EntityChaosborn(World worldIn, BlockPos pos) {
         this(worldIn, 0, pos);
+    }
+
+    public EntityChaosborn(World world, int x, int y, int z) {
+        this(world, new BlockPos(x, y, z));
+
     }
 
     @Override
