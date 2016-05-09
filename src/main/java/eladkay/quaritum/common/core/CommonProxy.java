@@ -27,6 +27,7 @@ public class CommonProxy {
         RitualRegistry.registerDiagram(new ShardedSkiesTier2Diagram(), "shardedSkies2");
         RitualRegistry.registerDiagram(new RitualTrashDiagram(), "trash");
         RitualRegistry.registerDiagram(new InfusionDiagram(), "infusion");
+        RitualRegistry.registerDiagram(new RitualSummoning(), "summonChaosborn");
         FMLInterModComms.sendMessage("Waila", "register", "eladkay.quaritum.common.compat.waila.Waila.onWailaCall");
     }
 

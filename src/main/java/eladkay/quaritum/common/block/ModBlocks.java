@@ -17,11 +17,13 @@ public class ModBlocks {
     public static BlockMod blueprint;
     public static BlockChalk chalk;
     public static BlockAnimusFlower flower;
+    public static CrystalSoul crystal;
 
     public static void init() {
         blueprint = new BlockBlueprint(LibNames.BLUEPRINT);
         chalk = new BlockChalk();
         flower = new BlockAnimusFlower();
+        crystal = new CrystalSoul();
         GameRegistry.registerTileEntity(TileEntityBlueprint.class, new ResourceLocation(LibMisc.MOD_ID, LibNames.BLUEPRINT).toString());
     }
 }

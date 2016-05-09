@@ -32,8 +32,23 @@ public final class PositionedBlockHelper {
         BlockPos pos = entity.getPos();
         World world = entity.getWorld();
         for (PositionedBlock block : list)
-            if (world.getBlockState(pos.add(block.getPos().getX(), block.getPos().getY(), block.getPos().getZ())) != block.getState())
+            if (world.getBlockState(pos.add(block.getPos().getX(), block.getPos().getY(), block.getPos().getZ())) != block.getState()) {
+                LogHelper.logDebug("Expected " + block.getState() + " in " + block.getPos() + ". Got " + world.getBlockState(pos.add(block.getPos())));
                 return false;
+            }
+
+        return true;
+    }
+
+    public static boolean isChalkSetupValid(List<PositionedBlock> list, TileEntity entity, String optionalName) {
+        BlockPos pos = entity.getPos();
+        World world = entity.getWorld();
+        for (PositionedBlock block : list)
+            if (world.getBlockState(pos.add(block.getPos().getX(), block.getPos().getY(), block.getPos().getZ())) != block.getState()) {
+                LogHelper.logDebug("Expected " + block.getState() + " in " + block.getPos() + " for ritual " + optionalName + ". Got " + world.getBlockState(pos.add(block.getPos())));
+                return false;
+            }
+
         return true;
     }
 

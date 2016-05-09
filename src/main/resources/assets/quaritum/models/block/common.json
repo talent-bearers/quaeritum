@@ -1,6 +1,6 @@
 {
-  "parent": "block/cross",
+  "parent": "item/generated",
   "textures": {
-    "cross": "quaritum:blocks/common"
+    "layer0": "quaritum:blocks/common"
   }
 }

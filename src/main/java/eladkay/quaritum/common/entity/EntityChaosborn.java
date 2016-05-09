@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 
@@ -29,6 +30,19 @@ public class EntityChaosborn extends EntityMob implements IRangedAttackMob {
     //Obligatory.
     public EntityChaosborn(World worldIn) {
         this(worldIn, 0);
+    }
+
+    public EntityChaosborn(World worldIn, int quality, BlockPos pos) {
+        super(worldIn);
+        this.posX = pos.getX();
+        this.posY = pos.getY();
+        this.posZ = pos.getZ();
+        this.quality = quality;
+
+    }
+
+    public EntityChaosborn(World worldIn, BlockPos pos) {
+        this(worldIn, 0, pos);
     }
 
     @Override

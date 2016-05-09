@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import eladkay.quaritum.api.rituals.IDiagram;
 import eladkay.quaritum.api.rituals.PositionedBlock;
 import eladkay.quaritum.api.rituals.RitualRegistry;
-import eladkay.quaritum.common.block.ModBlocks;
 import eladkay.quaritum.common.core.PositionedBlockHelper;
 import eladkay.quaritum.common.lib.LibMisc;
 import net.minecraft.block.state.IBlockState;
@@ -55,7 +54,7 @@ public class TileEntityBlueprint extends TileEntity implements IInventory, ITick
             boolean requirementsMet = ritual.canRitualRun(this.getWorld(), player, pos, this);
             //boolean chalks = checkChalk(ritual.buildChalks(Lists.newArrayList()));
             //boolean chalks = worldObj.getBlockState(pos.offset(EnumFacing.UP)).equals(ModBlocks.chalk.getStateFromMeta(EnumDyeColor.BLUE.ordinal()));
-            boolean chalks = PositionedBlockHelper.isChalkSetupValid(ritual.buildChalks(Lists.newArrayList()), this);
+            boolean chalks = PositionedBlockHelper.isChalkSetupValid(ritual.buildChalks(Lists.newArrayList()), this, ritual.getUnlocalizedName());
             if (foundAll && requirementsMet && chalks) {
                 return ritual;
             } else if (!requirementsMet) {
@@ -84,10 +83,10 @@ public class TileEntityBlueprint extends TileEntity implements IInventory, ITick
     private boolean checkChalk(List<PositionedBlock> list) {
         for (PositionedBlock block : list) {
             IBlockState state = worldObj.getBlockState(PositionedBlockHelper.blockPosSum(getPos(), block.getPos()));
-            if (state.getBlock() != ModBlocks.chalk) {
+           /* if (state.getBlock() != ModBlocks.chalk) {
                 System.out.println("BLOCK");
                 return false;
-            }
+            }*/
             if (!state.equals(block.getState())) {
                 System.out.println("CHALK");
                 return false;

@@ -4,11 +4,13 @@ import com.google.common.collect.Lists;
 import eladkay.quaritum.api.rituals.IDiagram;
 import eladkay.quaritum.api.rituals.PositionedBlock;
 import eladkay.quaritum.common.block.ModBlocks;
+import eladkay.quaritum.common.core.PositionedBlockHelper;
 import eladkay.quaritum.common.item.ModItems;
 import eladkay.quaritum.common.item.soulstones.ItemAwakenedSoulstone;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -29,13 +31,14 @@ public class InfusionDiagram implements IDiagram {
     @Nonnull
     @Override
     public boolean run(@Nonnull World world, @Nullable EntityPlayer player, @Nonnull BlockPos pos) {
-        EntityItem item = new EntityItem(world, pos.getX(), pos.getY() + 2, pos.getZ(), ItemAwakenedSoulstone.withAnimus(80));
-        world.setBlockState(pos.add(1, 0, 0), Blocks.air.getDefaultState());
+        EntityItem item = new EntityItem(world, pos.getX(), pos.getY() + 2, pos.getZ(), ItemAwakenedSoulstone.withAnimus(100));
+        EntityItem item2 = new EntityItem(world, pos.getX(), pos.getY() + 2, pos.getZ(), new ItemStack(Blocks.gold_block));
+       /* world.setBlockState(pos.add(1, 0, 0), Blocks.air.getDefaultState());
         world.setBlockState(pos.add(-1, 0, 0), Blocks.air.getDefaultState());
         world.setBlockState(pos.add(0, 0, 1), Blocks.air.getDefaultState());
-        world.setBlockState(pos.add(0, 0, -1), Blocks.air.getDefaultState());
+        world.setBlockState(pos.add(0, 0, -1), Blocks.air.getDefaultState());*/
 
-        return world.spawnEntityInWorld(item);
+        return world.spawnEntityInWorld(item) && world.spawnEntityInWorld(item2);
     }
 
     @Nonnull
@@ -47,15 +50,22 @@ public class InfusionDiagram implements IDiagram {
     @Nullable
     @Override
     public ArrayList<ItemStack> getRequiredItems() {
-        return new ArrayList(Lists.asList(new ItemStack(ModItems.dormant), new ItemStack[]{}));
+        ArrayList<ItemStack> list = Lists.newArrayList();
+        list.add(new ItemStack(ModItems.dormant));
+        list.add(new ItemStack(ModBlocks.flower, 1, 0));
+        list.add(new ItemStack(ModBlocks.flower, 1, 0));
+        list.add(new ItemStack(ModBlocks.flower, 1, 0));
+        list.add(new ItemStack(ModBlocks.flower, 1, 0));
+        list.add(new ItemStack(ModBlocks.crystal));
+        return list;
     }
 
     @Override
     public List<PositionedBlock> buildChalks(@Nonnull List<PositionedBlock> chalks) {
-        chalks.add(new PositionedBlock(ModBlocks.flower.getDefaultState(), new BlockPos(1, 0, 0)));
-        chalks.add(new PositionedBlock(ModBlocks.flower.getDefaultState(), new BlockPos(-1, 0, 0)));
-        chalks.add(new PositionedBlock(ModBlocks.flower.getDefaultState(), new BlockPos(0, 0, 1)));
-        chalks.add(new PositionedBlock(ModBlocks.flower.getDefaultState(), new BlockPos(0, 0, -1)));
+        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(1, 0, 0), EnumDyeColor.MAGENTA));
+        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(-1, 0, 0), EnumDyeColor.MAGENTA));
+        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(0, 0, 1), EnumDyeColor.MAGENTA));
+        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(0, 0, -1), EnumDyeColor.MAGENTA));
         return chalks;
     }
 }

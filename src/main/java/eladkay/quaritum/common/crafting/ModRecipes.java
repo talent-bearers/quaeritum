@@ -1,5 +1,6 @@
 package eladkay.quaritum.common.crafting;
 
+import eladkay.quaritum.common.block.ModBlocks;
 import eladkay.quaritum.common.crafting.recipes.RecipeAnimusUpgrade;
 import eladkay.quaritum.common.crafting.recipes.RecipeAwakenedSoulstone;
 import eladkay.quaritum.common.crafting.recipes.RecipeShapelessAnimusUpgrade;
@@ -28,6 +29,8 @@ public class ModRecipes {
         RecipeSorter.register(LibMisc.MOD_ID + ":awakened", RecipeAwakenedSoulstone.class, RecipeSorter.Category.SHAPELESS, "");
 
         CraftingManager.getInstance().addRecipe(new RecipeAwakenedSoulstone());
+        addShapelessOreDictRecipe(new ItemStack(ModBlocks.crystal), new ItemStack(ModBlocks.flower), new ItemStack(Blocks.gold_block));
+        addShapelessOreDictRecipe(new ItemStack(ModBlocks.blueprint), "dyeBlue", new ItemStack(Items.paper));
         addAnimusRecipe(new ItemStack(ModItems.passionate),
                 "Y Y",
                 "XZX",

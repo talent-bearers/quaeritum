@@ -20,4 +20,5 @@ public class LibNames {
 
     public static final String CHAOSBORN = "chaosborn";
 
+    public static final String CRYSTAL = "crystal";
 }
