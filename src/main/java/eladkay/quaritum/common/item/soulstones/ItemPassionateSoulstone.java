@@ -1,6 +1,7 @@
 package eladkay.quaritum.common.item.soulstones;
 
 import eladkay.quaritum.api.animus.IFunctionalSoulstone;
+import eladkay.quaritum.common.Quartium;
 import eladkay.quaritum.common.core.ItemNBTHelper;
 import eladkay.quaritum.common.item.ModItems;
 import eladkay.quaritum.common.item.base.ItemMod;
@@ -101,8 +102,8 @@ public class ItemPassionateSoulstone extends ItemMod implements IFunctionalSouls
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
-        itemStackIn = addAnimus(itemStackIn, 200);
-        return ActionResult.newResult(EnumActionResult.SUCCESS, itemStackIn);
+        if (Quartium.isDevEnv) itemStackIn = addAnimus(itemStackIn, 200);
+        return ActionResult.newResult(Quartium.isDevEnv ? EnumActionResult.SUCCESS : EnumActionResult.FAIL, itemStackIn);
     }
 
     @Override

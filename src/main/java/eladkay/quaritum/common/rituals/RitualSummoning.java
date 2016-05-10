@@ -32,12 +32,18 @@ public class RitualSummoning implements IDiagram {
     @Nonnull
     @Override
     public boolean run(@Nonnull World world, @Nullable EntityPlayer player, @Nonnull BlockPos pos) {
-        BlockPos pos2 = pos;//.add(0.5, 0, 0.5);
-        //EntityChaosborn chaosborn = new EntityChaosborn(world, pos2);
-        EntityChaosborn chaosborn = new EntityChaosborn(world, pos.getX(), pos.getY() + 2, pos.getZ());
-        EntityLightningBolt lightningBolt = new EntityLightningBolt(world, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, true);
+        double x = pos.getX() + 0.5;
+        double y = pos.getY() + 2;
+        double z = pos.getZ() + 0.5;
+        EntityChaosborn chaosborn = new EntityChaosborn(world, 0, x, y, z);
+        for (int i = 0; i <= 10; i++)
+            world.addWeatherEffect(new EntityLightningBolt(world, pos.getX() + op(Math.random() * 4), pos.getY(), pos.getZ() + op(Math.random() * 4), true));
         world.setWorldTime(23000);
-        return world.spawnEntityInWorld(chaosborn) && world.addWeatherEffect(lightningBolt);
+        return world.spawnEntityInWorld(chaosborn);
+    }
+
+    private double op(double in) {
+        return Math.random() >= 0.5 ? in : -in;
     }
 
     @Nonnull

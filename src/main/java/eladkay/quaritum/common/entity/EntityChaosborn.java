@@ -45,6 +45,12 @@ public class EntityChaosborn extends EntityMob implements IRangedAttackMob {
 
     public EntityChaosborn(World world, int x, int y, int z) {
         this(world, new BlockPos(x, y, z));
+    }
+
+    public EntityChaosborn(World worldIn, int quality, double x, double y, double z) {
+        super(worldIn);
+        setPosition(x, y, z);
+        this.quality = quality;
 
     }
 
@@ -57,6 +63,8 @@ public class EntityChaosborn extends EntityMob implements IRangedAttackMob {
     @Override
     protected boolean processInteract(EntityPlayer player, EnumHand p_184645_2_, ItemStack stack) {
         player.addChatComponentMessage(new TextComponentString("Health: " + getHealth()));
+        player.addChatComponentMessage(new TextComponentString("Quality: " + quality));
+        player.addChatComponentMessage(new TextComponentString("Remote: " + worldObj.isRemote));
         if (player.isSneaking()) quality++;
         return super.processInteract(player, p_184645_2_, stack);
     }
