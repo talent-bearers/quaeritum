@@ -21,6 +21,7 @@ public class CommonProxy {
         ModItems.init();
         ModEntities.init();
         ModRecipes.init();
+        new Events().init();
         RitualRegistry.registerDiagram(new AltarOfTheFallingStarDiagram(), "altarOfTheFallingStar");
         RitualRegistry.registerDiagram(new SimpleTestRitualDiagram(), "test");
         RitualRegistry.registerDiagram(new ShardedSkiesDiagram(), "shardedSkies");
