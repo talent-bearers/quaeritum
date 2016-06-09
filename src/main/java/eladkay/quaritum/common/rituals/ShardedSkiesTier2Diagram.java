@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShardedSkiesTier2Diagram implements IDiagram {
+    @Nonnull
     @Override
     public String getUnlocalizedName() {
         return "rituals.quaritum.shardedsky";
@@ -34,7 +35,7 @@ public class ShardedSkiesTier2Diagram implements IDiagram {
     }
 
     @Override
-    public boolean canRitualRun(World world, EntityPlayer player, BlockPos pos, TileEntity tile) {
+    public boolean canRitualRun(World world, EntityPlayer player, @Nonnull BlockPos pos, @Nonnull TileEntity tile) {
         return true;
     }
 

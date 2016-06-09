@@ -10,6 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 public class ItemAwakenedSoulstone extends ItemMod implements ISoulstone {
@@ -40,12 +41,13 @@ public class ItemAwakenedSoulstone extends ItemMod implements ISoulstone {
     }
 
     @Override
-    public int getAnimusLevel(ItemStack stack) {
+    public int getAnimusLevel(@Nonnull ItemStack stack) {
         return ItemNBTHelper.getInt(stack, LibNBT.TAG_ANIMUS, 0);
     }
 
+    @Nonnull
     @Override
-    public ItemStack addAnimus(ItemStack stack, int amount) {
+    public ItemStack addAnimus(@Nonnull ItemStack stack, int amount) {
         ItemNBTHelper.setInt(stack, LibNBT.TAG_ANIMUS,
                 Math.min(getMaxAnimus(stack), Math.max(0,
                         ItemNBTHelper.getInt(stack, LibNBT.TAG_ANIMUS, 0) + amount)));
@@ -53,16 +55,16 @@ public class ItemAwakenedSoulstone extends ItemMod implements ISoulstone {
     }
 
     @Override
-    public int getMaxAnimus(ItemStack stack) {
+    public int getMaxAnimus(@Nonnull ItemStack stack) {
         return 800;
     }
 
     @Override
-    public boolean isRechargeable(ItemStack stack) {
+    public boolean isRechargeable(@Nonnull ItemStack stack) {
         return true;
     }
 
     @Override
-    public void doPassive(ItemStack stack) {
+    public void doPassive(@Nonnull ItemStack stack) {
     }
 }

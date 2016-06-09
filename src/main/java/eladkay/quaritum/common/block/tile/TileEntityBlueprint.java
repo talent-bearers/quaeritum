@@ -23,10 +23,11 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TileEntityBlueprint extends TileEntity implements IInventory, ITickable {
+public class TileEntityBlueprint extends TileMod implements IInventory, ITickable {
     public boolean debug = true;
     public ArrayList<ItemStack> items = Lists.newArrayList();
     public boolean debug2 = true;
@@ -37,7 +38,7 @@ public class TileEntityBlueprint extends TileEntity implements IInventory, ITick
         if (!worldObj.isRemote) {
             List<EntityItem> eitems = worldObj.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(this.getPos(), getPos().add(1, 1, 1)));
             for (EntityItem item : eitems)
-                if (!item.isDead && item.getEntityItem() != null) {
+                if (!item.isDead) {
                     ItemStack stack = item.getEntityItem();
                     items.add(stack);
                     item.setDead();
@@ -50,7 +51,7 @@ public class TileEntityBlueprint extends TileEntity implements IInventory, ITick
 
     private IDiagram getValidRitual(EntityPlayer player) {
         for (IDiagram ritual : RitualRegistry.getDiagramList()) {
-            boolean foundAll = items.toString().equals(ritual.getRequiredItems().toString()); //FOR NOW.
+            boolean foundAll = items.toString().equals(ritual.getRequiredItems().toString()); //todo fix this shit
             boolean requirementsMet = ritual.canRitualRun(this.getWorld(), player, pos, this);
             //boolean chalks = checkChalk(ritual.buildChalks(Lists.newArrayList()));
             //boolean chalks = worldObj.getBlockState(pos.offset(EnumFacing.UP)).equals(ModBlocks.chalk.getStateFromMeta(EnumDyeColor.BLUE.ordinal()));
@@ -61,10 +62,8 @@ public class TileEntityBlueprint extends TileEntity implements IInventory, ITick
                 System.out.println("REQUIREMENTS FOR RITUAL " + ritual.getUnlocalizedName() + " WERE NOT MET.");
             } else if (!foundAll) {
                 System.out.println("ITEM REQUIREMENTS FOR RITUAL " + ritual.getUnlocalizedName() + " WERE NOT MET. REQUIREMENTS ARE " + ritual.getRequiredItems() + " & THERE IS " + items);
-            } else if (!chalks) {
-                System.out.println("CHALK REQUIREMENTS FOR RITUAL " + ritual.getUnlocalizedName() + " WERE NOT MET. REQUIREMENTS ARE " + ritual.getRequiredItems() + " & THERE IS " + items);
             } else {
-                System.out.println("GENERIC ERROR AT " + ritual.getUnlocalizedName());
+                System.out.println("CHALK REQUIREMENTS FOR RITUAL " + ritual.getUnlocalizedName() + " WERE NOT MET. REQUIREMENTS ARE " + ritual.getRequiredItems() + " & THERE IS " + items);
             }
         }
         return null;
@@ -127,20 +126,20 @@ public class TileEntityBlueprint extends TileEntity implements IInventory, ITick
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer player) {
+    public boolean isUseableByPlayer(@Nonnull EntityPlayer player) {
         return true;
     }
 
     @Override
-    public void openInventory(EntityPlayer player) {
+    public void openInventory(@Nonnull EntityPlayer player) {
     }
 
     @Override
-    public void closeInventory(EntityPlayer player) {
+    public void closeInventory(@Nonnull EntityPlayer player) {
     }
 
     @Override
-    public boolean isItemValidForSlot(int index, ItemStack stack) {
+    public boolean isItemValidForSlot(int index, @Nonnull ItemStack stack) {
         return true;
     }
 
@@ -163,6 +162,7 @@ public class TileEntityBlueprint extends TileEntity implements IInventory, ITick
         items = Lists.newArrayList();
     }
 
+    @Nonnull
     @Override
     public String getName() {
         return "tile.quaritum.blueprint";
@@ -173,6 +173,7 @@ public class TileEntityBlueprint extends TileEntity implements IInventory, ITick
         return false;
     }
 
+    @Nonnull
     @Override
     public ITextComponent getDisplayName() {
         return new TextComponentString("Blueprint");
@@ -183,8 +184,7 @@ public class TileEntityBlueprint extends TileEntity implements IInventory, ITick
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound compound) {
-        super.readFromNBT(compound);
+    public void readCustomNBT(NBTTagCompound compound) {
         this.items = Lists.newArrayList();
 
         NBTTagList nbttaglist = compound.getTagList("Items", 10);
@@ -201,9 +201,7 @@ public class TileEntityBlueprint extends TileEntity implements IInventory, ITick
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-        super.writeToNBT(compound);
-
+    public void writeCustomNBT(NBTTagCompound compound) {
         NBTTagList nbttaglist = new NBTTagList();
 
         for (int i = 0; i < this.items.size(); ++i) {
@@ -216,6 +214,5 @@ public class TileEntityBlueprint extends TileEntity implements IInventory, ITick
         }
 
         compound.setTag("Items", nbttaglist);
-        return compound;
     }
 }

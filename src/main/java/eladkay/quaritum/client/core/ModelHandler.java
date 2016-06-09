@@ -52,7 +52,7 @@ public class ModelHandler {
     }
 
     private static String variantToString(IVariantHolder var) {
-        return ((char) (255 - getVariantCount(var))) + (var instanceof ItemBlock ? "b" : "I") + (var instanceof Block ? /*((Block) var).getRegistryName().getResourcePath()*/ "" : ((Item) var).getRegistryName().getResourcePath());
+        return ((char) (255 - getVariantCount(var))) + (var instanceof ItemBlock ? "b" : "I") + (var instanceof Block ? "" : ((Item) var).getRegistryName().getResourcePath());
     }
 
     public static void init() {

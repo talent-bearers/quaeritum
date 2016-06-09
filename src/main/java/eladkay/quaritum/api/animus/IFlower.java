@@ -7,9 +7,7 @@ import javax.annotation.Nullable;
 
 public interface IFlower {
 
-    @Nullable
     int getRarity(@Nonnull ItemStack stack);
 
-    @Nullable
     int getAnimusFromStack(@Nonnull ItemStack stack);
 }

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AltarOfTheFallingStarDiagram implements IDiagram {
+    @Nonnull
     @Override
     public String getUnlocalizedName() {
         return "rituals.quaritum.altarofthefallingstar";
@@ -23,7 +24,7 @@ public class AltarOfTheFallingStarDiagram implements IDiagram {
 
 
     @Override
-    public boolean run(World world, EntityPlayer player, BlockPos pos) {
+    public boolean run(@Nonnull World world, EntityPlayer player, @Nonnull BlockPos pos) {
         /*List<EntityItem> list = world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos.add(8, 8, 8).add(-8, -8, -8)));
         int total = 0;
         EntityPlayer receiver = null;
@@ -55,7 +56,7 @@ public class AltarOfTheFallingStarDiagram implements IDiagram {
 
 
     @Override
-    public boolean canRitualRun(World world, EntityPlayer player, BlockPos pos, TileEntity tile) {
+    public boolean canRitualRun(World world, EntityPlayer player, @Nonnull BlockPos pos, @Nonnull TileEntity tile) {
        /* List<EntityItem> list = world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos.add(8, 8, 8).add(-8, -8, -8)));
         boolean a = false;
         boolean b = false;

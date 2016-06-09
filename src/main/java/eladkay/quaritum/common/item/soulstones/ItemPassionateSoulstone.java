@@ -72,13 +72,14 @@ public class ItemPassionateSoulstone extends ItemMod implements IFunctionalSouls
     }
 
     @Override
-    public int getAnimusLevel(ItemStack stack) {
+    public int getAnimusLevel(@Nonnull ItemStack stack) {
         return ItemNBTHelper.getInt(stack, LibNBT.TAG_ANIMUS, 0);
     }
 
 
+    @Nonnull
     @Override
-    public ItemStack addAnimus(ItemStack stack, int amount) {
+    public ItemStack addAnimus(@Nonnull ItemStack stack, int amount) {
         if (getAnimusLevel(stack) + amount > getMaxAnimus(stack)) return stack;
         ItemNBTHelper.setInt(stack, LibNBT.TAG_ANIMUS, getAnimusLevel(stack) + amount);
         return stack;
@@ -97,7 +98,7 @@ public class ItemPassionateSoulstone extends ItemMod implements IFunctionalSouls
     }
 
     @Override
-    public void doPassive(ItemStack stack) {
+    public void doPassive(@Nonnull ItemStack stack) {
     }
 
     @Override

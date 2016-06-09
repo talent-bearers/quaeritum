@@ -15,10 +15,8 @@ public interface IDiagram {
     @Nonnull
     String getUnlocalizedName();
 
-    @Nonnull
     boolean run(@Nonnull World world, @Nullable EntityPlayer player, @Nonnull BlockPos pos);
 
-    @Nonnull
     boolean canRitualRun(@Nullable World world, @Nullable EntityPlayer player, @Nonnull BlockPos pos, @Nonnull TileEntity tile);
 
     @Nullable

@@ -21,14 +21,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SimpleTestRitualDiagram implements IDiagram {
+    @Nonnull
     @Override
     public String getUnlocalizedName() {
         return "test";
     }
 
-    @Nonnull
     @Override
     public boolean run(@Nonnull World world, @Nullable EntityPlayer player, @Nonnull BlockPos pos) {
+        if (player == null) return false;
         player.addChatComponentMessage(new TextComponentString("WORKING."));
         player.addChatComponentMessage(new TextComponentString("Blue Chalk Blockstate:" + ModBlocks.chalk.getStateFromMeta(EnumDyeColor.BLUE.getMetadata())));
         player.addChatComponentMessage(new TextComponentString("Blue Chalk Meta:" + EnumDyeColor.BLUE.getMetadata()));
@@ -38,13 +39,13 @@ public class SimpleTestRitualDiagram implements IDiagram {
     }
 
     @Override
-    public boolean canRitualRun(World world, EntityPlayer player, BlockPos pos, TileEntity tile) {
+    public boolean canRitualRun(World world, EntityPlayer player, @Nonnull BlockPos pos, @Nonnull TileEntity tile) {
         return ((TileEntityBlueprint) tile).debug2;
     }
 
     @Override
     public ArrayList<ItemStack> getRequiredItems() {
-        ArrayList list = Lists.newArrayList();
+        ArrayList<ItemStack> list = Lists.newArrayList();
         list.add(new ItemStack(Items.APPLE));
         list.add(new ItemStack(Items.SLIME_BALL));
         return list;
