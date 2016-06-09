@@ -201,7 +201,7 @@ public class TileEntityBlueprint extends TileEntity implements IInventory, ITick
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound compound) {
+    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
 
         NBTTagList nbttaglist = new NBTTagList();
@@ -216,6 +216,6 @@ public class TileEntityBlueprint extends TileEntity implements IInventory, ITick
         }
 
         compound.setTag("Items", nbttaglist);
-
+        return compound;
     }
 }

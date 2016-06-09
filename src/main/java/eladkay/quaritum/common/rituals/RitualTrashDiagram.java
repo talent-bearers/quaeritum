@@ -36,7 +36,7 @@ public class RitualTrashDiagram implements IDiagram {
 
     @Override
     public ArrayList<ItemStack> getRequiredItems() {
-        return new ArrayList<>(Lists.asList(new ItemStack(Items.blaze_powder), new ItemStack[]{}));
+        return new ArrayList<>(Lists.asList(new ItemStack(Items.BLAZE_POWDER), new ItemStack[]{}));
     }
 
     @Override

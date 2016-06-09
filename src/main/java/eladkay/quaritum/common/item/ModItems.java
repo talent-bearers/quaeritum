@@ -2,6 +2,8 @@ package eladkay.quaritum.common.item;
 
 import eladkay.quaritum.common.Quartium;
 import eladkay.quaritum.common.item.chalk.ItemChalk;
+import eladkay.quaritum.common.item.misc.ItemFertilizer;
+import eladkay.quaritum.common.item.misc.ItemReagentAtlas;
 import eladkay.quaritum.common.item.soulstones.*;
 
 public class ModItems {
@@ -14,6 +16,8 @@ public class ModItems {
     public static ItemAttunedSoulstone attuned;
     public static ItemDebug debug;
     public static ItemChalk chalk;
+    public static ItemFertilizer fertilizer;
+    public static ItemReagentAtlas altas;
 
     public static void init() {
         dormant = new ItemDormantSoulstone();
@@ -23,7 +27,8 @@ public class ModItems {
         oppressive = new ItemOppressiveSoulstone();
         attuned = new ItemAttunedSoulstone();
         chalk = new ItemChalk();
-
+        fertilizer = new ItemFertilizer();
+        altas = new ItemReagentAtlas();
         if (Quartium.isDevEnv)
             debug = new ItemDebug();
 

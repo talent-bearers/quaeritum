@@ -58,7 +58,7 @@ public class RitualSummoning implements IDiagram {
         ArrayList<ItemStack> list = Lists.newArrayList();
         list.add(new ItemStack(ModBlocks.flower, 1, BlockAnimusFlower.Variants.COMMON_ARCANE.ordinal()));
         list.add(new ItemStack(ModBlocks.crystal));
-        list.add(new ItemStack(Items.nether_wart));
+        list.add(new ItemStack(Items.NETHER_WART));
         list.add(new ItemStack(ModItems.awakened));
         return list;
     }

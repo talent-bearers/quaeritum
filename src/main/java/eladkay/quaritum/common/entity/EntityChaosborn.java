@@ -1,7 +1,6 @@
 package eladkay.quaritum.common.entity;
 
-import eladkay.quaritum.common.block.ModBlocks;
-import eladkay.quaritum.common.block.flowers.BlockAnimusFlower;
+import eladkay.quaritum.common.item.ModItems;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -72,7 +71,7 @@ public class EntityChaosborn extends EntityMob implements IRangedAttackMob {
     @Override
     protected void dropLoot(boolean wasRecentlyHit, int looting, DamageSource source) {
         if (source.getSourceOfDamage() instanceof EntityPlayer && wasRecentlyHit) {
-            ItemStack itemstack = new ItemStack(ModBlocks.flower, Math.max(Math.min(3, looting), 1) * quality + 1, BlockAnimusFlower.Variants.ARCANE.ordinal());
+            ItemStack itemstack = new ItemStack(ModItems.altas, Math.max(Math.min(3, looting), 1) * quality + 1);
             this.entityDropItem(itemstack, 0.0F);
         }
         super.dropLoot(wasRecentlyHit, looting, source);

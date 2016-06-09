@@ -39,7 +39,7 @@ public class ShardedSkiesDiagram implements IDiagram {
     @Override
     public ArrayList<ItemStack> getRequiredItems() {
         ArrayList<ItemStack> list = Lists.newArrayList();
-        list.add(new ItemStack(Blocks.red_flower));
+        list.add(new ItemStack(Blocks.RED_FLOWER));
         return list;
     }
 

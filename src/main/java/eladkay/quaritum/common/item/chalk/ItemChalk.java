@@ -18,7 +18,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemChalk extends ItemMod implements ModelHandler.IColorProvider, ModelHandler.ICustomLogHolder {
-    public static final String[] COLORS = new String[17];
+    private static final String[] COLORS = new String[17];
 
     static {
         for (EnumDyeColor dye : EnumDyeColor.values())
@@ -61,7 +61,7 @@ public class ItemChalk extends ItemMod implements ModelHandler.IColorProvider, M
         return new IItemColor() {
             @Override
             public int getColorFromItemstack(ItemStack stack, int tintIndex) {
-                return tintIndex == 1 && stack.getItemDamage() < 16 ? ItemDye.dyeColors[15 - stack.getItemDamage()] : 0xFFFFFF;
+                return tintIndex == 1 && stack.getItemDamage() < 16 ? ItemDye.DYE_COLORS[15 - stack.getItemDamage()] : 0xFFFFFF;
             }
         };
     }

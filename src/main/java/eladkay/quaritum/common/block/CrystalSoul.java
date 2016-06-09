@@ -7,6 +7,6 @@ import net.minecraft.block.material.Material;
 public class CrystalSoul extends BlockMod {
 
     public CrystalSoul() {
-        super(LibNames.CRYSTAL, Material.rock);
+        super(LibNames.CRYSTAL, Material.ROCK);
     }
 }

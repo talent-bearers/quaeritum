@@ -45,8 +45,8 @@ public class SimpleTestRitualDiagram implements IDiagram {
     @Override
     public ArrayList<ItemStack> getRequiredItems() {
         ArrayList list = Lists.newArrayList();
-        list.add(new ItemStack(Items.apple));
-        list.add(new ItemStack(Items.slime_ball));
+        list.add(new ItemStack(Items.APPLE));
+        list.add(new ItemStack(Items.SLIME_BALL));
         return list;
     }
 

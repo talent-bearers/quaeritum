@@ -13,9 +13,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class BlockAnimusFlower extends BlockModFlower {
@@ -23,7 +26,7 @@ public class BlockAnimusFlower extends BlockModFlower {
     public static IProperty<Variants> FLOWER_TYPE = PropertyEnum.create("type", Variants.class);
 
     public BlockAnimusFlower() {
-        super(LibNames.FLOWER, Material.plants, Variants.vars);
+        super(LibNames.FLOWER, Material.PLANTS, Variants.vars);
         setDefaultState(this.blockState.getBaseState().withProperty(FLOWER_TYPE, Variants.COMMON));
     }
 
@@ -34,6 +37,11 @@ public class BlockAnimusFlower extends BlockModFlower {
     @Override
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
         return new ItemStack(Item.getItemFromBlock(this), 1, this.getMetaFromState(world.getBlockState(pos)));
+    }
+
+    @Override
+    public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+        return Arrays.asList(new ItemStack(Item.getItemFromBlock(this), 1, this.getMetaFromState(state)));
     }
 
     @Override
@@ -53,14 +61,14 @@ public class BlockAnimusFlower extends BlockModFlower {
     }
 
     @Override
-    public int getRarity(ItemStack stack) {
+    public int getRarity(@Nonnull ItemStack stack) {
         Variants var = Variants.of(stack.getItemDamage());
         if (var == null) return 0;
         return var.rarity;
     }
 
     @Override
-    public int getAnimusFromStack(ItemStack stack) {
+    public int getAnimusFromStack(@Nonnull ItemStack stack) {
         Variants var = Variants.of(stack.getItemDamage());
         if (var == null) return 0;
         return var.amount;
@@ -75,7 +83,6 @@ public class BlockAnimusFlower extends BlockModFlower {
             for (Variants var : Variants.values()) {
                 vars[var.ordinal()] = LibNames.FLOWER + String.join(",", Arrays.asList(var.getName().split("_")).stream().map(BlockAnimusFlower::capitalizeFirst).collect(Collectors.joining()));
                 System.out.println(LibNames.FLOWER + String.join(",", Arrays.asList(var.getName().split("_")).stream().map(BlockAnimusFlower::capitalizeFirst).collect(Collectors.joining())));
-
             }
 
         }

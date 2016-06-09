@@ -22,7 +22,7 @@ public class ItemDormantSoulstone extends ItemMod {
     @Override
     public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
         if (playerIn.isSneaking()) {
-            worldIn.playSound(playerIn, playerIn.getPosition(), SoundEvents.item_armor_equip_iron, SoundCategory.PLAYERS, 1f, 1f);
+            worldIn.playSound(playerIn, playerIn.getPosition(), SoundEvents.ITEM_ARMOR_EQUIP_IRON, SoundCategory.PLAYERS, 1f, 1f);
             return new ActionResult<>(EnumActionResult.SUCCESS, new ItemStack(ModItems.attuned));
         }
 

@@ -93,7 +93,7 @@ public class ModelHandler {
 
     private static void registerModels(Item item, String[] variants, boolean extra) {
         if (item instanceof ItemBlock && ((ItemBlock) item).getBlock() instanceof IModBlock) {
-            ResourceLocation locName = Block.blockRegistry.getNameForObject(Block.getBlockFromItem(item));
+            ResourceLocation locName = Block.REGISTRY.getNameForObject(Block.getBlockFromItem(item));
 
             IModBlock i = (IModBlock) ((ItemBlock) item).getBlock();
             Class<Enum> name = i.getVariantEnum();

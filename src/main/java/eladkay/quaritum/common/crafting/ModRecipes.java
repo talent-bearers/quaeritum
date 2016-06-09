@@ -29,26 +29,27 @@ public class ModRecipes {
         RecipeSorter.register(LibMisc.MOD_ID + ":awakened", RecipeAwakenedSoulstone.class, RecipeSorter.Category.SHAPELESS, "");
 
         CraftingManager.getInstance().addRecipe(new RecipeAwakenedSoulstone());
-        addShapelessOreDictRecipe(new ItemStack(ModBlocks.crystal), new ItemStack(ModBlocks.flower), new ItemStack(Blocks.gold_block));
-        addShapelessOreDictRecipe(new ItemStack(ModBlocks.blueprint), "dyeBlue", new ItemStack(Items.paper));
+        addShapelessOreDictRecipe(new ItemStack(ModBlocks.crystal), new ItemStack(ModBlocks.flower), new ItemStack(Blocks.GOLD_BLOCK));
+        addShapelessOreDictRecipe(new ItemStack(ModBlocks.blueprint), "dyeBlue", new ItemStack(Items.PAPER));
+        addShapelessOreDictRecipe(new ItemStack(ModItems.fertilizer, 2), "dyePink", new ItemStack(Items.DYE, 1, 15), new ItemStack(ModItems.altas));
         addAnimusRecipe(new ItemStack(ModItems.passionate),
                 "Y Y",
                 "XZX",
                 "YHY",
-                'Y', new ItemStack(Items.blaze_powder),
-                'H', new ItemStack(Items.lava_bucket),
-                'X', new ItemStack(Items.fire_charge),
+                'Y', new ItemStack(Items.BLAZE_POWDER),
+                'H', new ItemStack(Items.LAVA_BUCKET),
+                'X', new ItemStack(Items.FIRE_CHARGE),
                 'Z', new ItemStack(ModItems.awakened));
         addOreDictRecipe(new ItemStack(ModItems.dormant),
                 "XYX",
                 "XZX",
                 "XYX",
-                'X', new ItemStack(Blocks.soul_sand),
+                'X', new ItemStack(Blocks.SOUL_SAND),
                 'Z', "gemDiamond",
                 'Y', "blockGlass");
         for (int i = 0; i < dyeColors.length; i++) {
             addShapelessOreDictRecipe(new ItemStack(ModItems.chalk, 1, i),
-                    new ItemStack(Items.clay_ball),
+                    new ItemStack(Items.CLAY_BALL),
                     "dye" + dyeColors[i]);
         }
     }

@@ -22,7 +22,7 @@ public class BlockBlueprint extends BlockModContainer {
     public static final AxisAlignedBB BOUNDS = new AxisAlignedBB(0, 0, 0, 1, 0.5f, 1);
 
     public BlockBlueprint(String name) {
-        super(name, Material.piston);
+        super(name, Material.PISTON);
     }
 
     @Override

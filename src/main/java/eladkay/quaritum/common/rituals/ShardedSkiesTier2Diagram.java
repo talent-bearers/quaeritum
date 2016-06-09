@@ -42,8 +42,8 @@ public class ShardedSkiesTier2Diagram implements IDiagram {
     public ArrayList<ItemStack> getRequiredItems() {
         ArrayList<ItemStack> list = Lists.newArrayList();
         list.add(new ItemStack(ModBlocks.flower, 1, BlockAnimusFlower.Variants.COMMON.ordinal()));
-        list.add(new ItemStack(Items.nether_wart));
-        list.add(new ItemStack(Items.blaze_powder));
+        list.add(new ItemStack(Items.NETHER_WART));
+        list.add(new ItemStack(Items.BLAZE_POWDER));
         return list;
     }
 

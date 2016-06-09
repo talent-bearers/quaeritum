@@ -72,7 +72,7 @@ public class AltarOfTheFallingStarDiagram implements IDiagram {
     @Override
     public ArrayList<ItemStack> getRequiredItems() {
         ArrayList<ItemStack> list = Lists.newArrayList();
-        list.add(new ItemStack(Items.diamond));
+        list.add(new ItemStack(Items.DIAMOND));
         return list;
         //return Lists.newArrayList();
 

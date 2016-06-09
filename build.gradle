@@ -19,7 +19,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
     }
 }
 repositories {
@@ -80,8 +80,8 @@ repositories {
 }
 
 dependencies {
-    deobfCompile "mezz.jei:jei_1.9:3.3.3.197"
-    compile "mcp.mobius.waila:Waila:1.7.0-B2_1.9"
+    deobfCompile "mezz.jei:jei_1.9.4:3.4.0.202"
+    compile "mcp.mobius.waila:Waila:1.7.0-B3_1.9.4"
     //mcp/mobius/waila/Waila/1.7.0-B2_1.9/
     //compile "mcp.mobius.waila:Waila:1.5.5_1.7.10"
 }

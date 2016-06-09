@@ -45,7 +45,7 @@ public class ItemAttunedSoulstone extends ItemMod {
         if (playerIn.isSneaking()) {
             ItemNBTHelper.removeEntry(itemStackIn, LibNBT.TAG_OWNER);
             ItemNBTHelper.removeEntry(itemStackIn, LibNBT.TAG_UUID);
-            worldIn.playSound(playerIn, playerIn.getPosition(), SoundEvents.item_armor_equip_iron, SoundCategory.PLAYERS, 1f, 1f);
+            worldIn.playSound(playerIn, playerIn.getPosition(), SoundEvents.ITEM_ARMOR_EQUIP_IRON, SoundCategory.PLAYERS, 1f, 1f);
             return new ActionResult<>(EnumActionResult.SUCCESS, itemStackIn);
         }
         return super.onItemRightClick(itemStackIn, worldIn, playerIn, hand);

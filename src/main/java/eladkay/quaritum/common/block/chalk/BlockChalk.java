@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import eladkay.quaritum.common.block.base.BlockModColored;
 import eladkay.quaritum.common.item.ModItems;
 import eladkay.quaritum.common.lib.LibNames;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -26,7 +25,7 @@ public class BlockChalk extends BlockModColored {
     protected static final AxisAlignedBB CARPET_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.0625D, 1.0D);
 
     public BlockChalk() {
-        super(LibNames.CHALK_BLOCK, Material.piston);
+        super(LibNames.CHALK_BLOCK, Material.PISTON);
     }
 
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
@@ -34,7 +33,7 @@ public class BlockChalk extends BlockModColored {
     }
 
     public MapColor getMapColor(IBlockState state) {
-        return MapColor.clayColor;
+        return MapColor.CLAY;
     }
 
     public boolean isOpaqueCube(IBlockState state) {
@@ -49,23 +48,10 @@ public class BlockChalk extends BlockModColored {
         return super.canPlaceBlockAt(worldIn, pos) && this.canBlockStay(worldIn, pos);
     }
 
-    public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock) {
-        this.checkForDrop(worldIn, pos, state);
-    }
 
     @Override
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
         return new ItemStack(ModItems.chalk, 1, getMetaFromState(state));
-    }
-
-    private boolean checkForDrop(World worldIn, BlockPos pos, IBlockState state) {
-        if (!this.canBlockStay(worldIn, pos)) {
-            this.dropBlockAsItem(worldIn, pos, state, 0);
-            worldIn.setBlockToAir(pos);
-            return false;
-        } else {
-            return true;
-        }
     }
 
     private boolean canBlockStay(World worldIn, BlockPos pos) {

@@ -40,3 +40,6 @@ tile.quaritum:chalkGreen.name=Chalk (Green)
 tile.quaritum:chalkRed.name=Chalk (Red)
 tile.quaritum:chalkBlack.name=Chalk (Black)
 tile.quaritum:chalkTempest.name=Chalk of the Tempest
+
+tile.quaritum:fertilizer.name=Magical Fertilizer
+tile.quaritum:reagentAtlas.name=Reagent (Atlas)
