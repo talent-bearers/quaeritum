@@ -4,6 +4,7 @@ import eladkay.quaritum.common.block.base.BlockModContainer;
 import eladkay.quaritum.common.block.tile.TileEntityBlueprint;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -17,12 +18,16 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+import java.util.List;
+
 public class BlockBlueprint extends BlockModContainer {
 
     public static final AxisAlignedBB BOUNDS = new AxisAlignedBB(0, 0, 0, 1, 0.5f, 1);
 
     public BlockBlueprint(String name) {
         super(name, Material.PISTON);
+        setHardness(1.2f);
     }
 
     @Override
@@ -38,6 +43,12 @@ public class BlockBlueprint extends BlockModContainer {
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
         return BOUNDS;
+    }
+
+    @Override
+    public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn) {
+        super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn);
+        collidingBoxes.add(BOUNDS);
     }
 
     @Override
@@ -63,6 +74,11 @@ public class BlockBlueprint extends BlockModContainer {
     @Override
     public boolean isFullCube(IBlockState state) {
         return false;
+    }
+
+    @Override
+    public boolean isBlockSolid(IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
+        return true;
     }
 
     @Override

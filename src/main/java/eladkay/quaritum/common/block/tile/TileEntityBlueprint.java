@@ -13,10 +13,8 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -27,13 +25,14 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TileEntityBlueprint extends TileMod implements IInventory, ITickable {
+public class TileEntityBlueprint extends TileSimpleInventory implements IInventory {
     public boolean debug = true;
     public ArrayList<ItemStack> items = Lists.newArrayList();
     public boolean debug2 = true;
 
     @Override
-    public void update() {
+    public void updateEntity() {
+        super.updateEntity();
        boolean dirty = false;
         if (!worldObj.isRemote) {
             List<EntityItem> eitems = worldObj.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(this.getPos(), getPos().add(1, 1, 1)));
@@ -51,7 +50,9 @@ public class TileEntityBlueprint extends TileMod implements IInventory, ITickabl
 
     private IDiagram getValidRitual(EntityPlayer player) {
         for (IDiagram ritual : RitualRegistry.getDiagramList()) {
-            boolean foundAll = items.toString().equals(ritual.getRequiredItems().toString()); //todo fix this shit
+            //boolean foundAll = items.toString().equals(ritual.getRequiredItems().toString()); //todo fix this shit
+            boolean foundAll = checkItems(items, ritual.getRequiredItems());
+            //boolean foundAll = items.containsAll(ritual.getRequiredItems());
             boolean requirementsMet = ritual.canRitualRun(this.getWorld(), player, pos, this);
             //boolean chalks = checkChalk(ritual.buildChalks(Lists.newArrayList()));
             //boolean chalks = worldObj.getBlockState(pos.offset(EnumFacing.UP)).equals(ModBlocks.chalk.getStateFromMeta(EnumDyeColor.BLUE.ordinal()));
@@ -94,7 +95,13 @@ public class TileEntityBlueprint extends TileMod implements IInventory, ITickabl
         return true;
     }
 
-
+    private boolean checkItems(List container, List required) {
+        if (container.size() != required.size()) return false;
+        for (int i = 0; i < container.size(); i++) {
+            if (container.get(i) != required.get(i)) return false;
+        }
+        return true;
+    }
     @Override
     public int getSizeInventory() {
         return LibMisc.INVENTORY_SIZE_BLUEPRINT;

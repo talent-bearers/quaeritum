@@ -5,6 +5,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -15,7 +16,7 @@ import javax.annotation.Nullable;
  * @author WireSegal
  *         Created at 12:57 PM on 6/9/16.
  */
-public abstract class TileMod extends TileEntity {
+public abstract class TileMod extends TileEntity implements ITickable {
     @Override
     public boolean shouldRefresh(World world, BlockPos pos, @Nonnull IBlockState oldState, @Nonnull IBlockState newState) {
         return oldState.getBlock() != newState.getBlock();
@@ -55,5 +56,16 @@ public abstract class TileMod extends TileEntity {
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
         super.onDataPacket(net, pkt);
         readCustomNBT(pkt.getNbtCompound());
+    }
+
+    @Override
+    public final void update() {
+        if (!isInvalid() && worldObj.isBlockLoaded(getPos(), !worldObj.isRemote)) {
+            updateEntity();
+        }
+    }
+
+    protected void updateEntity() {
+        // NO-OP
     }
 }

@@ -19,7 +19,7 @@ public interface IDiagram {
 
     boolean canRitualRun(@Nullable World world, @Nullable EntityPlayer player, @Nonnull BlockPos pos, @Nonnull TileEntity tile);
 
-    @Nullable
+    @Nonnull
     ArrayList<ItemStack> getRequiredItems();
 
     List<PositionedBlock> buildChalks(@Nonnull List<PositionedBlock> chalks);

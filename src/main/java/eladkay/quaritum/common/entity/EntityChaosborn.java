@@ -1,34 +1,42 @@
 package eladkay.quaritum.common.entity;
 
-import eladkay.quaritum.common.item.ModItems;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.item.Item;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 
-public class EntityChaosborn extends EntityMob implements IRangedAttackMob {
-    private int quality;
+import java.util.List;
 
-    //public static final IAttribute myAttribute = new RangedAttribute();
-    // private static final DataParameter<Integer> QUALITY = new DataParameter<Integer>();
+public class EntityChaosborn extends EntityMob implements IRangedAttackMob {
+    //The Quality of the Soulstone dropped into the Temple of the Rift, in order to summon a Chaosborn.
+    //Determines drops and difficulty.
+    public int quality = 0;
+    public float range = 64;
+
+    //Constructor that's actually supposed to be used.
     public EntityChaosborn(World worldIn, int quality) {
         super(worldIn);
         this.quality = quality;
-
     }
 
-    //Obligatory.
-    public EntityChaosborn(World worldIn) {
-        this(worldIn, 0);
+    public EntityChaosborn(World world, int quality, int x, int y, int z) {
+        this(world, quality, new BlockPos(x, y, z));
+    }
+
+    public EntityChaosborn(World world, int quality, double x, double y, double z) {
+        super(world);
+        setPosition(x, y, z);
+        this.quality = quality;
     }
 
     public EntityChaosborn(World worldIn, int quality, BlockPos pos) {
@@ -38,75 +46,94 @@ public class EntityChaosborn extends EntityMob implements IRangedAttackMob {
 
     }
 
-    public EntityChaosborn(World worldIn, BlockPos pos) {
-        this(worldIn, 0, pos);
+    //General constructor
+    public EntityChaosborn(World worldIn) {
+        this(worldIn, 1);
+
+        this.tasks.addTask(1, new EntityAISwimming(this));
+        //this.tasks.addTask(2, new EntityAIAttackOnCollide(this, EntityPlayer.class, 0.5D, false));
+        this.tasks.addTask(3, new EntityAIWander(this, 0.30D));
+        this.tasks.addTask(4, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+        this.tasks.addTask(5, new EntityAILookIdle(this));
+        this.tasks.addTask(4, new EntityAIArrowAttack(this, 1.0D, 20, 60, 15.0F));
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+
+
     }
 
-    public EntityChaosborn(World world, int x, int y, int z) {
-        this(world, new BlockPos(x, y, z));
+    @Override
+    protected boolean canDespawn() {
+        return false;
     }
 
-    public EntityChaosborn(World worldIn, int quality, double x, double y, double z) {
-        super(worldIn);
-        setPosition(x, y, z);
-        this.quality = quality;
+    //Botania code :p
+    //Gets all player in a radius.
+    private List<EntityPlayer> getPlayersAround() {
+        BlockPos source = getSource();
+        //	float range = 64F;
+        return worldObj.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(source.getX()
+                + 0.5 - range, source.getY() + 0.5 - range, source.getZ() + 0.5 - range, source.getX() + 0.5 + range, source.getY() + 0.5 + range, source.getZ() + 0.5 + range));
+    }
 
+    //BlockPos of this entity.
+    private BlockPos getSource() {
+        return new BlockPos(this.posX, this.posY, this.posZ);
     }
 
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(50.0D * (quality > 0 ? quality : 1));
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue((quality + 1) * 100);
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(256.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(0.25D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.75D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue((quality + 1) * 5);
     }
 
+    //Unused.
     @Override
-    protected boolean processInteract(EntityPlayer player, EnumHand p_184645_2_, ItemStack stack) {
-        player.addChatComponentMessage(new TextComponentString("Health: " + getHealth()));
-        player.addChatComponentMessage(new TextComponentString("Quality: " + quality));
-        player.addChatComponentMessage(new TextComponentString("Remote: " + worldObj.isRemote));
-        if (player.isSneaking()) quality++;
-        return super.processInteract(player, p_184645_2_, stack);
+    public void onDeath(DamageSource cause) {
+        super.onDeath(cause);
     }
 
+    //Used to apply status effects.
     @Override
-    protected void dropLoot(boolean wasRecentlyHit, int looting, DamageSource source) {
-        if (source.getSourceOfDamage() instanceof EntityPlayer && wasRecentlyHit) {
-            ItemStack itemstack = new ItemStack(ModItems.altas, Math.max(Math.min(3, looting), 1) * quality + 1);
-            this.entityDropItem(itemstack, 0.0F);
-        }
-        super.dropLoot(wasRecentlyHit, looting, source);
+    public void onLivingUpdate() {
+        super.onLivingUpdate();
+        getPlayersAround().stream().filter(poorThing -> poorThing.posX > (this.posX + 32) || poorThing.posY > (this.posY + 32) || poorThing.posZ > (this.posZ + 32) || poorThing.posX < (this.posX - 32) || poorThing.posY < (this.posY - 32) || poorThing.posZ < (this.posZ - 32)).forEach(poorThing -> {
+            poorThing.addPotionEffect(new PotionEffect(Potion.REGISTRY.getObject(new ResourceLocation("minecraft:nausea")), 10,
+                    (quality +
+                            2)));
+            poorThing.addPotionEffect(new PotionEffect(Potion.REGISTRY.getObject(new ResourceLocation
+                    ("minecraft:wither")), 10, (quality + 2)));
+        });
     }
 
+    //Specifies item drops.
     @Override
-    protected void entityInit() {
-        super.entityInit();
-        // this.dataWatcher.register(SECOND_HEAD_TARGET, Integer.valueOf(0));
+    protected Item getDropItem() {
+
+        //And here, the world of Magical flora begins.
+        return super.getDropItem();
     }
 
+    //Attack an Entity with a ranged attack.
     @Override
-    public void readEntityFromNBT(NBTTagCompound nbtTagCompound) {
-        super.readEntityFromNBT(nbtTagCompound);
-        quality = nbtTagCompound.getInteger("quality");
+    public void attackEntityWithRangedAttack(EntityLivingBase p_82196_1_,
+                                             float p_82196_2_) {
+        EntityArrowFire entityarrow = new EntityArrowFire(this.worldObj, this, p_82196_1_, 1.6F, (float) (14 - this.worldObj.getDifficulty().getDifficultyId() * 4));
+        int i = 3; //Equivalent to a power 3 bow.
+        int j = 1; //Equivalent to a punch 2 bow.
+        entityarrow.setDamage((double) (p_82196_2_ * 2.0F) + this.rand.nextGaussian() * 0.25D + (double) ((float) this.worldObj.getDifficulty().getDifficultyId() * 0.11F));
+        entityarrow.setDamage(entityarrow.getDamage() + (double) i * 0.5D + 0.5D);
+        entityarrow.setKnockbackStrength(j);
+        entityarrow.setFire(100);
+
+        //  this.playSound("random.bow", 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+        this.worldObj.spawnEntityInWorld(entityarrow);
+
     }
 
-    @Override
-    public void writeEntityToNBT(NBTTagCompound nbtTagCompound) {
-        super.writeEntityToNBT(nbtTagCompound);
-        nbtTagCompound.setInteger("quality", quality);
-    }
 
-    @Override
-    protected void initEntityAI() {
-        this.tasks.addTask(1, new EntityAISwimming(this));
-        this.tasks.addTask(2, new EntityAIAttackRanged(this, 1.0D, 40, 20.0F));
-        this.tasks.addTask(5, new EntityAIWander(this, 1.0D));
-        this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-        this.tasks.addTask(7, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-    }
-
-    @Override
-    public void attackEntityWithRangedAttack(EntityLivingBase entityLivingBase, float v) {
-        entityLivingBase.heal(-4);
-    }
 }

@@ -26,6 +26,7 @@ public class BlockChalk extends BlockModColored {
 
     public BlockChalk() {
         super(LibNames.CHALK_BLOCK, Material.PISTON);
+        setHardness(0.5f);
     }
 
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {

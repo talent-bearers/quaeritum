@@ -8,5 +8,6 @@ public class CrystalSoul extends BlockMod {
 
     public CrystalSoul() {
         super(LibNames.CRYSTAL, Material.ROCK);
+        setHardness(2);
     }
 }
