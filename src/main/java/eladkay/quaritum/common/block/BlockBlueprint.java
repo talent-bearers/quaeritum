@@ -4,7 +4,6 @@ import eladkay.quaritum.common.block.base.BlockModContainer;
 import eladkay.quaritum.common.block.tile.TileEntityBlueprint;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -17,9 +16,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-
-import javax.annotation.Nullable;
-import java.util.List;
 
 public class BlockBlueprint extends BlockModContainer {
 
@@ -45,11 +41,11 @@ public class BlockBlueprint extends BlockModContainer {
         return BOUNDS;
     }
 
-    @Override
+  /*  @Override
     public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn) {
         super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn);
         collidingBoxes.add(BOUNDS);
-    }
+    }*/
 
     @Override
     public AxisAlignedBB getCollisionBoundingBox(IBlockState worldIn, World pos, BlockPos state) {

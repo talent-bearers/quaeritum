@@ -1,5 +1,6 @@
 package eladkay.quaritum.common.entity;
 
+import eladkay.quaritum.common.item.ModItems;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -27,6 +28,7 @@ public class EntityChaosborn extends EntityMob implements IRangedAttackMob {
     public EntityChaosborn(World worldIn, int quality) {
         super(worldIn);
         this.quality = quality;
+        setSize(1, 1);
     }
 
     public EntityChaosborn(World world, int quality, int x, int y, int z) {
@@ -37,12 +39,14 @@ public class EntityChaosborn extends EntityMob implements IRangedAttackMob {
         super(world);
         setPosition(x, y, z);
         this.quality = quality;
+        setSize(1, 1);
     }
 
     public EntityChaosborn(World worldIn, int quality, BlockPos pos) {
         super(worldIn);
         setPosition(pos.getX(), pos.getY(), pos.getZ());
         this.quality = quality;
+        setSize(1, 1);
 
     }
 
@@ -115,7 +119,7 @@ public class EntityChaosborn extends EntityMob implements IRangedAttackMob {
     protected Item getDropItem() {
 
         //And here, the world of Magical flora begins.
-        return super.getDropItem();
+        return ModItems.altas;
     }
 
     //Attack an Entity with a ranged attack.

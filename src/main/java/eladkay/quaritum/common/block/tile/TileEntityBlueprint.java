@@ -2,7 +2,6 @@ package eladkay.quaritum.common.block.tile;
 
 import com.google.common.collect.Lists;
 import eladkay.quaritum.api.rituals.IDiagram;
-import eladkay.quaritum.api.rituals.PositionedBlock;
 import eladkay.quaritum.api.rituals.RitualRegistry;
 import eladkay.quaritum.common.core.PositionedBlockHelper;
 import eladkay.quaritum.common.lib.LibMisc;
@@ -20,20 +19,56 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TileEntityBlueprint extends TileSimpleInventory implements IInventory {
+public class TileEntityBlueprint extends TileMod implements IInventory {
     public boolean debug = true;
     public ArrayList<ItemStack> items = Lists.newArrayList();
     public boolean debug2 = true;
 
+    public static boolean matches(List<ItemStack> items, List<ItemStack> required) {
+        List<Object> inputsMissing = new ArrayList<>(required);
+
+        for (ItemStack i : items) {
+            for (int j = 0; j < inputsMissing.size(); j++) {
+                Object inp = inputsMissing.get(j);
+                if (inp instanceof ItemStack && ((ItemStack) inp).getItemDamage() == 32767)
+                    ((ItemStack) inp).setItemDamage(i.getItemDamage());
+                if (itemEquals(i, inp)) {
+                    inputsMissing.remove(j);
+                    break;
+                }
+            }
+        }
+        return inputsMissing.isEmpty();
+    }
+
+    private static boolean simpleAreStacksEqual(ItemStack stack, ItemStack stack2) {
+        return stack.getItem() == stack2.getItem() && stack.getItemDamage() == stack2.getItemDamage();
+    }
+
+    private static boolean itemEquals(ItemStack stack, Object stack2) {
+        if (stack2 instanceof String) {
+
+            for (ItemStack orestack : OreDictionary.getOres((String) stack2)) {
+                ItemStack cstack = orestack.copy();
+
+                if (cstack.getItemDamage() == 32767) cstack.setItemDamage(stack.getItemDamage());
+                if (stack.isItemEqual(cstack)) return true;
+            }
+
+        } else return stack2 instanceof ItemStack && simpleAreStacksEqual(stack, (ItemStack) stack2);
+        return false;
+    }
+
     @Override
     public void updateEntity() {
         super.updateEntity();
-       boolean dirty = false;
+        boolean dirty = false;
         if (!worldObj.isRemote) {
             List<EntityItem> eitems = worldObj.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(this.getPos(), getPos().add(1, 1, 1)));
             for (EntityItem item : eitems)
@@ -44,14 +79,14 @@ public class TileEntityBlueprint extends TileSimpleInventory implements IInvento
                     dirty = true;
                 }
         }
-        if(dirty) markDirty();
+        if (dirty) markDirty();
     }
-
 
     private IDiagram getValidRitual(EntityPlayer player) {
         for (IDiagram ritual : RitualRegistry.getDiagramList()) {
-            //boolean foundAll = items.toString().equals(ritual.getRequiredItems().toString()); //todo fix this shit
-            boolean foundAll = checkItems(items, ritual.getRequiredItems());
+            // boolean foundAll = items.toString().equals(ritual.getRequiredItems().toString()); //shit was fixed
+            boolean foundAll = matches(items, ritual.getRequiredItems());
+            // boolean foundAll = checkItems(items, ritual.getRequiredItems());
             //boolean foundAll = items.containsAll(ritual.getRequiredItems());
             boolean requirementsMet = ritual.canRitualRun(this.getWorld(), player, pos, this);
             //boolean chalks = checkChalk(ritual.buildChalks(Lists.newArrayList()));
@@ -80,21 +115,6 @@ public class TileEntityBlueprint extends TileSimpleInventory implements IInvento
 
     }
 
-    private boolean checkChalk(List<PositionedBlock> list) {
-        for (PositionedBlock block : list) {
-            IBlockState state = worldObj.getBlockState(PositionedBlockHelper.blockPosSum(getPos(), block.getPos()));
-           /* if (state.getBlock() != ModBlocks.chalk) {
-                System.out.println("BLOCK");
-                return false;
-            }*/
-            if (!state.equals(block.getState())) {
-                System.out.println("CHALK");
-                return false;
-            }
-        }
-        return true;
-    }
-
     private boolean checkItems(List container, List required) {
         if (container.size() != required.size()) return false;
         for (int i = 0; i < container.size(); i++) {
@@ -102,6 +122,7 @@ public class TileEntityBlueprint extends TileSimpleInventory implements IInvento
         }
         return true;
     }
+
     @Override
     public int getSizeInventory() {
         return LibMisc.INVENTORY_SIZE_BLUEPRINT;
@@ -206,6 +227,16 @@ public class TileEntityBlueprint extends TileSimpleInventory implements IInvento
         }
 
     }
+
+   /* @Override
+    protected SimpleItemStackHandler createItemHandler() {
+        return new SimpleItemStackHandler(this, false) {
+            @Override
+            protected int getStackLimit(int slot, ItemStack stack) {
+                return 1;
+            }
+        };
+    }*/
 
     @Override
     public void writeCustomNBT(NBTTagCompound compound) {
