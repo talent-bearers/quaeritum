@@ -50,7 +50,7 @@ public class AltarOfTheFallingStarDiagram implements IDiagram {
         if (receiver != null && total > 0) {
             receiver.getEntityData().setInteger(LibNames.TAG_ANIMUS_ON_ENTITY, 50);
         }*/
-        player.addChatComponentMessage(new TextComponentString("Consider it done."));
+        player.addChatComponentMessage(new TextComponentString("WIP"));
         return true;
     }
 

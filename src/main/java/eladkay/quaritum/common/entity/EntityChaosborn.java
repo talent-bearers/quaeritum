@@ -1,13 +1,14 @@
 package eladkay.quaritum.common.entity;
 
 import eladkay.quaritum.common.item.ModItems;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
@@ -18,7 +19,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class EntityChaosborn extends EntityMob implements IRangedAttackMob {
+public class EntityChaosborn extends EntityMob {// implements IRangedAttackMob {
     //The Quality of the Soulstone dropped into the Temple of the Rift, in order to summon a Chaosborn.
     //Determines drops and difficulty.
     public int quality = 0;
@@ -59,11 +60,21 @@ public class EntityChaosborn extends EntityMob implements IRangedAttackMob {
         this.tasks.addTask(3, new EntityAIWander(this, 0.30D));
         this.tasks.addTask(4, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(5, new EntityAILookIdle(this));
-        this.tasks.addTask(4, new EntityAIArrowAttack(this, 1.0D, 20, 60, 15.0F));
+        //  this.tasks.addTask(4, new EntityAIArrowAttack(this, 1.0D, 20, 60, 15.0F));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
 
 
+    }
+
+    @Override
+    public boolean isEntityInvulnerable(DamageSource source) {
+        return source == DamageSource.onFire;
+    }
+
+    @Override
+    public boolean isAIDisabled() {
+        return false;
     }
 
     @Override
@@ -117,13 +128,25 @@ public class EntityChaosborn extends EntityMob implements IRangedAttackMob {
     //Specifies item drops.
     @Override
     protected Item getDropItem() {
-
         //And here, the world of Magical flora begins.
         return ModItems.altas;
     }
 
-    //Attack an Entity with a ranged attack.
     @Override
+    public boolean attackEntityAsMob(Entity entityIn) {
+        if (entityIn.isEntityInvulnerable(DamageSource.onFire)) return false;
+        entityIn.setFire(10);
+        if (entityIn instanceof EntityPlayer) {
+            EntityPlayer entityPlayer = (EntityPlayer) entityIn;
+            for (ItemStack stack : entityPlayer.inventory.armorInventory) {
+                stack.setItemDamage(stack.getItemDamage() + 15);
+            }
+        }
+        return super.attackEntityAsMob(entityIn);
+    }
+
+    //Attack an Entity with a ranged attack.
+    //  @Override
     public void attackEntityWithRangedAttack(EntityLivingBase p_82196_1_,
                                              float p_82196_2_) {
         EntityArrowFire entityarrow = new EntityArrowFire(this.worldObj, this, p_82196_1_, 1.6F, (float) (14 - this.worldObj.getDifficulty().getDifficultyId() * 4));
