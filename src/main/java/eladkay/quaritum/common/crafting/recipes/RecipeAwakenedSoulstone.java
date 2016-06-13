@@ -24,13 +24,16 @@ public class RecipeAwakenedSoulstone implements IRecipe {
     @Override
     public ItemStack getCraftingResult(InventoryCrafting inventoryCrafting) {
         int animus = 0;
+        int rarity = 0;
         for (int index = 0; index < inventoryCrafting.getSizeInventory(); ++index) {
             ItemStack stack = inventoryCrafting.getStackInSlot(index);
-            if (stack != null && Block.getBlockFromItem(stack.getItem()) instanceof IFlower)
+            if (stack != null && Block.getBlockFromItem(stack.getItem()) instanceof IFlower) {
                 animus += ((IFlower) Block.getBlockFromItem(stack.getItem())).getAnimusFromStack(stack);
+                rarity += ((IFlower) Block.getBlockFromItem(stack.getItem())).getRarity(stack);
+            }
 
         }
-        return ItemAwakenedSoulstone.withAnimus(animus);
+        return ItemAwakenedSoulstone.withAnimus(animus, rarity);
     }
 
     @Override

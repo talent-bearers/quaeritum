@@ -9,14 +9,18 @@ import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -66,6 +70,12 @@ public class EntityChaosborn extends EntityMob {// implements IRangedAttackMob {
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
 
 
+    }
+
+    @Override
+    protected boolean processInteract(EntityPlayer player, EnumHand hand, @Nullable ItemStack stack) {
+        player.addChatComponentMessage(new TextComponentString("And his rarity is " + quality));
+        return true;
     }
 
     @Override

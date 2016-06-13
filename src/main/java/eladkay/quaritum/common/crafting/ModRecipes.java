@@ -52,6 +52,7 @@ public class ModRecipes {
                     new ItemStack(Items.CLAY_BALL),
                     "dye" + dyeColors[i]);
         }
+        addShapelessAnimusRecipe(new ItemStack(ModItems.awakened), new ItemStack(ModItems.awakened), new ItemStack(ModItems.awakened));
     }
 
     private static IRecipe addOreDictRecipe(ItemStack output, Object... recipe) {

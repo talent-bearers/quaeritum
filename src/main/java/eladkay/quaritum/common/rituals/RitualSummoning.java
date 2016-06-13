@@ -1,10 +1,12 @@
 package eladkay.quaritum.common.rituals;
 
 import com.google.common.collect.Lists;
+import eladkay.quaritum.api.animus.ISoulstone;
 import eladkay.quaritum.api.rituals.IDiagram;
 import eladkay.quaritum.api.rituals.PositionedBlock;
 import eladkay.quaritum.common.block.ModBlocks;
 import eladkay.quaritum.common.block.flowers.BlockAnimusFlower;
+import eladkay.quaritum.common.block.tile.TileEntityBlueprint;
 import eladkay.quaritum.common.core.PositionedBlockHelper;
 import eladkay.quaritum.common.entity.EntityChaosborn;
 import eladkay.quaritum.common.item.ModItems;
@@ -31,11 +33,18 @@ public class RitualSummoning implements IDiagram {
 
     @Nonnull
     @Override
-    public boolean run(@Nonnull World world, @Nullable EntityPlayer player, @Nonnull BlockPos pos) {
+    public boolean run(@Nonnull World world, @Nullable EntityPlayer player, @Nonnull BlockPos pos, TileEntity te) {
         double x = pos.getX() + 0.5;
         double y = pos.getY() + 2;
         double z = pos.getZ() + 0.5;
-        EntityChaosborn chaosborn = new EntityChaosborn(world, 0, x, y, z);
+        int rarity = 0;
+        TileEntityBlueprint blueprint = (TileEntityBlueprint) te;
+        for (int i = 0; i < blueprint.items.size(); i++)
+            if (blueprint.items.get(i).getItem() instanceof ISoulstone) {
+                ISoulstone ss = ((ISoulstone) blueprint.items.get(i).getItem());
+                rarity = ss.getRarityLevel(blueprint.items.get(i));
+            }
+        EntityChaosborn chaosborn = new EntityChaosborn(world, rarity, x, y, z);
         for (int i = 0; i <= 10; i++)
             world.addWeatherEffect(new EntityLightningBolt(world, pos.getX() + op(Math.random() * 4), pos.getY(), pos.getZ() + op(Math.random() * 4), true));
         world.setWorldTime(23000);

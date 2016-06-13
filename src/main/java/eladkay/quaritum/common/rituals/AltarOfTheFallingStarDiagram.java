@@ -24,7 +24,7 @@ public class AltarOfTheFallingStarDiagram implements IDiagram {
 
 
     @Override
-    public boolean run(@Nonnull World world, EntityPlayer player, @Nonnull BlockPos pos) {
+    public boolean run(@Nonnull World world, EntityPlayer player, @Nonnull BlockPos pos, TileEntity te) {
         /*List<EntityItem> list = world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos.add(8, 8, 8).add(-8, -8, -8)));
         int total = 0;
         EntityPlayer receiver = null;

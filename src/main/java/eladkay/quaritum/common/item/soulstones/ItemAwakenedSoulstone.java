@@ -30,6 +30,13 @@ public class ItemAwakenedSoulstone extends ItemMod implements ISoulstone {
         return stack;
     }
 
+    public static ItemStack withAnimus(int animus, int rarity) {
+        ItemStack stack = new ItemStack(ModItems.awakened);
+        ModItems.awakened.addAnimus(stack, animus);
+        ModItems.awakened.addRarity(stack, rarity);
+        return stack;
+    }
+
     @Override
     public void addInformation(ItemStack itemStack, EntityPlayer player, List<String> list, boolean par4) {
         AnimusHelper.addInformation(itemStack, list);
@@ -67,8 +74,9 @@ public class ItemAwakenedSoulstone extends ItemMod implements ISoulstone {
     @Nonnull
     @Override
     public ItemStack addRarity(@Nonnull ItemStack stack, int amount) {
-        if (getRarityLevel(stack) + amount > getRarityLevel(stack)) return stack;
-        ItemNBTHelper.setInt(stack, LibNBT.TAG_RARITY, getRarityLevel(stack) + amount);
+        ItemNBTHelper.setInt(stack, LibNBT.TAG_RARITY,
+                Math.min(getMaxRarity(stack), Math.max(0,
+                        ItemNBTHelper.getInt(stack, LibNBT.TAG_RARITY, 0) + amount)));
         return stack;
     }
 

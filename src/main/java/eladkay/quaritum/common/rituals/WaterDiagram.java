@@ -26,7 +26,7 @@ public class WaterDiagram implements IDiagram {
     }
 
     @Override
-    public boolean run(@Nonnull World worldIn, @Nullable EntityPlayer player, @Nonnull BlockPos pos) {
+    public boolean run(@Nonnull World worldIn, @Nullable EntityPlayer player, @Nonnull BlockPos pos, TileEntity te) {
         Material material = worldIn.getBlockState(pos).getBlock().getMaterial(worldIn.getBlockState(pos));
         boolean notSolid = !material.isSolid();
         if (!worldIn.isAirBlock(pos) && !notSolid) {

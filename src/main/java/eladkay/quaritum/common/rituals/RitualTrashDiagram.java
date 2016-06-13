@@ -26,7 +26,7 @@ public class RitualTrashDiagram implements IDiagram {
 
     @Nonnull
     @Override
-    public boolean run(@Nonnull World world, @Nullable EntityPlayer player, @Nonnull BlockPos pos) {
+    public boolean run(@Nonnull World world, @Nullable EntityPlayer player, @Nonnull BlockPos pos, TileEntity te) {
         return true;
     }
 
