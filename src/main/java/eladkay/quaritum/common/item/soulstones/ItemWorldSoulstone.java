@@ -1,16 +1,14 @@
 package eladkay.quaritum.common.item.soulstones;
 
+import eladkay.quaritum.api.animus.AnimusHelper;
 import eladkay.quaritum.api.animus.ISoulstone;
-import eladkay.quaritum.client.core.TooltipHelper;
 import eladkay.quaritum.common.core.ItemNBTHelper;
 import eladkay.quaritum.common.item.base.ItemMod;
 import eladkay.quaritum.common.lib.LibNBT;
 import eladkay.quaritum.common.lib.LibNames;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
@@ -36,8 +34,7 @@ public class ItemWorldSoulstone extends ItemMod implements ISoulstone {
 
     @Override
     public void addInformation(ItemStack itemStack, EntityPlayer player, List<String> list, boolean par4) {
-        tooltipIfShift(list, () ->
-                list.add("Animus: " + getAnimusLevel(itemStack)));
+        AnimusHelper.addInformation(itemStack, list);
     }
 
     @Override
@@ -63,6 +60,24 @@ public class ItemWorldSoulstone extends ItemMod implements ISoulstone {
     @Override
     public int getMaxAnimus(@Nonnull ItemStack stack) {
         return 800;
+    }
+
+    @Override
+    public int getRarityLevel(@Nonnull ItemStack stack) {
+        return 20;
+    }
+
+    @Nonnull
+    @Override
+    public ItemStack addRarity(@Nonnull ItemStack stack, int amount) {
+        if (getRarityLevel(stack) + amount > getRarityLevel(stack)) return stack;
+        ItemNBTHelper.setInt(stack, LibNBT.TAG_RARITY, getRarityLevel(stack) + amount);
+        return stack;
+    }
+
+    @Override
+    public int getMaxRarity(@Nonnull ItemStack stack) {
+        return 20;
     }
 
     @Override

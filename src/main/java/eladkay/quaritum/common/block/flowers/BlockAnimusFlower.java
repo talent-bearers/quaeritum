@@ -75,7 +75,7 @@ public class BlockAnimusFlower extends BlockModFlower {
     }
 
     public enum Variants implements IStringSerializable {
-        COMMON(0, 20, "common"), COMMON_ARCANE(1, 40, "commonArcane"), ARCANE(2, 60, "arcane");
+        COMMON(0, 20, "common"), COMMON_ARCANE(10, 40, "commonArcane"), ARCANE(40, 60, "arcane");
 
         public static String[] vars = new String[Variants.values().length];
 

@@ -1,17 +1,9 @@
 package eladkay.quaritum.common.crafting.recipes;
 
 import eladkay.quaritum.api.animus.ISoulstone;
-import eladkay.quaritum.common.core.ItemNBTHelper;
-import eladkay.quaritum.common.lib.LibNBT;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.oredict.ShapedOreRecipe;
-
-import static eladkay.quaritum.common.item.ModItems.awakened;
-import static eladkay.quaritum.common.item.ModItems.passionate;
 
 public class RecipeAnimusUpgrade extends ShapedOreRecipe {
     public RecipeAnimusUpgrade(ItemStack output, Object... inputs) {
@@ -29,6 +21,7 @@ public class RecipeAnimusUpgrade extends ShapedOreRecipe {
                 if (stack.getItem() instanceof ISoulstone) {
                     ISoulstone item = (ISoulstone) stack.getItem();
                     outItem.addAnimus(out, item.getAnimusLevel(stack));
+                    outItem.addRarity(out, item.getRarityLevel(stack));
                 }
             }
         }

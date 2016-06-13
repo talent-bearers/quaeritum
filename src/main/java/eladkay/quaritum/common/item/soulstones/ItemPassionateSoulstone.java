@@ -1,5 +1,6 @@
 package eladkay.quaritum.common.item.soulstones;
 
+import eladkay.quaritum.api.animus.AnimusHelper;
 import eladkay.quaritum.api.animus.IFunctionalSoulstone;
 import eladkay.quaritum.common.Quartium;
 import eladkay.quaritum.common.core.ItemNBTHelper;
@@ -32,8 +33,7 @@ public class ItemPassionateSoulstone extends ItemMod implements IFunctionalSouls
     }
 
     public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean par4) {
-        tooltipIfShift(list, () ->
-                list.add("Animus: " + getAnimusLevel(itemStack)));
+        AnimusHelper.addInformation(itemStack, list);
     }
 
     @Override
@@ -73,7 +73,7 @@ public class ItemPassionateSoulstone extends ItemMod implements IFunctionalSouls
 
     @Override
     public int getAnimusLevel(@Nonnull ItemStack stack) {
-        return ItemNBTHelper.getInt(stack, LibNBT.TAG_ANIMUS, 0);
+        return AnimusHelper.getAnimus(stack);
     }
 
 
@@ -89,6 +89,24 @@ public class ItemPassionateSoulstone extends ItemMod implements IFunctionalSouls
     @Override
     public int getMaxAnimus(@Nonnull ItemStack stack) {
         return 800;
+    }
+
+    @Override
+    public int getRarityLevel(@Nonnull ItemStack stack) {
+        return AnimusHelper.getRarity(stack);
+    }
+
+    @Nonnull
+    @Override
+    public ItemStack addRarity(@Nonnull ItemStack stack, int amount) {
+        if (getRarityLevel(stack) + amount > getRarityLevel(stack)) return stack;
+        ItemNBTHelper.setInt(stack, LibNBT.TAG_RARITY, getRarityLevel(stack) + amount);
+        return stack;
+    }
+
+    @Override
+    public int getMaxRarity(@Nonnull ItemStack stack) {
+        return 0;
     }
 
     @Nullable
