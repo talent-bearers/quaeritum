@@ -1,5 +1,6 @@
 package eladkay.quaritum.common.entity;
 
+import com.google.common.collect.Lists;
 import eladkay.quaritum.common.item.ModItems;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -8,7 +9,6 @@ import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
@@ -18,6 +18,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class EntityChaosborn extends EntityMob {// implements IRangedAttackMob {
     //The Quality of the Soulstone dropped into the Temple of the Rift, in order to summon a Chaosborn.
@@ -86,9 +87,12 @@ public class EntityChaosborn extends EntityMob {// implements IRangedAttackMob {
     //Gets all player in a radius.
     private List<EntityPlayer> getPlayersAround() {
         BlockPos source = getSource();
-        //	float range = 64F;
-        return worldObj.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(source.getX()
+        List<EntityPlayer> l = worldObj.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(source.getX()
                 + 0.5 - range, source.getY() + 0.5 - range, source.getZ() + 0.5 - range, source.getX() + 0.5 + range, source.getY() + 0.5 + range, source.getZ() + 0.5 + range));
+        List<EntityPlayer> ret = Lists.newArrayList();
+        ret.addAll(l.stream().filter(player -> !player.isCreative()).collect(Collectors.toList()));
+        //	float range = 64F;
+        return ret;
     }
 
     //BlockPos of this entity.
@@ -138,9 +142,7 @@ public class EntityChaosborn extends EntityMob {// implements IRangedAttackMob {
         entityIn.setFire(10);
         if (entityIn instanceof EntityPlayer) {
             EntityPlayer entityPlayer = (EntityPlayer) entityIn;
-            for (ItemStack stack : entityPlayer.inventory.armorInventory) {
-                stack.setItemDamage(stack.getItemDamage() + 15);
-            }
+            ((EntityPlayer) entityIn).inventory.damageArmor(15);
         }
         return super.attackEntityAsMob(entityIn);
     }

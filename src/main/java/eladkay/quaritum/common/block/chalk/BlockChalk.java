@@ -10,6 +10,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -18,6 +19,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class BlockChalk extends BlockModColored {
@@ -29,26 +31,39 @@ public class BlockChalk extends BlockModColored {
         setHardness(0.5f);
     }
 
+    @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
         return CARPET_AABB;
     }
 
+    @Override
     public MapColor getMapColor(IBlockState state) {
         return MapColor.CLAY;
     }
 
+    @Override
     public boolean isOpaqueCube(IBlockState state) {
         return false;
     }
 
+    @Override
     public boolean isFullCube(IBlockState state) {
         return false;
     }
 
+    @Override
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
         return super.canPlaceBlockAt(worldIn, pos) && this.canBlockStay(worldIn, pos);
     }
 
+    @Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+        if (playerIn.inventory.getCurrentItem() != null && playerIn.inventory.getCurrentItem().getItem() == ModItems.chalk) {
+            worldIn.setBlockState(pos, getStateFromMeta(playerIn.inventory.getCurrentItem().getItemDamage()));
+            return playerIn.inventory.getCurrentItem().getItemDamage() != getMetaFromState(state);
+        }
+        return false;
+    }
 
     @Override
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
@@ -69,6 +84,7 @@ public class BlockChalk extends BlockModColored {
         return Lists.newArrayList();
     }
 
+    @Override
     public int damageDropped(IBlockState state) {
         return 0;
     }
