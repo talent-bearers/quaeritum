@@ -26,15 +26,15 @@ public class WaterDiagram implements IDiagram {
     }
 
     @Override
-    public boolean run(@Nonnull World worldIn, @Nullable EntityPlayer player, @Nonnull BlockPos pos, TileEntity te) {
-        Material material = worldIn.getBlockState(pos).getBlock().getMaterial(worldIn.getBlockState(pos));
+    public boolean run(@Nonnull World worldIn, @Nullable EntityPlayer player, @Nonnull BlockPos pos, TileEntity te, List<ItemStack> item) {
+        Material material = worldIn.getBlockState(pos.up()).getBlock().getMaterial(worldIn.getBlockState(pos.up()));
         boolean notSolid = !material.isSolid();
-        if (!worldIn.isAirBlock(pos) && !notSolid) {
+        if (!worldIn.isAirBlock(pos.up()) && !notSolid) {
             return false;
         } else {
             if (!worldIn.isRemote && notSolid && !material.isLiquid())
-                worldIn.destroyBlock(pos, true);
-            worldIn.setBlockState(pos, Blocks.FLOWING_WATER.getDefaultState(), 3);
+                worldIn.destroyBlock(pos.up(), true);
+            worldIn.setBlockState(pos.up(), Blocks.FLOWING_WATER.getDefaultState(), 3);
         }
         return false;
     }

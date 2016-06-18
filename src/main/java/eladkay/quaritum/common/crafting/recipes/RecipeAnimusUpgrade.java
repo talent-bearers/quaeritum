@@ -3,6 +3,7 @@ package eladkay.quaritum.common.crafting.recipes;
 import com.google.common.collect.Lists;
 import eladkay.quaritum.api.animus.ISoulstone;
 import eladkay.quaritum.api.misc.NonPrimInt;
+import eladkay.quaritum.common.item.ModItems;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -30,12 +31,44 @@ public class RecipeAnimusUpgrade extends ShapedOreRecipe {
                 }
             }
         }
-        //outItem.addRarity(out, getSmallestInList(rarities));
-        outItem.addRarity(out, getAverageOfList(rarities));
+        outItem.addRarity(out, getSmallestInList(rarities));
+        //outItem.addRarity(out, getAverageOfList(rarities));
         return out;
     }
 
-    private static int getSmallestInList(List<Integer> l) {
+    public static ItemStack output(ItemStack output, List<ItemStack> var1) {
+        ItemStack out = output.copy();
+        List<Integer> rarities = Lists.newArrayList();
+        if (!(out.getItem() instanceof ISoulstone))
+            return out;
+        ISoulstone outItem = (ISoulstone) out.getItem();
+        var1.stream().filter(stack -> stack != null).filter(stack -> stack.getItem() instanceof ISoulstone).forEach(stack -> {
+            ISoulstone item = (ISoulstone) stack.getItem();
+            outItem.addAnimus(out, item.getAnimusLevel(stack));
+            rarities.add(item.getRarityLevel(stack));
+        });
+        outItem.addRarity(out, getSmallestInList(rarities));
+        //outItem.addRarity(out, getAverageOfList(rarities));
+        return out;
+    }
+
+    public static ItemStack output(List<ItemStack> var1) {
+        ItemStack out = new ItemStack(ModItems.awakened);
+        List<Integer> rarities = Lists.newArrayList();
+        if (!(out.getItem() instanceof ISoulstone))
+            return out;
+        ISoulstone outItem = (ISoulstone) out.getItem();
+        var1.stream().filter(stack -> stack != null).filter(stack -> stack.getItem() instanceof ISoulstone).forEach(stack -> {
+            ISoulstone item = (ISoulstone) stack.getItem();
+            outItem.addAnimus(out, item.getAnimusLevel(stack));
+            rarities.add(item.getRarityLevel(stack));
+        });
+        outItem.addRarity(out, getSmallestInList(rarities));
+        //outItem.addRarity(out, getAverageOfList(rarities));
+        return out;
+    }
+
+    public static int getSmallestInList(List<Integer> l) {
         int ret = Integer.MAX_VALUE;
         for (Integer inte : l)
             if (ret > inte)
@@ -44,7 +77,7 @@ public class RecipeAnimusUpgrade extends ShapedOreRecipe {
     }
 
     private static int getAverageOfList(List<Integer> l) {
-        final NonPrimInt i = new NonPrimInt(0);
+        NonPrimInt i = new NonPrimInt(0);
         l.forEach(i::add);
         return i.value / l.size();
     }

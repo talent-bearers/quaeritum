@@ -11,6 +11,7 @@ public class ModDiagrams {
         RitualRegistry.registerDiagram(new InfusionDiagram(), "infusion");
         RitualRegistry.registerDiagram(new RitualSummoning(), "summonChaosborn");
         RitualRegistry.registerDiagram(new WaterDiagram(), "water");
+        RitualRegistry.registerDiagram(new HarmonizedHallDiagram(), "merger");
     }
 
 }

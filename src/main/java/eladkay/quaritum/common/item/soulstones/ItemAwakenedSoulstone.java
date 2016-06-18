@@ -93,4 +93,8 @@ public class ItemAwakenedSoulstone extends ItemMod implements ISoulstone {
     @Override
     public void doPassive(@Nonnull ItemStack stack) {
     }
+
+    public String toString(ItemStack stack) {
+        return "awakened: animus=" + getAnimusLevel(stack) + "&rarity=" + getRarityLevel(stack);
+    }
 }

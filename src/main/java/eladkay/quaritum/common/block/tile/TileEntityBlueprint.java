@@ -32,7 +32,6 @@ public class TileEntityBlueprint extends TileMod implements IInventory {
 
     public static boolean matches(List<ItemStack> items, List<ItemStack> required) {
         List<Object> inputsMissing = new ArrayList<>(required);
-
         for (ItemStack i : items) {
             for (int j = 0; j < inputsMissing.size(); j++) {
                 Object inp = inputsMissing.get(j);
@@ -103,7 +102,7 @@ public class TileEntityBlueprint extends TileMod implements IInventory {
     private boolean runRitual(IDiagram ritual, EntityPlayer player) {
         if (ritual != null) {
             clear();
-            return ritual.run(worldObj, player, pos, this);
+            return ritual.run(worldObj, player, pos, this, items);
         } else
             return false;
 

@@ -33,7 +33,7 @@ public class RitualSummoning implements IDiagram {
 
     @Nonnull
     @Override
-    public boolean run(@Nonnull World world, @Nullable EntityPlayer player, @Nonnull BlockPos pos, TileEntity te) {
+    public boolean run(@Nonnull World world, @Nullable EntityPlayer player, @Nonnull BlockPos pos, TileEntity te, List<ItemStack> item) {
         double x = pos.getX() + 0.5;
         double y = pos.getY() + 2;
         double z = pos.getZ() + 0.5;
