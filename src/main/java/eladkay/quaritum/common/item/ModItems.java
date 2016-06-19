@@ -4,6 +4,8 @@ import eladkay.quaritum.common.Quartium;
 import eladkay.quaritum.common.item.chalk.ItemChalk;
 import eladkay.quaritum.common.item.misc.ItemFertilizer;
 import eladkay.quaritum.common.item.misc.ItemReagentAtlas;
+import eladkay.quaritum.common.item.misc.ItemRiftmakerPart;
+import eladkay.quaritum.common.item.misc.ItemWorldBlade;
 import eladkay.quaritum.common.item.soulstones.*;
 
 public class ModItems {
@@ -18,6 +20,8 @@ public class ModItems {
     public static ItemChalk chalk;
     public static ItemFertilizer fertilizer;
     public static ItemReagentAtlas altas;
+    public static ItemRiftmakerPart riftmakerPart;
+    public static ItemWorldBlade worldBlade;
 
     public static void init() {
         dormant = new ItemDormantSoulstone();
@@ -29,6 +33,8 @@ public class ModItems {
         chalk = new ItemChalk();
         fertilizer = new ItemFertilizer();
         altas = new ItemReagentAtlas();
+        riftmakerPart = new ItemRiftmakerPart();
+        worldBlade = new ItemWorldBlade();
         if (Quartium.isDevEnv)
             debug = new ItemDebug();
 

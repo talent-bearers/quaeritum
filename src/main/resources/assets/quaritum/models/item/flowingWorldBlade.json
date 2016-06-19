@@ -1,0 +1,14 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "quaritum:items/flowingWorldBlade"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "blocking": 1
+      },
+      "model": "quaritum:item/blocking_worldblade"
+    }
+  ]
+}

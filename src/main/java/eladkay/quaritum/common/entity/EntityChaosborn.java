@@ -147,6 +147,13 @@ public class EntityChaosborn extends EntityMob {// implements IRangedAttackMob {
     }
 
     @Override
+    protected void dropFewItems(boolean wasRecentlyHit, int lootingModifier) {
+        super.dropFewItems(wasRecentlyHit, lootingModifier);
+        if (wasRecentlyHit)
+            this.entityDropItem(new ItemStack(ModItems.riftmakerPart, (int) rand.nextDouble() * lootingModifier + 1, rand.nextInt(3)), 0);
+    }
+
+    @Override
     public boolean attackEntityAsMob(Entity entityIn) {
         if (entityIn.isEntityInvulnerable(DamageSource.onFire)) return false;
         entityIn.setFire(10);

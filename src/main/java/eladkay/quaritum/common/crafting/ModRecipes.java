@@ -1,6 +1,7 @@
 package eladkay.quaritum.common.crafting;
 
 import eladkay.quaritum.common.block.ModBlocks;
+import eladkay.quaritum.common.block.flowers.BlockAnimusFlower;
 import eladkay.quaritum.common.crafting.recipes.RecipeAnimusUpgrade;
 import eladkay.quaritum.common.crafting.recipes.RecipeAwakenedSoulstone;
 import eladkay.quaritum.common.crafting.recipes.RecipeShapelessAnimusUpgrade;
@@ -53,6 +54,16 @@ public class ModRecipes {
                     "dye" + dyeColors[i]);
         }
         addShapelessAnimusRecipe(new ItemStack(ModItems.awakened), new ItemStack(ModItems.awakened), new ItemStack(ModItems.awakened));
+        addOreDictRecipe(new ItemStack(ModItems.worldBlade),
+                " FI",
+                "CWF",
+                "SC ",
+                'F', new ItemStack(ModItems.riftmakerPart),
+                'I', "ingotIron",
+                'C', new ItemStack(ModItems.riftmakerPart, 1, 2),
+                'W', new ItemStack(ModItems.passive),
+                'S', new ItemStack(Items.STICK));
+        addShapelessAnimusRecipe(new ItemStack(ModItems.passive), new ItemStack(ModItems.awakened), new ItemStack(ModBlocks.crystal), new ItemStack(ModBlocks.flower, 1, BlockAnimusFlower.Variants.ARCANE.ordinal()));
     }
 
     private static IRecipe addOreDictRecipe(ItemStack output, Object... recipe) {

@@ -25,4 +25,6 @@ public class LibNames {
     public static final String FERTILIZER = "fertilizer";
     public static final String REAGENT = "reagent";
     public static final String ATLAS = "atlas";
+    public static final String RIFTMAKER_PART = "riftmakerPart";
+    public static final String WORLD_BLADE = "flowingWorldBlade";
 }

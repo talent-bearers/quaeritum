@@ -5,6 +5,7 @@ import eladkay.quaritum.common.crafting.ModRecipes;
 import eladkay.quaritum.common.entity.ModEntities;
 import eladkay.quaritum.common.item.ModItems;
 import eladkay.quaritum.common.rituals.ModDiagrams;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -30,6 +31,10 @@ public class CommonProxy {
     }
 
     public void post(FMLPostInitializationEvent e) {
+
+    }
+
+    public void spawnParticleMagixFX(World world, double x, double y, double z, double vx, double vy, double vz, double r, double g, double b) {
 
     }
 }

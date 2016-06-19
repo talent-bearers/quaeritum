@@ -13,4 +13,6 @@ public class LibMisc {
 
     public static final String COMMON_PROXY = "eladkay.quaritum.common.core.CommonProxy";
     public static final String CLIENT_PROXY = "eladkay.quaritum.client.core.ClientProxy";
+
+    public static final String MYSTIC = "mystic";
 }
