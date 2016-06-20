@@ -16,6 +16,9 @@ tile.quaritum:flowerArcane.name=Arcane Flower
 
 tile.quaritum:crystal.name=Manifest Soul
 tile.quaritum:flowingWorldBlade.name=Blade of the Flowing World
+tile.quaritum:riftFur.name=Riftmaker's Fur
+tile.quaritum:riftFang.name=Riftmaker's Fang
+tile.quaritum:riftClaw.name=Riftmaker's Claw
 
 tile.quaritum:debug.name=Debug Item
 
