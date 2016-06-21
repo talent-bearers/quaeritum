@@ -12,7 +12,6 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 
 public class ItemDebug extends ItemMod {
@@ -38,20 +37,20 @@ public class ItemDebug extends ItemMod {
         if (!worldIn.isRemote)
             if (GuiScreen.isShiftKeyDown()) {
                 AnimusHelper.Player.addAnimus(playerIn, 50);
-                ChatHelper.sendNoSpam(playerIn, "Added 50, current animus level for " + playerIn.getName() + " is: " + AnimusHelper.Player.getAnimus(playerIn));
+                ChatHelper.sendNoSpam2(playerIn, "Added 50, current animus level for " + playerIn.getName() + " is: " + AnimusHelper.Player.getAnimus(playerIn));
             } else if (GuiScreen.isCtrlKeyDown()) {
                 AnimusHelper.Player.addAnimus(playerIn, -50);
-                ChatHelper.sendNoSpam(playerIn, "Took 50, current animus level for " + playerIn.getName() + " is: " + AnimusHelper.Player.getAnimus(playerIn));
+                ChatHelper.sendNoSpam2(playerIn, "Took 50, current animus level for " + playerIn.getName() + " is: " + AnimusHelper.Player.getAnimus(playerIn));
             } else
-                ChatHelper.sendNoSpam(playerIn, "Current animus level for " + playerIn.getName() + " is: " + AnimusHelper.Player.getAnimus(playerIn));
+                ChatHelper.sendNoSpam2(playerIn, "Current animus level for " + playerIn.getName() + " is: " + AnimusHelper.Player.getAnimus(playerIn));
 
         return super.onItemRightClick(itemStackIn, worldIn, playerIn, hand);
     }
 
     @Override
     public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        if (worldIn.isRemote)
-            playerIn.addChatComponentMessage(new TextComponentString(worldIn.getBlockState(pos).toString()));
+        //ChatHelper.sendNoSpam1(playerIn, worldIn.getBlockState(pos).toString());
+        ChatHelper.sendChat(playerIn, worldIn.getBlockState(pos).toString());
         return super.onItemUse(stack, playerIn, worldIn, pos, hand, facing, hitX, hitY, hitZ);
     }
 }
