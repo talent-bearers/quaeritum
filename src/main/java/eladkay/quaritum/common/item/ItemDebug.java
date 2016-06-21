@@ -1,6 +1,7 @@
 package eladkay.quaritum.common.item;
 
 import eladkay.quaritum.api.animus.AnimusHelper;
+import eladkay.quaritum.common.core.ChatHelper;
 import eladkay.quaritum.common.item.base.ItemMod;
 import eladkay.quaritum.common.lib.LibNames;
 import net.minecraft.client.gui.GuiScreen;
@@ -37,12 +38,13 @@ public class ItemDebug extends ItemMod {
         if (!worldIn.isRemote)
             if (GuiScreen.isShiftKeyDown()) {
                 AnimusHelper.Player.addAnimus(playerIn, 50);
-                playerIn.addChatComponentMessage(new TextComponentString("Added 50, current animus level for " + playerIn.getName() + " is: " + AnimusHelper.Player.getAnimus(playerIn)));
+                ChatHelper.sendNoSpam(playerIn, "Added 50, current animus level for " + playerIn.getName() + " is: " + AnimusHelper.Player.getAnimus(playerIn));
             } else if (GuiScreen.isCtrlKeyDown()) {
                 AnimusHelper.Player.addAnimus(playerIn, -50);
-                playerIn.addChatComponentMessage(new TextComponentString("Took 50, current animus level for " + playerIn.getName() + " is: " + AnimusHelper.Player.getAnimus(playerIn)));
+                ChatHelper.sendNoSpam(playerIn, "Took 50, current animus level for " + playerIn.getName() + " is: " + AnimusHelper.Player.getAnimus(playerIn));
             } else
-                playerIn.addChatComponentMessage(new TextComponentString("Current animus level for " + playerIn.getName() + " is: " + AnimusHelper.Player.getAnimus(playerIn)));
+                ChatHelper.sendNoSpam(playerIn, "Current animus level for " + playerIn.getName() + " is: " + AnimusHelper.Player.getAnimus(playerIn));
+
         return super.onItemRightClick(itemStackIn, worldIn, playerIn, hand);
     }
 

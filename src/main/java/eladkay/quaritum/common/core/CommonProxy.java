@@ -23,6 +23,7 @@ public class CommonProxy {
         ModRecipes.init();
         new Events().init();
         ModDiagrams.init();
+        ChatHelper.PacketHandler.init();
         FMLInterModComms.sendMessage("Waila", "register", "eladkay.quaritum.common.compat.waila.Waila.onWailaCall");
     }
 
