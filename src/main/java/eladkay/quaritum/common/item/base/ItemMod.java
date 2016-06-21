@@ -13,6 +13,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 
@@ -54,6 +55,7 @@ public class ItemMod extends Item implements ModelHandler.IVariantHolder {
         return null;
     }
 
+    @Nonnull
     @Override
     public String[] getVariants() {
         return variants;

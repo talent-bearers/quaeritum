@@ -12,6 +12,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class BlockMod extends Block implements ModelHandler.IModBlock {
 
     private String[] variants;
@@ -50,21 +53,25 @@ public class BlockMod extends Block implements ModelHandler.IModBlock {
         return this;
     }
 
+    @Nonnull
     @Override
     public String getBareName() {
         return bareName;
     }
 
+    @Nonnull
     @Override
     public String[] getVariants() {
         return variants;
     }
 
+    @Nullable
     @Override
     public Class<Enum> getVariantEnum() {
         return null;
     }
 
+    @Nonnull
     @Override
     public IProperty[] getIgnoredProperties() {
         return new IProperty[0];
@@ -75,6 +82,7 @@ public class BlockMod extends Block implements ModelHandler.IModBlock {
         return null;
     }
 
+    @Nonnull
     @Override
     public EnumRarity getBlockRarity(ItemStack stack) {
         return EnumRarity.COMMON;

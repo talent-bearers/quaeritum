@@ -16,6 +16,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 public class ItemModBlock extends ItemBlock implements ModelHandler.IVariantHolder, ModelHandler.IColorProvider {
@@ -78,6 +79,7 @@ public class ItemModBlock extends ItemBlock implements ModelHandler.IVariantHold
         return this.modBlock.getCustomMeshDefinition();
     }
 
+    @Nonnull
     @Override
     public String[] getVariants() {
         return this.modBlock.getVariants();

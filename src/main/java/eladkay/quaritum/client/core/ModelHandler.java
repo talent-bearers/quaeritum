@@ -22,6 +22,8 @@ import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -184,35 +186,48 @@ public class ModelHandler {
 
     public interface IVariantHolder {
         @SideOnly(Side.CLIENT)
+        @Nullable
         ItemMeshDefinition getCustomMeshDefinition();
 
+        @Nonnull
         String[] getVariants();
     }
 
     public interface IExtraVariantHolder extends IVariantHolder {
+        @Nonnull
         String[] getExtraVariants();
     }
 
     // The following is a blatant copy of Psi's ModelHandler.
 
     public interface IModBlock extends IVariantHolder {
+        @Nullable
         Class<Enum> getVariantEnum();
 
+        @Nonnull
         IProperty[] getIgnoredProperties();
 
+        @Nonnull
         String getBareName();
 
+        @Nonnull
         EnumRarity getBlockRarity(ItemStack stack);
     }
 
     public interface IColorProvider {
         @SideOnly(Side.CLIENT)
+        @Nullable
         IItemColor getColor();
     }
 
     public interface IBlockColorProvider extends IColorProvider {
         @SideOnly(Side.CLIENT)
+        @Nullable
         IBlockColor getBlockColor();
+
+        @Override
+        @Nullable
+        default IItemColor getColor() { return null; }
     }
 
     public interface ICustomLogHolder extends IVariantHolder {

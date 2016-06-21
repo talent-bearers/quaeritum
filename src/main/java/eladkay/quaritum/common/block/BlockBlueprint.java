@@ -32,24 +32,8 @@ public class BlockBlueprint extends BlockModContainer {
     }
 
     @Override
-    public AxisAlignedBB getSelectedBoundingBox(IBlockState blockState, World worldIn, BlockPos pos) {
-        return BOUNDS;
-    }
-
-    @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
         return BOUNDS;
-    }
-
-  /*  @Override
-    public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn) {
-        super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn);
-        collidingBoxes.add(BOUNDS);
-    }*/
-
-    @Override
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState worldIn, World pos, BlockPos state) {
-        return BOUNDS.offset(state);
     }
 
     @Override

@@ -14,6 +14,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * @author WireSegal
  *         Created at 4:18 PM on 4/30/16.
@@ -56,21 +59,25 @@ public abstract class BlockModFlower extends BlockBush implements IFlower, Model
         return this;
     }
 
+    @Nonnull
     @Override
     public String getBareName() {
         return bareName;
     }
 
+    @Nonnull
     @Override
     public String[] getVariants() {
         return variants;
     }
 
+    @Nullable
     @Override
     public Class<Enum> getVariantEnum() {
         return null;
     }
 
+    @Nonnull
     @Override
     public IProperty[] getIgnoredProperties() {
         return new IProperty[0];
@@ -81,6 +88,7 @@ public abstract class BlockModFlower extends BlockBush implements IFlower, Model
         return null;
     }
 
+    @Nonnull
     @Override
     public EnumRarity getBlockRarity(ItemStack stack) {
         return EnumRarity.COMMON;
