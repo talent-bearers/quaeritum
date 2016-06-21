@@ -101,8 +101,10 @@ public class TileEntityBlueprint extends TileMod implements IInventory {
 
     private boolean runRitual(IDiagram ritual, EntityPlayer player) {
         if (ritual != null) {
-            clear();
-            return ritual.run(worldObj, player, pos, this, items);
+            boolean flag;
+            if (flag = ritual.run(worldObj, player, pos, this, items))
+                clear();
+            return flag;
         } else
             return false;
 

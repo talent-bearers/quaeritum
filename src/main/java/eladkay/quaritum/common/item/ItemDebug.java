@@ -1,8 +1,9 @@
 package eladkay.quaritum.common.item;
 
+import eladkay.quaritum.api.animus.AnimusHelper;
 import eladkay.quaritum.common.item.base.ItemMod;
-import eladkay.quaritum.common.lib.LibNBT;
 import eladkay.quaritum.common.lib.LibNames;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
@@ -22,15 +23,26 @@ public class ItemDebug extends ItemMod {
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
-        if (worldIn.isRemote) {
+     /*   if (!worldIn.isRemote)
             if (!playerIn.isSneaking())
-                playerIn.addChatComponentMessage(new TextComponentString("Animus levels: " + playerIn.getEntityData().getInteger(LibNBT.TAG_ANIMUS_ON_ENTITY)));
+                playerIn.addChatComponentMessage(new TextComponentString("Animus levels: " + playerIn.getEntityData().getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG).getInteger(LibNBT.TAG_ANIMUS_ON_ENTITY)));
             else {
-                playerIn.getEntityData().setInteger(LibNBT.TAG_ANIMUS_ON_ENTITY, playerIn.getEntityData().getInteger(LibNBT.TAG_ANIMUS_ON_ENTITY) + 50);
-                playerIn.addChatComponentMessage(new TextComponentString("Added 50, current animus level for " + playerIn.getName() + " is: " + playerIn.getEntityData().getInteger(LibNBT.TAG_ANIMUS_ON_ENTITY)));
-            }
-
-        }
+                NBTTagCompound data = playerIn.getEntityData();
+                if (!data.hasKey(EntityPlayer.PERSISTED_NBT_TAG))
+                    data.setTag(EntityPlayer.PERSISTED_NBT_TAG, new NBTTagCompound());
+                NBTTagCompound persist = data.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG);
+                persist.setInteger(LibNBT.TAG_ANIMUS_ON_ENTITY, playerIn.getEntityData().getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG).getInteger(LibNBT.TAG_ANIMUS_ON_ENTITY) + 50);
+                playerIn.addChatComponentMessage(new TextComponentString("Added 50, current animus level for " + playerIn.getName() + " is: " + playerIn.getEntityData().getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG).getInteger(LibNBT.TAG_ANIMUS_ON_ENTITY)));
+            }*/
+        if (!worldIn.isRemote)
+            if (GuiScreen.isShiftKeyDown()) {
+                AnimusHelper.Player.addAnimus(playerIn, 50);
+                playerIn.addChatComponentMessage(new TextComponentString("Added 50, current animus level for " + playerIn.getName() + " is: " + AnimusHelper.Player.getAnimus(playerIn)));
+            } else if (GuiScreen.isCtrlKeyDown()) {
+                AnimusHelper.Player.addAnimus(playerIn, -50);
+                playerIn.addChatComponentMessage(new TextComponentString("Took 50, current animus level for " + playerIn.getName() + " is: " + AnimusHelper.Player.getAnimus(playerIn)));
+            } else
+                playerIn.addChatComponentMessage(new TextComponentString("Current animus level for " + playerIn.getName() + " is: " + AnimusHelper.Player.getAnimus(playerIn)));
         return super.onItemRightClick(itemStackIn, worldIn, playerIn, hand);
     }
 

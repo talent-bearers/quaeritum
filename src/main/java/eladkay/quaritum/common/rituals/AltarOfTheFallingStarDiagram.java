@@ -1,10 +1,14 @@
 package eladkay.quaritum.common.rituals;
 
 import com.google.common.collect.Lists;
+import eladkay.quaritum.api.animus.AnimusHelper;
+import eladkay.quaritum.api.animus.ISoulstone;
 import eladkay.quaritum.api.rituals.IDiagram;
 import eladkay.quaritum.api.rituals.PositionedBlock;
+import eladkay.quaritum.common.core.PositionedBlockHelper;
+import eladkay.quaritum.common.item.ModItems;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -50,8 +54,16 @@ public class AltarOfTheFallingStarDiagram implements IDiagram {
         if (receiver != null && total > 0) {
             receiver.getEntityData().setInteger(LibNames.TAG_ANIMUS_ON_ENTITY, 50);
         }*/
-        player.addChatComponentMessage(new TextComponentString("WIP"));
-        return true;
+        boolean flag = false;
+        for (ItemStack stack : item) {
+            if (!(stack.getItem() instanceof ISoulstone)) continue;
+            ISoulstone ss = (ISoulstone) stack.getItem();
+            AnimusHelper.Player.addAnimus(player, ss.getAnimusLevel(item.get(0)));
+            AnimusHelper.Player.addAnimusRarity(player, ss.getAnimusLevel(item.get(0)));
+            flag = true;
+        }
+        player.addChatComponentMessage(new TextComponentString("A rush of energy flows through your soul!"));
+        return flag;
     }
 
 
@@ -73,7 +85,7 @@ public class AltarOfTheFallingStarDiagram implements IDiagram {
     @Override
     public ArrayList<ItemStack> getRequiredItems() {
         ArrayList<ItemStack> list = Lists.newArrayList();
-        list.add(new ItemStack(Items.DIAMOND));
+        list.add(new ItemStack(ModItems.awakened));
         return list;
         //return Lists.newArrayList();
 
@@ -81,6 +93,10 @@ public class AltarOfTheFallingStarDiagram implements IDiagram {
 
     @Override
     public List<PositionedBlock> buildChalks(@Nonnull List<PositionedBlock> chalks) {
+        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(1, 0, 0), EnumDyeColor.RED));
+        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(-1, 0, 0), EnumDyeColor.RED));
+        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(0, 0, 1), EnumDyeColor.RED));
+        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(0, 0, -1), EnumDyeColor.RED));
         return chalks;
     }
 }

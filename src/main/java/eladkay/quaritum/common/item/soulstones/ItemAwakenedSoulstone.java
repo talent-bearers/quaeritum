@@ -7,11 +7,14 @@ import eladkay.quaritum.common.item.ModItems;
 import eladkay.quaritum.common.item.base.ItemMod;
 import eladkay.quaritum.common.lib.LibNBT;
 import eladkay.quaritum.common.lib.LibNames;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class ItemAwakenedSoulstone extends ItemMod implements ISoulstone {
@@ -38,6 +41,36 @@ public class ItemAwakenedSoulstone extends ItemMod implements ISoulstone {
     }
 
     @Override
+    public double getDurabilityForDisplay(ItemStack stack) {
+        return 1 - (double) getAnimusLevel(stack) / (double) getMaxAnimus(stack);
+    }
+
+    @Override
+    public boolean showDurabilityBar(ItemStack stack) {
+        return true;
+    }
+
+    @Override
+    public int getDamage(ItemStack stack) {
+        if (super.getDamage(stack) != 0)
+            super.setDamage(stack, 0);
+        return 0;
+    }
+
+    @Override
+    public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
+        subItems.add(new ItemStack(itemIn));
+        ItemStack stack2 = new ItemStack(itemIn, 1);
+        AnimusHelper.setAnimus(getMaxAnimus(stack2), stack2);
+        subItems.add(stack2);
+    }
+
+    @Override
+    public int getMaxDamage(ItemStack stack) {
+        return getAnimusLevel(stack);
+    }
+
+    @Override
     public void addInformation(ItemStack itemStack, EntityPlayer player, List<String> list, boolean par4) {
         AnimusHelper.addInformation(itemStack, list);
     }
@@ -48,7 +81,7 @@ public class ItemAwakenedSoulstone extends ItemMod implements ISoulstone {
     }
 
     @Override
-    public int getAnimusLevel(@Nonnull ItemStack stack) {
+    public int getAnimusLevel(@Nullable ItemStack stack) {
         return ItemNBTHelper.getInt(stack, LibNBT.TAG_ANIMUS, 0);
     }
 

@@ -5,6 +5,8 @@ import eladkay.quaritum.common.core.CommonProxy;
 import eladkay.quaritum.common.entity.EntityChaosborn;
 import eladkay.quaritum.common.lib.LibMisc;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -22,7 +24,7 @@ public class ClientProxy extends CommonProxy {
     public void init(FMLInitializationEvent e) {
         super.init(e);
         ModelHandler.init();
-        RenderingRegistry.registerEntityRenderingHandler(EntityChaosborn.class, new RenderChaosborn());
+        RenderingRegistry.registerEntityRenderingHandler(EntityChaosborn.class, (Render<? extends Entity>) new RenderChaosborn());
         Minecraft.getMinecraft().getTextureMapBlocks().registerSprite(new ResourceLocation("quaritum:entity/magicParticle"));
         Minecraft.getMinecraft().getTextureMapBlocks().loadTextureAtlas(Minecraft.getMinecraft().getResourceManager());
     }

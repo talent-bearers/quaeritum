@@ -18,7 +18,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class ItemModSword extends ItemMod {
-    private final float attackDamage;
+    protected final float attackDamage;
     private final Item.ToolMaterial material;
 
     public ItemModSword(String name, Item.ToolMaterial material, String... variants) {
