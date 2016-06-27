@@ -29,7 +29,10 @@ public class ItemModBlock extends ItemBlock implements ModelHandler.IVariantHold
         if (this.getVariants().length > 1) {
             this.setHasSubtypes(true);
         }
-        ModelHandler.variantCache.add(this);
+        try {
+            ModelHandler.variantCache.add(this);
+        } catch (Throwable ignored) {}
+
     }
 
     @Override

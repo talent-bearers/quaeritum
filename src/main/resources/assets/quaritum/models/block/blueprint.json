@@ -1,8 +1,355 @@
 {
-  "parent": "block/half_slab",
+  "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
+  "parent": "block/block",
   "textures": {
-    "bottom": "quaritum:blocks/blueprint_side",
-    "top": "quaritum:blocks/blueprint_top",
-    "side": "quaritum:blocks/blueprint_side"
-  }
+    "0": "quaritum:blocks/blueprintTex",
+    "particle": "quaritum:blocks/blueprintTex"
+  },
+  "elements": [
+    {
+      "name": "Cube",
+      "from": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "to": [
+        15.0,
+        8.0,
+        15.0
+      ],
+      "faces": {
+        "north": {
+          "texture": "#0",
+          "uv": [
+            8.0,
+            0.0,
+            15.0,
+            4.0
+          ]
+        },
+        "east": {
+          "texture": "#0",
+          "uv": [
+            8.0,
+            0.0,
+            15.0,
+            4.0
+          ]
+        },
+        "south": {
+          "texture": "#0",
+          "uv": [
+            8.0,
+            0.0,
+            15.0,
+            4.0
+          ]
+        },
+        "west": {
+          "texture": "#0",
+          "uv": [
+            8.0,
+            0.0,
+            15.0,
+            4.0
+          ]
+        },
+        "up": {
+          "texture": "#0",
+          "uv": [
+            0.0,
+            0.0,
+            7.0,
+            7.0
+          ]
+        },
+        "down": {
+          "texture": "#0",
+          "uv": [
+            0.0,
+            8.0,
+            7.0,
+            15.0
+          ]
+        }
+      }
+    },
+    {
+      "name": "Cube",
+      "from": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "to": [
+        2.0,
+        9.0,
+        2.0
+      ],
+      "faces": {
+        "north": {
+          "texture": "#0",
+          "uv": [
+            8.0,
+            8.0,
+            9.0,
+            12.5
+          ]
+        },
+        "east": {
+          "texture": "#0",
+          "uv": [
+            8.0,
+            8.0,
+            9.0,
+            12.5
+          ]
+        },
+        "south": {
+          "texture": "#0",
+          "uv": [
+            8.0,
+            8.0,
+            9.0,
+            12.5
+          ]
+        },
+        "west": {
+          "texture": "#0",
+          "uv": [
+            8.0,
+            8.0,
+            9.0,
+            12.5
+          ]
+        },
+        "up": {
+          "texture": "#0",
+          "uv": [
+            8.0,
+            8.0,
+            9.0,
+            9.0
+          ]
+        },
+        "down": {
+          "texture": "#0",
+          "uv": [
+            8.0,
+            11.5,
+            9.0,
+            12.5
+          ]
+        }
+      }
+    },
+    {
+      "name": "Cube",
+      "from": [
+        14.0,
+        0.0,
+        0.0
+      ],
+      "to": [
+        16.0,
+        9.0,
+        2.0
+      ],
+      "faces": {
+        "north": {
+          "texture": "#0",
+          "uv": [
+            8.0,
+            8.0,
+            9.0,
+            12.5
+          ]
+        },
+        "east": {
+          "texture": "#0",
+          "uv": [
+            8.0,
+            8.0,
+            9.0,
+            12.5
+          ]
+        },
+        "south": {
+          "texture": "#0",
+          "uv": [
+            8.0,
+            8.0,
+            9.0,
+            12.5
+          ]
+        },
+        "west": {
+          "texture": "#0",
+          "uv": [
+            8.0,
+            8.0,
+            9.0,
+            12.5
+          ]
+        },
+        "up": {
+          "texture": "#0",
+          "uv": [
+            8.0,
+            8.0,
+            9.0,
+            9.0
+          ]
+        },
+        "down": {
+          "texture": "#0",
+          "uv": [
+            8.0,
+            11.5,
+            9.0,
+            12.5
+          ]
+        }
+      }
+    },
+    {
+      "name": "Cube",
+      "from": [
+        14.0,
+        0.0,
+        14.0
+      ],
+      "to": [
+        16.0,
+        9.0,
+        16.0
+      ],
+      "faces": {
+        "north": {
+          "texture": "#0",
+          "uv": [
+            8.0,
+            8.0,
+            9.0,
+            12.5
+          ]
+        },
+        "east": {
+          "texture": "#0",
+          "uv": [
+            8.0,
+            8.0,
+            9.0,
+            12.5
+          ]
+        },
+        "south": {
+          "texture": "#0",
+          "uv": [
+            8.0,
+            8.0,
+            9.0,
+            12.5
+          ]
+        },
+        "west": {
+          "texture": "#0",
+          "uv": [
+            8.0,
+            8.0,
+            9.0,
+            12.5
+          ]
+        },
+        "up": {
+          "texture": "#0",
+          "uv": [
+            8.0,
+            8.0,
+            9.0,
+            9.0
+          ]
+        },
+        "down": {
+          "texture": "#0",
+          "uv": [
+            8.0,
+            11.5,
+            9.0,
+            12.5
+          ]
+        }
+      }
+    },
+    {
+      "name": "Cube",
+      "from": [
+        0.0,
+        0.0,
+        14.0
+      ],
+      "to": [
+        2.0,
+        9.0,
+        16.0
+      ],
+      "faces": {
+        "north": {
+          "texture": "#0",
+          "uv": [
+            8.0,
+            8.0,
+            9.0,
+            12.5
+          ]
+        },
+        "east": {
+          "texture": "#0",
+          "uv": [
+            8.0,
+            8.0,
+            9.0,
+            12.5
+          ]
+        },
+        "south": {
+          "texture": "#0",
+          "uv": [
+            8.0,
+            8.0,
+            9.0,
+            12.5
+          ]
+        },
+        "west": {
+          "texture": "#0",
+          "uv": [
+            8.0,
+            8.0,
+            9.0,
+            12.5
+          ]
+        },
+        "up": {
+          "texture": "#0",
+          "uv": [
+            8.0,
+            8.0,
+            9.0,
+            9.0
+          ]
+        },
+        "down": {
+          "texture": "#0",
+          "uv": [
+            8.0,
+            11.5,
+            9.0,
+            12.5
+          ]
+        }
+      }
+    }
+  ]
 }

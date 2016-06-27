@@ -33,7 +33,9 @@ public class ItemMod extends Item implements ModelHandler.IVariantHolder {
 
         bareName = name;
         this.variants = variants;
-        ModelHandler.variantCache.add(this);
+        try {
+            ModelHandler.variantCache.add(this);
+        } catch (Throwable ignored) {}
     }
 
 

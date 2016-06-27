@@ -48,8 +48,9 @@ public class BlockMod extends Block implements ModelHandler.IModBlock {
         GameRegistry.register(this);
         if (shouldHaveItemForm())
             GameRegistry.register(new ItemModBlock(this), new ResourceLocation(LibMisc.MOD_ID, name));
-        else
+        else try {
             ModelHandler.variantCache.add(this);
+        } catch (Throwable ignored) {}
         return this;
     }
 
