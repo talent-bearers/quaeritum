@@ -87,9 +87,7 @@ public class TileEntityBlueprint extends TileMod implements IInventory {
     @Override
     public SPacketUpdateTileEntity getUpdatePacket() {
         super.getUpdatePacket();
-        NBTTagCompound syncData = new NBTTagCompound();
-        this.writeToNBT(syncData);
-        return new SPacketUpdateTileEntity(pos, 1, syncData);
+        return new SPacketUpdateTileEntity(pos, -999, this.writeToNBT(new NBTTagCompound()));
     }
 
     @Override
@@ -224,34 +222,16 @@ public class TileEntityBlueprint extends TileMod implements IInventory {
     @Override
     public void readCustomNBT(NBTTagCompound compound) {
         this.items = new ArrayList<>();
-
         NBTTagList nbttaglist = compound.getTagList("Items", 10);
-
-        for (int i = 0; i < nbttaglist.tagCount(); ++i) {
-            NBTTagCompound nbttagcompound = nbttaglist.getCompoundTagAt(i);
-            int j = nbttagcompound.getByte("Slot") & 255;
-
-            if (j >= 0 && j < this.items.size()) {
-                this.items.set(j, ItemStack.loadItemStackFromNBT(nbttagcompound));
-            }
-        }
-
-
+        for (int i = 0; i < nbttaglist.tagCount(); ++i)
+            this.items.add(ItemStack.loadItemStackFromNBT(nbttaglist.getCompoundTagAt(i)));
     }
 
     @Override
     public void writeCustomNBT(NBTTagCompound compound) {
         NBTTagList nbttaglist = new NBTTagList();
-
-        for (int i = 0; i < this.items.size(); ++i) {
-            if (this.items.get(i) != null) {
-                NBTTagCompound nbttagcompound = new NBTTagCompound();
-                nbttagcompound.setByte("Slot", (byte) i);
-                this.items.get(i).writeToNBT(nbttagcompound);
-                nbttaglist.appendTag(nbttagcompound);
-            }
-        }
-
+        for (ItemStack stack : items)
+            nbttaglist.appendTag(stack.writeToNBT(new NBTTagCompound()));
         compound.setTag("Items", nbttaglist);
     }
 }
