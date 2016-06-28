@@ -12,6 +12,8 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -22,13 +24,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TileEntityBlueprint extends TileMod implements IInventory {
-    public boolean debug = true;
     public ArrayList<ItemStack> items = Lists.newArrayList();
-    public boolean debug2 = true;
 
     public static boolean matches(List<ItemStack> items, List<ItemStack> required) {
         List<Object> inputsMissing = new ArrayList<>(required);
@@ -78,7 +79,28 @@ public class TileEntityBlueprint extends TileMod implements IInventory {
                     dirty = true;
                 }
         }
-        if (dirty) markDirty();
+        if (dirty)
+            markDirty();
+    }
+
+    @Nullable
+    @Override
+    public SPacketUpdateTileEntity getUpdatePacket() {
+        super.getUpdatePacket();
+        NBTTagCompound syncData = new NBTTagCompound();
+        this.writeToNBT(syncData);
+        return new SPacketUpdateTileEntity(pos, 1, syncData);
+    }
+
+    @Override
+    public boolean shouldRefresh(World world, BlockPos pos, @Nonnull IBlockState oldState, @Nonnull IBlockState newState) {
+        return oldState.getBlock() != oldState.getBlock();
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
+        super.onDataPacket(net, pkt);
+        this.readFromNBT(pkt.getNbtCompound());
     }
 
     private IDiagram getValidRitual(EntityPlayer player) {
@@ -109,14 +131,6 @@ public class TileEntityBlueprint extends TileMod implements IInventory {
             return false;
 
 
-    }
-
-    private boolean checkItems(List container, List required) {
-        if (container.size() != required.size()) return false;
-        for (int i = 0; i < container.size(); i++) {
-            if (container.get(i) != required.get(i)) return false;
-        }
-        return true;
     }
 
     @Override
@@ -209,7 +223,7 @@ public class TileEntityBlueprint extends TileMod implements IInventory {
 
     @Override
     public void readCustomNBT(NBTTagCompound compound) {
-        this.items = Lists.newArrayList();
+        this.items = new ArrayList<>();
 
         NBTTagList nbttaglist = compound.getTagList("Items", 10);
 
@@ -222,17 +236,8 @@ public class TileEntityBlueprint extends TileMod implements IInventory {
             }
         }
 
-    }
 
-   /* @Override
-    protected SimpleItemStackHandler createItemHandler() {
-        return new SimpleItemStackHandler(this, false) {
-            @Override
-            protected int getStackLimit(int slot, ItemStack stack) {
-                return 1;
-            }
-        };
-    }*/
+    }
 
     @Override
     public void writeCustomNBT(NBTTagCompound compound) {

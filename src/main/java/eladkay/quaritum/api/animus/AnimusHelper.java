@@ -1,6 +1,8 @@
 package eladkay.quaritum.api.animus;
 
 import eladkay.quaritum.client.core.TooltipHelper;
+import eladkay.quaritum.common.Quartium;
+import eladkay.quaritum.common.block.flowers.BlockAnimusFlower;
 import eladkay.quaritum.common.core.ItemNBTHelper;
 import eladkay.quaritum.common.lib.LibMisc;
 import eladkay.quaritum.common.lib.LibNBT;
@@ -33,8 +35,12 @@ public final class AnimusHelper {
 
     public static void addInformation(ItemStack stack, List list) {
         tooltipIfShift(list, () -> {
-            list.add("Animus: " + getAnimus(stack));
-            list.add("Rarity: " + getRarity(stack));
+            if (Quartium.isDevEnv) {
+                list.add("Animus: " + getAnimus(stack));
+                list.add("Rarity: " + getRarity(stack));
+            } else {
+                list.add("Quality: " + BlockAnimusFlower.Variants.rarityToName(getRarity(stack)));
+            }
         });
     }
 

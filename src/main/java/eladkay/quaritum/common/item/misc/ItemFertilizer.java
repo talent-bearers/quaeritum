@@ -14,8 +14,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
-import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -24,11 +22,11 @@ public class ItemFertilizer extends ItemMod {
         super(LibNames.FERTILIZER);
     }
 
-    public static boolean applyBonemeal(ItemStack stack, World worldIn, BlockPos target) {
-        return worldIn instanceof WorldServer && applyBonemeal(stack, worldIn, target, FakePlayerFactory.getMinecraft((WorldServer) worldIn));
+    private static boolean applyBonemeal(ItemStack stack, World worldIn, BlockPos target) {
+        return /*worldIn instanceof WorldServer && */applyBonemeal0(stack, worldIn, target);
     }
 
-    public static boolean applyBonemeal(ItemStack stack, World worldIn, BlockPos target, EntityPlayer player) {
+    private static boolean applyBonemeal0(ItemStack stack, World worldIn, BlockPos target) {
         IBlockState iblockstate = worldIn.getBlockState(target);
         if (iblockstate.equals(ModBlocks.flower.getStateFromMeta(BlockAnimusFlower.Variants.COMMON_ARCANE.ordinal()))) {
             if (!worldIn.isRemote) {
@@ -36,12 +34,10 @@ public class ItemFertilizer extends ItemMod {
                     worldIn.setBlockState(target, ModBlocks.flower.getStateFromMeta(BlockAnimusFlower.Variants.ARCANE.ordinal()));
                 worldIn.playBroadcastSound(2005, target, 0);
                 spawnBonemealParticles(worldIn, target, 0);
-                --stack.stackSize;
-                return true;
             }
-            return true;
+            stack.stackSize--;
         }
-        return false;
+        return true;
     }
 
     @SideOnly(Side.CLIENT)

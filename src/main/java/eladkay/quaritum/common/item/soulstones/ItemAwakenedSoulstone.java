@@ -115,7 +115,7 @@ public class ItemAwakenedSoulstone extends ItemMod implements ISoulstone {
 
     @Override
     public int getMaxRarity(@Nonnull ItemStack stack) {
-        return 100;
+        return 10;
     }
 
     @Override

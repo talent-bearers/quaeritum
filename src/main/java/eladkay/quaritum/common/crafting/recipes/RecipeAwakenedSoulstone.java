@@ -1,5 +1,6 @@
 package eladkay.quaritum.common.crafting.recipes;
 
+import com.google.common.collect.Lists;
 import eladkay.quaritum.api.animus.IFlower;
 import eladkay.quaritum.common.item.soulstones.ItemAwakenedSoulstone;
 import eladkay.quaritum.common.item.soulstones.ItemDormantSoulstone;
@@ -9,6 +10,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
+
+import java.util.List;
 
 public class RecipeAwakenedSoulstone implements IRecipe {
     @Override
@@ -24,16 +27,17 @@ public class RecipeAwakenedSoulstone implements IRecipe {
     @Override
     public ItemStack getCraftingResult(InventoryCrafting inventoryCrafting) {
         int animus = 0;
-        int rarity = 0;
+        //int rarity = 0;
+        List<Integer> rarities = Lists.newArrayList();
         for (int index = 0; index < inventoryCrafting.getSizeInventory(); ++index) {
             ItemStack stack = inventoryCrafting.getStackInSlot(index);
             if (stack != null && Block.getBlockFromItem(stack.getItem()) instanceof IFlower) {
                 animus += ((IFlower) Block.getBlockFromItem(stack.getItem())).getAnimusFromStack(stack);
-                rarity += ((IFlower) Block.getBlockFromItem(stack.getItem())).getRarity(stack);
+                rarities.add(((IFlower) Block.getBlockFromItem(stack.getItem())).getRarity(stack));
             }
 
         }
-        return ItemAwakenedSoulstone.withAnimus(animus, rarity);
+        return ItemAwakenedSoulstone.withAnimus(animus, RecipeAnimusUpgrade.getSmallestInList(rarities));
     }
 
     @Override
