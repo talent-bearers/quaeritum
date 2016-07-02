@@ -17,8 +17,8 @@ public class Quartium {
     public static CommonProxy proxy;
     @Mod.Instance(LibMisc.MOD_ID)
     public static Quartium instance;
-    private static boolean devEnvOverride = true; //if this is true, the environment will launch as normal, even in a
-    //dev environment
+    private static boolean devEnvOverride = false; //if this is true, the environment will launch as normal, even in a
+                                                   //dev environment
     public static boolean isDevEnv = (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment") && !devEnvOverride;
 
     @Mod.EventHandler

@@ -1,14 +1,18 @@
 package eladkay.quaritum.api.rituals;
 
+import com.google.common.collect.Lists;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.List;
 
 public final class PositionedBlock {
     public BlockPos pos;
     private IBlockState state;
+    public List<IProperty> toCompare = Lists.newArrayList();
 
     private PositionedBlock(@Nullable IBlockState state, int x, int y, int z) {
         pos = new BlockPos(x, y, z);

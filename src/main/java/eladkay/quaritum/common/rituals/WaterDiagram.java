@@ -90,7 +90,11 @@ public class WaterDiagram implements IDiagram {
     @Override
     public boolean canRitualRun(@Nullable World world, @Nullable EntityPlayer player, @Nonnull BlockPos pos, @Nonnull TileEntity tile) {
         BlockPos blockPos = pos.up();
-        return !(!world.isAirBlock(blockPos) && world.getBlockState(blockPos).getBlock().getMaterial(null).isSolid()) && !((world.getBlockState(blockPos).getBlock() == Blocks.WATER || world.getBlockState(blockPos).getBlock() == Blocks.FLOWING_WATER) && world.getBlockState(blockPos).getBlock().getMetaFromState(world.getBlockState(blockPos)) == 0);
+        return !(!world.isAirBlock(blockPos) && world.getBlockState(blockPos).getBlock().getMaterial(null).isSolid()) &&
+                !((world.getBlockState(blockPos).getBlock() == Blocks.WATER || world.getBlockState(blockPos).getBlock()
+                == Blocks.FLOWING_WATER) && world.getBlockState(blockPos).getBlock().getMetaFromState(world.getBlockState(blockPos)) == 0)
+                && world.getBlockState(pos.down()) == PositionedBlockHelper.positionedBlockWith(new BlockPos(0, 0, 0), EnumDyeColor.BLUE).getState();
+        //yes I know well this is bad
     }
 
     @Nonnull
