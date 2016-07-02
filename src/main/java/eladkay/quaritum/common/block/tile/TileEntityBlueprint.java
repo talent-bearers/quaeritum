@@ -105,7 +105,7 @@ public class TileEntityBlueprint extends TileMod implements IInventory {
         for (IDiagram ritual : RitualRegistry.getDiagramList()) {
             boolean foundAll = matches(items, ritual.getRequiredItems());
             boolean requirementsMet = ritual.canRitualRun(this.getWorld(), player, pos, this);
-            boolean chalks = PositionedBlockHelper.isChalkSetupValid(ritual.buildChalks(Lists.newArrayList()), this, ritual.getUnlocalizedName());
+            boolean chalks = PositionedBlockHelper.isChalkSetupValidHC(ritual.buildChalks(Lists.newArrayList()), this, ritual.getUnlocalizedName());
             if (foundAll && requirementsMet && chalks) {
                 return ritual;
             } else if (!requirementsMet) {

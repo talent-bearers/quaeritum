@@ -41,25 +41,47 @@ public final class PositionedBlockHelper {
                 LogHelper.logDebug("Expected " + block.getState() + " in " + block.getPos() + ". Got " + world.getBlockState(pos.add(block.getPos())));
                 return false;
             }*/
-            return true;
-       // }
+        return true;
+        // }
     }
 
     public static boolean isChalkSetupValid(List<PositionedBlock> list, TileEntity entity, String optionalName) {
         BlockPos pos = entity.getPos();
         World world = entity.getWorld();
         for (PositionedBlock block : list) {
-            for(IProperty property : block.toCompare) {
+            for (IProperty property : block.toCompare) {
                 IBlockState state = world.getBlockState(entity.getPos().add(block.getPos()));
                 //yes I know I can just && this
                 if (block.getState().getBlock() == state.getBlock()) {
                     System.out.println("Block check OK");
-                    if(block.getState().getValue(property) == state.getValue(property)) {
+                    if (block.getState().getValue(property) == state.getValue(property)) {
                         LogHelper.logDebug("Expected " + block.getState() + " in " + block.getPos() + " for ritual " + optionalName + ". Got " + world.getBlockState(pos.add(block.getPos())));
                         return false;
                     }
                 }
             }
+        }
+
+        return true;
+    }
+
+    //hardcoded to check for color
+    public static boolean isChalkSetupValidHC(List<PositionedBlock> list, TileEntity entity, String optionalName) {
+        BlockPos pos = entity.getPos();
+        World world = entity.getWorld();
+        for (PositionedBlock block : list) {
+            IBlockState state = world.getBlockState(entity.getPos().add(block.getPos()));
+            if(state.getBlock() != block.getState().getBlock()) {
+                System.out.println("Dif block");
+                return false;
+            } else
+                System.out.println(state.getBlock() + "==" + block.getState().getBlock());
+            if (block.getState().getValue(BlockChalk.COLOR) == state.getValue(BlockChalk.COLOR)) {
+                LogHelper.logDebug("Expected " + block.getState() + " in " + block.getPos() + " for ritual " + optionalName + ". Got " + world.getBlockState(pos.add(block.getPos())));
+                return false;
+            }
+
+
         }
 
         return true;
