@@ -1,5 +1,6 @@
 package eladkay.quaritum.common.core;
 
+import eladkay.quaritum.api.animus.AnimusHelper;
 import eladkay.quaritum.common.block.ModBlocks;
 import eladkay.quaritum.common.crafting.ModRecipes;
 import eladkay.quaritum.common.entity.ModEntities;
@@ -22,6 +23,7 @@ public class CommonProxy {
         ModEntities.init();
         ModRecipes.init();
         new Events().init();
+        new AnimusHelper.Network.EventHandler();
         ModDiagrams.init();
         ChatHelper.PacketHandler.init();
         FMLInterModComms.sendMessage("Waila", "register", "eladkay.quaritum.common.compat.waila.Waila.onWailaCall");
@@ -36,6 +38,6 @@ public class CommonProxy {
     }
 
     public void spawnParticleMagixFX(World world, double x, double y, double z, double vx, double vy, double vz, double r, double g, double b) {
-
+        //NO-OP
     }
 }

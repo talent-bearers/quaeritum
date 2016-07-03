@@ -38,13 +38,7 @@ public class ItemAttunedSoulstone extends ItemMod implements INetworkProvider {
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
-        try {
-            AnimusHelper.Network.addInformation(stack, tooltip, advanced);
-        } catch(Exception e) {
-            //probably just displaying in jei
-            //it doesn't work though, why doesn't it work?
-            TooltipHelper.addToTooltip(tooltip, TooltipHelper.local("misc.quaritum.notattuned"));
-        }
+        AnimusHelper.Network.addInformation(stack, tooltip, advanced);
     }
 
     @Override
@@ -54,8 +48,8 @@ public class ItemAttunedSoulstone extends ItemMod implements INetworkProvider {
 
     @Override
     public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-        if (!ItemNBTHelper.getNBT(stack).hasKey(LibNBT.TAG_UUID, 8))
-            ItemNBTHelper.setString(stack, LibNBT.TAG_UUID, entityIn.getCachedUniqueIdString());
+        if (getPlayer(stack) == null && entityIn instanceof EntityPlayer)
+            setPlayer(stack, entityIn.getUniqueID());
     }
 
     @Nonnull

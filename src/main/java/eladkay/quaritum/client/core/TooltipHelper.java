@@ -10,8 +10,9 @@
  */
 package eladkay.quaritum.client.core;
 
+import eladkay.quaritum.api.lib.LibMisc;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.util.text.translation.I18n;
+import net.minecraft.client.resources.I18n;
 
 import java.util.List;
 
@@ -20,24 +21,16 @@ public final class TooltipHelper {
     public static void tooltipIfShift(List<String> tooltip, Runnable r) {
         if(GuiScreen.isShiftKeyDown())
             r.run();
-        else addToTooltip(tooltip, "misc.quaritum.shiftForInfo");
+        else
+            addToTooltip(tooltip, "misc." + LibMisc.MOD_ID + ".shiftForInfo");
     }
 
     public static void addToTooltip(List<String> tooltip, String s, Object... format) {
-        s = local(s).replaceAll("&", "\u00a7");
-
-        Object[] formatVals = new String[format.length];
-        for(int i = 0; i < format.length; i++)
-            formatVals[i] = local(format[i].toString()).replaceAll("&", "\u00a7");
-
-        if(formatVals.length > 0)
-            s = String.format(s, formatVals);
-
-        tooltip.add(s);
+        tooltip.add(local(s, format).replaceAll("&", "\u00a7"));
     }
 
-    public static String local(String s) {
-        return I18n.translateToLocal(s);
+    public static String local(String s, Object... format) {
+        return I18n.format(s, format);
     }
 
 }

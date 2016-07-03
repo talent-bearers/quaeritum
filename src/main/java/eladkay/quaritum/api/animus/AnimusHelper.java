@@ -8,6 +8,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import javax.annotation.Nonnull;
 import java.util.HashMap;
@@ -60,30 +64,36 @@ public final class AnimusHelper {
 
         public static void addInformation(ItemStack stack, List<String> tooltip, boolean advanced) {
             UUID uuid = ((INetworkProvider) stack.getItem()).getPlayer(stack);
-            if (uuid != null)
-                TooltipHelper.addToTooltip(tooltip, "misc." + LibMisc.MOD_ID + ".animusBound", getLastKnownUsername(uuid));
+            if (uuid != null) {
+                String username = getLastKnownUsername(uuid);
+                if (username != null)
+                    TooltipHelper.addToTooltip(tooltip, "misc." + LibMisc.MOD_ID + ".animusBound", username);
+                else
+                    TooltipHelper.addToTooltip(tooltip, "misc." + LibMisc.MOD_ID + ".notBound");
+            } else
+                TooltipHelper.addToTooltip(tooltip, "misc." + LibMisc.MOD_ID + ".notBound");
         }
 
         public static void setAnimus(EntityPlayer player, int animus) {
-            updatePlayerName(player);
             setAnimus(player.getUniqueID(), animus);
         }
 
         public static void setAnimus(UUID uuid, int animus) {
             getPersistentCompound(uuid).setInteger(TAG_ANIMUS_LEVEL, animus);
+            getSaveData().markDirty();
+
         }
 
         public static void setAnimusRarity(EntityPlayer player, int rarity) {
-            updatePlayerName(player);
             setAnimusRarity(player.getUniqueID(), rarity);
         }
 
         public static void setAnimusRarity(UUID uuid, int rarity) {
             getPersistentCompound(uuid).setInteger(TAG_ANIMUS_RARITY, rarity);
+            getSaveData().markDirty();
         }
 
         public static int getAnimus(EntityPlayer player) {
-            updatePlayerName(player);
             return getAnimus(player.getUniqueID());
         }
 
@@ -92,7 +102,6 @@ public final class AnimusHelper {
         }
 
         public static int getAnimusRarity(EntityPlayer player) {
-            updatePlayerName(player);
             return getAnimusRarity(player.getUniqueID());
         }
 
@@ -101,7 +110,6 @@ public final class AnimusHelper {
         }
 
         public static void addAnimus(EntityPlayer player, int animus) {
-            updatePlayerName(player);
             addAnimus(player.getUniqueID(), animus);
         }
 
@@ -110,7 +118,6 @@ public final class AnimusHelper {
         }
 
         public static void addAnimusRarity(EntityPlayer player, int rarity) {
-            updatePlayerName(player);
             addAnimusRarity(player.getUniqueID(), rarity);
         }
 
@@ -119,7 +126,11 @@ public final class AnimusHelper {
         }
 
         public static void updatePlayerName(EntityPlayer player) {
-            getPersistentCompound(player.getUniqueID()).setString(TAG_LAST_KNOWN_USERNAME, player.getDisplayNameString());
+            NBTTagCompound compound = getPersistentCompound(player.getUniqueID());
+            if (!player.getDisplayNameString().equals(getStringSafe(compound, TAG_LAST_KNOWN_USERNAME, null))) {
+                compound.setString(TAG_LAST_KNOWN_USERNAME, player.getDisplayNameString());
+                getSaveData().markDirty();
+            }
         }
 
         public static String getLastKnownUsername(UUID uuid) {
@@ -139,9 +150,21 @@ public final class AnimusHelper {
 
         @Nonnull
         private static NBTTagCompound getPersistentCompound(UUID uuid) {
+            if (uuid == null) return new NBTTagCompound();
+
+            AnimusSaveData saveData = getSaveData();
+
+            if (!saveData.animusData.containsKey(uuid))
+                saveData.animusData.put(uuid, new NBTTagCompound());
+
+            return saveData.animusData.get(uuid);
+        }
+
+        @Nonnull
+        private static AnimusSaveData getSaveData() {
             World world = DimensionManager.getWorld(0);
-            if (world == null || world.getMapStorage() == null || uuid == null)
-                return new NBTTagCompound();
+            if (world == null || world.getMapStorage() == null)
+                return new AnimusSaveData();
 
             AnimusSaveData saveData = (AnimusSaveData) world.getMapStorage().getOrLoadData(AnimusSaveData.class, KEY_ANIMUS_NETWORK);
 
@@ -150,10 +173,7 @@ public final class AnimusHelper {
                 world.getMapStorage().setData(KEY_ANIMUS_NETWORK, saveData);
             }
 
-            if (!saveData.animusData.containsKey(uuid))
-                saveData.animusData.put(uuid, new NBTTagCompound());
-
-            return saveData.animusData.get(uuid);
+            return saveData;
         }
 
         private static class AnimusSaveData extends WorldSavedData {
@@ -180,6 +200,19 @@ public final class AnimusHelper {
             public void readFromNBT(@Nonnull NBTTagCompound compound) {
                 for (String key : compound.getKeySet()) {
                     animusData.put(UUID.fromString(key), compound.getCompoundTag(key));
+                }
+            }
+        }
+
+        public static class EventHandler {
+            public EventHandler() {
+                MinecraftForge.EVENT_BUS.register(this);
+            }
+
+            @SubscribeEvent
+            public void onEntityTick(LivingEvent.LivingUpdateEvent e) {
+                if (e.getEntityLiving() instanceof EntityPlayer) {
+                    AnimusHelper.Network.updatePlayerName((EntityPlayer) e.getEntityLiving());
                 }
             }
         }

@@ -35,14 +35,14 @@ public class ModRecipes {
         addShapelessOreDictRecipe(new ItemStack(ModBlocks.crystal), new ItemStack(ModBlocks.flower), new ItemStack(Blocks.GOLD_BLOCK));
         addShapelessOreDictRecipe(new ItemStack(ModBlocks.blueprint), "dyeBlue", new ItemStack(Items.PAPER), new ItemStack(Blocks.STONE_SLAB));
         addShapelessOreDictRecipe(new ItemStack(ModItems.fertilizer, 2), "dyePink", new ItemStack(Items.DYE, 1, 15), new ItemStack(ModItems.altas));
-        addAnimusRecipe(new ItemStack(ModItems.passionate),
+        addOreDictRecipe(new ItemStack(ModItems.passionate),
                 "Y Y",
                 "XZX",
                 "YHY",
                 'Y', new ItemStack(Items.BLAZE_POWDER),
                 'H', new ItemStack(Items.LAVA_BUCKET),
                 'X', new ItemStack(Items.FIRE_CHARGE),
-                'Z', new ItemStack(ModItems.awakened));
+                'Z', new ItemStack(ModItems.dormant));
         addOreDictRecipe(new ItemStack(ModItems.dormant),
                 "XYX",
                 "XZX",
