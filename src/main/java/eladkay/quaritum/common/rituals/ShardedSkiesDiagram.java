@@ -38,6 +38,11 @@ public class ShardedSkiesDiagram implements IDiagram {
     }
 
     @Override
+    public int getPrepTime(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile) {
+        return 50;
+    }
+
+    @Override
     public boolean hasRequiredItems(@Nullable World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile) {
         return Helper.matches(Helper.stacksAroundAltar(tile, 4), getRequiredItems());
     }

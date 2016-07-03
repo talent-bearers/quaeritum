@@ -41,8 +41,7 @@ public class TileEntityBlueprint extends TileMod {
                 bestFit = ritual;
             }
         }
-        runRitual(bestFit);
-        return null;
+        return bestFit;
     }
 
     private boolean runRitual(IDiagram ritual) {

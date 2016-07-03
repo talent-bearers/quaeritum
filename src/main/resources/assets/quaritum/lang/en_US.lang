@@ -13,7 +13,7 @@ item.quaritum:passionateSoulstone.name=Passionate Soulstone
 item.quaritum:worldSoulstone.name=Stone of the Worldsoul
 
 tile.quaritum:flowerCommon.name=Common Flower
-tile.quaritum:flowerCommonArcane.name=Arcane Common Flower
+tile.quaritum:flowerCommonArcane.name=Rare Flower
 tile.quaritum:flowerArcane.name=Arcane Flower
 
 tile.quaritum:crystal.name=Manifest Soul
