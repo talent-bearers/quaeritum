@@ -1,5 +1,6 @@
 package eladkay.quaritum.common.core;
 
+import com.google.common.collect.Lists;
 import eladkay.quaritum.api.rituals.PositionedBlock;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
@@ -37,6 +38,9 @@ public final class PositionedBlockHelper {
             }
         }
 
+
+
+        }
 
         return true;
     }
