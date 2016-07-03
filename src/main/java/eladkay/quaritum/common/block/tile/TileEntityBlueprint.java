@@ -6,7 +6,6 @@ import eladkay.quaritum.api.rituals.PositionedBlock;
 import eladkay.quaritum.api.rituals.RitualRegistry;
 import eladkay.quaritum.common.core.PositionedBlockHelper;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
 
 import java.util.List;
 
@@ -22,7 +21,8 @@ public class TileEntityBlueprint extends TileMod {
 
     @Override
     public void updateEntity() {
-        if (worldObj.isRemote) {
+        if (!worldObj.isRemote) {
+            //LogHelper.logDebug(currentDiagram);
             if (currentDiagram != null) {
                 if (stageTicks > 0) {
                     stage = RitualStage.PREP;
@@ -45,7 +45,7 @@ public class TileEntityBlueprint extends TileMod {
 
     private IDiagram getBestRitual() {
         IDiagram bestDiagram = null;
-        int highestChalks = 0;
+        int highestChalks = -1;
         for (IDiagram ritual : RitualRegistry.getDiagramList()) {
             boolean foundAll = ritual.hasRequiredItems(worldObj, pos, this);
             boolean requirementsMet = ritual.canRitualRun(this.getWorld(), pos, this);
