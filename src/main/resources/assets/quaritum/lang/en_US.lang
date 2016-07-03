@@ -15,7 +15,8 @@ tile.quaritum:flowerCommon.name=Common Flower
 tile.quaritum:flowerCommonArcane.name=Arcane Common Flower
 tile.quaritum:flowerArcane.name=Arcane Flower
 
-item.quaritum:crystal.name=Manifest Soul
+misc.quaritum.notattuned=Not attuned
+tile.quaritum:crystal.name=Manifest Soul
 item.quaritum:flowingWorldBlade.name=Blade of the Flowing World
 item.quaritum:riftFur.name=Riftmaker's Fur
 item.quaritum:riftFang.name=Riftmaker's Fang

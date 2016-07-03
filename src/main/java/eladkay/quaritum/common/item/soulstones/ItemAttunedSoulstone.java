@@ -2,9 +2,10 @@ package eladkay.quaritum.common.item.soulstones;
 
 import eladkay.quaritum.api.animus.AnimusHelper;
 import eladkay.quaritum.api.animus.INetworkProvider;
-import eladkay.quaritum.api.util.ItemNBTHelper;
-import eladkay.quaritum.common.item.base.ItemMod;
 import eladkay.quaritum.api.lib.LibNBT;
+import eladkay.quaritum.api.util.ItemNBTHelper;
+import eladkay.quaritum.client.core.TooltipHelper;
+import eladkay.quaritum.common.item.base.ItemMod;
 import eladkay.quaritum.common.lib.LibNames;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,9 +18,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.List;
-import java.util.UUID;
 
 public class ItemAttunedSoulstone extends ItemMod implements INetworkProvider {
     public ItemAttunedSoulstone() {
@@ -39,7 +38,13 @@ public class ItemAttunedSoulstone extends ItemMod implements INetworkProvider {
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
-        AnimusHelper.Network.addInformation(stack, tooltip, advanced);
+        try {
+            AnimusHelper.Network.addInformation(stack, tooltip, advanced);
+        } catch(Exception e) {
+            //probably just not attuned, pulled from jei etc
+            //it doesn't work though, why doesn't it work?
+            TooltipHelper.addToTooltip(tooltip, TooltipHelper.local("misc.quaritum.notattuned"));
+        }
     }
 
     @Override
