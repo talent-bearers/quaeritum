@@ -12,19 +12,57 @@ import java.util.List;
 
 public class TileEntityBlueprint extends TileMod {
 
-    public CraftingStage stage = CraftingStage.IDLE;
+    public RitualStage stage = RitualStage.IDLE;
     public int stageTicks = 0;
+    public IDiagram currentDiagram = null;
 
-    public enum CraftingStage {
-        IDLE, PARTICLES, CRAFTING
+    public enum RitualStage {
+        IDLE, PREP, CRAFTING
+    }
+
+    @Override
+    public void updateEntity() {
+        if (worldObj.isRemote) {
+            if (currentDiagram != null) {
+                if (stageTicks > 0) {
+                    stage = RitualStage.PREP;
+                    stageTicks--;
+                    if (!currentDiagram.onPrepUpdate(worldObj, pos, this, stageTicks))
+                        currentDiagram = null;
+                } else {
+                    stage = RitualStage.CRAFTING;
+                    currentDiagram.run(worldObj, pos, this);
+                    currentDiagram = null;
+                }
+            }
+
+            if (currentDiagram == null) {
+                stage = RitualStage.IDLE;
+                stageTicks = 0;
+            }
+        }
+    }
+
+    private IDiagram getBestRitual() {
+        IDiagram bestDiagram = null;
+        int highestChalks = 0;
+        for (IDiagram ritual : RitualRegistry.getDiagramList()) {
+            boolean foundAll = ritual.hasRequiredItems(worldObj, pos, this);
+            boolean requirementsMet = ritual.canRitualRun(this.getWorld(), pos, this);
+            List<PositionedBlock> blocks = Lists.newArrayList();
+            ritual.buildChalks(blocks);
+            int chalks = PositionedBlockHelper.getChalkPriority(blocks, this, ritual.getUnlocalizedName());
+            if (foundAll && requirementsMet && highestChalks < chalks) {
+                bestDiagram = ritual;
+                highestChalks = chalks;
+            }
+        }
+        return bestDiagram;
     }
     public World getWorld() {
         return worldObj;
     }
-    @Override
-    public void updateEntity() {
-        //todo
-    }
+
 
     private IDiagram getValidRitual() {
         IDiagram bestFit = null;
@@ -44,26 +82,30 @@ public class TileEntityBlueprint extends TileMod {
         return bestFit;
     }
 
-    private boolean runRitual(IDiagram ritual) {
-        if(ritual != null && !worldObj.isRemote) {
-            ritual.run(worldObj, pos, this);
-            return true;
-        } else return false;
+    private void runRitual(IDiagram ritual) {
+        if (worldObj.isRemote || ritual == null) return;
+        currentDiagram = ritual;
+        stage = RitualStage.PREP;
+        stageTicks = ritual.getPrepTime(worldObj, pos, this);
     }
 
     public boolean onBlockActivated() {
-        return runRitual(getValidRitual());
+        if (currentDiagram == null) runRitual(getBestRitual());
+        return true;
     }
 
     @Override
     public void writeCustomNBT(NBTTagCompound compound) {
         compound.setInteger("Stage", stage.ordinal());
+        compound.setString("Diagram", RitualRegistry.getRitualName(currentDiagram) == null ? "" : RitualRegistry.getRitualName(currentDiagram));
         compound.setInteger("StageTicks", stageTicks);
     }
 
     @Override
     public void readCustomNBT(NBTTagCompound compound) {
-        stage = CraftingStage.values()[compound.getInteger("Stage")];
+        stage = RitualStage.values()[compound.getInteger("Stage")];
+        currentDiagram = RitualRegistry.getDiagramByName(compound.getString("Diagram"));
         stageTicks = compound.getInteger("StageTicks");
     }
+
 }
