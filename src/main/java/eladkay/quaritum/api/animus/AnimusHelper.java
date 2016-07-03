@@ -195,15 +195,15 @@ public final class AnimusHelper {
             return saveData;
         }
 
-        private static class AnimusSaveData extends WorldSavedData {
+        public static class AnimusSaveData extends WorldSavedData {
 
             private Map<UUID, NBTTagCompound> animusData = new HashMap<>();
 
-            private AnimusSaveData(String id) {
+            public AnimusSaveData(String id) {
                 super(id);
             }
 
-            private AnimusSaveData() {
+            public AnimusSaveData() {
                 super(KEY_ANIMUS_NETWORK);
             }
 

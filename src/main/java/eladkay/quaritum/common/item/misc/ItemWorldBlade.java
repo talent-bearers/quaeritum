@@ -120,7 +120,7 @@ public class ItemWorldBlade extends ItemModSword {
 
             AnimusHelper.damageItem(stack, 1, entityLiving, 1, 0);
 
-            if (entityLiving instanceof EntityPlayer)
+            if (entityLiving instanceof EntityPlayer && entityLiving.worldObj.isRemote)
                 ((EntityPlayer) entityLiving).getCooldownTracker().setCooldown(this, (int) ((EntityPlayer) entityLiving).getCooldownPeriod());
         }
 
