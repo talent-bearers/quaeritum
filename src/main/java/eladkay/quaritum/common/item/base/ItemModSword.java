@@ -1,9 +1,14 @@
 package eladkay.quaritum.common.item.base;
 
 import com.google.common.collect.Multimap;
+import eladkay.quaritum.api.lib.LibMisc;
+import eladkay.quaritum.client.core.ModelHandler;
+import eladkay.quaritum.client.core.TooltipHelper;
+import eladkay.quaritum.common.core.CreativeTab;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -12,119 +17,87 @@ import net.minecraft.init.Blocks;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 
-public abstract class ItemModSword extends ItemMod {
-    protected final float attackDamage;
-    private final Item.ToolMaterial material;
+public class ItemModSword extends ItemSword implements ModelHandler.IVariantHolder {
+
+    private String[] variants;
+    private String bareName;
 
     public ItemModSword(String name, Item.ToolMaterial material, String... variants) {
-        super(name, variants);
-        this.material = material;
-        this.maxStackSize = 1;
-        this.setMaxDamage(material.getMaxUses());
-        this.setCreativeTab(CreativeTabs.COMBAT);
-        this.attackDamage = 3.0F + material.getDamageVsEntity();
+        super(material);
+        setUnlocalizedName(name);
+        CreativeTab.set(this);
+        if(variants.length > 1)
+            setHasSubtypes(true);
+
+        if(variants.length == 0)
+            variants = new String[] { name };
+
+        bareName = name;
+        this.variants = variants;
+        ModelHandler.variantCache.add(this);
     }
 
-    public ItemModSword(String name, Item.ToolMaterial material) {
-        super(name);
-        this.material = material;
-        this.maxStackSize = 1;
-        this.setMaxDamage(material.getMaxUses());
-        this.setCreativeTab(CreativeTabs.COMBAT);
-        this.attackDamage = 3.0F + material.getDamageVsEntity();
+    public static void tooltipIfShift(List<String> tooltip, Runnable r) {
+        TooltipHelper.tooltipIfShift(tooltip, r);
     }
 
-    /**
-     * Returns the amount of damage this item will deal. One heart of damage is equal to 2 damage points.
-     */
-    public float getDamageVsEntity() {
-        return this.material.getDamageVsEntity();
+    public static void addToTooltip(List<String> tooltip, String s, Object... format) {
+        TooltipHelper.addToTooltip(tooltip, s, format);
     }
 
-    public float getStrVsBlock(ItemStack stack, IBlockState state) {
-        Block block = state.getBlock();
-
-        if (block == Blocks.WEB) {
-            return 15.0F;
-        } else {
-            Material material = state.getMaterial();
-            return material != Material.PLANTS && material != Material.VINE && material != Material.CORAL && material != Material.LEAVES && material != Material.GOURD ? 1.0F : 1.5F;
-        }
-    }
-
-    /**
-     * Current implementations of this method in child classes do not use the entry argument beside ev. They just raise
-     * the damage on the stack.
-     */
-    public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
-        stack.damageItem(1, attacker);
-        return true;
-    }
-
-    /**
-     * Called when a Block is destroyed using this Item. Return true to trigger the "Use Item" statistic.
-     */
-    public boolean onBlockDestroyed(ItemStack stack, World worldIn, IBlockState state, BlockPos pos, EntityLivingBase entityLiving) {
-        if ((double) state.getBlockHardness(worldIn, pos) != 0.0D) {
-            stack.damageItem(2, entityLiving);
-        }
-
-        return true;
-    }
-
-    /**
-     * Check whether this Item can harvest the given Block
-     */
-    public boolean canHarvestBlock(IBlockState blockIn) {
-        return blockIn.getBlock() == Blocks.WEB;
-    }
-
-    /**
-     * Returns True is the item is renderer in full 3D when hold.
-     */
-    @SideOnly(Side.CLIENT)
-    public boolean isFull3D() {
-        return true;
-    }
-
-    /**
-     * Return the enchantability factor of the item, most of the time is based on material.
-     */
-    public int getItemEnchantability() {
-        return this.material.getEnchantability();
-    }
-
-    /**
-     * Return the name for this tool's material.
-     */
-    public String getToolMaterialName() {
-        return this.material.toString();
-    }
-
-    /**
-     * Return whether this item is repairable in an anvil.
-     */
-    public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
-        ItemStack mat = this.material.getRepairItemStack();
-        return net.minecraftforge.oredict.OreDictionary.itemMatches(mat, repair, false) || super.getIsRepairable(toRepair, repair);
+    public static String local(String s) {
+        return TooltipHelper.local(s);
     }
 
     @Override
-    public Multimap<String, AttributeModifier> getAttributeModifiers(@Nonnull EntityEquipmentSlot slot, ItemStack stack) {
-        Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(slot, stack);
+    @SideOnly(Side.CLIENT)
+    public ItemMeshDefinition getCustomMeshDefinition() {
+        return null;
+    }
 
-        if (slot == EntityEquipmentSlot.MAINHAND) {
-            multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getAttributeUnlocalizedName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", (double) this.attackDamage, 0));
-            multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getAttributeUnlocalizedName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", -2.4000000953674316D, 0));
+    @Nonnull
+    @Override
+    public String[] getVariants() {
+        return variants;
+    }
+
+    @Override
+    public Item setUnlocalizedName(String unlocalizedName) {
+        GameRegistry.register(this, new ResourceLocation(LibMisc.MOD_ID, unlocalizedName));
+        return super.setUnlocalizedName(unlocalizedName);
+    }
+
+    @Override
+    public String getUnlocalizedName(ItemStack stack) {
+        int dmg = stack.getItemDamage();
+        String[] variants = this.getVariants();
+        String name;
+        if (dmg >= variants.length) {
+            name = this.bareName;
+        } else {
+            name = variants[dmg];
         }
 
-        return multimap;
+        return "item." + LibMisc.MOD_ID + ":" + name;
+    }
+
+    @Override
+    public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
+        String[] variants = this.getVariants();
+
+        for (int i = 0; i < variants.length; i++) {
+            subItems.add(new ItemStack(itemIn, 1, i));
+        }
     }
 }
