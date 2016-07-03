@@ -1,7 +1,7 @@
 package eladkay.quaritum.common.core;
 
 import eladkay.quaritum.client.core.TooltipHelper;
-import eladkay.quaritum.common.lib.LibMisc;
+import eladkay.quaritum.api.lib.LibMisc;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiNewChat;

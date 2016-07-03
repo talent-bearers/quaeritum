@@ -1,7 +1,7 @@
 package eladkay.quaritum.common.core;
 
 import eladkay.quaritum.common.block.ModBlocks;
-import eladkay.quaritum.common.lib.LibMisc;
+import eladkay.quaritum.api.lib.LibMisc;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;

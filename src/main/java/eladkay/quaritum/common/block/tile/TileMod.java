@@ -83,6 +83,12 @@ public abstract class TileMod extends TileEntity implements ITickable {
     }
 
     @Override
+    public void markDirty() {
+        super.markDirty();
+        dispatchTEToNearbyPlayers(this);
+    }
+
+    @Override
     public final void update() {
         if (!isInvalid() && worldObj.isBlockLoaded(getPos(), !worldObj.isRemote)) {
             updateEntity();

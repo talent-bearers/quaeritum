@@ -10,7 +10,7 @@
  * File Created @ [8 Sep 2013, 19:36:25 (GMT)]
  */
 
-package eladkay.quaritum.common.core;
+package eladkay.quaritum.api.util;
 
 
 import net.minecraft.item.ItemStack;

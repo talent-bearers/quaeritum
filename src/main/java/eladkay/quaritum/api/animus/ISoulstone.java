@@ -1,25 +1,41 @@
 package eladkay.quaritum.api.animus;
 
+import eladkay.quaritum.api.util.ItemNBTHelper;
+import eladkay.quaritum.api.lib.LibNBT;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
 public interface ISoulstone {
-    int getAnimusLevel(@Nonnull ItemStack stack);
+    default int getAnimusLevel(@Nonnull ItemStack stack) {
+        return ItemNBTHelper.getInt(stack, LibNBT.TAG_ANIMUS, 0);
+    }
 
     @Nonnull
-    ItemStack addAnimus(@Nonnull ItemStack stack, int amount);
+    default ItemStack setAnimus(@Nonnull ItemStack stack, int amount) {
+        ItemNBTHelper.setInt(stack, LibNBT.TAG_ANIMUS,
+                Math.min(getMaxAnimus(stack), Math.max(0, amount)));
+        return stack;
+    }
+
+    default int getRarityLevel(@Nonnull ItemStack stack) {
+        return ItemNBTHelper.getInt(stack, LibNBT.TAG_RARITY, 0);
+    }
+
+    @Nonnull
+    default ItemStack setRarity(@Nonnull ItemStack stack, int rarity) {
+        ItemNBTHelper.setInt(stack, LibNBT.TAG_RARITY,
+                Math.min(getMaxAnimus(stack), Math.max(0, rarity)));
+        return stack;
+    }
 
     int getMaxAnimus(@Nonnull ItemStack stack);
-
-    int getRarityLevel(@Nonnull ItemStack stack); //getRarity is a method in Item
-
-    @Nonnull
-    ItemStack addRarity(@Nonnull ItemStack stack, int amount);
 
     int getMaxRarity(@Nonnull ItemStack stack);
 
     boolean isRechargeable(@Nonnull ItemStack stack);
 
-    void doPassive(@Nonnull ItemStack stack);
+    default void doPassive(@Nonnull ItemStack stack) {
+        //NO-OP
+    }
 }

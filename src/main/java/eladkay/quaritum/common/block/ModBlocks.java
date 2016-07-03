@@ -4,7 +4,7 @@ import eladkay.quaritum.common.block.base.BlockMod;
 import eladkay.quaritum.common.block.chalk.BlockChalk;
 import eladkay.quaritum.common.block.flowers.BlockAnimusFlower;
 import eladkay.quaritum.common.block.tile.TileEntityBlueprint;
-import eladkay.quaritum.common.lib.LibMisc;
+import eladkay.quaritum.api.lib.LibMisc;
 import eladkay.quaritum.common.lib.LibNames;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;

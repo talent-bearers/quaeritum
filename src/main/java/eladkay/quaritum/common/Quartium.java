@@ -1,7 +1,7 @@
 package eladkay.quaritum.common;
 
 import eladkay.quaritum.common.core.CommonProxy;
-import eladkay.quaritum.common.lib.LibMisc;
+import eladkay.quaritum.api.lib.LibMisc;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -13,13 +13,13 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 @Mod(modid = LibMisc.MOD_ID, name = LibMisc.NAME, version = LibMisc.VERSION, dependencies = LibMisc.DEPENDENCIES)
 public class Quartium {
 
-    public static boolean isDevEnv = (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
-
     @SidedProxy(clientSide = LibMisc.CLIENT_PROXY, serverSide = LibMisc.COMMON_PROXY)
     public static CommonProxy proxy;
-
     @Mod.Instance(LibMisc.MOD_ID)
     public static Quartium instance;
+    private static boolean devEnvOverride = false; //if this is true, the environment will launch as normal, even in a
+                                                   //dev environment
+    public static boolean isDevEnv = (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment") && !devEnvOverride;
 
     @Mod.EventHandler
     public void pre(FMLPreInitializationEvent e) {

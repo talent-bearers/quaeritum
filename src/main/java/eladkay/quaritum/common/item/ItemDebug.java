@@ -36,13 +36,13 @@ public class ItemDebug extends ItemMod {
             }*/
         if (!worldIn.isRemote)
             if (GuiScreen.isShiftKeyDown()) {
-                AnimusHelper.Player.addAnimus(playerIn, 50);
-                ChatHelper.sendNoSpam2(playerIn, "Added 50, current animus level for " + playerIn.getName() + " is: " + AnimusHelper.Player.getAnimus(playerIn));
+                AnimusHelper.Network.addAnimus(playerIn, 50);
+                ChatHelper.sendNoSpam2(playerIn, "Added 50, current animus level for " + playerIn.getName() + " is: " + AnimusHelper.Network.getAnimus(playerIn));
             } else if (GuiScreen.isCtrlKeyDown()) {
-                AnimusHelper.Player.addAnimus(playerIn, -50);
-                ChatHelper.sendNoSpam2(playerIn, "Took 50, current animus level for " + playerIn.getName() + " is: " + AnimusHelper.Player.getAnimus(playerIn));
+                AnimusHelper.Network.addAnimus(playerIn, -50);
+                ChatHelper.sendNoSpam2(playerIn, "Took 50, current animus level for " + playerIn.getName() + " is: " + AnimusHelper.Network.getAnimus(playerIn));
             } else
-                ChatHelper.sendNoSpam2(playerIn, "Current animus level for " + playerIn.getName() + " is: " + AnimusHelper.Player.getAnimus(playerIn));
+                ChatHelper.sendNoSpam2(playerIn, "Current animus level for " + playerIn.getName() + " is: " + AnimusHelper.Network.getAnimus(playerIn));
 
         return super.onItemRightClick(itemStackIn, worldIn, playerIn, hand);
     }

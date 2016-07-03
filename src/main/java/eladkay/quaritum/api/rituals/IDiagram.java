@@ -1,26 +1,78 @@
 package eladkay.quaritum.api.rituals;
 
-import net.minecraft.entity.player.EntityPlayer;
+import eladkay.quaritum.common.block.tile.TileEntityBlueprint;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public interface IDiagram {
     @Nonnull
     String getUnlocalizedName();
 
-    boolean run(@Nonnull World world, @Nullable EntityPlayer player, @Nonnull BlockPos pos, @Nonnull TileEntity tileEntity, @Nullable List<ItemStack> items);
+    boolean run(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile);
+    boolean canRitualRun(@Nullable World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile);
+    boolean hasRequiredItems(@Nullable World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile);
 
-    boolean canRitualRun(@Nullable World world, @Nullable EntityPlayer player, @Nonnull BlockPos pos, @Nonnull TileEntity tile);
+    void buildChalks(@Nonnull List<PositionedBlock> chalks);
 
-    @Nonnull
-    ArrayList<ItemStack> getRequiredItems();
+    class Helper {
 
-    List<PositionedBlock> buildChalks(@Nonnull List<PositionedBlock> chalks);
+        public static List<EntityItem> entitiesAroundAltar(TileEntity tile, double range) {
+            List<EntityItem> entities = tile.getWorld().getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(tile.getPos().add(3, 2, 3), tile.getPos().add(-3, -2, -3)));
+            return entities.stream()
+                    .filter(entity -> tile.getPos().add(0.5, 0.5, 0.5).distanceSq(entity.posX, entity.posY, entity.posZ) < range * range)
+                    .collect(Collectors.toList());
+        }
+
+        public static List<ItemStack> stacksAroundAltar(TileEntity tile, double range) {
+            return entitiesAroundAltar(tile, range).stream()
+                    .map(EntityItem::getEntityItem)
+                    .collect(Collectors.toList());
+        }
+
+        public static boolean matches(List<ItemStack> items, List<ItemStack> required) {
+            List<ItemStack> inputsMissing = new ArrayList<>(required);
+            for (ItemStack i : items) {
+                for (int j = 0; j < inputsMissing.size(); j++) {
+                    ItemStack inp = inputsMissing.get(j).copy();
+                    if (inp.getItemDamage() == 32767)
+                        inp.setItemDamage(i.getItemDamage());
+
+                    if (itemEquals(i, inp)) {
+                        inputsMissing.remove(j);
+                        break;
+                    }
+                }
+            }
+            return inputsMissing.isEmpty();
+        }
+
+        public static boolean simpleAreStacksEqual(ItemStack stack, ItemStack stack2) {
+            return stack.getItem() == stack2.getItem() && stack.getItemDamage() == stack2.getItemDamage();
+        }
+
+        public static boolean itemEquals(ItemStack stack, Object stack2) {
+            if (stack2 instanceof String) {
+
+                for (ItemStack orestack : OreDictionary.getOres((String) stack2)) {
+                    ItemStack cstack = orestack.copy();
+
+                    if (cstack.getItemDamage() == 32767) cstack.setItemDamage(stack.getItemDamage());
+                    if (stack.isItemEqual(cstack)) return true;
+                }
+
+            } else return stack2 instanceof ItemStack && simpleAreStacksEqual(stack, (ItemStack) stack2);
+            return false;
+        }
+    }
 }

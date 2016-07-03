@@ -1,5 +1,6 @@
 package eladkay.quaritum.common.crafting.recipes;
 
+import com.google.common.collect.Lists;
 import eladkay.quaritum.api.animus.IFlower;
 import eladkay.quaritum.common.item.soulstones.ItemAwakenedSoulstone;
 import eladkay.quaritum.common.item.soulstones.ItemDormantSoulstone;
@@ -10,9 +11,12 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
+import javax.annotation.Nonnull;
+import java.util.List;
+
 public class RecipeAwakenedSoulstone implements IRecipe {
     @Override
-    public boolean matches(InventoryCrafting inventoryCrafting, World world) {
+    public boolean matches(@Nonnull InventoryCrafting inventoryCrafting, @Nonnull World world) {
         boolean foundSoulstone = false;
         for (int index = 0; index < inventoryCrafting.getSizeInventory(); ++index) {
             ItemStack stack = inventoryCrafting.getStackInSlot(index);
@@ -22,14 +26,14 @@ public class RecipeAwakenedSoulstone implements IRecipe {
     }
 
     @Override
-    public ItemStack getCraftingResult(InventoryCrafting inventoryCrafting) {
+    public ItemStack getCraftingResult(@Nonnull InventoryCrafting inventoryCrafting) {
         int animus = 0;
-        int rarity = 0;
+        int rarity = Integer.MAX_VALUE;
         for (int index = 0; index < inventoryCrafting.getSizeInventory(); ++index) {
             ItemStack stack = inventoryCrafting.getStackInSlot(index);
             if (stack != null && Block.getBlockFromItem(stack.getItem()) instanceof IFlower) {
                 animus += ((IFlower) Block.getBlockFromItem(stack.getItem())).getAnimusFromStack(stack);
-                rarity += ((IFlower) Block.getBlockFromItem(stack.getItem())).getRarity(stack);
+                rarity = Math.min(((IFlower) Block.getBlockFromItem(stack.getItem())).getRarity(stack), rarity);
             }
 
         }
@@ -46,8 +50,9 @@ public class RecipeAwakenedSoulstone implements IRecipe {
         return null;
     }
 
+    @Nonnull
     @Override
-    public ItemStack[] getRemainingItems(InventoryCrafting inventoryCrafting) {
+    public ItemStack[] getRemainingItems(@Nonnull InventoryCrafting inventoryCrafting) {
         return ForgeHooks.defaultRecipeGetRemainingItems(inventoryCrafting);
     }
 }

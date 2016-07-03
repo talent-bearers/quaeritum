@@ -5,11 +5,10 @@ import eladkay.quaritum.api.rituals.IDiagram;
 import eladkay.quaritum.api.rituals.PositionedBlock;
 import eladkay.quaritum.common.block.ModBlocks;
 import eladkay.quaritum.common.block.flowers.BlockAnimusFlower;
+import eladkay.quaritum.common.block.tile.TileEntityBlueprint;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -25,19 +24,23 @@ public class ShardedSkiesDiagram implements IDiagram {
         return "rituals.quaritum.shardedsky";
     }
 
-    @Nonnull
     @Override
-    public boolean run(@Nonnull World world, @Nullable EntityPlayer player, @Nonnull BlockPos pos, TileEntity te, List<ItemStack> items) {
+    public boolean run(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tes) {
         EntityItem item = new EntityItem(world, pos.getX(), pos.getY() + 2, pos.getZ(), new ItemStack(ModBlocks.flower, 1, BlockAnimusFlower.Variants.COMMON.ordinal()));
         return world.spawnEntityInWorld(item);
     }
 
     @Override
-    public boolean canRitualRun(World world, EntityPlayer player, @Nonnull BlockPos pos, @Nonnull TileEntity tile) {
-        return true;
+    public boolean hasRequiredItems(@Nullable World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile) {
+        return Helper.matches(Helper.stacksAroundAltar(tile, 4), getRequiredItems());
     }
 
     @Override
+    public boolean canRitualRun(World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile) {
+        return true;
+    }
+
+    @Nonnull
     public ArrayList<ItemStack> getRequiredItems() {
         ArrayList<ItemStack> list = Lists.newArrayList();
         list.add(new ItemStack(Blocks.RED_FLOWER));
@@ -45,8 +48,8 @@ public class ShardedSkiesDiagram implements IDiagram {
     }
 
     @Override
-    public List<PositionedBlock> buildChalks(@Nonnull List<PositionedBlock> chalks) {
-        return chalks;
+    public void buildChalks(@Nonnull List<PositionedBlock> chalks) {
+        //NO-OP
     }
 
 }

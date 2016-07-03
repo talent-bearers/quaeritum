@@ -1,8 +1,10 @@
 package eladkay.quaritum.common.item.soulstones;
 
-import eladkay.quaritum.common.core.ItemNBTHelper;
+import eladkay.quaritum.api.animus.AnimusHelper;
+import eladkay.quaritum.api.animus.INetworkProvider;
+import eladkay.quaritum.api.util.ItemNBTHelper;
 import eladkay.quaritum.common.item.base.ItemMod;
-import eladkay.quaritum.common.lib.LibNBT;
+import eladkay.quaritum.api.lib.LibNBT;
 import eladkay.quaritum.common.lib.LibNames;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,17 +16,30 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
+import java.util.UUID;
 
-public class ItemAttunedSoulstone extends ItemMod {
+public class ItemAttunedSoulstone extends ItemMod implements INetworkProvider {
     public ItemAttunedSoulstone() {
         super(LibNames.ATTUNED_SOULSTONE);
         setMaxStackSize(1);
     }
 
     @Override
+    public boolean isProvider(@Nonnull ItemStack stack) {
+        return true;
+    }
+
+    @Override
+    public boolean isReceiver(@Nonnull ItemStack stack) {
+        return true;
+    }
+
+    @Override
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
-        tooltipIfShift(tooltip, () -> tooltip.add("Attuned to " + ItemNBTHelper.getString(stack, LibNBT.TAG_OWNER, "nobody") + "."));
+        AnimusHelper.Network.addInformation(stack, tooltip, advanced);
     }
 
     @Override
@@ -34,17 +49,15 @@ public class ItemAttunedSoulstone extends ItemMod {
 
     @Override
     public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-        if (ItemNBTHelper.getString(stack, LibNBT.TAG_UUID, null) == null)
-            ItemNBTHelper.setString(stack, LibNBT.TAG_UUID, entityIn.getUniqueID().toString());
-        if (ItemNBTHelper.getString(stack, LibNBT.TAG_OWNER, null) == null)
-            ItemNBTHelper.setString(stack, LibNBT.TAG_OWNER, entityIn.getName());
+        if (!ItemNBTHelper.getNBT(stack).hasKey(LibNBT.TAG_UUID, 8))
+            ItemNBTHelper.setString(stack, LibNBT.TAG_UUID, entityIn.getCachedUniqueIdString());
     }
 
+    @Nonnull
     @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
+    public ActionResult<ItemStack> onItemRightClick(@Nonnull ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
         if (playerIn.isSneaking()) {
-            ItemNBTHelper.removeEntry(itemStackIn, LibNBT.TAG_OWNER);
-            ItemNBTHelper.removeEntry(itemStackIn, LibNBT.TAG_UUID);
+            setPlayer(itemStackIn, playerIn.getUniqueID());
             worldIn.playSound(playerIn, playerIn.getPosition(), SoundEvents.ITEM_ARMOR_EQUIP_IRON, SoundCategory.PLAYERS, 1f, 1f);
             return new ActionResult<>(EnumActionResult.SUCCESS, itemStackIn);
         }

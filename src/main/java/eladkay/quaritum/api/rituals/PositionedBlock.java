@@ -1,40 +1,49 @@
 package eladkay.quaritum.api.rituals;
 
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.math.BlockPos;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.List;
 
-public final class PositionedBlock {
+public class PositionedBlock {
+    @Nonnull
     public BlockPos pos;
+    @Nonnull
     private IBlockState state;
+    @Nullable
+    private List<IProperty> toCompare;
 
-    private PositionedBlock(@Nullable IBlockState state, int x, int y, int z) {
-        pos = new BlockPos(x, y, z);
-    }
-
-    public PositionedBlock(@Nullable IBlockState state, BlockPos pos) {
+    public PositionedBlock(@Nonnull IBlockState state, @Nonnull BlockPos pos, @Nullable List<IProperty> toCompare) {
+        this.state = state;
         this.pos = pos;
+        this.toCompare = toCompare;
     }
 
-    public static PositionedBlock constructPosChalk(IBlockState state, int x, int y, int z) {
-        return new PositionedBlock(state, x, y, z);
+    public PositionedBlock(@Nonnull IBlockState state, @Nonnull BlockPos pos) {
+        this(state, pos, null);
     }
 
-    public static PositionedBlock constructPosChalk(IBlockState state, BlockPos pos) {
-        return new PositionedBlock(state, pos);
+    @Nonnull
+    public static PositionedBlock constructPosChalk(@Nullable EnumDyeColor color, BlockPos pos) {
+        return new PositionedBlockChalk(color, pos);
     }
 
-    public PositionedBlock copy() {
-        return new PositionedBlock(state, pos);
+    @Nullable
+    public List<IProperty> getComparables() {
+        return toCompare;
     }
 
+    @Nonnull
     public IBlockState getState() {
         return state;
     }
 
-    public PositionedBlock setState(IBlockState state) {
+    @Nonnull
+    public PositionedBlock setState(@Nonnull IBlockState state) {
         this.state = state;
         return this;
     }

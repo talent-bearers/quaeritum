@@ -1,11 +1,17 @@
 package eladkay.quaritum.common.core;
 
 import eladkay.quaritum.common.Quartium;
-import eladkay.quaritum.common.lib.LibMisc;
+import eladkay.quaritum.api.lib.LibMisc;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class LogHelper {
+
+    public static Logger LOGGER = LogManager.getLogger(LibMisc.MOD_ID);
+
     public static void log(Object s) {
-        System.out.println(LibMisc.MOD_ID + ": " + s);
+        LOGGER.log(Level.INFO, s);
     }
 
     public static void logDebug(Object s) {
@@ -13,7 +19,7 @@ public class LogHelper {
     }
 
     public static void logErr(Object s) {
-        System.err.println(LibMisc.MOD_ID + ": " + s);
+        LOGGER.log(Level.ERROR, s);
     }
 
     public static void logDebugErr(Object s) {

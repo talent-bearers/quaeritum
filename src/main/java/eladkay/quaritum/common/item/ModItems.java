@@ -7,6 +7,7 @@ import eladkay.quaritum.common.item.misc.ItemReagentAtlas;
 import eladkay.quaritum.common.item.misc.ItemRiftmakerPart;
 import eladkay.quaritum.common.item.misc.ItemWorldBlade;
 import eladkay.quaritum.common.item.soulstones.*;
+import net.minecraftforge.fml.common.IFuelHandler;
 
 public class ModItems {
 

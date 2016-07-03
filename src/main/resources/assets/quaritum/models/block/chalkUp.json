@@ -3,7 +3,7 @@
     "textures": {
         "particle": "blocks/redstone_dust_dot",
         "line": "blocks/redstone_dust_line0",
-        "overlay": "blocks/redstone_dust_overlay"
+        "overlay": "quaritum:blocks/chalkOverlay"
     },
     "elements": [
         {   "from": [ 0, 0, 0.25 ],

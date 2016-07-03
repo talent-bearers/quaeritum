@@ -23,8 +23,6 @@ public class Waila {
         System.out.println("Quaritum | Waila compat");
         try {
             registrar.registerStackProvider(new ChalkStackProvider(), BlockChalk.class);
-            registrar.registerBodyProvider(new BlueprintBodyProvider(), BlockBlueprint.class);
-            registrar.registerNBTProvider(new BlueprintBodyProvider(), BlockBlueprint.class);
         } catch (NullPointerException e) {
             System.out.println("An error occured during Waila compat init!");
             e.printStackTrace();
@@ -57,64 +55,5 @@ public class Waila {
         public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity te, NBTTagCompound tag, World world, BlockPos pos) {
             return tag;
         }
-    }
-
-    public static class BlueprintBodyProvider implements IWailaDataProvider {
-
-        @Override
-        public ItemStack getWailaStack(IWailaDataAccessor accessor, IWailaConfigHandler config) {
-            return null;
-        }
-
-        @Override
-        public List<String> getWailaHead(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-            //currenttip.addAll(((TileEntityBlueprint) accessor.getTileEntity()).items.stream().mapDiagrams(stack -> "Item: " + stack.getItem()).collect(Collectors.toList()));
-            ItemStack[] stack = new ItemStack[]{};
-            NBTTagList taglist = (NBTTagList) accessor.getNBTData().getTag("Inventory");
-
-            for (int i = 0; i < taglist.tagCount(); i++) {
-                NBTTagCompound tag = (NBTTagCompound) taglist.get(i);
-
-                byte slot = tag.getByte("Slot");
-
-                if (slot >= 0 && slot < stack.length) {
-                    stack[slot] = ItemStack.loadItemStackFromNBT(tag);
-                }
-            }
-            for (ItemStack stacks : stack) currenttip.add("Item: " + stacks.getItem());
-            return currenttip;
-        }
-
-        @Override
-        public List<String> getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-            return currenttip;
-        }
-
-        @Override
-        public List<String> getWailaTail(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-            return currenttip;
-        }
-
-        @Override
-        public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity te, NBTTagCompound tag, World world, BlockPos pos) {
-            NBTTagList itemlist = new NBTTagList();
-
-            for (int i = 0; i < ((TileEntityBlueprint) te).items.size(); i++) {
-                ItemStack itemstack = ((TileEntityBlueprint) te).items.get(i);
-
-                if (itemstack != null) {
-                    NBTTagCompound tag2 = new NBTTagCompound();
-                    tag2.setByte("Slot", (byte) i);
-                    itemstack.writeToNBT(tag2);
-                    itemlist.appendTag(tag2);
-                }
-            }
-            /*for(ItemStack item : ((TileEntityBlueprint) te).items) {
-                item.writeToNBT(tag);
-            }*/
-            tag.setTag("Inventory", itemlist);
-            return tag;
-        }
-
     }
 }

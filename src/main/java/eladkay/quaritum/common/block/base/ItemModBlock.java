@@ -2,7 +2,7 @@ package eladkay.quaritum.common.block.base;
 
 
 import eladkay.quaritum.client.core.ModelHandler;
-import eladkay.quaritum.common.lib.LibMisc;
+import eladkay.quaritum.api.lib.LibMisc;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.color.IItemColor;
@@ -29,7 +29,10 @@ public class ItemModBlock extends ItemBlock implements ModelHandler.IVariantHold
         if (this.getVariants().length > 1) {
             this.setHasSubtypes(true);
         }
-        ModelHandler.variantCache.add(this);
+        try {
+            ModelHandler.variantCache.add(this);
+        } catch (Throwable ignored) {}
+
     }
 
     @Override

@@ -227,6 +227,7 @@ public class ModelHandler {
 
         @Override
         @Nullable
+        @SideOnly(Side.CLIENT)
         default IItemColor getColor() { return null; }
     }
 

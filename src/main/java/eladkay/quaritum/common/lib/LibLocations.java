@@ -1,5 +1,6 @@
 package eladkay.quaritum.common.lib;
 
+import eladkay.quaritum.api.lib.LibMisc;
 import net.minecraft.util.ResourceLocation;
 
 public class LibLocations {

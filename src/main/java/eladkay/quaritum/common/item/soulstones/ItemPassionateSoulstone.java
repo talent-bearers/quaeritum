@@ -1,21 +1,11 @@
 package eladkay.quaritum.common.item.soulstones;
 
 import eladkay.quaritum.api.animus.AnimusHelper;
-import eladkay.quaritum.api.animus.IFunctionalSoulstone;
-import eladkay.quaritum.common.Quartium;
-import eladkay.quaritum.common.core.ItemNBTHelper;
-import eladkay.quaritum.common.item.ModItems;
+import eladkay.quaritum.api.animus.INetworkProvider;
 import eladkay.quaritum.common.item.base.ItemMod;
-import eladkay.quaritum.common.lib.LibNBT;
 import eladkay.quaritum.common.lib.LibNames;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.IFuelHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -24,7 +14,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemPassionateSoulstone extends ItemMod implements IFunctionalSoulstone, IFuelHandler {
+public class ItemPassionateSoulstone extends ItemMod implements INetworkProvider, IFuelHandler {
 
     public ItemPassionateSoulstone() {
         super(LibNames.PASSIONATE_SOULSTONE);
@@ -32,31 +22,33 @@ public class ItemPassionateSoulstone extends ItemMod implements IFunctionalSouls
         GameRegistry.registerFuelHandler(this);
     }
 
-    public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean par4) {
-        AnimusHelper.addInformation(itemStack, list);
-    }
-
     @Override
-    public Item getContainerItem() {
-        return ModItems.passionate;
-    }
-
-    @Override
-    public ItemStack getContainerItem(ItemStack itemStack) {
-        addAnimus(itemStack, -4);
+    public ItemStack getContainerItem(@Nonnull ItemStack itemStack) {
+        if (getPlayer(itemStack) == null) return null;
+        AnimusHelper.Network.addAnimus(getPlayer(itemStack), -4);
         ItemStack copiedStack = itemStack.copy();
-        copiedStack.setItemDamage(copiedStack.getItemDamage());
         copiedStack.stackSize = 1;
         return copiedStack;
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
+        AnimusHelper.Network.addInformation(stack, tooltip, advanced);
     }
 
     @Override
     public boolean hasContainerItem(ItemStack itemStack) {
         return true;
     }
+
     @Override
-    public void onCreated(ItemStack itemStack, World world, EntityPlayer player) {
-        itemStack.setTagCompound(new NBTTagCompound());
+    public boolean isProvider(@Nonnull ItemStack stack) {
+        return false;
+    }
+
+    @Override
+    public boolean isReceiver(@Nonnull ItemStack stack) {
+        return false;
     }
 
     @Override
@@ -65,73 +57,8 @@ public class ItemPassionateSoulstone extends ItemMod implements IFunctionalSouls
     }
 
     @Override
-    public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-        if (stack.getTagCompound() == null) {
-            stack.setTagCompound(new NBTTagCompound());
-        }
-    }
-
-    @Override
-    public int getAnimusLevel(@Nonnull ItemStack stack) {
-        return AnimusHelper.getAnimus(stack);
-    }
-
-
-    @Nonnull
-    @Override
-    public ItemStack addAnimus(@Nonnull ItemStack stack, int amount) {
-        if (getAnimusLevel(stack) + amount > getMaxAnimus(stack)) return stack;
-        ItemNBTHelper.setInt(stack, LibNBT.TAG_ANIMUS, getAnimusLevel(stack) + amount);
-        return stack;
-    }
-
-    @Nullable
-    @Override
-    public int getMaxAnimus(@Nonnull ItemStack stack) {
-        return 800;
-    }
-
-    @Override
-    public int getRarityLevel(@Nonnull ItemStack stack) {
-        return AnimusHelper.getRarity(stack);
-    }
-
-    @Nonnull
-    @Override
-    public ItemStack addRarity(@Nonnull ItemStack stack, int amount) {
-        if (getRarityLevel(stack) + amount > getRarityLevel(stack)) return stack;
-        ItemNBTHelper.setInt(stack, LibNBT.TAG_RARITY, getRarityLevel(stack) + amount);
-        return stack;
-    }
-
-    @Override
-    public int getMaxRarity(@Nonnull ItemStack stack) {
-        return 0;
-    }
-
-    @Nullable
-    @Override
-    public boolean isRechargeable(@Nonnull ItemStack stack) {
-        return true;
-    }
-
-    @Override
-    public void doPassive(@Nonnull ItemStack stack) {
-    }
-
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
-        if (Quartium.isDevEnv) itemStackIn = addAnimus(itemStackIn, 200);
-        return ActionResult.newResult(Quartium.isDevEnv ? EnumActionResult.SUCCESS : EnumActionResult.FAIL, itemStackIn);
-    }
-
-    @Override
     public int getBurnTime(ItemStack fuel) {
-        if (getAnimusLevel(fuel) >= 4) {
-            return 200;
-        }
-        return 0;
-
+        return fuel.getItem() == this && AnimusHelper.Network.getAnimus(getPlayer(fuel)) >= 4 ? 200 : 0;
     }
 }
 

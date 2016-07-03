@@ -1,5 +1,6 @@
 package eladkay.quaritum.common.block.flowers;
 
+import eladkay.quaritum.common.Quartium;
 import eladkay.quaritum.common.block.base.BlockModFlower;
 import eladkay.quaritum.common.lib.LibNames;
 import net.minecraft.block.material.Material;
@@ -75,14 +76,15 @@ public class BlockAnimusFlower extends BlockModFlower {
     }
 
     public enum Variants implements IStringSerializable {
-        COMMON(0, 20, "common"), COMMON_ARCANE(10, 40, "commonArcane"), ARCANE(40, 60, "arcane");
+        COMMON(0, 20, "common"), COMMON_ARCANE(1, 40, "commonArcane"), ARCANE(2, 60, "arcane");
 
         public static String[] vars = new String[Variants.values().length];
 
         static {
             for (Variants var : Variants.values()) {
                 vars[var.ordinal()] = LibNames.FLOWER + String.join(",", Arrays.asList(var.getName().split("_")).stream().map(BlockAnimusFlower::capitalizeFirst).collect(Collectors.joining()));
-                System.out.println(LibNames.FLOWER + String.join(",", Arrays.asList(var.getName().split("_")).stream().map(BlockAnimusFlower::capitalizeFirst).collect(Collectors.joining())));
+                if (Quartium.isDevEnv)
+                    System.out.println(LibNames.FLOWER + String.join(",", Arrays.asList(var.getName().split("_")).stream().map(BlockAnimusFlower::capitalizeFirst).collect(Collectors.joining())));
             }
 
         }
@@ -100,6 +102,10 @@ public class BlockAnimusFlower extends BlockModFlower {
         public static Variants of(int meta) {
             if (meta < 0 || meta > values().length) return null;
             return values()[meta];
+        }
+
+        public static String rarityToName(int rarity) {
+            return rarity == 0 ? "Common" : rarity == 1 ? "Common (Arcane)" : rarity == 2 ? "Arcane" : null;
         }
 
         @Override

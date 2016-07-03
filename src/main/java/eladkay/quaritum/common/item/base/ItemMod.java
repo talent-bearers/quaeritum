@@ -3,7 +3,7 @@ package eladkay.quaritum.common.item.base;
 import eladkay.quaritum.client.core.ModelHandler;
 import eladkay.quaritum.client.core.TooltipHelper;
 import eladkay.quaritum.common.core.CreativeTab;
-import eladkay.quaritum.common.lib.LibMisc;
+import eladkay.quaritum.api.lib.LibMisc;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -33,7 +33,9 @@ public class ItemMod extends Item implements ModelHandler.IVariantHolder {
 
         bareName = name;
         this.variants = variants;
-        ModelHandler.variantCache.add(this);
+        try {
+            ModelHandler.variantCache.add(this);
+        } catch (Throwable ignored) {}
     }
 
 
@@ -78,7 +80,7 @@ public class ItemMod extends Item implements ModelHandler.IVariantHolder {
             name = variants[dmg];
         }
 
-        return "tile." + LibMisc.MOD_ID + ":" + name;
+        return "item." + LibMisc.MOD_ID + ":" + name;
     }
 
     @Override

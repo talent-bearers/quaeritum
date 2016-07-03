@@ -1,49 +1,52 @@
 misc.quaritum.shiftForInfo=&7Hold &bSHIFT&7 for more info
+misc.quaritum.animusBound=Tied to %s
 
 itemGroup.quaritum=Quaritum
 
 tile.quaritum:blueprint.name=Blueprint
-tile.quaritum:dormantSoulstone.name=Dormant Soulstone
-tile.quaritum:attunedSoulstone.name=Attuned Soulstone
-tile.quaritum:awakenedSoulstone.name=Awakened Soulstone
-tile.quaritum:oppressiveSoulstone.name=Oppersive Soulstone
-tile.quaritum:passionateSoulstone.name=Passionate Soulstone
-tile.quaritum:worldSoulstone.name=Stone of the Worldsoul
+item.quaritum:dormantSoulstone.name=Dormant Soulstone
+item.quaritum:attunedSoulstone.name=Attuned Soulstone
+item.quaritum:awakenedSoulstone.name=Awakened Soulstone
+item.quaritum:oppressiveSoulstone.name=Oppersive Soulstone
+item.quaritum:passionateSoulstone.name=Passionate Soulstone
+item.quaritum:worldSoulstone.name=Stone of the Worldsoul
 
 tile.quaritum:flowerCommon.name=Common Flower
-tile.quaritum:flowerCommonArcane.name=Common (Arcane) Flower
+tile.quaritum:flowerCommonArcane.name=Arcane Common Flower
 tile.quaritum:flowerArcane.name=Arcane Flower
 
-tile.quaritum:crystal.name=Manifest Soul
-tile.quaritum:flowingWorldBlade.name=Blade of the Flowing World
-tile.quaritum:riftFur.name=Riftmaker's Fur
-tile.quaritum:riftFang.name=Riftmaker's Fang
-tile.quaritum:riftClaw.name=Riftmaker's Claw
+item.quaritum:crystal.name=Manifest Soul
+item.quaritum:flowingWorldBlade.name=Blade of the Flowing World
+item.quaritum:riftFur.name=Riftmaker's Fur
+item.quaritum:riftFang.name=Riftmaker's Fang
+item.quaritum:riftClaw.name=Riftmaker's Claw
 
-tile.quaritum:debug.name=Debug Item
+item.quaritum:debug.name=Debug Item
 
 rituals.quaritum.altarofthefallingstar=Altar of the Falling Star
 rituals.quaritum.trash=Ritual of Rubbish
 
 entity.quaritum.chaosborn.name=Chaosborn
 
-tile.quaritum:chalkWhite.name=Chalk (White)
-tile.quaritum:chalkOrange.name=Chalk (Orange)
-tile.quaritum:chalkMagenta.name=Chalk (Magenta)
-tile.quaritum:chalkLightBlue.name=Chalk (Light Blue)
-tile.quaritum:chalkYellow.name=Chalk (Yellow)
-tile.quaritum:chalkLime.name=Chalk (Lime)
-tile.quaritum:chalkPink.name=Chalk (Pink)
-tile.quaritum:chalkGray.name=Chalk (Gray)
-tile.quaritum:chalkLightGray.name=Chalk (Light Gray)
-tile.quaritum:chalkCyan.name=Chalk (Cyan)
-tile.quaritum:chalkPurple.name=Chalk (Purple)
-tile.quaritum:chalkBlue.name=Chalk (Blue)
-tile.quaritum:chalkBrown.name=Chalk (Brown)
-tile.quaritum:chalkGreen.name=Chalk (Green)
-tile.quaritum:chalkRed.name=Chalk (Red)
-tile.quaritum:chalkBlack.name=Chalk (Black)
-tile.quaritum:chalkTempest.name=Chalk of the Tempest
+misc.quaritum.rushOfEnergy=A rush of energy flows through your soul!
 
-tile.quaritum:fertilizer.name=Magical Fertilizer
-tile.quaritum:reagentAtlas.name=Reagent (Atlas)
+item.quaritum:chalkWhite.name=White Chalk
+item.quaritum:chalkOrange.name=Orange Chalk
+item.quaritum:chalkMagenta.name=Magenta Chalk
+item.quaritum:chalkLightBlue.name=Light Blue Chalk
+item.quaritum:chalkYellow.name=Yellow Chalk
+item.quaritum:chalkLime.name=Lime Chalk
+item.quaritum:chalkPink.name=Pink Chalk
+item.quaritum:chalkGray.name=Gray Chalk
+item.quaritum:chalkLightGray.name=Light Gray Chalk
+item.quaritum:chalkCyan.name=Cyan Chalk
+item.quaritum:chalkPurple.name=Purple Chalk
+item.quaritum:chalkBlue.name=Blue Chalk
+item.quaritum:chalkBrown.name=Brown Chalk
+item.quaritum:chalkGreen.name=Green Chalk
+item.quaritum:chalkRed.name=Red Chalk
+item.quaritum:chalkBlack.name=Black Chalk
+item.quaritum:chalkTempest.name=Tempest Chalk
+
+item.quaritum:fertilizer.name=Magical Fertilizer
+item.quaritum:reagentAtlas.name=Atlas Reagent

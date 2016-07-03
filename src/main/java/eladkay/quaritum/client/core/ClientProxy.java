@@ -1,14 +1,13 @@
 package eladkay.quaritum.client.core;
 
-import eladkay.quaritum.client.render.RenderChaosborn;
+import eladkay.quaritum.api.lib.LibMisc;
+import eladkay.quaritum.client.render.entity.RenderChaosborn;
 import eladkay.quaritum.common.core.CommonProxy;
 import eladkay.quaritum.common.entity.EntityChaosborn;
-import eladkay.quaritum.common.lib.LibMisc;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -24,7 +23,10 @@ public class ClientProxy extends CommonProxy {
     public void init(FMLInitializationEvent e) {
         super.init(e);
         ModelHandler.init();
-        RenderingRegistry.registerEntityRenderingHandler(EntityChaosborn.class, (Render<? extends Entity>) new RenderChaosborn());
+
+        MinecraftForge.EVENT_BUS.register(new ClientTickHandler());
+
+        RenderingRegistry.registerEntityRenderingHandler(EntityChaosborn.class, RenderChaosborn::new);
         Minecraft.getMinecraft().getTextureMapBlocks().registerSprite(new ResourceLocation("quaritum:entity/magicParticle"));
         Minecraft.getMinecraft().getTextureMapBlocks().loadTextureAtlas(Minecraft.getMinecraft().getResourceManager());
     }

@@ -6,7 +6,7 @@ import eladkay.quaritum.common.crafting.recipes.RecipeAnimusUpgrade;
 import eladkay.quaritum.common.crafting.recipes.RecipeAwakenedSoulstone;
 import eladkay.quaritum.common.crafting.recipes.RecipeShapelessAnimusUpgrade;
 import eladkay.quaritum.common.item.ModItems;
-import eladkay.quaritum.common.lib.LibMisc;
+import eladkay.quaritum.api.lib.LibMisc;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -16,6 +16,8 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
+
+import java.util.Arrays;
 
 public class ModRecipes {
 
@@ -31,7 +33,7 @@ public class ModRecipes {
 
         CraftingManager.getInstance().addRecipe(new RecipeAwakenedSoulstone());
         addShapelessOreDictRecipe(new ItemStack(ModBlocks.crystal), new ItemStack(ModBlocks.flower), new ItemStack(Blocks.GOLD_BLOCK));
-        addShapelessOreDictRecipe(new ItemStack(ModBlocks.blueprint), "dyeBlue", new ItemStack(Items.PAPER));
+        addShapelessOreDictRecipe(new ItemStack(ModBlocks.blueprint), "dyeBlue", new ItemStack(Items.PAPER), new ItemStack(Blocks.STONE_SLAB));
         addShapelessOreDictRecipe(new ItemStack(ModItems.fertilizer, 2), "dyePink", new ItemStack(Items.DYE, 1, 15), new ItemStack(ModItems.altas));
         addAnimusRecipe(new ItemStack(ModItems.passionate),
                 "Y Y",
@@ -53,7 +55,11 @@ public class ModRecipes {
                     new ItemStack(Items.CLAY_BALL),
                     "dye" + dyeColors[i]);
         }
-        addShapelessAnimusRecipe(new ItemStack(ModItems.awakened), new ItemStack(ModItems.awakened), new ItemStack(ModItems.awakened));
+        for (int i = 1; i <= 9; i++) {
+            ItemStack[] recipe = new ItemStack[i];
+            Arrays.fill(recipe, new ItemStack(ModItems.awakened));
+            addShapelessAnimusRecipe(new ItemStack(ModItems.awakened), recipe);
+        }
         addOreDictRecipe(new ItemStack(ModItems.worldBlade),
                 " FI",
                 "CWF",

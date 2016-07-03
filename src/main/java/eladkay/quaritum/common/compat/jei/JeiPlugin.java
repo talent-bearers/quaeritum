@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import eladkay.quaritum.common.compat.jei.rituals.RitualRecipeCatagory;
 import eladkay.quaritum.common.compat.jei.rituals.RitualRecipeHandler;
 import eladkay.quaritum.common.compat.jei.rituals.RitualRecipeRecipe;
-import eladkay.quaritum.common.lib.LibMisc;
+import eladkay.quaritum.api.lib.LibMisc;
 import eladkay.quaritum.common.lib.LibNames;
 import mezz.jei.api.*;
 import net.minecraft.util.ResourceLocation;
