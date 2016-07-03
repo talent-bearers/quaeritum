@@ -58,7 +58,7 @@ public class AltarOfTheFallingStarDiagram implements IDiagram {
             if (!(stack.getItem() instanceof ISoulstone)) continue;
             ISoulstone ss = (ISoulstone) stack.getItem();
             AnimusHelper.Network.addAnimus(player, ss.getAnimusLevel(stack));
-            AnimusHelper.Network.addAnimusRarity(player, ss.getAnimusLevel(stack));
+            AnimusHelper.Network.addRarity(player, ss.getAnimusLevel(stack));
             item.setDead();
             flag = true;
         }

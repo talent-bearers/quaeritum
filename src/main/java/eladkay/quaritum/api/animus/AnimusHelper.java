@@ -2,6 +2,7 @@ package eladkay.quaritum.api.animus;
 
 import eladkay.quaritum.api.lib.LibMisc;
 import eladkay.quaritum.client.core.TooltipHelper;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -55,6 +56,13 @@ public final class AnimusHelper {
         return ((ISoulstone) stack.getItem()).getAnimusLevel(stack);
     }
 
+    public static void damageItem(ItemStack stack, int damageToApply, EntityLivingBase entity, int animusPerDamage, int rarity) {
+        int animusToDrain = damageToApply * animusPerDamage;
+        if (entity instanceof EntityPlayer && ((EntityPlayer) entity).capabilities.isCreativeMode) return;
+        boolean shouldDamage = !(entity instanceof EntityPlayer) || !Network.requestAnimus((EntityPlayer) entity, animusToDrain, rarity, true);
+        if (shouldDamage)
+            stack.damageItem(damageToApply, entity);
+    }
 
     public static final class Network {
         private static final String KEY_ANIMUS_NETWORK = LibMisc.MOD_ID + "-AnimusNetwork";
@@ -84,11 +92,11 @@ public final class AnimusHelper {
 
         }
 
-        public static void setAnimusRarity(EntityPlayer player, int rarity) {
-            setAnimusRarity(player.getUniqueID(), rarity);
+        public static void setRarity(EntityPlayer player, int rarity) {
+            setRarity(player.getUniqueID(), rarity);
         }
 
-        public static void setAnimusRarity(UUID uuid, int rarity) {
+        public static void setRarity(UUID uuid, int rarity) {
             getPersistentCompound(uuid).setInteger(TAG_ANIMUS_RARITY, rarity);
             getSaveData().markDirty();
         }
@@ -101,11 +109,11 @@ public final class AnimusHelper {
             return getIntegerSafe(getPersistentCompound(uuid), TAG_ANIMUS_LEVEL, 0);
         }
 
-        public static int getAnimusRarity(EntityPlayer player) {
-            return getAnimusRarity(player.getUniqueID());
+        public static int getRarity(EntityPlayer player) {
+            return getRarity(player.getUniqueID());
         }
 
-        public static int getAnimusRarity(UUID uuid) {
+        public static int getRarity(UUID uuid) {
             return getIntegerSafe(getPersistentCompound(uuid), TAG_ANIMUS_RARITY, 0);
         }
 
@@ -117,12 +125,23 @@ public final class AnimusHelper {
             setAnimus(uuid, animus + getAnimus(uuid));
         }
 
-        public static void addAnimusRarity(EntityPlayer player, int rarity) {
-            addAnimusRarity(player.getUniqueID(), rarity);
+        public static void addRarity(EntityPlayer player, int rarity) {
+            addRarity(player.getUniqueID(), rarity);
         }
 
-        public static void addAnimusRarity(UUID uuid, int rarity) {
-            setAnimusRarity(uuid, Math.max(rarity, getAnimusRarity(uuid)));
+        public static void addRarity(UUID uuid, int rarity) {
+            setRarity(uuid, Math.max(rarity, getRarity(uuid)));
+        }
+
+        public static boolean requestAnimus(EntityPlayer player, int animus, int rarity, boolean drain) {
+            return requestAnimus(player.getUniqueID(), animus, rarity, drain);
+        }
+
+        public static boolean requestAnimus(UUID uuid, int animus, int rarity, boolean drain) {
+            if (getAnimus(uuid) < animus) return false;
+            if (getRarity(uuid) < rarity) return false;
+            if (drain) addAnimus(uuid, -animus);
+            return true;
         }
 
         public static void updatePlayerName(EntityPlayer player) {

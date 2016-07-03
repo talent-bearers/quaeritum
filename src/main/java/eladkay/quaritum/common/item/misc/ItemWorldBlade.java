@@ -1,102 +1,140 @@
 package eladkay.quaritum.common.item.misc;
 
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import eladkay.quaritum.api.animus.AnimusHelper;
+import eladkay.quaritum.api.util.ItemNBTHelper;
+import eladkay.quaritum.api.util.Vector3;
 import eladkay.quaritum.client.core.TooltipHelper;
+import eladkay.quaritum.common.core.QuaritumMethodHandles;
+import eladkay.quaritum.common.core.RayHelper;
 import eladkay.quaritum.common.item.base.ItemModSword;
 import eladkay.quaritum.common.lib.LibMaterials;
 import eladkay.quaritum.common.lib.LibNames;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Random;
 
 public class ItemWorldBlade extends ItemModSword {
+
+    public static final String TAG_TELEPORTED = "teleportTicks";
+
     public ItemWorldBlade() {
         super(LibNames.WORLD_BLADE, LibMaterials.MYSTIC);
-        addPropertyOverride(new ResourceLocation("blocking"), (stack, worldIn, entityIn) -> entityIn != null && entityIn.isSneaking() && (((EntityPlayer) entityIn).inventory.offHandInventory.length == 0 || !ItemStack.areItemStacksEqual(((EntityPlayer) entityIn).inventory.offHandInventory[0], stack)) ? 1.0F : 0.0F);
-    }
-
-    private static boolean isInUse(EntityPlayer player) {
-        return player.isSneaking();
-    }
-
-    @Override
-    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
-        TooltipHelper.tooltipIfShift(tooltip, () -> {
-            tooltip.add("Sneak in order to become invisible and resistant to damage");
-            tooltip.add("Infused with elemental power");
-            tooltip.add("Has to be in your main hand");
-        });
     }
 
     @Override
     public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-        EntityPlayer player = (EntityPlayer) entityIn;
-        if (!isSelected || (player.inventory.offHandInventory.length > 0 && ItemStack.areItemStacksEqual(player.inventory.offHandInventory[0], stack)))
-            return;
-        if (player.isSneaking()) {
-            Random rand = new Random();
-            BlockPos pos = new BlockPos(player.posX, player.posY, player.posZ);
-            player.addPotionEffect(new PotionEffect(Potion.REGISTRY.getObject(new ResourceLocation("minecraft:invisibility")), 10,
-                    1));
-            player.addPotionEffect(new PotionEffect(Potion.REGISTRY.getObject(new ResourceLocation
-                    ("minecraft:resistance")), 10, 5));
-            if (new Random().nextInt() % 5 == 0) {
-                try {
-                    for (int i = 0; i < 8; i++) {
-                        worldIn.spawnParticle(EnumParticleTypes.SPELL_WITCH, pos.getX() + 0.5, pos.getY() + rand.nextDouble(), pos.getZ() + 0.5, 1, 1, 1);
-                        worldIn.spawnParticle(EnumParticleTypes.SPELL_WITCH, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 1, 1, 1);
-                    }
+        if (worldIn.isRemote && entityIn instanceof EntityPlayer && stack.getItemDamage() > 0 && AnimusHelper.Network.requestAnimus((EntityPlayer) entityIn, 2, 0, true))
+            stack.setItemDamage(stack.getItemDamage() - 1);
 
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
-                }
-            }
+        int ticks = ItemNBTHelper.getInt(stack, TAG_TELEPORTED, 0);
+        if (ticks > 0 && entityIn instanceof EntityLivingBase)
+            QuaritumMethodHandles.setSwingTicks((EntityLivingBase) entityIn, ticks);
+        ItemNBTHelper.removeEntry(stack, TAG_TELEPORTED);
+    }
 
-        }
+    @Override
+    public boolean onBlockDestroyed(ItemStack stack, World worldIn, IBlockState state, BlockPos pos, EntityLivingBase entityLiving) {
+        if (state.getBlockHardness(worldIn, pos) > 0)
+            AnimusHelper.damageItem(stack, 1, entityLiving, 1, 0);
+        return true;
     }
 
     @Override
     public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
-        return !isInUse((EntityPlayer) attacker) && super.hitEntity(stack, target, attacker);
+        AnimusHelper.damageItem(stack, 1, attacker, 1, 0);
+        return true;
     }
 
     @Override
-    public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity) {
-        return isInUse(player);
-    }
+    public boolean onEntitySwing(EntityLivingBase entityLiving, ItemStack stack) {
+        if (entityLiving instanceof EntityPlayer && ((EntityPlayer) entityLiving).getCooldownTracker().hasCooldown(this)) return false;
 
-    @Override
-    public boolean showDurabilityBar(ItemStack stack) {
+        Vector3 pos = Vector3.ZERO;
+        boolean hitEntity = false;
+
+        Entity hit = RayHelper.getEntityLookedAt(entityLiving, 8);
+        if (hit != null) {
+            pos = Vector3.fromEntity(hit);
+            hitEntity = true;
+        } else {
+            RayTraceResult result = RayHelper.raycast(entityLiving, 8);
+            if (result == null) {
+                pos = Vector3.fromEntity(entityLiving).add(new Vector3(entityLiving.getLookVec()).multiply(8));
+            } else {
+                switch (result.typeOfHit) {
+                    case MISS:
+                        pos = Vector3.fromEntity(entityLiving).add(new Vector3(entityLiving.getLookVec()).multiply(8));
+                        break;
+                    case BLOCK:
+                        pos = new Vector3(result.getBlockPos()).add(new Vector3(result.sideHit.getDirectionVec())).add(Vector3.CENTER);
+                        break;
+                    case ENTITY:
+                        pos = Vector3.fromEntity(result.entityHit);
+                        hitEntity = true;
+                        break;
+                }
+            }
+        }
+
+        pos = new Vector3(pos.x, Math.max(pos.y, entityLiving.posY), pos.z);
+        BlockPos blockPos = new BlockPos(pos.x, pos.y, pos.z);
+
+        if (entityLiving.worldObj.getBlockState(blockPos.up()).getCollisionBoundingBox(entityLiving.worldObj, blockPos.up()) == null) {
+            entityLiving.setPosition(pos.x, pos.y, pos.z);
+
+            //todo add sounds and particles
+
+            if (!hitEntity)
+                ItemNBTHelper.setInt(stack, TAG_TELEPORTED, QuaritumMethodHandles.getSwingTicks(entityLiving));
+
+            AnimusHelper.damageItem(stack, 1, entityLiving, 1, 0);
+
+            if (entityLiving instanceof EntityPlayer)
+                ((EntityPlayer) entityLiving).getCooldownTracker().setCooldown(this, (int) ((EntityPlayer) entityLiving).getCooldownPeriod());
+        }
+
         return false;
     }
 
     @Override
-    public boolean isDamaged(ItemStack stack) {
-        return false;
-    }
+    public Multimap<String, AttributeModifier> getAttributeModifiers(@Nonnull EntityEquipmentSlot slot, ItemStack stack) {
+        Multimap<String, AttributeModifier> multimap = HashMultimap.<String, AttributeModifier>create();
 
-    @Override
-    public Multimap<String, AttributeModifier> getItemAttributeModifiers(EntityEquipmentSlot equipmentSlot) {
-        Multimap<String, AttributeModifier> multimap = super.getItemAttributeModifiers(equipmentSlot);
-
-        if (equipmentSlot == EntityEquipmentSlot.MAINHAND) {
+        if (slot == EntityEquipmentSlot.MAINHAND) {
             multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getAttributeUnlocalizedName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", (double) this.attackDamage, 0));
-            multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getAttributeUnlocalizedName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", -3.2D, 0));
+            multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getAttributeUnlocalizedName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", -3.5D, 0));
         }
 
         return multimap;
+    }
+
+    @Override
+    public int getItemEnchantability() {
+        return 26;
+    }
+
+    @Nonnull
+    @Override
+    public EnumRarity getRarity(ItemStack stack) {
+        return EnumRarity.EPIC;
     }
 }
