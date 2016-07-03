@@ -59,28 +59,6 @@ public class TileEntityBlueprint extends TileMod {
         }
         return bestDiagram;
     }
-    public World getWorld() {
-        return worldObj;
-    }
-
-
-    private IDiagram getValidRitual() {
-        IDiagram bestFit = null;
-        int best = -1;
-        for (IDiagram ritual : RitualRegistry.getDiagramList()) {
-            boolean foundAll = ritual.hasRequiredItems(worldObj, pos, this);
-            boolean requirementsMet = ritual.canRitualRun(this.getWorld(), pos, this);
-            List<PositionedBlock> blocks = Lists.newArrayList();
-            ritual.buildChalks(blocks);
-            int chalks = PositionedBlockHelper.getChalkPriority(blocks, this, ritual.getUnlocalizedName());
-
-            if (foundAll && requirementsMet && chalks > best) {
-                best = chalks;
-                bestFit = ritual;
-            }
-        }
-        return bestFit;
-    }
 
     private void runRitual(IDiagram ritual) {
         if (worldObj.isRemote || ritual == null) return;
@@ -90,21 +68,24 @@ public class TileEntityBlueprint extends TileMod {
     }
 
     public boolean onBlockActivated() {
-        if (currentDiagram == null) runRitual(getBestRitual());
+        if (currentDiagram == null)
+            runRitual(getBestRitual());
         return true;
     }
 
     @Override
     public void writeCustomNBT(NBTTagCompound compound) {
         compound.setInteger("Stage", stage.ordinal());
-        compound.setString("Diagram", RitualRegistry.getRitualName(currentDiagram) == null ? "" : RitualRegistry.getRitualName(currentDiagram));
+        String diagramName = RitualRegistry.getRitualName(currentDiagram);
+        compound.setString("Diagram", diagramName == null ? "" : diagramName);
         compound.setInteger("StageTicks", stageTicks);
     }
 
     @Override
     public void readCustomNBT(NBTTagCompound compound) {
         stage = RitualStage.values()[compound.getInteger("Stage")];
-        currentDiagram = RitualRegistry.getDiagramByName(compound.getString("Diagram"));
+        String diagramName = compound.getString("Diagram");
+        currentDiagram = diagramName.equals("") ? null : RitualRegistry.getDiagramByName(diagramName);
         stageTicks = compound.getInteger("StageTicks");
     }
 
