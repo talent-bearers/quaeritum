@@ -1,0 +1,7 @@
+{
+    "parent": "block/carpet",
+    "textures": {
+        "particle": "quaritum:blocks/chalkWhite",
+        "wool": "quaritum:blocks/chalkWhite"
+    }
+}
