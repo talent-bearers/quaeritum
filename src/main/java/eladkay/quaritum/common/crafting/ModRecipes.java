@@ -56,7 +56,7 @@ public class ModRecipes {
                     "dye" + dyeColors[i]);
         }
         for (int i = 1; i <= 9; i++) {
-            ItemStack[] recipe = new ItemStack[i];
+            Object[] recipe = new Object[i];
             Arrays.fill(recipe, new ItemStack(ModItems.awakened));
             addShapelessAnimusRecipe(new ItemStack(ModItems.awakened), recipe);
         }

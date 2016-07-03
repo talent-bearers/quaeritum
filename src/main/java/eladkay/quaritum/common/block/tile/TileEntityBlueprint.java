@@ -14,6 +14,8 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import java.util.List;
+
 public class TileEntityBlueprint extends TileMod {
 
     public CraftingStage stage = CraftingStage.IDLE;

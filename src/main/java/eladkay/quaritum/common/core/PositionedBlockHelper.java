@@ -38,10 +38,6 @@ public final class PositionedBlockHelper {
             }
         }
 
-
-
-        }
-
         return true;
     }
 
