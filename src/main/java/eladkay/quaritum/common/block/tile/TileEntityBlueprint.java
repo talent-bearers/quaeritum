@@ -6,82 +6,65 @@ import eladkay.quaritum.api.rituals.PositionedBlock;
 import eladkay.quaritum.api.rituals.RitualRegistry;
 import eladkay.quaritum.common.core.PositionedBlockHelper;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 
 import java.util.List;
 
 public class TileEntityBlueprint extends TileMod {
 
-    public RitualStage stage = RitualStage.IDLE;
+    public CraftingStage stage = CraftingStage.IDLE;
     public int stageTicks = 0;
-    public IDiagram currentDiagram = null;
 
-    public enum RitualStage {
-        IDLE, PREP, CRAFTING
+    public enum CraftingStage {
+        IDLE, PARTICLES, CRAFTING
     }
-
+    public World getWorld() {
+        return worldObj;
+    }
     @Override
     public void updateEntity() {
-        if (worldObj.isRemote) {
-            if (currentDiagram != null) {
-                if (stageTicks > 0) {
-                    stage = RitualStage.PREP;
-                    stageTicks--;
-                    if (!currentDiagram.onPrepUpdate(worldObj, pos, this, stageTicks))
-                        currentDiagram = null;
-                } else {
-                    stage = RitualStage.CRAFTING;
-                    currentDiagram.run(worldObj, pos, this);
-                    currentDiagram = null;
-                }
-            }
-
-            if (currentDiagram == null) {
-                stage = RitualStage.IDLE;
-                stageTicks = 0;
-            }
-        }
+        //todo
     }
 
-    private IDiagram getBestRitual() {
-        IDiagram bestDiagram = null;
-        int highestChalks = 0;
+    private IDiagram getValidRitual() {
+        IDiagram bestFit = null;
+        int best = -1;
         for (IDiagram ritual : RitualRegistry.getDiagramList()) {
             boolean foundAll = ritual.hasRequiredItems(worldObj, pos, this);
             boolean requirementsMet = ritual.canRitualRun(this.getWorld(), pos, this);
             List<PositionedBlock> blocks = Lists.newArrayList();
             ritual.buildChalks(blocks);
             int chalks = PositionedBlockHelper.getChalkPriority(blocks, this, ritual.getUnlocalizedName());
-            if (foundAll && requirementsMet && highestChalks < chalks) {
-                bestDiagram = ritual;
-                highestChalks = chalks;
+
+            if (foundAll && requirementsMet && chalks > best) {
+                best = chalks;
+                bestFit = ritual;
             }
         }
-        return bestDiagram;
+        runRitual(bestFit);
+        return null;
     }
 
-    private void runRitual(IDiagram ritual) {
-        if (worldObj.isRemote || ritual == null) return;
-        currentDiagram = ritual;
-        stage = RitualStage.PREP;
-        stageTicks = ritual.getPrepTime(worldObj, pos, this);
+    private boolean runRitual(IDiagram ritual) {
+        if(ritual != null && !worldObj.isRemote) {
+            ritual.run(worldObj, pos, this);
+            return true;
+        } else return false;
     }
 
     public boolean onBlockActivated() {
-        if (currentDiagram == null) runRitual(getBestRitual());
-        return true;
+        return runRitual(getValidRitual());
     }
 
     @Override
     public void writeCustomNBT(NBTTagCompound compound) {
         compound.setInteger("Stage", stage.ordinal());
-        compound.setString("Diagram", RitualRegistry.getRitualName(currentDiagram));
         compound.setInteger("StageTicks", stageTicks);
     }
 
     @Override
     public void readCustomNBT(NBTTagCompound compound) {
-        stage = RitualStage.values()[compound.getInteger("Stage")];
-        currentDiagram = RitualRegistry.getDiagramByName(compound.getString("Diagram"));
+        stage = CraftingStage.values()[compound.getInteger("Stage")];
         stageTicks = compound.getInteger("StageTicks");
     }
 }

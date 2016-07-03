@@ -1,11 +1,9 @@
 package eladkay.quaritum.common.item.misc;
 
-import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import eladkay.quaritum.api.animus.AnimusHelper;
 import eladkay.quaritum.api.util.ItemNBTHelper;
 import eladkay.quaritum.api.util.Vector3;
-import eladkay.quaritum.client.core.TooltipHelper;
 import eladkay.quaritum.common.core.QuaritumMethodHandles;
 import eladkay.quaritum.common.core.RayHelper;
 import eladkay.quaritum.common.item.base.ItemModSword;
@@ -21,18 +19,12 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
-import java.util.List;
-import java.util.Random;
 
 public class ItemWorldBlade extends ItemModSword {
 
@@ -141,7 +133,7 @@ public class ItemWorldBlade extends ItemModSword {
 
         if (slot == EntityEquipmentSlot.MAINHAND) {
             multimap.removeAll(SharedMonsterAttributes.ATTACK_SPEED.getAttributeUnlocalizedName());
-            multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getAttributeUnlocalizedName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", -3.5D, 0));
+            multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getAttributeUnlocalizedName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", -2.4000000953674316D, 0));
         }
 
         return multimap;
