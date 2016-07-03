@@ -17,6 +17,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
@@ -24,6 +25,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
@@ -99,9 +101,27 @@ public class ItemWorldBlade extends ItemModSword {
         BlockPos blockPos = new BlockPos(pos.x, pos.y, pos.z);
 
         if (entityLiving.worldObj.getBlockState(blockPos.up()).getCollisionBoundingBox(entityLiving.worldObj, blockPos.up()) == null) {
+            if (entityLiving.worldObj.isRemote) for (int i = 0; i < 100; i++)
+                entityLiving.worldObj.spawnParticle(EnumParticleTypes.PORTAL,
+                        entityLiving.posX + (entityLiving.worldObj.rand.nextDouble() - 0.5D) * (double)entityLiving.width,
+                        entityLiving.posY + entityLiving.worldObj.rand.nextDouble() * (double)entityLiving.height - 0.25D,
+                        entityLiving.posZ + (entityLiving.worldObj.rand.nextDouble() - 0.5D) * (double)entityLiving.width,
+                        (entityLiving.worldObj.rand.nextDouble() - 0.5D) * 2.0D, -entityLiving.worldObj.rand.nextDouble(),
+                        (entityLiving.worldObj.rand.nextDouble() - 0.5D) * 2.0D);
+
             entityLiving.setPosition(pos.x, pos.y, pos.z);
 
-            //todo add sounds and particles
+            if (entityLiving.worldObj.isRemote) for (int i = 0; i < 100; i++)
+                entityLiving.worldObj.spawnParticle(EnumParticleTypes.PORTAL,
+                        entityLiving.posX + (entityLiving.worldObj.rand.nextDouble() - 0.5D) * (double)entityLiving.width,
+                        entityLiving.posY + entityLiving.worldObj.rand.nextDouble() * (double)entityLiving.height - 0.25D,
+                        entityLiving.posZ + (entityLiving.worldObj.rand.nextDouble() - 0.5D) * (double)entityLiving.width,
+                        (entityLiving.worldObj.rand.nextDouble() - 0.5D) * 2.0D,
+                        -entityLiving.worldObj.rand.nextDouble(),
+                        (entityLiving.worldObj.rand.nextDouble() - 0.5D) * 2.0D);
+
+            entityLiving.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1f, 1f);
+
 
             if (!hitEntity)
                 ItemNBTHelper.setInt(stack, TAG_TELEPORTED, QuaritumMethodHandles.getSwingTicks(entityLiving));
