@@ -21,10 +21,10 @@ public final class PositionedBlockHelper {
         World world = entity.getWorld();
         for (PositionedBlock block : list) {
             IBlockState state = world.getBlockState(entity.getPos().add(block.getPos()));
+            List<IProperty> comparables = block.getComparables();
 
             if (block.getState().getBlock() == state.getBlock()) {
                 LogHelper.logDebug("Block check OK");
-                List<IProperty> comparables = block.getComparables();
                 if (comparables != null) for (IProperty property : comparables) {
                     if (block.getState().getValue(property) != state.getValue(property)) {
                         LogHelper.logDebug("Expected " + block.getState() + " in " + block.getPos() + " for ritual " + optionalName + ". Got " + state);
@@ -35,6 +35,8 @@ public final class PositionedBlockHelper {
                     LogHelper.logDebug("Expected " + block.getState() + " in " + block.getPos() + " for ritual " + optionalName + ". Got " + state);
                     return false;
                 }
+            } else {
+                return false;
             }
         }
 
