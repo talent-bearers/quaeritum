@@ -27,9 +27,9 @@ public class ShardedSkiesTier2Diagram implements IDiagram {
     }
 
     @Override
-    public boolean run(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint te) {
+    public void run(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint te) {
         EntityItem item = new EntityItem(world, pos.getX(), pos.getY() + 2, pos.getZ(), new ItemStack(ModBlocks.flower, 1, BlockAnimusFlower.Variants.COMMON_ARCANE.ordinal()));
-        return world.spawnEntityInWorld(item);
+        world.spawnEntityInWorld(item);
     }
 
     @Override

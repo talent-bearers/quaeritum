@@ -38,7 +38,7 @@ public class AltarOfTheFallingStarDiagram implements IDiagram {
     }
 
     @Override
-    public boolean run(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint te) {
+    public void run(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint te) {
         boolean flag = false;
 
         List<EntityItem> entities = Helper.entitiesAroundAltar(te, 4);
@@ -51,7 +51,7 @@ public class AltarOfTheFallingStarDiagram implements IDiagram {
             player = ((INetworkProvider) stack.getItem()).getPlayer(stack);
             break;
         }
-        if (player == null) return false;
+        if (player == null) return;
 
         for (EntityItem item : entities) {
             ItemStack stack = item.getEntityItem();
@@ -65,7 +65,6 @@ public class AltarOfTheFallingStarDiagram implements IDiagram {
         if (flag) for (EntityPlayer playerEntity : world.playerEntities)
             if (playerEntity.getUniqueID().equals(player))
                 ChatHelper.sendNoSpam1(playerEntity, new TextComponentTranslation("misc.quaritum.rushOfEnergy"));
-        return flag;
     }
 
 

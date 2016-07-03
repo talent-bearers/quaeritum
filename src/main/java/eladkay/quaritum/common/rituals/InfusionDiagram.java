@@ -28,11 +28,12 @@ public class InfusionDiagram implements IDiagram {
     }
 
     @Override
-    public boolean run(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tes) {
+    public void run(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tes) {
         EntityItem item = new EntityItem(world, pos.getX(), pos.getY() + 2, pos.getZ(), ItemAwakenedSoulstone.withAnimus(100, 2));
         EntityItem item2 = new EntityItem(world, pos.getX(), pos.getY() + 2, pos.getZ(), new ItemStack(Blocks.GOLD_BLOCK));
 
-        return world.spawnEntityInWorld(item) && world.spawnEntityInWorld(item2);
+        world.spawnEntityInWorld(item);
+        world.spawnEntityInWorld(item2);
     }
 
     @Override

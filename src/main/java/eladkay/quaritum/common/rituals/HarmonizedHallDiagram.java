@@ -1,6 +1,5 @@
 package eladkay.quaritum.common.rituals;
 
-import eladkay.quaritum.api.animus.AnimusHelper;
 import eladkay.quaritum.api.animus.ISoulstone;
 import eladkay.quaritum.api.rituals.IDiagram;
 import eladkay.quaritum.api.rituals.PositionedBlock;
@@ -25,7 +24,7 @@ public class HarmonizedHallDiagram implements IDiagram {
     }
 
     @Override
-    public boolean run(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile) {
+    public void run(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile) {
         for (EntityItem item : Helper.entitiesAroundAltar(tile, 4)) {
             ItemStack stack = item.getEntityItem();
             if (stack.getItem() instanceof ISoulstone)
@@ -34,7 +33,6 @@ public class HarmonizedHallDiagram implements IDiagram {
 
         EntityItem item = new EntityItem(world, pos.getX(), pos.getY() + 2, pos.getZ(), RecipeAnimusUpgrade.output(Helper.stacksAroundAltar(tile, 4)));
         world.spawnEntityInWorld(item);
-        return true;
     }
 
     @Override

@@ -17,30 +17,33 @@ public final class PositionedBlockHelper {
         return PositionedBlock.constructPosChalk(chalkColor, pos);
     }
 
-    public static boolean isChalkSetupValid(List<PositionedBlock> list, TileEntity entity, String optionalName) {
+    public static int getChalkPriority(List<PositionedBlock> list, TileEntity entity, String optionalName) {
         World world = entity.getWorld();
+        int chalks = 0;
         for (PositionedBlock block : list) {
             IBlockState state = world.getBlockState(entity.getPos().add(block.getPos()));
             List<IProperty> comparables = block.getComparables();
 
             if (block.getState().getBlock() == state.getBlock()) {
                 LogHelper.logDebug("Block check OK");
-                if (comparables != null) for (IProperty property : comparables) {
-                    if (block.getState().getValue(property) != state.getValue(property)) {
-                        LogHelper.logDebug("Expected " + block.getState() + " in " + block.getPos() + " for ritual " + optionalName + ". Got " + state);
-                        return false;
+                if (comparables != null) {
+                    for (IProperty property : comparables) {
+                        if (block.getState().getValue(property) != state.getValue(property)) {
+                            LogHelper.logDebug("Expected " + block.getState() + " in " + block.getPos() + " for ritual " + optionalName + ". Got " + state);
+                            return -1;
+                        }
                     }
-                }
-                else if (block.getState() != state) {
+                    chalks++;
+                } else if (block.getState() != state) {
                     LogHelper.logDebug("Expected " + block.getState() + " in " + block.getPos() + " for ritual " + optionalName + ". Got " + state);
-                    return false;
-                }
+                    return -1;
+                } else chalks++;
             } else {
-                return false;
+                return -1;
             }
         }
 
-        return true;
+        return chalks;
     }
 
 }

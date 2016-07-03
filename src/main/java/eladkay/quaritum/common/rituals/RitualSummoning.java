@@ -1,7 +1,6 @@
 package eladkay.quaritum.common.rituals;
 
 import com.google.common.collect.Lists;
-import eladkay.quaritum.api.animus.AnimusHelper;
 import eladkay.quaritum.api.animus.ISoulstone;
 import eladkay.quaritum.api.rituals.IDiagram;
 import eladkay.quaritum.api.rituals.PositionedBlock;
@@ -33,7 +32,7 @@ public class RitualSummoning implements IDiagram {
 
     @Nonnull
     @Override
-    public boolean run(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint te) {
+    public void run(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint te) {
         double x = pos.getX() + 0.5;
         double y = pos.getY() + 2;
         double z = pos.getZ() + 0.5;
@@ -50,7 +49,7 @@ public class RitualSummoning implements IDiagram {
         for (int i = 0; i <= 10; i++)
             world.addWeatherEffect(new EntityLightningBolt(world, pos.getX() + op(Math.random() * 4), pos.getY(), pos.getZ() + op(Math.random() * 4), true));
         world.setWorldTime(23000);
-        return world.spawnEntityInWorld(chaosborn);
+        world.spawnEntityInWorld(chaosborn);
     }
 
     private double op(double in) {

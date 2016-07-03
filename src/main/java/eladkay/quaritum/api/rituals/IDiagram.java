@@ -19,9 +19,16 @@ public interface IDiagram {
     @Nonnull
     String getUnlocalizedName();
 
-    boolean run(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile);
+    void run(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile);
     boolean canRitualRun(@Nullable World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile);
     boolean hasRequiredItems(@Nullable World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile);
+
+    default int getPrepTime(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile) {
+        return 0;
+    }
+    default boolean onPrepUpdate(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile, int ticksRemaining) {
+        return true;
+    }
 
     void buildChalks(@Nonnull List<PositionedBlock> chalks);
 
