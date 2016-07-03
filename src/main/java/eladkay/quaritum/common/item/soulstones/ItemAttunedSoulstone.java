@@ -41,7 +41,7 @@ public class ItemAttunedSoulstone extends ItemMod implements INetworkProvider {
         try {
             AnimusHelper.Network.addInformation(stack, tooltip, advanced);
         } catch(Exception e) {
-            //probably just not attuned, pulled from jei etc
+            //probably just displaying in jei
             //it doesn't work though, why doesn't it work?
             TooltipHelper.addToTooltip(tooltip, TooltipHelper.local("misc.quaritum.notattuned"));
         }
