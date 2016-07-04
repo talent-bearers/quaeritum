@@ -23,8 +23,7 @@ public class FancyParticlePacket extends MessageBase<FancyParticlePacket> {
         y = tag.getInteger("y");
         z = tag.getInteger("z");
         amount = tag.getInteger("amount");
-
-        System.out.println("x = " + x + " y = " + y + " z = " + z);
+        //System.out.println("x = " + x + " y = " + y + " z = " + z);
     }
 
     @Override
@@ -35,18 +34,10 @@ public class FancyParticlePacket extends MessageBase<FancyParticlePacket> {
         tag.setInteger("z", z);
         tag.setInteger("amount", amount);
         ByteBufUtils.writeTag(buf, tag);
-       /* buf.writeInt(x);
-        buf.writeInt(y);
-        buf.writeInt(z);
-        buf.writeInt(amount);*/
-        System.out.println("x = " + x + " y = " + y + " z = " + z);
+        //System.out.println("x = " + x + " y = " + y + " z = " + z);
     }
 
     public FancyParticlePacket() {
-       /* x = -193;
-        y = 72;
-        z = 143;
-        amount = 100;*/
         x = 0;
         y = 0;
         z = 0;
@@ -56,25 +47,25 @@ public class FancyParticlePacket extends MessageBase<FancyParticlePacket> {
         y = yc;
         z = zc;
         this.amount = amount;
-        System.out.println("x = " + x + " y = " + y + " z = " + z);
+        //System.out.println("x = " + x + " y = " + y + " z = " + z);
     }
     @Override
     public void handleClientSide(FancyParticlePacket message, EntityPlayer player) {
-        System.out.println("x = " + x + " y = " + y + " z = " + z);
+        //System.out.println("x = " + x + " y = " + y + " z = " + z);
         //do packety stuff
-        for (int i = 0; i < amount; i++) {
+        for (int i = 0; i < message.amount; i++) {
             //world, x, y, z
             Quartium.proxy.spawnStafflikeParticles(
                     player.worldObj, //world
-                    x + (player.worldObj.rand.nextDouble()), //x
-                    y + player.worldObj.rand.nextDouble() - 0.5D, //y
-                    z + (player.worldObj.rand.nextDouble()) //z
+                    message.x + (player.worldObj.rand.nextDouble()), //x
+                    message.y + player.worldObj.rand.nextDouble() - 0.5D, //y
+                    message.z + (player.worldObj.rand.nextDouble()) //z
             );
         }
     }
 
     @Override
     public void handleServerSide(FancyParticlePacket message, EntityPlayer player) {
-        System.out.println("x = " + x + " y = " + y + " z = " + z);
+       // System.out.println("x = " + x + " y = " + y + " z = " + z);
     }
 }
