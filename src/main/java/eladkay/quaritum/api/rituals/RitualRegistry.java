@@ -2,6 +2,8 @@ package eladkay.quaritum.api.rituals;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import eladkay.quaritum.api.lib.LibMisc;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Loader;
 
@@ -16,6 +18,13 @@ public final class RitualRegistry {
     public static IDiagram registerDiagram(IDiagram ritual, String name) {
         FMLLog.info("Registering diagram \"" + name + "\".");
 
+        String modid = Loader.instance().activeModContainer().getModId();
+
+        if (!modid.equals(LibMisc.MOD_ID)) {
+            ResourceLocation rl = new ResourceLocation(name);
+            name = modid + ":" + rl.getResourcePath();
+        }
+
         if (!mapDiagrams.containsKey(name)) {
             mapDiagrams.put(name, ritual);
         } else {
@@ -28,6 +37,13 @@ public final class RitualRegistry {
 
     public static IWork registerWork(IWork ritual, String name) {
         FMLLog.info("Registering work \"" + name + "\".");
+
+        String modid = Loader.instance().activeModContainer().getModId();
+
+        if (!modid.equals(LibMisc.MOD_ID)) {
+            ResourceLocation rl = new ResourceLocation(name);
+            name = modid + ":" + rl.getResourcePath();
+        }
 
         if (!mapWorks.containsKey(name)) {
             mapWorks.put(name, ritual);
