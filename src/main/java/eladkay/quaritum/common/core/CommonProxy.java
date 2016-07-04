@@ -6,6 +6,7 @@ import eladkay.quaritum.common.block.ModBlocks;
 import eladkay.quaritum.common.crafting.ModRecipes;
 import eladkay.quaritum.common.entity.ModEntities;
 import eladkay.quaritum.common.item.ModItems;
+import eladkay.quaritum.common.networking.NetworkHelper;
 import eladkay.quaritum.common.rituals.ModDiagrams;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -26,6 +27,7 @@ public class CommonProxy {
         new Events().init();
         new ClientEventHandler().init();
         new AnimusHelper.Network.EventHandler();
+        NetworkHelper.init();
         ModDiagrams.init();
         ChatHelper.PacketHandler.init();
         FMLInterModComms.sendMessage("Waila", "register", "eladkay.quaritum.common.compat.waila.Waila.onWailaCall");

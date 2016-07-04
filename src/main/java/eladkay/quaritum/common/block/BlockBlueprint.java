@@ -64,8 +64,7 @@ public class BlockBlueprint extends BlockModContainer {
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
-        //world, x, y, z, r, g, b, size, xspeed, yspeed, zspeed, maxage
-        //Quartium.proxy.wispFX(worldIn, pos.getX(), pos.getY() + 1, pos.getZ(), 51, 153, 255, 0.1F);
+        //Quartium.proxy.spawnStafflikeParticles(worldIn, pos.getX(), pos.getY() + 1, pos.getZ());
         TileEntity tile = worldIn.getTileEntity(pos);
         return tile instanceof TileEntityBlueprint && ((TileEntityBlueprint) tile).onBlockActivated();
     }

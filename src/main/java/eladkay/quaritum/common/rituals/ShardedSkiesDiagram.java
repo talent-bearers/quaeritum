@@ -6,6 +6,8 @@ import eladkay.quaritum.api.rituals.PositionedBlock;
 import eladkay.quaritum.common.block.ModBlocks;
 import eladkay.quaritum.common.block.flowers.BlockAnimusFlower;
 import eladkay.quaritum.common.block.tile.TileEntityBlueprint;
+import eladkay.quaritum.common.networking.FancyParticlePacket;
+import eladkay.quaritum.common.networking.NetworkHelper;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -30,11 +32,20 @@ public class ShardedSkiesDiagram implements IDiagram {
     public void run(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tes) {
         EntityItem item = new EntityItem(world, pos.getX(), pos.getY() + 2, pos.getZ(), new ItemStack(ModBlocks.flower, 1, BlockAnimusFlower.Variants.COMMON.ordinal()));
         for(EntityItem stack : Helper.entitiesAroundAltar(tes, 4)) {
+            if(!Helper.isEntityItemInList(stack, getRequiredItems())) continue;
             WorldServer server = (WorldServer) tes.getWorld();
             server.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, stack.getPosition().getX() + 0.5, stack.getPosition().getY() + 1, stack.getPosition().getZ() + 0.5, 1, 0.1, 0, 0.1, 0);
             stack.setDead();
         }
         world.spawnEntityInWorld(item);
+    }
+
+    @Override
+    public boolean onPrepUpdate(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile, int ticksRemaining) {
+        NetworkHelper.tellEveryoneAround(new FancyParticlePacket(pos.getX(), pos.getY(), pos.getZ(), 100), 0, pos.getX(), pos.getY(), pos.getZ(), 16);
+        for(ItemStack stack : Helper.stacksAroundAltar(tile, 4))
+            if(Helper.isStackInList(stack, getRequiredItems())) return true;
+        return false;
     }
 
     @Override

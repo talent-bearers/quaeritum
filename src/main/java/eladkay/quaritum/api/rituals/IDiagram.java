@@ -34,6 +34,24 @@ public interface IDiagram {
 
     class Helper {
 
+        private static class MutableBoolean {
+            boolean value;
+            public MutableBoolean(boolean value) {
+                this.value = value;
+            }
+
+        }
+        public static boolean isEntityItemInList(EntityItem item, List<ItemStack> stacks) {
+            MutableBoolean flag = new MutableBoolean(false);
+            stacks.forEach((stack) -> { if(itemEquals(item.getEntityItem(), stack)) flag.value = true; });
+            return flag.value;
+        }
+        public static boolean isStackInList(ItemStack stack, List<ItemStack> stacks) {
+            for(ItemStack stack1 : stacks) {
+                if(itemEquals(stack1, stack)) return true;
+            }
+            return false;
+        }
         public static List<EntityItem> entitiesAroundAltar(TileEntity tile, double range) {
             List<EntityItem> entities = tile.getWorld().getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(tile.getPos().add(3, 2, 3), tile.getPos().add(-3, -2, -3)));
             return entities.stream()

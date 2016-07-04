@@ -31,6 +31,7 @@ public class ItemWorldBlade extends ItemModSword {
 
     public static final String TAG_TELEPORTED = "teleportTicks";
 
+    boolean shouldUseElucentParticles = true; //lol
     public ItemWorldBlade() {
         super(LibNames.WORLD_BLADE, LibMaterials.MYSTIC);
     }
@@ -106,22 +107,15 @@ public class ItemWorldBlade extends ItemModSword {
 
             if (entityLiving.worldObj.isRemote)
                 for (int i = 0; i < 100; i++) {
-                 /*   entityLiving.worldObj.spawnParticle(EnumParticleTypes.PORTAL,
+                  if(!shouldUseElucentParticles)
+                   entityLiving.worldObj.spawnParticle(EnumParticleTypes.PORTAL,
                             entityLiving.posX + (entityLiving.worldObj.rand.nextDouble() - 0.5D) * (double) entityLiving.width,
                             entityLiving.posY + entityLiving.worldObj.rand.nextDouble() * (double) entityLiving.height - 0.25D,
                             entityLiving.posZ + (entityLiving.worldObj.rand.nextDouble() - 0.5D) * (double) entityLiving.width,
                             (entityLiving.worldObj.rand.nextDouble() - 0.5D) * 2.0D,
                             -entityLiving.worldObj.rand.nextDouble(),
-                            (entityLiving.worldObj.rand.nextDouble() - 0.5D) * 2.0D);*/
-                  /* Quartium.proxy.wispFX(entityLiving.worldObj, //worldobj
-                            entityLiving.posX + (entityLiving.worldObj.rand.nextDouble() - 0.5D) * (double) entityLiving.width, //x
-                            entityLiving.posY + entityLiving.worldObj.rand.nextDouble() * (double) entityLiving.height - 0.25D, //y
-                            entityLiving.posZ + (entityLiving.worldObj.rand.nextDouble() - 0.5D) * (double) entityLiving.width, //z
-                            51, 153, 255, //rgb
-                            0.1f, //size
-                            (float)((entityLiving.worldObj.rand.nextDouble() - 0.5D) * 2.0D), //motx
-                            (float)-entityLiving.worldObj.rand.nextDouble(), //moty
-                            (float) ((entityLiving.worldObj.rand.nextDouble() - 0.5D) * 2.0D)); //motz*/
+                            (entityLiving.worldObj.rand.nextDouble() - 0.5D) * 2.0D);
+                    else
                     Quartium.proxy.spawnStafflikeParticles(
                             entityLiving.worldObj, //world
                             entityLiving.posX + (entityLiving.worldObj.rand.nextDouble() - 0.5D) * (double) entityLiving.width, //x

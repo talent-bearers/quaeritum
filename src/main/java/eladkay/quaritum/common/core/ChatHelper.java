@@ -204,7 +204,7 @@ public class ChatHelper {
     }
 
     protected static class PacketHandler {
-        public static final SimpleNetworkWrapper INSTANCE = new SimpleNetworkWrapper(LibMisc.MOD_ID);
+        public static final SimpleNetworkWrapper INSTANCE = new SimpleNetworkWrapper(LibMisc.MOD_ID + "_chat");
 
         public static void init() {
             INSTANCE.registerMessage(ChatHelper.PacketNoSpamChat.Handler.class, ChatHelper.PacketNoSpamChat.class, 0, Side.CLIENT);
