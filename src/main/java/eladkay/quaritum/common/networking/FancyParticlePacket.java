@@ -3,6 +3,8 @@ package eladkay.quaritum.common.networking;
 import eladkay.quaritum.common.Quartium;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 public class FancyParticlePacket extends MessageBase<FancyParticlePacket> {
     private int x;
@@ -11,36 +13,56 @@ public class FancyParticlePacket extends MessageBase<FancyParticlePacket> {
     private int amount = 100;
     @Override
     public void fromBytes(ByteBuf buf) {
-        x = buf.readInt();
+
+        /*x = buf.readInt();
         y = buf.readInt();
         z = buf.readInt();
-        amount = buf.readInt();
+        amount = buf.readInt();*/
+        NBTTagCompound tag = ByteBufUtils.readTag(buf);
+        x = tag.getInteger("x");
+        y = tag.getInteger("y");
+        z = tag.getInteger("z");
+        amount = tag.getInteger("amount");
+
+        System.out.println("x = " + x + " y = " + y + " z = " + z);
     }
 
     @Override
     public void toBytes(ByteBuf buf) {
-        buf.writeInt(x);
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setInteger("x", x);
+        tag.setInteger("y", y);
+        tag.setInteger("z", z);
+        tag.setInteger("amount", amount);
+        ByteBufUtils.writeTag(buf, tag);
+       /* buf.writeInt(x);
         buf.writeInt(y);
         buf.writeInt(z);
-        buf.writeInt(amount);
+        buf.writeInt(amount);*/
+        System.out.println("x = " + x + " y = " + y + " z = " + z);
     }
 
     public FancyParticlePacket() {
-        x = -193;
+       /* x = -193;
         y = 72;
         z = 143;
-        amount = 100;
+        amount = 100;*/
+        x = 0;
+        y = 0;
+        z = 0;
     }
     public FancyParticlePacket(int xc, int yc, int zc, int amount) {
         x = xc;
         y = yc;
         z = zc;
         this.amount = amount;
+        System.out.println("x = " + x + " y = " + y + " z = " + z);
     }
     @Override
     public void handleClientSide(FancyParticlePacket message, EntityPlayer player) {
+        System.out.println("x = " + x + " y = " + y + " z = " + z);
         //do packety stuff
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < amount; i++) {
             //world, x, y, z
             Quartium.proxy.spawnStafflikeParticles(
                     player.worldObj, //world
@@ -52,5 +74,7 @@ public class FancyParticlePacket extends MessageBase<FancyParticlePacket> {
     }
 
     @Override
-    public void handleServerSide(FancyParticlePacket message, EntityPlayer player) {    }
+    public void handleServerSide(FancyParticlePacket message, EntityPlayer player) {
+        System.out.println("x = " + x + " y = " + y + " z = " + z);
+    }
 }
