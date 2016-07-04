@@ -62,7 +62,7 @@ public class FXMagicLine extends Particle {
     }
 
     //0 = none, 1 = elucent, 2 = wiresegal
-    int rotationMode = 0 ;
+    public static final int ROTATION_MODE = 0 ;
     @Override
     public void onUpdate() {
         super.onUpdate();
@@ -74,7 +74,7 @@ public class FXMagicLine extends Particle {
         this.particleBlue = Math.min(1.0f, (float) colorB * (1.5f - lifeCoeff) + lifeCoeff);
         GlStateManager.enableBlend();
         this.particleAlpha = alpha;
-        if(rotationMode == 2) {
+        if(ROTATION_MODE == 2) {
             //wiresegal's approach
             //https://www.youtube.com/watch?v=V-tja0YnCM8
             xRotate = (float) Math.sin(tt * rotationModifier / 2) / 2F;
@@ -83,7 +83,7 @@ public class FXMagicLine extends Particle {
             posZ = zRotate + initialZ;
             motionX = -xRotate;
             motionZ = -zRotate;
-        } else if(rotationMode == 1) {
+        } else if(ROTATION_MODE == 1) {
             //elucent's approach
             //https://www.youtube.com/watch?v=WUurkKbtRRI
             posX = initialX + Math.sin(Math.toRadians(tt));
