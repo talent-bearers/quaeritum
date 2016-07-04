@@ -10,7 +10,8 @@ import eladkay.quaritum.common.block.tile.TileEntityBlueprint;
 import eladkay.quaritum.common.core.PositionedBlockHelper;
 import eladkay.quaritum.common.entity.EntityChaosborn;
 import eladkay.quaritum.common.item.ModItems;
-import net.minecraft.entity.effect.EntityLightningBolt;
+import eladkay.quaritum.common.networking.LightningEffectPacket;
+import eladkay.quaritum.common.networking.NetworkHelper;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
@@ -42,18 +43,30 @@ public class RitualSummoning implements IDiagram {
             if (!(stack.getItem() instanceof ISoulstone)) continue;
             ISoulstone ss = (ISoulstone) stack.getItem();
             rarity = Math.max(ss.getRarityLevel(stack), rarity);
-            world.addWeatherEffect(new EntityLightningBolt(world, item.posX, item.posY, item.posZ, true));
+            NetworkHelper.tellEveryoneAround(new LightningEffectPacket(item.posX, item.posY, item.posZ), world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 4);
             item.setDead();
         }
         EntityChaosborn chaosborn = new EntityChaosborn(world, rarity, x, y, z);
-        for (int i = 0; i <= 10; i++)
-            world.addWeatherEffect(new EntityLightningBolt(world, pos.getX() + op(Math.random() * 4), pos.getY(), pos.getZ() + op(Math.random() * 4), true));
+
         world.setWorldTime(23000);
         world.spawnEntityInWorld(chaosborn);
     }
 
     private double op(double in) {
         return Math.random() >= 0.5 ? in : -in;
+    }
+
+    @Override
+    public int getPrepTime(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile) {
+        return 50;
+    }
+
+    @Override
+    public boolean onPrepUpdate(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile, int ticksRemaining) {
+        NetworkHelper.tellEveryoneAround(new LightningEffectPacket(pos.getX() + op(Math.random() * 4), pos.getY(), pos.getZ() + op(Math.random() * 4)), world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 4);
+        for(ItemStack stack : Helper.stacksAroundAltar(tile, 4))
+            if(Helper.isStackInList(stack, getRequiredItems())) return true;
+        return false;
     }
 
     @Override

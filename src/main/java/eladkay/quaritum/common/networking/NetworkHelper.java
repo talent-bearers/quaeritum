@@ -11,6 +11,7 @@ public class NetworkHelper {
     public static void init() {
         instance = new SimpleNetworkWrapper(LibMisc.MOD_ID);
         instance.registerMessage(FancyParticlePacket.class, FancyParticlePacket.class, 0, Side.CLIENT);
+        instance.registerMessage(LightningEffectPacket.class, LightningEffectPacket.class, 1, Side.CLIENT);
     }
     //lol
     public static void tellEveryone(IMessage message) {

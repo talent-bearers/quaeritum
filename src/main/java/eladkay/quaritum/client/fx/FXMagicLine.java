@@ -3,6 +3,7 @@ package eladkay.quaritum.client.fx;
 import eladkay.quaritum.common.lib.LibLocations;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -18,9 +19,15 @@ public class FXMagicLine extends Particle {
     public int lifetime = 8;
     public ResourceLocation texture = LibLocations.MAGICLINEFX;
     Random random = new Random();
+    double initialX, initialY, initialZ;
+    long tt;
+    private double rotationModifier = 0.2f;
 
     public FXMagicLine(World worldIn, double x, double y, double z, double vx, double vy, double vz, double r, double g, double b) {
         super(worldIn, x, y, z, 0, 0, 0);
+        initialX = x;
+        initialY = y;
+        initialZ = z;
         this.colorR = r;
         this.colorG = g;
         this.colorB = b;
@@ -47,19 +54,42 @@ public class FXMagicLine extends Particle {
     public boolean isTransparent() {
         return true;
     }
-
+    float xRotate;
+    float zRotate;
     @Override
     public int getFXLayer() {
         return 1;
     }
 
+    //0 = none, 1 = elucent, 2 = wiresegal
+    int rotationMode = 0 ;
     @Override
     public void onUpdate() {
         super.onUpdate();
+        tt++;
         float lifeCoeff = ((float) this.particleMaxAge - (float) this.particleAge) / (float) this.particleMaxAge;
+        float alpha = 0.5f;
         this.particleRed = Math.min(1.0f, (float) colorR * (1.5f - lifeCoeff) + lifeCoeff);
         this.particleGreen = Math.min(1.0f, (float) colorG * (1.5f - lifeCoeff) + lifeCoeff);
         this.particleBlue = Math.min(1.0f, (float) colorB * (1.5f - lifeCoeff) + lifeCoeff);
-        this.particleAlpha = lifeCoeff;
+        GlStateManager.enableBlend();
+        this.particleAlpha = alpha;
+        if(rotationMode == 2) {
+            //wiresegal's approach
+            //https://www.youtube.com/watch?v=V-tja0YnCM8
+            xRotate = (float) Math.sin(tt * rotationModifier / 2) / 2F;
+            zRotate = (float) Math.cos(tt * rotationModifier) / 2 / 2F;
+            posX = xRotate + initialX;
+            posZ = zRotate + initialZ;
+            motionX = -xRotate;
+            motionZ = -zRotate;
+        } else if(rotationMode == 1) {
+            //elucent's approach
+            //https://www.youtube.com/watch?v=WUurkKbtRRI
+            posX = initialX + Math.sin(Math.toRadians(tt));
+            posY = initialY;
+            posZ = initialZ + Math.cos(Math.toRadians(tt));
+        }
     }
+
 }

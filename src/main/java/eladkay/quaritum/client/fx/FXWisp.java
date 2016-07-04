@@ -40,9 +40,14 @@ public class FXWisp extends Particle {
     private float f3;
     private float f4;
     private float f5;
+    double initialX, initialY, initialZ;
+    long tt;
 
     public FXWisp(World world, double x, double y, double z,  float size, float red, float green, float blue, boolean distanceLimit, boolean depthTest, float maxAgeMul) {
         super(world, x, y, z, 0.0D, 0.0D, 0.0D);
+        initialX = x;
+        initialY = y;
+        initialZ = z;
         particleRed = red;
         particleGreen = green;
         particleBlue = blue;
@@ -138,6 +143,7 @@ public class FXWisp extends Particle {
 
     @Override
     public void onUpdate() {
+        tt++;
         prevPosX = posX;
         prevPosY = posY;
         prevPosZ = posZ;
@@ -145,13 +151,16 @@ public class FXWisp extends Particle {
         if (particleAge++ >= particleMaxAge)
             setExpired();
 
-        motionY -= 0.04D * particleGravity;
+       /* motionY -= 0.04D * particleGravity;
         posX += motionX;
         posY += motionY;
         posZ += motionZ;
         motionX *= 0.98000001907348633D;
         motionY *= 0.98000001907348633D;
-        motionZ *= 0.98000001907348633D;
+        motionZ *= 0.98000001907348633D;*/
+        posX = initialX + Math.sin(Math.toRadians(tt));
+        posY = initialY;
+        posZ = initialZ + Math.cos(Math.toRadians(tt));
     }
 
     public void setGravity(float value) {
