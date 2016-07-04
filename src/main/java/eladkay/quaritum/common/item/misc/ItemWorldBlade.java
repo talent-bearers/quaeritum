@@ -4,6 +4,7 @@ import com.google.common.collect.Multimap;
 import eladkay.quaritum.api.animus.AnimusHelper;
 import eladkay.quaritum.api.util.ItemNBTHelper;
 import eladkay.quaritum.api.util.Vector3;
+import eladkay.quaritum.common.Quartium;
 import eladkay.quaritum.common.core.QuaritumMethodHandles;
 import eladkay.quaritum.common.core.RayHelper;
 import eladkay.quaritum.common.item.base.ItemModSword;
@@ -103,14 +104,25 @@ public class ItemWorldBlade extends ItemModSword {
 
             entityLiving.setPosition(pos.x, pos.y, pos.z);
 
-            if (entityLiving.worldObj.isRemote) for (int i = 0; i < 100; i++)
-                entityLiving.worldObj.spawnParticle(EnumParticleTypes.PORTAL,
-                        entityLiving.posX + (entityLiving.worldObj.rand.nextDouble() - 0.5D) * (double)entityLiving.width,
-                        entityLiving.posY + entityLiving.worldObj.rand.nextDouble() * (double)entityLiving.height - 0.25D,
-                        entityLiving.posZ + (entityLiving.worldObj.rand.nextDouble() - 0.5D) * (double)entityLiving.width,
-                        (entityLiving.worldObj.rand.nextDouble() - 0.5D) * 2.0D,
-                        -entityLiving.worldObj.rand.nextDouble(),
-                        (entityLiving.worldObj.rand.nextDouble() - 0.5D) * 2.0D);
+            if (entityLiving.worldObj.isRemote)
+                for (int i = 0; i < 100; i++) {
+                 /*   entityLiving.worldObj.spawnParticle(EnumParticleTypes.PORTAL,
+                            entityLiving.posX + (entityLiving.worldObj.rand.nextDouble() - 0.5D) * (double) entityLiving.width,
+                            entityLiving.posY + entityLiving.worldObj.rand.nextDouble() * (double) entityLiving.height - 0.25D,
+                            entityLiving.posZ + (entityLiving.worldObj.rand.nextDouble() - 0.5D) * (double) entityLiving.width,
+                            (entityLiving.worldObj.rand.nextDouble() - 0.5D) * 2.0D,
+                            -entityLiving.worldObj.rand.nextDouble(),
+                            (entityLiving.worldObj.rand.nextDouble() - 0.5D) * 2.0D);*/
+                    Quartium.proxy.wispFX(entityLiving.worldObj, //worldobj
+                            entityLiving.posX + (entityLiving.worldObj.rand.nextDouble() - 0.5D) * (double) entityLiving.width, //x
+                            entityLiving.posY + entityLiving.worldObj.rand.nextDouble() * (double) entityLiving.height - 0.25D, //y
+                            entityLiving.posZ + (entityLiving.worldObj.rand.nextDouble() - 0.5D) * (double) entityLiving.width, //z
+                            51, 153, 255, //rgb
+                            0.1f, //size
+                            (float)((entityLiving.worldObj.rand.nextDouble() - 0.5D) * 2.0D), //motx
+                            (float)-entityLiving.worldObj.rand.nextDouble(), //moty
+                            (float) ((entityLiving.worldObj.rand.nextDouble() - 0.5D) * 2.0D)); //motz
+                }
 
             entityLiving.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1f, 1f);
 
