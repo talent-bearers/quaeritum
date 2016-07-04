@@ -113,7 +113,7 @@ public class ItemWorldBlade extends ItemModSword {
                             (entityLiving.worldObj.rand.nextDouble() - 0.5D) * 2.0D,
                             -entityLiving.worldObj.rand.nextDouble(),
                             (entityLiving.worldObj.rand.nextDouble() - 0.5D) * 2.0D);*/
-                    Quartium.proxy.wispFX(entityLiving.worldObj, //worldobj
+                  /* Quartium.proxy.wispFX(entityLiving.worldObj, //worldobj
                             entityLiving.posX + (entityLiving.worldObj.rand.nextDouble() - 0.5D) * (double) entityLiving.width, //x
                             entityLiving.posY + entityLiving.worldObj.rand.nextDouble() * (double) entityLiving.height - 0.25D, //y
                             entityLiving.posZ + (entityLiving.worldObj.rand.nextDouble() - 0.5D) * (double) entityLiving.width, //z
@@ -121,7 +121,13 @@ public class ItemWorldBlade extends ItemModSword {
                             0.1f, //size
                             (float)((entityLiving.worldObj.rand.nextDouble() - 0.5D) * 2.0D), //motx
                             (float)-entityLiving.worldObj.rand.nextDouble(), //moty
-                            (float) ((entityLiving.worldObj.rand.nextDouble() - 0.5D) * 2.0D)); //motz
+                            (float) ((entityLiving.worldObj.rand.nextDouble() - 0.5D) * 2.0D)); //motz*/
+                    Quartium.proxy.spawnStafflikeParticles(
+                            entityLiving.worldObj, //world
+                            entityLiving.posX + (entityLiving.worldObj.rand.nextDouble() - 0.5D) * (double) entityLiving.width, //x
+                            entityLiving.posY + entityLiving.worldObj.rand.nextDouble() * (double) entityLiving.height - 0.25D, //y
+                            entityLiving.posZ + (entityLiving.worldObj.rand.nextDouble() - 0.5D) * (double) entityLiving.width //z
+                    );
                 }
 
             entityLiving.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1f, 1f);

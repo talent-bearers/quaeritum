@@ -1,6 +1,7 @@
 package eladkay.quaritum.common.core;
 
 import eladkay.quaritum.api.animus.AnimusHelper;
+import eladkay.quaritum.client.core.ClientEventHandler;
 import eladkay.quaritum.common.block.ModBlocks;
 import eladkay.quaritum.common.crafting.ModRecipes;
 import eladkay.quaritum.common.entity.ModEntities;
@@ -23,6 +24,7 @@ public class CommonProxy {
         ModEntities.init();
         ModRecipes.init();
         new Events().init();
+        new ClientEventHandler().init();
         new AnimusHelper.Network.EventHandler();
         ModDiagrams.init();
         ChatHelper.PacketHandler.init();
@@ -40,22 +42,30 @@ public class CommonProxy {
     public void spawnParticleMagixFX(World world, double x, double y, double z, double vx, double vy, double vz, double r, double g, double b) {
         //NO-OP
     }
+    @Deprecated
     public void wispFX(World world, double x, double y, double z, float r, float g, float b, float size, float motionx, float motiony, float motionz, float maxAgeMul) {
         //NO-OP
     }
+    @Deprecated
     public void wispFX(World world, double x, double y, double z, float r, float g, float b, float size) {
         wispFX(world, x, y, z, r, g, b, size, 0F);
     }
 
+    @Deprecated
     public void wispFX(World world, double x, double y, double z, float r, float g, float b, float size, float gravity) {
         wispFX(world, x, y, z, r, g, b, size, gravity, 1F);
     }
 
+    @Deprecated
     public void wispFX(World world, double x, double y, double z, float r, float g, float b, float size, float gravity, float maxAgeMul) {
         wispFX(world, x, y, z, r, g, b, size, 0, -gravity, 0, maxAgeMul);
     }
 
+    @Deprecated
     public void wispFX(World world, double x, double y, double z, float r, float g, float b, float size, float motionx, float motiony, float motionz) {
         wispFX(world, x, y, z, r, g, b, size, motionx, motiony, motionz, 1F);
+    }
+    public void spawnStafflikeParticles(World world, double x, double y, double z) {
+        //noop
     }
 }

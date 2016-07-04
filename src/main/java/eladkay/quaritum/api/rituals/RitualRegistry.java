@@ -1,6 +1,5 @@
 package eladkay.quaritum.api.rituals;
 
-import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import eladkay.quaritum.api.lib.LibMisc;
 import net.minecraft.util.ResourceLocation;
@@ -8,12 +7,10 @@ import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Loader;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 public final class RitualRegistry {
-    public static BiMap<String, IDiagram> mapDiagrams = HashBiMap.create();
-    public static BiMap<String, IWork> mapWorks = HashBiMap.create();
+    public static HashBiMap<String, IDiagram> mapDiagrams = HashBiMap.create();
+    public static HashBiMap<String, IWork> mapWorks = HashBiMap.create();
 
     public static IDiagram registerDiagram(IDiagram ritual, String name) {
         FMLLog.info("Registering diagram \"" + name + "\".");

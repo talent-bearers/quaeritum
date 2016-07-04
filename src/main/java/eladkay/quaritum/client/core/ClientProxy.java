@@ -1,8 +1,10 @@
 package eladkay.quaritum.client.core;
 
 import eladkay.quaritum.api.lib.LibMisc;
+import eladkay.quaritum.client.fx.FXMagicLine;
 import eladkay.quaritum.client.fx.FXWisp;
 import eladkay.quaritum.client.render.entity.RenderChaosborn;
+import eladkay.quaritum.common.Quartium;
 import eladkay.quaritum.common.core.CommonProxy;
 import eladkay.quaritum.common.entity.EntityChaosborn;
 import net.minecraft.client.Minecraft;
@@ -34,10 +36,19 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public void spawnParticleMagixFX(World world, double x, double y, double z, double vx, double vy, double vz, double r, double g, double b) {
-        //ParticleMagicLine particle = new ParticleMagicLine(world,x,y,z,vx,vy,vz,r,g,b);
-        //ParticleDragonBreath particle = new ParticleDragonBreath2(world, x, y, z, vx, vy, vz);
-        //Minecraft.getMinecraft().effectRenderer.addEffect(particle);
+        if(!doParticle(world))
+            return;
+        FXMagicLine particle = new FXMagicLine(world,x,y,z,vx,vy,vz,r,g,b);
+        Minecraft.getMinecraft().effectRenderer.addEffect(particle);
     }
+
+    @Override
+    public void spawnStafflikeParticles(World world, double x, double y, double z) {
+        Quartium.proxy.spawnParticleMagixFX(world, x + 2 * (world.rand.nextFloat() - 0.5), y + 2.0 * (world.rand.nextFloat() - 0.5) + 1.0, z + 2.0 * (world.rand.nextFloat() - 0.5), x, y + 1.0, z, 0, 0, 0);
+    }
+
+    //This doesn't work
+    @Deprecated
     @Override
     public void wispFX(World world, double x, double y, double z, float r, float g, float b, float size, float motionx, float motiony, float motionz, float maxAgeMul) {
         if(!doParticle(world))
@@ -64,21 +75,25 @@ public class ClientProxy extends CommonProxy {
         return chance == 1F || Math.random() < chance;
     }
     @Override
+    @Deprecated
     public void wispFX(World world, double x, double y, double z, float r, float g, float b, float size) {
         wispFX(world, x, y, z, r, g, b, size, 0F);
     }
 
     @Override
+    @Deprecated
     public void wispFX(World world, double x, double y, double z, float r, float g, float b, float size, float gravity) {
         wispFX(world, x, y, z, r, g, b, size, gravity, 1F);
     }
 
     @Override
+    @Deprecated
     public void wispFX(World world, double x, double y, double z, float r, float g, float b, float size, float gravity, float maxAgeMul) {
         wispFX(world, x, y, z, r, g, b, size, 0, -gravity, 0, maxAgeMul);
     }
 
     @Override
+    @Deprecated
     public void wispFX(World world, double x, double y, double z, float r, float g, float b, float size, float motionx, float motiony, float motionz) {
         wispFX(world, x, y, z, r, g, b, size, motionx, motiony, motionz, 1F);
     }
