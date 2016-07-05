@@ -4,10 +4,10 @@ import eladkay.quaritum.api.lib.LibMisc;
 import eladkay.quaritum.client.fx.FXMagicLine;
 import eladkay.quaritum.client.fx.FXWisp;
 import eladkay.quaritum.client.render.entity.RenderChaosborn;
-import eladkay.quaritum.common.Quartium;
 import eladkay.quaritum.common.core.CommonProxy;
 import eladkay.quaritum.common.entity.EntityChaosborn;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.Particle;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -43,8 +43,15 @@ public class ClientProxy extends CommonProxy {
     }
 
     @Override
+    public void spawnParticle(Particle particle, World world) {
+        if(!doParticle(world))
+            return;
+        Minecraft.getMinecraft().effectRenderer.addEffect(particle);
+    }
+
+    @Override
     public void spawnStafflikeParticles(World world, double x, double y, double z) {
-        Quartium.proxy.spawnParticleMagixFX(world, x + 2 * (world.rand.nextFloat() - 0.5), y + 2.0 * (world.rand.nextFloat() - 0.5) + 1.0, z + 2.0 * (world.rand.nextFloat() - 0.5), x, y + 1.0, z, 0, 0, 0);
+        spawnParticleMagixFX(world, x + 2 * (world.rand.nextFloat() - 0.5), y + 2.0 * (world.rand.nextFloat() - 0.5) + 1.0, z + 2.0 * (world.rand.nextFloat() - 0.5), x, y + 1.0, z, 0, 0, 0);
     }
 
     //This doesn't work

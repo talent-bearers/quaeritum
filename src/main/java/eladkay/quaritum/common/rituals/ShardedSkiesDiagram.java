@@ -42,10 +42,14 @@ public class ShardedSkiesDiagram implements IDiagram {
 
     @Override
     public boolean onPrepUpdate(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile, int ticksRemaining) {
-        NetworkHelper.tellEveryoneAround(new FancyParticlePacket(pos.getX(), pos.getY(), pos.getZ(), 100), world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 16);
-        for(ItemStack stack : Helper.stacksAroundAltar(tile, 4))
-            if(Helper.isStackInList(stack, getRequiredItems())) return true;
-        return false;
+       // NetworkHelper.tellEveryoneAround(new FancyParticlePacket(pos.getX(), pos.getY(), pos.getZ(), 100), world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 16);
+        boolean flag = false;
+        for(EntityItem stack : Helper.entitiesAroundAltar(tile, 4))
+            if (Helper.isEntityItemInList(stack, getRequiredItems())) {
+                NetworkHelper.tellEveryoneAround(new FancyParticlePacket(pos.getX(), pos.getY(), pos.getZ(), 50), world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 16);
+                flag = true;
+            }
+        return flag;
     }
 
     @Override

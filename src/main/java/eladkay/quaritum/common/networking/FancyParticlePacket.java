@@ -50,14 +50,10 @@ public class FancyParticlePacket extends MessageBase<FancyParticlePacket> {
         this.amount = amount;
         LogHelper.logDebug("x = " + x + " y = " + y + " z = " + z);
     }
-    static final float ROTATION_MODIFIER = 0.2f;
 
     @Override
     public void handleClientSide(FancyParticlePacket message, EntityPlayer player) {
         LogHelper.logDebug("x = " + x + " y = " + y + " z = " + z);
-        long ticks = player.worldObj.getTotalWorldTime();
-        float xRotate = (float) Math.sin(ticks * ROTATION_MODIFIER) / 2F;
-        float zRotate = (float) Math.cos(ticks * ROTATION_MODIFIER) / 2F;
 
         //do packety stuff
         for (int i = 0; i < message.amount; i++) {
@@ -68,7 +64,17 @@ public class FancyParticlePacket extends MessageBase<FancyParticlePacket> {
                     message.y + player.worldObj.rand.nextDouble() - 0.5D, //y
                     message.z + (player.worldObj.rand.nextFloat()) * (player.worldObj.rand.nextDouble()) //z
             );
+            //world, x, y, z, motion, rgb
+            /*Quartium.proxy.spawnParticleMagixFX(
+                    player.worldObj, //world
+                    x + 2 * (player.worldObj.rand.nextFloat() - 0.5), //x
+                    y + 2.0 * (player.worldObj.rand.nextFloat() - 0.5) + 1.0, //y
+                    z + 2.0 * (player.worldObj.rand.nextFloat() - 0.5), //z
+                    x, y + 1.0, z,  //motion
+                    255, 0, 0); //rgb*/
         }
+        //Player x, y, z, partial ticks (Use 1 for now), TE x, y, z, total ticks (use world time), Item x, y, z
+
     }
 
     @Override

@@ -8,6 +8,7 @@ import eladkay.quaritum.common.entity.ModEntities;
 import eladkay.quaritum.common.item.ModItems;
 import eladkay.quaritum.common.networking.NetworkHelper;
 import eladkay.quaritum.common.rituals.ModDiagrams;
+import net.minecraft.client.particle.Particle;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
@@ -70,4 +71,5 @@ public class CommonProxy {
     public void spawnStafflikeParticles(World world, double x, double y, double z) {
         //noop
     }
+    public void spawnParticle(Particle particle, World world) {}
 }
