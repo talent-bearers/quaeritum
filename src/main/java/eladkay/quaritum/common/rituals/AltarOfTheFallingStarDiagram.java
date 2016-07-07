@@ -64,7 +64,7 @@ public class AltarOfTheFallingStarDiagram implements IDiagram {
         }
         if (flag) for (EntityPlayer playerEntity : world.playerEntities)
             if (playerEntity.getUniqueID().equals(player))
-                ChatHelper.sendNoSpam1(playerEntity, new TextComponentTranslation("misc.quaritum.rushOfEnergy"));
+                ChatHelper.sendNoSpam2(playerEntity, new TextComponentTranslation("misc.quaritum.rushOfEnergy"));
     }
 
 
@@ -76,7 +76,7 @@ public class AltarOfTheFallingStarDiagram implements IDiagram {
             if (stack.getItem() instanceof INetworkProvider && ((INetworkProvider) stack.getItem()).isReceiver(stack))
                 return true;
         }
-        return false;
+        return true;
     }
 
     @Override
@@ -85,5 +85,10 @@ public class AltarOfTheFallingStarDiagram implements IDiagram {
         chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(-1, 0, 0), EnumDyeColor.GRAY));
         chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(0, 0, 1), EnumDyeColor.GRAY));
         chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(0, 0, -1), EnumDyeColor.GRAY));
+    }
+
+    @Override
+    public void constructBook() {
+
     }
 }

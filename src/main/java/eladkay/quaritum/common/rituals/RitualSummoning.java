@@ -1,12 +1,19 @@
 package eladkay.quaritum.common.rituals;
 
+import amerifrance.guideapi.api.IPage;
+import amerifrance.guideapi.entry.EntryItemStack;
+import amerifrance.guideapi.page.PageText;
 import com.google.common.collect.Lists;
 import eladkay.quaritum.api.animus.ISoulstone;
+import eladkay.quaritum.api.lib.LibBook;
+import eladkay.quaritum.api.lib.LibMisc;
 import eladkay.quaritum.api.rituals.IDiagram;
 import eladkay.quaritum.api.rituals.PositionedBlock;
+import eladkay.quaritum.client.core.TooltipHelper;
 import eladkay.quaritum.common.block.ModBlocks;
 import eladkay.quaritum.common.block.flowers.BlockAnimusFlower;
 import eladkay.quaritum.common.block.tile.TileEntityBlueprint;
+import eladkay.quaritum.common.book.ModBook;
 import eladkay.quaritum.common.core.PositionedBlockHelper;
 import eladkay.quaritum.common.entity.EntityChaosborn;
 import eladkay.quaritum.common.item.ModItems;
@@ -16,6 +23,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -121,5 +129,12 @@ public class RitualSummoning implements IDiagram {
         chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(1, 0, -2), EnumDyeColor.CYAN));
         chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(0, 0, -2), EnumDyeColor.CYAN));
         chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(-1, 0, -2), EnumDyeColor.CYAN));
+    }
+    public static List<IPage> pages = new ArrayList<>();
+
+    @Override
+    public void constructBook() {
+        pages.add(new PageText(TooltipHelper.local(LibBook.ENTRY_SUMMONING_PAGE1)));
+        ModBook.pagesDiagrams.put(new ResourceLocation(LibMisc.MOD_ID, LibBook.ENTRY_SUMMONING_NAME), new EntryItemStack(pages, TooltipHelper.local(LibBook.ENTRY_SUMMONING_NAME), new ItemStack(ModItems.altas)));
     }
 }

@@ -1,6 +1,31 @@
+common=Common
+common_arcane=Rare
+arcane=Arcane
+
 misc.quaritum.shiftForInfo=&7Hold &bSHIFT&7 for more info
 misc.quaritum.animusBound=Tied to %s
 misc.quaritum.notBound=Untied
+
+#Flow Manipulation for Dummies
+book.quaritum.name=Secrets of the Rift
+book.quaritum.author=Elad F. Kay II, Jr.
+book.quaritum.welcome_message=
+book.quaritum.diagrams=Diagrams
+book.quaritum.misc=Misc
+book.quaritum.works=Works
+book.quaritum.animus=Animus Manipulation
+book.quaritum.sharded_skies_name=§oSharded Skies
+book.quaritum.sharded_skies_page1=Diagrams are designs which echo the huge monuments known as Great Works. The first one I have discovered how to reconstruct is the original Sharded Sky, home of the Life Herald. It appears to channel life, making red flowers into more vibrant versions of themselves.
+book.quaritum.sharded_skies2_name=§oGrand Sharded Skies
+book.quaritum.sharded_skies2_page1=The second diagram I designed was another effort to use mundane components to further increase the vibrancy of my flowers. Along with the Common flower from the last diagram, it also takes a rod of the blaze and wart of the nether. When I tried to ignite the diagram as I did with the first diagram, it didn't work.
+book.quaritum.sharded_skies2_page2=After further investigation into the ancient Works, I figured that a formation of chalks was needed to execute the diagram. The needed formation of chalks is 4 lime chalk touching the Blueprint and 4 green chalks in the corners. After adding the chalk, the diagram worked well.
+book.quaritum.summoning_name=Summoning
+book.quaritum.summoning_page1=<Summoning>
+
+book.quaritum.blueprint=Blueprint
+book.quaritum.blueprint_page1=this is a casting thingy or something lol
+
+
 
 itemGroup.quaritum=Quaritum
 

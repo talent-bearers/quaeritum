@@ -86,4 +86,9 @@ public class HarmonizedHallDiagram implements IDiagram {
         chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(0, 0, -2), EnumDyeColor.BLACK));
         chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(-1, 0, -2), EnumDyeColor.BLACK));
     }
+
+    @Override
+    public void constructBook() {
+
+    }
 }

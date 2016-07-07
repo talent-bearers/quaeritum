@@ -3,6 +3,7 @@ package eladkay.quaritum.common.core;
 import eladkay.quaritum.api.animus.AnimusHelper;
 import eladkay.quaritum.client.core.ClientEventHandler;
 import eladkay.quaritum.common.block.ModBlocks;
+import eladkay.quaritum.common.book.ModBook;
 import eladkay.quaritum.common.crafting.ModRecipes;
 import eladkay.quaritum.common.entity.ModEntities;
 import eladkay.quaritum.common.item.ModItems;
@@ -31,6 +32,7 @@ public class CommonProxy {
         NetworkHelper.init();
         ModDiagrams.init();
         ChatHelper.PacketHandler.init();
+        ModBook.init();
         FMLInterModComms.sendMessage("Waila", "register", "eladkay.quaritum.common.compat.waila.Waila.onWailaCall");
     }
 

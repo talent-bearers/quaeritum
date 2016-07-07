@@ -65,4 +65,9 @@ public class InfusionDiagram implements IDiagram {
         chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(0, 0, 1), EnumDyeColor.MAGENTA));
         chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(0, 0, -1), EnumDyeColor.MAGENTA));
     }
+
+    @Override
+    public void constructBook() {
+
+    }
 }

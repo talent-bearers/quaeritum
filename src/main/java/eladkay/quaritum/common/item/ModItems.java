@@ -7,7 +7,6 @@ import eladkay.quaritum.common.item.misc.ItemReagentAtlas;
 import eladkay.quaritum.common.item.misc.ItemRiftmakerPart;
 import eladkay.quaritum.common.item.misc.ItemWorldBlade;
 import eladkay.quaritum.common.item.soulstones.*;
-import net.minecraftforge.fml.common.IFuelHandler;
 
 public class ModItems {
 
@@ -23,7 +22,6 @@ public class ModItems {
     public static ItemReagentAtlas altas;
     public static ItemRiftmakerPart riftmakerPart;
     public static ItemWorldBlade worldBlade;
-
     public static void init() {
         dormant = new ItemDormantSoulstone();
         awakened = new ItemAwakenedSoulstone();

@@ -15,6 +15,8 @@ public final class RitualRegistry {
     public static IDiagram registerDiagram(IDiagram ritual, String name) {
         FMLLog.info("Registering diagram \"" + name + "\".");
 
+
+        ritual.constructBook();
         String modid = Loader.instance().activeModContainer().getModId();
 
         if (!modid.equals(LibMisc.MOD_ID)) {

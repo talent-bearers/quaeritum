@@ -1,17 +1,27 @@
 package eladkay.quaritum.common.rituals;
 
+import amerifrance.guideapi.api.IPage;
+import amerifrance.guideapi.entry.EntryItemStack;
+import amerifrance.guideapi.page.PageText;
 import com.google.common.collect.Lists;
+import eladkay.quaritum.api.lib.LibBook;
+import eladkay.quaritum.api.lib.LibMisc;
 import eladkay.quaritum.api.rituals.IDiagram;
 import eladkay.quaritum.api.rituals.PositionedBlock;
+import eladkay.quaritum.client.core.TooltipHelper;
 import eladkay.quaritum.common.block.ModBlocks;
 import eladkay.quaritum.common.block.flowers.BlockAnimusFlower;
 import eladkay.quaritum.common.block.tile.TileEntityBlueprint;
+import eladkay.quaritum.common.book.ModBook;
 import eladkay.quaritum.common.core.PositionedBlockHelper;
+import eladkay.quaritum.common.networking.FancyParticlePacket;
+import eladkay.quaritum.common.networking.NetworkHelper;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -54,6 +64,22 @@ public class ShardedSkiesTier2Diagram implements IDiagram {
         return 50;
     }
 
+    @Override
+    public boolean onPrepUpdate(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile, int ticksRemaining) {
+        boolean flag = true;
+        for(ItemStack stack : getRequiredItems())
+            if(!Helper.isStackInList(stack, Helper.stacksAroundAltar(tile, 4))) return false;
+        NetworkHelper.tellEveryoneAround(new FancyParticlePacket(pos.getX(), pos.getY(), pos.getZ(), 50), world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 16);
+        /*for(EntityItem stack : Helper.entitiesAroundAltar(tile, 4)) {
+            if (!Helper.isEntityItemInList(stack, getRequiredItems())) {
+                flag = false;
+                System.out.println("hi");
+            } else
+                NetworkHelper.tellEveryoneAround(new FancyParticlePacket(pos.getX(), pos.getY(), pos.getZ(), 50), world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 16);
+        }*/
+        return true;
+    }
+
     @Nonnull
     public ArrayList<ItemStack> getRequiredItems() {
         ArrayList<ItemStack> list = Lists.newArrayList();
@@ -74,6 +100,14 @@ public class ShardedSkiesTier2Diagram implements IDiagram {
         chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(-1, 0, 1), EnumDyeColor.GREEN));
         chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(1, 0, -1), EnumDyeColor.GREEN));
         chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(-1, 0, -1), EnumDyeColor.GREEN));
+    }
+
+    public static List<IPage> pages = new ArrayList<>();
+    @Override
+    public void constructBook() {
+        pages.add(new PageText(TooltipHelper.local(LibBook.ENTRY_SHARDED_SKIES2_PAGE1)));
+        pages.add(new PageText(TooltipHelper.local(LibBook.ENTRY_SHARDED_SKIES2_PAGE2)));
+        ModBook.pagesDiagrams.put(new ResourceLocation(LibMisc.MOD_ID, LibBook.ENTRY_SHARDED_SKIES_NAME2), new EntryItemStack(pages, TooltipHelper.local(LibBook.ENTRY_SHARDED_SKIES_NAME2), new ItemStack(ModBlocks.flower, 1, 1)));
     }
 
 }

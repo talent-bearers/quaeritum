@@ -2,6 +2,8 @@ package eladkay.quaritum.api.animus;
 
 import eladkay.quaritum.api.lib.LibMisc;
 import eladkay.quaritum.client.core.TooltipHelper;
+import eladkay.quaritum.common.Quartium;
+import eladkay.quaritum.common.block.flowers.BlockAnimusFlower;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -11,7 +13,6 @@ import net.minecraft.world.WorldSavedData;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import javax.annotation.Nonnull;
@@ -23,7 +24,13 @@ import java.util.UUID;
 public final class AnimusHelper {
 
     public static void addInformation(ItemStack stack, List<String> tooltip, boolean advanced) {
-        //todo
+        TooltipHelper.tooltipIfShift(tooltip, () -> {
+            if(Quartium.isDevEnv) {
+                tooltip.add("Animus: " + getAnimus(stack));
+                tooltip.add("Rarity: " + getRarity(stack));
+            } else for(BlockAnimusFlower.Variants variant : BlockAnimusFlower.Variants.values())
+                if(variant.rarity == getRarity(stack)) tooltip.add("Rarity: " + TooltipHelper.local(variant.getName()));
+        });
     }
 
     public static ItemStack setAnimus(ItemStack stack, int animus) {

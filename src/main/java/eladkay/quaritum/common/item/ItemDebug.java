@@ -37,12 +37,13 @@ public class ItemDebug extends ItemMod {
         if (!worldIn.isRemote)
             if (GuiScreen.isShiftKeyDown()) {
                 AnimusHelper.Network.addAnimus(playerIn, 50);
+                AnimusHelper.Network.addRarity(playerIn, 1);
                 ChatHelper.sendNoSpam2(playerIn, "Added 50, current animus level for " + playerIn.getName() + " is: " + AnimusHelper.Network.getAnimus(playerIn));
             } else if (GuiScreen.isCtrlKeyDown()) {
                 AnimusHelper.Network.addAnimus(playerIn, -50);
                 ChatHelper.sendNoSpam2(playerIn, "Took 50, current animus level for " + playerIn.getName() + " is: " + AnimusHelper.Network.getAnimus(playerIn));
             } else
-                ChatHelper.sendNoSpam2(playerIn, "Current animus level for " + playerIn.getName() + " is: " + AnimusHelper.Network.getAnimus(playerIn));
+                ChatHelper.sendNoSpam2(playerIn, "Current animus level for " + playerIn.getName() + " is: " + AnimusHelper.Network.getAnimus(playerIn) + " and current rarity is " + AnimusHelper.Network.getRarity(playerIn));
 
         return super.onItemRightClick(itemStackIn, worldIn, playerIn, hand);
     }

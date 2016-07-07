@@ -104,6 +104,7 @@ public class ItemWorldBlade extends ItemModSword {
                         (entityLiving.worldObj.rand.nextDouble() - 0.5D) * 2.0D);
 
             entityLiving.setPosition(pos.x, pos.y, pos.z);
+            entityLiving.fallDistance = 0;
 
             if (entityLiving.worldObj.isRemote)
                 for (int i = 0; i < 100; i++) {
