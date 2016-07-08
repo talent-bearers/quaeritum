@@ -13,13 +13,9 @@ import eladkay.quaritum.common.block.BlockBlueprint;
 import eladkay.quaritum.common.block.ModBlocks;
 import eladkay.quaritum.common.item.ModItems;
 import eladkay.quaritum.common.lib.LibNames;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -62,14 +58,6 @@ public class ModBook {
         book.setCategoryList(categories);
         book.setRegistryName(new ResourceLocation(LibMisc.MOD_ID, LibNames.BOOK));
 
-        GameRegistry.register(book);
-        //GuideAPI.setModel(book, new ResourceLocation(LibMisc.MOD_ID, LibNames.BOOK));
-        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
-            GuideAPI.setModel(book, new ModelResourceLocation(LibMisc.MOD_ID + ":" + LibNames.BOOK, "inventory"), "inventory");
-            //GuideAPI.setModel(book, new ModelResourceLocation(LibMisc.MOD_ID + ":" + LibNames.BOOK), "type=book");
-            //GuideAPI.setModel(book);
-        }
-        /*if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
-            ModelLoader.setCustomModelResourceLocation(GuideAPI.guideBook, GuideRegistry.getIndexOf(book), new ModelResourceLocation(new ResourceLocation(LibMisc.MOD_ID, LibNames.BOOK), "type=book"));*/
+        GuideAPI.BOOKS.register(book);
     }
 }

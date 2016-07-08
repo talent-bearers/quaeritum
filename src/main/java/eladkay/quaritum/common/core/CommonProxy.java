@@ -32,12 +32,11 @@ public class CommonProxy {
         NetworkHelper.init();
         ModDiagrams.init();
         ChatHelper.PacketHandler.init();
-        ModBook.init();
         FMLInterModComms.sendMessage("Waila", "register", "eladkay.quaritum.common.compat.waila.Waila.onWailaCall");
     }
 
     public void init(FMLInitializationEvent e) {
-
+        ModBook.init();
     }
 
     public void post(FMLPostInitializationEvent e) {
