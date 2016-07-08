@@ -1,10 +1,12 @@
 package eladkay.quaritum.common.book;
 
 import amerifrance.guideapi.api.GuideAPI;
+import amerifrance.guideapi.api.IPage;
 import amerifrance.guideapi.api.impl.Book;
 import amerifrance.guideapi.api.impl.abstraction.CategoryAbstract;
 import amerifrance.guideapi.api.impl.abstraction.EntryAbstract;
 import amerifrance.guideapi.category.CategoryItemStack;
+import amerifrance.guideapi.entry.EntryItemStack;
 import com.google.common.collect.Maps;
 import eladkay.quaritum.api.lib.LibBook;
 import eladkay.quaritum.api.lib.LibMisc;
@@ -59,5 +61,8 @@ public class ModBook {
         book.setRegistryName(new ResourceLocation(LibMisc.MOD_ID, LibNames.BOOK));
 
         GuideAPI.BOOKS.register(book);
+    }
+    public static void register(Map<ResourceLocation, EntryAbstract> map, String entryName, List<IPage> pages, ItemStack stack) {
+        map.put(new ResourceLocation(LibMisc.MOD_ID, entryName), new EntryItemStack(pages, TooltipHelper.local(entryName), stack));
     }
 }

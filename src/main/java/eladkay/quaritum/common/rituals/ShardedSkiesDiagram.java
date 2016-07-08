@@ -1,11 +1,9 @@
 package eladkay.quaritum.common.rituals;
 
 import amerifrance.guideapi.api.IPage;
-import amerifrance.guideapi.entry.EntryItemStack;
 import amerifrance.guideapi.page.PageText;
 import com.google.common.collect.Lists;
 import eladkay.quaritum.api.lib.LibBook;
-import eladkay.quaritum.api.lib.LibMisc;
 import eladkay.quaritum.api.rituals.IDiagram;
 import eladkay.quaritum.api.rituals.PositionedBlock;
 import eladkay.quaritum.client.core.TooltipHelper;
@@ -19,7 +17,6 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -36,7 +33,7 @@ public class ShardedSkiesDiagram implements IDiagram {
     @Override
     public void constructBook() {
         pages.add(new PageText(TooltipHelper.local(LibBook.ENTRY_SHARDED_SKIES_PAGE1)));
-        ModBook.pagesDiagrams.put(new ResourceLocation(LibMisc.MOD_ID, LibBook.ENTRY_SHARDED_SKIES_NAME), new EntryItemStack(pages, TooltipHelper.local(LibBook.ENTRY_SHARDED_SKIES_NAME), new ItemStack(ModBlocks.flower)));
+        ModBook.register(ModBook.pagesDiagrams, LibBook.ENTRY_SHARDED_SKIES_NAME, pages, new ItemStack(ModBlocks.flower));
     }
     @Nonnull
     @Override

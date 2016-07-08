@@ -2,7 +2,6 @@ package eladkay.quaritum.common.block;
 
 import amerifrance.guideapi.api.IGuideLinked;
 import amerifrance.guideapi.api.IPage;
-import amerifrance.guideapi.entry.EntryItemStack;
 import amerifrance.guideapi.page.PageText;
 import eladkay.quaritum.api.lib.LibBook;
 import eladkay.quaritum.api.lib.LibMisc;
@@ -84,7 +83,7 @@ public class BlockBlueprint extends BlockMod implements IGuideLinked, ITileEntit
 
     public static void constructBook() {
         pages.add(new PageText(TooltipHelper.local(LibBook.ENTRY_BLUEPRINT_PAGE1)));
-        ModBook.pagesDiagrams.put(new ResourceLocation(LibMisc.MOD_ID, LibBook.ENTRY_BLUEPRINT_NAME), new EntryItemStack(pages, TooltipHelper.local(LibBook.ENTRY_BLUEPRINT_NAME), new ItemStack(ModBlocks.blueprint)));
+        ModBook.register(ModBook.pagesAnimus, LibBook.ENTRY_BLUEPRINT_NAME, pages, new ItemStack(ModBlocks.blueprint));
     }
 
     @Override
