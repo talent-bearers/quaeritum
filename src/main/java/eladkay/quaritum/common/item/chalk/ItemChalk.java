@@ -93,7 +93,7 @@ public class ItemChalk extends ItemMod implements ModelHandler.IColorProvider, M
         return new IItemColor() {
             @Override
             public int getColorFromItemstack(ItemStack stack, int tintIndex) {
-                return ItemNBTHelper.getBoolean(stack, LibNBT.FLAT, false) && stack.getItemDamage() < 16 ? ItemDye.DYE_COLORS[15- stack.getItemDamage()] : 0xFFFFFF;
+                return ItemNBTHelper.getBoolean(stack.copy(), LibNBT.FLAT, false) && stack.getItemDamage() < 16 ? ItemDye.DYE_COLORS[15- stack.getItemDamage()] : 0xFFFFFF;
             }
         };
     }

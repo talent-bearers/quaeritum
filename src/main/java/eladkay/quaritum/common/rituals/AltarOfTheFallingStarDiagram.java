@@ -46,7 +46,7 @@ public class AltarOfTheFallingStarDiagram implements IDiagram {
         UUID player = null;
         for (EntityItem item : entities) {
             ItemStack stack = item.getEntityItem();
-            if (!(stack.getItem() instanceof INetworkProvider) || ((INetworkProvider) stack.getItem()).isReceiver(stack))
+            if (!(stack.getItem() instanceof INetworkProvider) || !((INetworkProvider) stack.getItem()).isReceiver(stack))
                 continue;
             player = ((INetworkProvider) stack.getItem()).getPlayer(stack);
             break;
@@ -58,7 +58,7 @@ public class AltarOfTheFallingStarDiagram implements IDiagram {
             if (!(stack.getItem() instanceof ISoulstone)) continue;
             ISoulstone ss = (ISoulstone) stack.getItem();
             AnimusHelper.Network.addAnimus(player, ss.getAnimusLevel(stack));
-            AnimusHelper.Network.addRarity(player, ss.getAnimusLevel(stack));
+            AnimusHelper.Network.addRarity(player, ss.getRarityLevel(stack));
             item.setDead();
             flag = true;
         }
@@ -76,7 +76,7 @@ public class AltarOfTheFallingStarDiagram implements IDiagram {
             if (stack.getItem() instanceof INetworkProvider && ((INetworkProvider) stack.getItem()).isReceiver(stack))
                 return true;
         }
-        return true;
+        return false;
     }
 
     @Override

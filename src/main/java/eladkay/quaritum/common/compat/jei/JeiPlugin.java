@@ -61,7 +61,27 @@ public class JeiPlugin implements IModPlugin {
         @Nonnull
         @Override
         public IDrawable getBackground() {
-            return null;
+            return new IDrawable() {
+                @Override
+                public int getWidth() {
+                    return 32;
+                }
+
+                @Override
+                public int getHeight() {
+                    return 32;
+                }
+
+                @Override
+                public void draw(@Nonnull Minecraft minecraft) {
+
+                }
+
+                @Override
+                public void draw(@Nonnull Minecraft minecraft, int xOffset, int yOffset) {
+
+                }
+            };
         }
 
         @Override
