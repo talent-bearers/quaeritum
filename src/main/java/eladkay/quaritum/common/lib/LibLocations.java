@@ -9,4 +9,6 @@ public class LibLocations {
     public static final ResourceLocation BLOCKING_WORLDBLADE = new ResourceLocation("blocking");
     public static final ResourceLocation MISC_WISP_LARGE = new ResourceLocation(LibMisc.MOD_ID, "textures/entity/wispLarge.png");
     public static final ResourceLocation MAGICLINEFX = new ResourceLocation(LibMisc.MOD_ID, "entity/magicParticle");
+    public static final ResourceLocation MULTIBLOCK = new ResourceLocation(LibMisc.MOD_ID, "textures/gui/multiblockOverlay.png");
+    public static final ResourceLocation FLAT_CHALK = new ResourceLocation(LibMisc.MOD_ID, "flat");
 }

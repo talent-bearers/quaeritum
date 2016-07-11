@@ -1,7 +1,7 @@
 package eladkay.quaritum.common.core;
 
-import eladkay.quaritum.common.block.ModBlocks;
 import eladkay.quaritum.api.lib.LibMisc;
+import eladkay.quaritum.common.block.ModBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -20,6 +20,11 @@ public class CreativeTab extends CreativeTabs {
     public static CreativeTab INSTANCE = new CreativeTab();
 
     private static List<Item> items = new ArrayList<>();
+    private List<ItemStack> list;
+
+    public CreativeTab() {
+        super(LibMisc.MOD_ID);
+    }
 
     public static void set(Block block) {
         items.add(Item.getItemFromBlock(block));
@@ -27,15 +32,10 @@ public class CreativeTab extends CreativeTabs {
     }
 
     public static void set(Item item) {
+//        if(!(item instanceof ItemPicture)) {
         items.add(item);
         item.setCreativeTab(INSTANCE);
-    }
-
-
-    private List<ItemStack> list;
-
-    public CreativeTab() {
-        super(LibMisc.MOD_ID);
+        // }
     }
 
     @Override

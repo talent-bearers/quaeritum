@@ -1,5 +1,6 @@
 package eladkay.quaritum.api.rituals;
 
+import eladkay.quaritum.common.block.ModBlocks;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.EnumDyeColor;
@@ -10,12 +11,13 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class PositionedBlock {
+    public static final PositionedBlock BLUEPRINT = new PositionedBlock(ModBlocks.blueprint.getDefaultState(), new BlockPos(0, 0, 0));
     @Nonnull
-    public BlockPos pos;
+    public final BlockPos pos;
     @Nonnull
-    private IBlockState state;
+    private final IBlockState state;
     @Nullable
-    private List<IProperty> toCompare;
+    private final List<IProperty> toCompare;
 
     public PositionedBlock(@Nonnull IBlockState state, @Nonnull BlockPos pos, @Nullable List<IProperty> toCompare) {
         this.state = state;
@@ -42,20 +44,12 @@ public class PositionedBlock {
         return state;
     }
 
-    @Nonnull
-    public PositionedBlock setState(@Nonnull IBlockState state) {
-        this.state = state;
-        return this;
-    }
 
     @Nonnull
     public BlockPos getPos() {
         return pos;
     }
 
-    public void setPos(BlockPos pos) {
-        this.pos = pos;
-    }
 
 
 }

@@ -28,4 +28,5 @@ public class LibNames {
     public static final String RIFTMAKER_PART = "riftmakerPart";
     public static final String WORLD_BLADE = "flowingWorldBlade";
     public static final String BOOK = "book";
+    public static final String PICTURE = "picture";
 }

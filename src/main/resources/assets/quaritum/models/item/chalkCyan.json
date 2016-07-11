@@ -14,5 +14,13 @@
       "translation": [ 0, 4, 2 ],
       "scale": [ 1.7, 1.7, 1.7 ]
     }
-  }
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "quaritum:flat": 1
+      },
+      "model": "quaritum:item/solid_white"
+    }
+  ]
 }

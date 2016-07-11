@@ -16,17 +16,24 @@ book.quaritum.works=Works
 book.quaritum.animus=Animus Manipulation
 book.quaritum.sharded_skies_name=§oSharded Skies
 book.quaritum.sharded_skies_page1=Diagrams are designs which echo the huge monuments known as Great Works. The first one I have discovered how to reconstruct is the original Sharded Sky, home of the Life Herald. It appears to channel life, making red flowers into more vibrant versions of themselves.
-book.quaritum.sharded_skies2_name=§oGrand Sharded Skies
-book.quaritum.sharded_skies2_page1=The second diagram I designed was another effort to use mundane components to further increase the vibrancy of my flowers. Along with the Common flower from the last diagram, it also takes a rod of the blaze and wart of the nether. When I tried to ignite the diagram as I did with the first diagram, it didn't work.
-book.quaritum.sharded_skies2_page2=After further investigation into the ancient Works, I figured that a formation of chalks was needed to execute the diagram. The needed formation of chalks is 4 lime chalk touching the Blueprint and 4 green chalks in the corners. After adding the chalk, the diagram worked well.
+book.quaritum.sharded_skies2_name=Grand Sharded Skies
+book.quaritum.sharded_skies2_page1=I cracked the problem of the Sharded Sky's weakness. It was rebuilt but the old one remained, so their patterns are different. After I added clarifying chalk, it served as a way to make the flowers the previous Sharded Sky made more potent.
 book.quaritum.summoning_name=Summoning
-book.quaritum.summoning_page1=<Summoning>
+book.quaritum.summoning_page1=I hit a road block with further development of my flowers. Seems like there's some sort of chaos force holding back my ability to make my flowers more vibrant. I have found a diagram that allows me to summon that chaos as a physical entity.
+book.quaritum.summoning_page2=Unfortunately, the diagram is more intricate than before and it also requires §7animus§r from an §6Awakened Soulstone§r. It seems like the rarity and quantity of the §7animus§r used directly affects the drops.
+book.quaritum.infusion_name=Infusion
+book.quaritum.infusion_page1=<Infusion>
+quaritum.bookdescjei=This is your guide for all things Quaritum. It contains information about everything you need to know about the mod.
 
 book.quaritum.blueprint=Blueprint
 book.quaritum.blueprint_page1=this is a casting thingy or something lol
 
 
-
+quaritum.materialsRequired=Materials required:
+quaritum.itemsRequired=§7Items required:
+quaritum.diagramtooltip=§7This ritual is a §r§bdiagram§r§7
+quaritum.nochalk=§7This §r§bdiagram§r§7 does not take any chalk setup.
+quaritum.chalksnotconsumed=§7Structure is not consumed.
 itemGroup.quaritum=Quaritum
 
 tile.quaritum:blueprint.name=Blueprint

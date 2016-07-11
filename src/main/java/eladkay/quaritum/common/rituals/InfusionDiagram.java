@@ -1,10 +1,17 @@
 package eladkay.quaritum.common.rituals;
 
+import amerifrance.guideapi.api.IPage;
+import amerifrance.guideapi.page.PageText;
 import com.google.common.collect.Lists;
+import eladkay.quaritum.api.lib.LibBook;
 import eladkay.quaritum.api.rituals.IDiagram;
 import eladkay.quaritum.api.rituals.PositionedBlock;
+import eladkay.quaritum.client.core.TooltipHelper;
 import eladkay.quaritum.common.block.ModBlocks;
 import eladkay.quaritum.common.block.tile.TileEntityBlueprint;
+import eladkay.quaritum.common.book.Dimension;
+import eladkay.quaritum.common.book.ModBook;
+import eladkay.quaritum.common.book.PageDiagram;
 import eladkay.quaritum.common.core.PositionedBlockHelper;
 import eladkay.quaritum.common.item.ModItems;
 import eladkay.quaritum.common.item.soulstones.ItemAwakenedSoulstone;
@@ -60,14 +67,25 @@ public class InfusionDiagram implements IDiagram {
 
     @Override
     public void buildChalks(@Nonnull List<PositionedBlock> chalks) {
+        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(1, 0, 1), EnumDyeColor.MAGENTA));
+        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(-1, 0, -1), EnumDyeColor.MAGENTA));
+        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(-1, 0, 1), EnumDyeColor.MAGENTA));
+        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(1, 0, -1), EnumDyeColor.MAGENTA));
+        chalks.add(PositionedBlock.BLUEPRINT);
         chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(1, 0, 0), EnumDyeColor.MAGENTA));
         chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(-1, 0, 0), EnumDyeColor.MAGENTA));
         chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(0, 0, 1), EnumDyeColor.MAGENTA));
         chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(0, 0, -1), EnumDyeColor.MAGENTA));
     }
 
+    public static List<IPage> pages = new ArrayList<>();
     @Override
     public void constructBook() {
+        pages.add(new PageText(TooltipHelper.local(LibBook.ENTRY_INFUSION_PAGE1)));
+        List l = Lists.newArrayList();
+        buildChalks(l);
+        pages.add(new PageDiagram(l, getRequiredItems(), new Dimension(3, 3), 71, 50));
+        ModBook.register(ModBook.pagesDiagrams, LibBook.ENTRY_INFUSION_NAME, pages, new ItemStack(ModBlocks.crystal));
 
     }
 }

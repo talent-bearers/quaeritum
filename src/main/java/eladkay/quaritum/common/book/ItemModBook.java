@@ -78,7 +78,7 @@ public class ItemModBook extends ItemMod implements IGuideItem {
         return getBook(stack) != null ? getBook(stack).getLocalizedDisplayName() : super.getItemStackDisplayName(stack);
     }
 
-    private static int meta() {
+    public static int meta() {
         for (Book book : GuideAPI.BOOKS.getValues())
             if(book.equals(ModBook.book)) return GuideAPI.BOOKS.getValues().indexOf(book);
         return -1;

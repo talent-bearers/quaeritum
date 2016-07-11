@@ -3,10 +3,7 @@ package eladkay.quaritum.common.item;
 import eladkay.quaritum.common.Quartium;
 import eladkay.quaritum.common.book.ItemModBook;
 import eladkay.quaritum.common.item.chalk.ItemChalk;
-import eladkay.quaritum.common.item.misc.ItemFertilizer;
-import eladkay.quaritum.common.item.misc.ItemReagentAtlas;
-import eladkay.quaritum.common.item.misc.ItemRiftmakerPart;
-import eladkay.quaritum.common.item.misc.ItemWorldBlade;
+import eladkay.quaritum.common.item.misc.*;
 import eladkay.quaritum.common.item.soulstones.*;
 
 public class ModItems {
@@ -24,6 +21,8 @@ public class ModItems {
     public static ItemRiftmakerPart riftmakerPart;
     public static ItemWorldBlade worldBlade;
     public static ItemModBook book;
+    public static ItemPicture picture;
+
     public static void init() {
         dormant = new ItemDormantSoulstone();
         awakened = new ItemAwakenedSoulstone();
@@ -37,6 +36,7 @@ public class ModItems {
         riftmakerPart = new ItemRiftmakerPart();
         worldBlade = new ItemWorldBlade();
         book = new ItemModBook();
+        picture = new ItemPicture();
         if (Quartium.isDevEnv)
             debug = new ItemDebug();
 

@@ -1,16 +1,20 @@
 package eladkay.quaritum.common.compat.jei;
 
-import com.google.common.collect.Lists;
-import eladkay.quaritum.common.compat.jei.rituals.RitualRecipeCatagory;
-import eladkay.quaritum.common.compat.jei.rituals.RitualRecipeHandler;
-import eladkay.quaritum.common.compat.jei.rituals.RitualRecipeRecipe;
-import eladkay.quaritum.api.lib.LibMisc;
-import eladkay.quaritum.common.lib.LibNames;
+import amerifrance.guideapi.api.GuideAPI;
+import eladkay.quaritum.common.block.ModBlocks;
+import eladkay.quaritum.common.book.ItemModBook;
+import eladkay.quaritum.common.item.ModItems;
 import mezz.jei.api.*;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import mezz.jei.api.gui.IDrawable;
+import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.recipe.IRecipeCategory;
+import mezz.jei.api.recipe.IRecipeWrapper;
+import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
-import java.util.List;
+import javax.annotation.Nonnull;
 
 @JEIPlugin
 public class JeiPlugin implements IModPlugin {
@@ -20,30 +24,60 @@ public class JeiPlugin implements IModPlugin {
 
     @Override
     public void register(IModRegistry registry) {
-        jeiHelpers = registry.getJeiHelpers();
-        List ritualRecipes = Lists.newArrayList();
-        registry.addRecipeCategories(
-                new RitualRecipeCatagory(jeiHelpers.getGuiHelper())
-        );
 
-        registry.addRecipeHandlers(
-                new RitualRecipeHandler()
-        );
-        RitualRecipeRecipe test = new RitualRecipeRecipe();
-        //test.inputs.add(GameRegistry.makeItemStack("dormantSoulstone", 0, 1, "attuned:1b,owner:Eladkay"));
-        test.inputs.add(GameRegistry.makeItemStack(new ResourceLocation(LibMisc.MOD_ID, LibNames.DORMANT_SOULSTONE).toString(), 0, 1, ""));
-        test.inputs.add(GameRegistry.makeItemStack(new ResourceLocation(LibMisc.MOD_ID, LibNames.PASSIONATE_SOULSTONE).toString(), 0, 1, ""));
-        /*
-        RitualRecipeRecipe shardedSky1 = new RitualRecipeRecipe();
-        shardedSky1.inputs.add(new ItemStack(Blocks.red_flower));
-        shardedSky1.outputs.add(new ItemStack(Blocks.yellow_flower));
-        */
-        ritualRecipes.add(test);
-        registry.addRecipes(ritualRecipes);
+        jeiHelpers = registry.getJeiHelpers();
+        //jeiHelpers.getItemBlacklist().addItemToBlacklist(new ItemStack(ModItems.picture, 1, OreDictionary.WILDCARD_VALUE));
+        //No need because nooping in the getsubitems
+        jeiHelpers.getItemBlacklist().addItemToBlacklist(new ItemStack(GuideAPI.guideBook, 1, ItemModBook.meta()));
+        registry.addDescription(ts(ModItems.book), "quaritum.bookdescjei");
+        registry.addRecipeCategories(new DiagramRecipeCatagory());
+        registry.addRecipeCategoryCraftingItem(ts(ModBlocks.blueprint), "quaritum:diagram");
     }
 
+    private ItemStack ts(Item i) {
+        return new ItemStack(i);
+    }
+    private ItemStack ts(Block i) {
+        return new ItemStack(i);
+    }
     @Override
     public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
+
+    }
+    private class DiagramRecipeCatagory implements IRecipeCategory {
+
+        @Nonnull
+        @Override
+        public String getUid() {
+            return "quaritum:diagram";
+        }
+
+        @Nonnull
+        @Override
+        public String getTitle() {
+            return "Diagram Crafting";
+        }
+
+        @Nonnull
+        @Override
+        public IDrawable getBackground() {
+            return null;
+        }
+
+        @Override
+        public void drawExtras(@Nonnull Minecraft minecraft) {
+
+        }
+
+        @Override
+        public void drawAnimations(@Nonnull Minecraft minecraft) {
+
+        }
+
+        @Override
+        public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper) {
+
+        }
     }
 
 }

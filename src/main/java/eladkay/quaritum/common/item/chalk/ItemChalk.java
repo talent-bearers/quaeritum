@@ -1,14 +1,16 @@
 package eladkay.quaritum.common.item.chalk;
 
+import eladkay.quaritum.api.lib.LibNBT;
+import eladkay.quaritum.api.util.ItemNBTHelper;
 import eladkay.quaritum.client.core.ModelHandler;
 import eladkay.quaritum.common.block.ModBlocks;
 import eladkay.quaritum.common.item.base.ItemMod;
+import eladkay.quaritum.common.lib.LibLocations;
 import eladkay.quaritum.common.lib.LibNames;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.color.IItemColor;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemBlock;
@@ -34,6 +36,7 @@ public class ItemChalk extends ItemMod implements ModelHandler.IColorProvider, M
 
     public ItemChalk() {
         super(LibNames.CHALK, COLORS);
+        addPropertyOverride(LibLocations.FLAT_CHALK, (stack, world, entityLivingBase) -> ItemNBTHelper.getBoolean(stack.copy(), LibNBT.FLAT, false) ? 1.0f : 0.0f);
         setMaxStackSize(1);
     }
 
@@ -90,7 +93,7 @@ public class ItemChalk extends ItemMod implements ModelHandler.IColorProvider, M
         return new IItemColor() {
             @Override
             public int getColorFromItemstack(ItemStack stack, int tintIndex) {
-                return tintIndex == 1 && stack.getItemDamage() < 16 ? ItemDye.DYE_COLORS[15 - stack.getItemDamage()] : 0xFFFFFF;
+                return ItemNBTHelper.getBoolean(stack, LibNBT.FLAT, false) && stack.getItemDamage() < 16 ? ItemDye.DYE_COLORS[15- stack.getItemDamage()] : 0xFFFFFF;
             }
         };
     }
