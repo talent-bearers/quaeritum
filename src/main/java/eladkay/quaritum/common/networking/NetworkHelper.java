@@ -16,6 +16,7 @@ public class NetworkHelper {
             instance.registerMessage(FancyLineParticlePacket.class, FancyLineParticlePacket.class, 2, Side.CLIENT);
         } catch(NoClassDefFoundError server) {}
         //todo this is bad
+        //Caused by: java.lang.NoClassDefFoundError: net/minecraft/client/entity/EntityPlayerSP
     }
     //lol
     public static void tellEveryone(IMessage message) {
