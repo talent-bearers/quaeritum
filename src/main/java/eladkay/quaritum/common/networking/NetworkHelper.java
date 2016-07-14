@@ -10,9 +10,12 @@ public class NetworkHelper {
     public static SimpleNetworkWrapper instance;
     public static void init() {
         instance = new SimpleNetworkWrapper(LibMisc.MOD_ID);
-        instance.registerMessage(FancyParticlePacket.class, FancyParticlePacket.class, 0, Side.CLIENT);
-        instance.registerMessage(LightningEffectPacket.class, LightningEffectPacket.class, 1, Side.CLIENT);
-        instance.registerMessage(FancyLineParticlePacket.class, FancyLineParticlePacket.class, 2, Side.CLIENT);
+        try {
+            instance.registerMessage(FancyParticlePacket.class, FancyParticlePacket.class, 0, Side.CLIENT);
+            instance.registerMessage(LightningEffectPacket.class, LightningEffectPacket.class, 1, Side.CLIENT);
+            instance.registerMessage(FancyLineParticlePacket.class, FancyLineParticlePacket.class, 2, Side.CLIENT);
+        } catch(NoClassDefFoundError server) {}
+        //todo this is bad
     }
     //lol
     public static void tellEveryone(IMessage message) {

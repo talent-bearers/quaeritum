@@ -15,7 +15,6 @@ public final class RitualRegistry {
     public static IDiagram registerDiagram(IDiagram ritual, String name) {
         FMLLog.info("Registering diagram \"" + name + "\".");
 
-
         ritual.constructBook();
         String modid = Loader.instance().activeModContainer().getModId();
 
@@ -70,7 +69,7 @@ public final class RitualRegistry {
         return mapWorks.get(name);
     }
 
-    public static String getRitualName(IDiagram diagram) {
+    public static String getDiagramName(IDiagram diagram) {
         return mapDiagrams.inverse().get(diagram);
     }
 

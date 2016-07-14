@@ -1,6 +1,7 @@
 package eladkay.quaritum.common.rituals;
 
 import eladkay.quaritum.api.rituals.RitualRegistry;
+import eladkay.quaritum.common.rituals.diagrams.*;
 
 public class ModDiagrams {
     public static void init() {

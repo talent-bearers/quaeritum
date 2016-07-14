@@ -1,4 +1,4 @@
-package eladkay.quaritum.common.rituals;
+package eladkay.quaritum.common.rituals.diagrams;
 
 import eladkay.quaritum.api.animus.AnimusHelper;
 import eladkay.quaritum.api.animus.INetworkProvider;

@@ -5,6 +5,7 @@ import eladkay.quaritum.common.block.chalk.BlockChalk;
 import eladkay.quaritum.common.block.flowers.BlockAnimusFlower;
 import eladkay.quaritum.common.block.tile.TileEntityBlueprint;
 import eladkay.quaritum.api.lib.LibMisc;
+import eladkay.quaritum.common.block.tile.TileEntityFoundationStone;
 import eladkay.quaritum.common.lib.LibNames;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -18,12 +19,15 @@ public class ModBlocks {
     public static BlockChalk chalk;
     public static BlockAnimusFlower flower;
     public static CrystalSoul crystal;
+    public static BlockFoundationStone foundation;
 
     public static void init() {
         blueprint = new BlockBlueprint(LibNames.BLUEPRINT);
         chalk = new BlockChalk();
         flower = new BlockAnimusFlower();
         crystal = new CrystalSoul();
+        foundation = new BlockFoundationStone();
         GameRegistry.registerTileEntity(TileEntityBlueprint.class, new ResourceLocation(LibMisc.MOD_ID, LibNames.BLUEPRINT).toString());
+        GameRegistry.registerTileEntity(TileEntityFoundationStone.class, new ResourceLocation(LibMisc.MOD_ID, LibNames.FOUNDATION).toString());
     }
 }

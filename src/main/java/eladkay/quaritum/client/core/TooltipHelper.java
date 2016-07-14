@@ -30,7 +30,10 @@ public final class TooltipHelper {
     }
 
     public static String local(String s, Object... format) {
-        return I18n.format(s, format);
+        try {
+            return I18n.format(s, format);
+        } catch(Error server) { return s; }
+        //this is actually expected
     }
 
 }

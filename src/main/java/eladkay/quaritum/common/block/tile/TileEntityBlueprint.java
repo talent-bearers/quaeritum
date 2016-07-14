@@ -76,7 +76,7 @@ public class TileEntityBlueprint extends TileMod {
     @Override
     public void writeCustomNBT(NBTTagCompound compound) {
         compound.setInteger("Stage", stage.ordinal());
-        String diagramName = RitualRegistry.getRitualName(currentDiagram);
+        String diagramName = RitualRegistry.getDiagramName(currentDiagram);
         compound.setString("Diagram", diagramName == null ? "" : diagramName);
         compound.setInteger("StageTicks", stageTicks);
     }

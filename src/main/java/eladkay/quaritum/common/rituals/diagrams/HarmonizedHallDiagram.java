@@ -1,4 +1,4 @@
-package eladkay.quaritum.common.rituals;
+package eladkay.quaritum.common.rituals.diagrams;
 
 import eladkay.quaritum.api.animus.ISoulstone;
 import eladkay.quaritum.api.rituals.IDiagram;

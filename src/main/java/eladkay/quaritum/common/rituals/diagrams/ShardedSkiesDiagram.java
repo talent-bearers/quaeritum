@@ -1,4 +1,4 @@
-package eladkay.quaritum.common.rituals;
+package eladkay.quaritum.common.rituals.diagrams;
 
 import amerifrance.guideapi.api.IPage;
 import amerifrance.guideapi.page.PageText;

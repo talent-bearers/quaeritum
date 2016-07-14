@@ -1,26 +1,15 @@
 package eladkay.quaritum.common.item.base;
 
-import com.google.common.collect.Multimap;
 import eladkay.quaritum.api.lib.LibMisc;
 import eladkay.quaritum.client.core.ModelHandler;
 import eladkay.quaritum.client.core.TooltipHelper;
 import eladkay.quaritum.common.core.CreativeTab;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.init.Blocks;
-import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -45,7 +34,9 @@ public class ItemModSword extends ItemSword implements ModelHandler.IVariantHold
 
         bareName = name;
         this.variants = variants;
-        ModelHandler.variantCache.add(this);
+        try {
+            ModelHandler.variantCache.add(this);
+        } catch(NoClassDefFoundError server) {}
     }
 
     public static void tooltipIfShift(List<String> tooltip, Runnable r) {
