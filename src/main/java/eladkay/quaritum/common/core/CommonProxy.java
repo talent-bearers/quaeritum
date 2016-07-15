@@ -4,6 +4,7 @@ import eladkay.quaritum.api.animus.AnimusHelper;
 import eladkay.quaritum.client.core.ClientEventHandler;
 import eladkay.quaritum.common.block.ModBlocks;
 import eladkay.quaritum.common.book.ModBook;
+import eladkay.quaritum.common.compat.mt.CraftTweaker;
 import eladkay.quaritum.common.crafting.ModRecipes;
 import eladkay.quaritum.common.entity.ModEntities;
 import eladkay.quaritum.common.item.ModItems;
@@ -42,7 +43,7 @@ public class CommonProxy {
     }
 
     public void post(FMLPostInitializationEvent e) {
-
+        CraftTweaker.init();
     }
 
     public void spawnParticleMagixFX(World world, double x, double y, double z, double vx, double vy, double vz, double r, double g, double b) {

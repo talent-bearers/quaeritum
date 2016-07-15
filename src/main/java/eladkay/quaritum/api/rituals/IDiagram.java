@@ -52,10 +52,29 @@ public interface IDiagram {
             UUID uuid = ((INetworkProvider) stack1.getItem()).getPlayer(stack1);
             return AnimusHelper.Network.requestAnimus(uuid, animus, rarity, drain);
         }
+        //ffs takeanimus
+        /*public static boolean consumeAnimusForRitualFromSoulstone(TileEntityBlueprint tes, boolean drain, int animus, int rarity) {
+            ItemStack stack1 = Helper.getNearestSoulstone(tes, 4);
+            if(stack1 == null) return false;
+            ISoulstone stone = (ISoulstone) stack1.getItem();
+            if(stone.getAnimusLevel(stack1) < animus) return false;
+            if(stone.getRarityLevel(stack1) < rarity) return false;
+            if(drain) {
+                AnimusHelper.addAnimus(stack1, -animus);
+            }
+            return true;
+        }*/
         public static ItemStack getNearestAttunedSoulstone(TileEntityBlueprint tile, double range) {
             MutableObject<ItemStack> ret = new MutableObject(null);
             stacksAroundAltar(tile, range).forEach((stack -> {
                 if(stack.getItem() instanceof ItemAttunedSoulstone) ret.value = stack;
+            }));
+            return ret.value;
+        }
+        public static ItemStack getNearestSoulstone(TileEntityBlueprint tile, double range) {
+            MutableObject<ItemStack> ret = new MutableObject(null);
+            stacksAroundAltar(tile, range).forEach((stack -> {
+                if(stack.getItem() instanceof ISoulstone) ret.value = stack;
             }));
             return ret.value;
         }
@@ -103,7 +122,7 @@ public interface IDiagram {
         public static boolean simpleAreStacksEqual(ItemStack stack, ItemStack stack2) {
             return stack.getItem() == stack2.getItem() && stack.getItemDamage() == stack2.getItemDamage();
         }
-        public static boolean takeAnimus(int amount, int rarity, TileEntityBlueprint tile, double range) {
+        public static boolean takeAnimus(int amount, int rarity, TileEntityBlueprint tile, double range, boolean drain) {
             EntityItem bestFit = null;
             for(EntityItem stack : entitiesAroundAltar(tile, range).stream().filter((stack1 ->
                     stack1.getEntityItem().getItem() instanceof ISoulstone)).collect(Collectors.toList())) {
@@ -112,7 +131,8 @@ public interface IDiagram {
                     bestFit = stack;
             }
             if(bestFit != null && AnimusHelper.getRarity(bestFit.getEntityItem()) >= rarity && AnimusHelper.getAnimus(bestFit.getEntityItem()) >= amount) {
-                AnimusHelper.addAnimus(bestFit.getEntityItem(), -amount);
+                if(drain)
+                    AnimusHelper.addAnimus(bestFit.getEntityItem(), -amount);
                 return true;
             }
             return false;
@@ -134,3 +154,4 @@ public interface IDiagram {
         }
     }
 }
+

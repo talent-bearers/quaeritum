@@ -19,8 +19,6 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.FMLLog;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -185,7 +183,7 @@ public class ModelHandler {
     }
 
     public interface IVariantHolder {
-        @SideOnly(Side.CLIENT)
+
         @Nullable
         ItemMeshDefinition getCustomMeshDefinition();
 
@@ -215,19 +213,19 @@ public class ModelHandler {
     }
 
     public interface IColorProvider {
-        @SideOnly(Side.CLIENT)
+
         @Nullable
         IItemColor getColor();
     }
 
     public interface IBlockColorProvider extends IColorProvider {
-        @SideOnly(Side.CLIENT)
+
         @Nullable
         IBlockColor getBlockColor();
 
         @Override
         @Nullable
-        @SideOnly(Side.CLIENT)
+
         default IItemColor getColor() { return null; }
     }
 

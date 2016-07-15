@@ -88,7 +88,7 @@ public class ItemChalk extends ItemMod implements ModelHandler.IColorProvider, M
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+
     public IItemColor getColor() {
         return new IItemColor() {
             @Override

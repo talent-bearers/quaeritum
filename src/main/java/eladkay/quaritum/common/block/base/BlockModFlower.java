@@ -86,7 +86,7 @@ public abstract class BlockModFlower extends BlockBush implements IFlower, Model
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+
     public ItemMeshDefinition getCustomMeshDefinition() {
         return null;
     }

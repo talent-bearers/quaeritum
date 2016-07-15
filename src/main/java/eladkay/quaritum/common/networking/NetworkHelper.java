@@ -14,7 +14,9 @@ public class NetworkHelper {
             instance.registerMessage(FancyParticlePacket.class, FancyParticlePacket.class, 0, Side.CLIENT);
             instance.registerMessage(LightningEffectPacket.class, LightningEffectPacket.class, 1, Side.CLIENT);
             instance.registerMessage(FancyLineParticlePacket.class, FancyLineParticlePacket.class, 2, Side.CLIENT);
-        } catch(NoClassDefFoundError server) {}
+        } catch(NoClassDefFoundError server) {
+            server.printStackTrace();
+        }
         //todo this is bad
         //Caused by: java.lang.NoClassDefFoundError: net/minecraft/client/entity/EntityPlayerSP
     }

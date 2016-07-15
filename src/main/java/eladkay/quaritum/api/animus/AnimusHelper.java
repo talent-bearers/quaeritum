@@ -74,6 +74,7 @@ public final class AnimusHelper {
     public static final class Network {
         private static final String KEY_ANIMUS_NETWORK = LibMisc.MOD_ID + "-AnimusNetwork";
         private static final String TAG_ANIMUS_LEVEL = "animusLevel";
+        private static final String TAG_INFUSED = "infused";
         private static final String TAG_ANIMUS_RARITY = "animusRarity";
         private static final String TAG_LAST_KNOWN_USERNAME = "lastUsername";
 
@@ -163,6 +164,28 @@ public final class AnimusHelper {
             return getStringSafe(getPersistentCompound(uuid), TAG_LAST_KNOWN_USERNAME, null);
         }
 
+        public static void setInfused(EntityPlayer uuid, boolean infused) {
+            getPersistentCompound(uuid.getUniqueID()).setBoolean(TAG_INFUSED, infused);
+            getSaveData().markDirty();
+        }
+
+        public static void setInfused(UUID uuid, boolean infused) {
+            getPersistentCompound(uuid).setBoolean(TAG_INFUSED, infused);
+            getSaveData().markDirty();
+        }
+
+        public static boolean getInfused(EntityPlayer uuid) {
+            return getBooleanSafe(getPersistentCompound(uuid.getUniqueID()), TAG_INFUSED, true);
+        }
+
+        public static boolean getInfused(UUID uuid) {
+            return getBooleanSafe(getPersistentCompound(uuid), TAG_INFUSED, false);
+        }
+
+        private static boolean getBooleanSafe(NBTTagCompound compound, String tag, boolean fallback) {
+            if (!compound.hasKey(tag)) return fallback;
+            return compound.getBoolean(tag);
+        }
 
         private static int getIntegerSafe(NBTTagCompound compound, String tag, int fallback) {
             if (!compound.hasKey(tag, 3)) return fallback;

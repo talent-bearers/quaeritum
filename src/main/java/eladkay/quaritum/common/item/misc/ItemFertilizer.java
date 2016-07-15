@@ -14,8 +14,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemFertilizer extends ItemMod {
     public ItemFertilizer() {
@@ -40,7 +38,7 @@ public class ItemFertilizer extends ItemMod {
         return true;
     }
 
-    @SideOnly(Side.CLIENT)
+
     public static void spawnBonemealParticles(World worldIn, BlockPos pos, int amount) {
         if (amount == 0) {
             amount = 15;

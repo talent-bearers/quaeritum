@@ -71,13 +71,13 @@ public class ItemModBlock extends ItemBlock implements ModelHandler.IVariantHold
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+
     public IItemColor getColor() {
         return modBlock instanceof ModelHandler.IColorProvider ? ((ModelHandler.IColorProvider) modBlock).getColor() : null;
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+
     public ItemMeshDefinition getCustomMeshDefinition() {
         return this.modBlock.getCustomMeshDefinition();
     }

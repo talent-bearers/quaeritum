@@ -52,7 +52,7 @@ public class ItemMod extends Item implements ModelHandler.IVariantHolder {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+
     public ItemMeshDefinition getCustomMeshDefinition() {
         return null;
     }
