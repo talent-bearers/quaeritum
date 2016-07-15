@@ -3,6 +3,7 @@ package eladkay.quaritum.common.item.base;
 import eladkay.quaritum.api.lib.LibMisc;
 import eladkay.quaritum.client.core.ModelHandler;
 import eladkay.quaritum.client.core.TooltipHelper;
+import eladkay.quaritum.common.Quartium;
 import eladkay.quaritum.common.core.CreativeTab;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.creativetab.CreativeTabs;
@@ -11,8 +12,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -34,9 +33,10 @@ public class ItemModSword extends ItemSword implements ModelHandler.IVariantHold
 
         bareName = name;
         this.variants = variants;
-        try {
+        /*try {
             ModelHandler.variantCache.add(this);
-        } catch(NoClassDefFoundError server) {}
+        } catch(NoClassDefFoundError server) {}*/
+        Quartium.proxy.addToVariantCache(this);
     }
 
     public static void tooltipIfShift(List<String> tooltip, Runnable r) {

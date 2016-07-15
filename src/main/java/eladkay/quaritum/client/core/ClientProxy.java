@@ -33,7 +33,10 @@ public class ClientProxy extends CommonProxy {
         Minecraft.getMinecraft().getTextureMapBlocks().registerSprite(new ResourceLocation("quaritum:entity/magicParticle"));
         Minecraft.getMinecraft().getTextureMapBlocks().loadTextureAtlas(Minecraft.getMinecraft().getResourceManager());
     }
-
+    @Override
+    public void addToVariantCache(ModelHandler.IVariantHolder o) {
+        ModelHandler.variantCache.add(o);
+    }
     @Override
     public void spawnParticleMagixFX(World world, double x, double y, double z, double vx, double vy, double vz, double r, double g, double b) {
         if(!doParticle(world))

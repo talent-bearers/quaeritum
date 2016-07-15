@@ -1,8 +1,9 @@
 package eladkay.quaritum.common.block.base;
 
 
-import eladkay.quaritum.client.core.ModelHandler;
 import eladkay.quaritum.api.lib.LibMisc;
+import eladkay.quaritum.client.core.ModelHandler;
+import eladkay.quaritum.common.Quartium;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.color.IItemColor;
@@ -13,8 +14,6 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -26,12 +25,14 @@ public class ItemModBlock extends ItemBlock implements ModelHandler.IVariantHold
     public ItemModBlock(Block block) {
         super(block);
         this.modBlock = (ModelHandler.IModBlock) block;
+        setRegistryName(new ResourceLocation(LibMisc.MOD_ID, modBlock.getBareName()));
         if (this.getVariants().length > 1) {
             this.setHasSubtypes(true);
         }
-        try {
+        /*try {
             ModelHandler.variantCache.add(this);
-        } catch (Throwable ignored) {}
+        } catch (Throwable ignored) {}*/
+        Quartium.proxy.addToVariantCache(this);
 
     }
 
@@ -42,7 +43,7 @@ public class ItemModBlock extends ItemBlock implements ModelHandler.IVariantHold
 
     @Override
     public ItemBlock setUnlocalizedName(String unlocalizedName) {
-        GameRegistry.register(this, new ResourceLocation(LibMisc.MOD_ID, unlocalizedName));
+        GameRegistry.register(this/*,new ResourceLocation(LibMisc.MOD_ID, unlocalizedName)*/);
         return super.setUnlocalizedName(unlocalizedName);
     }
 

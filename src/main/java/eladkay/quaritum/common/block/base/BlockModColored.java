@@ -7,6 +7,8 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
 
 import static eladkay.quaritum.common.item.chalk.ItemChalk.capitalizeFirst;
 
@@ -14,7 +16,7 @@ public class BlockModColored extends BlockMod {
     public static final PropertyEnum<EnumDyeColor> COLOR = PropertyEnum.create("color", EnumDyeColor.class);
 
     public BlockModColored(String name, Material materialIn) {
-        super(name, materialIn, generateVariants(name));
+        super(name, materialIn, (String[]) (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT ? generateVariants(name) : null));
         this.setDefaultState(this.blockState.getBaseState().withProperty(COLOR, EnumDyeColor.WHITE));
         this.setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
     }

@@ -2,8 +2,8 @@ package eladkay.quaritum.common.block.base;
 
 import eladkay.quaritum.api.animus.IFlower;
 import eladkay.quaritum.client.core.ModelHandler;
+import eladkay.quaritum.common.Quartium;
 import eladkay.quaritum.common.core.CreativeTab;
-import eladkay.quaritum.api.lib.LibMisc;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.material.Material;
@@ -11,10 +11,7 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -55,9 +52,11 @@ public abstract class BlockModFlower extends BlockBush implements IFlower, Model
         setRegistryName(name);
         GameRegistry.register(this);
         if (shouldHaveItemForm())
-            GameRegistry.register(new ItemModBlock(this), new ResourceLocation(LibMisc.MOD_ID, name));
+            GameRegistry.register(new ItemModBlock(this)/*, new ResourceLocation(LibMisc.MOD_ID, name)*/);
         else
-            ModelHandler.variantCache.add(this);
+            Quartium.proxy.addToVariantCache(this);
+        //ModelHandler.variantCache.add(this);
+
         return this;
     }
 

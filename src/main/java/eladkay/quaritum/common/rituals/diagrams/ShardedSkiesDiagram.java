@@ -65,7 +65,9 @@ public class ShardedSkiesDiagram implements IDiagram {
         boolean flag = false;
         for(EntityItem stack : Helper.entitiesAroundAltar(tile, 4))
             if (Helper.isEntityItemInList(stack, getRequiredItems())) {
-                NetworkHelper.tellEveryoneAround(new FancyParticlePacket(pos.getX(), pos.getY(), pos.getZ(), 50), world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 16);
+                try {
+                    NetworkHelper.tellEveryoneAround(new FancyParticlePacket(pos.getX(), pos.getY(), pos.getZ(), 50), world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 16);
+                } catch(NoClassDefFoundError server) {}
                 flag = true;
             }
         return flag;

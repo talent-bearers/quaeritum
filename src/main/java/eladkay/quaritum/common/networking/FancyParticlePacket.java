@@ -3,6 +3,7 @@ package eladkay.quaritum.common.networking;
 import eladkay.quaritum.common.Quartium;
 import eladkay.quaritum.common.core.LogHelper;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
@@ -58,18 +59,19 @@ public class FancyParticlePacket extends MessageBase<FancyParticlePacket> {
         //do packety stuff
         for (int i = 0; i < message.amount; i++) {
             //world, x, y, z
-            Quartium.proxy.spawnStafflikeParticles(
-                    player.worldObj, //world
-                    message.x + (player.worldObj.rand.nextFloat()) * (player.worldObj.rand.nextDouble()), //x
-                    message.y + player.worldObj.rand.nextDouble() - 0.5D, //y
-                    message.z + (player.worldObj.rand.nextFloat()) * (player.worldObj.rand.nextDouble()) //z
-            );
+            if(Minecraft.getMinecraft().theWorld != null)
+                Quartium.proxy.spawnStafflikeParticles(
+                        Minecraft.getMinecraft().theWorld, //world
+                        message.x + (Minecraft.getMinecraft().theWorld.rand.nextFloat()) * (Minecraft.getMinecraft().theWorld.rand.nextDouble()), //x
+                        message.y + Minecraft.getMinecraft().theWorld.rand.nextDouble() - 0.5D, //y
+                        message.z + (Minecraft.getMinecraft().theWorld.rand.nextFloat()) * (Minecraft.getMinecraft().theWorld.rand.nextDouble()) //z
+                );
             //world, x, y, z, motion, rgb
             /*Quartium.proxy.spawnParticleMagixFX(
-                    player.worldObj, //world
-                    x + 2 * (player.worldObj.rand.nextFloat() - 0.5), //x
-                    y + 2.0 * (player.worldObj.rand.nextFloat() - 0.5) + 1.0, //y
-                    z + 2.0 * (player.worldObj.rand.nextFloat() - 0.5), //z
+                    Minecraft.getMinecraft().theWorld, //world
+                    x + 2 * (Minecraft.getMinecraft().theWorld.rand.nextFloat() - 0.5), //x
+                    y + 2.0 * (Minecraft.getMinecraft().theWorld.rand.nextFloat() - 0.5) + 1.0, //y
+                    z + 2.0 * (Minecraft.getMinecraft().theWorld.rand.nextFloat() - 0.5), //z
                     x, y + 1.0, z,  //motion
                     255, 0, 0); //rgb*/
         }

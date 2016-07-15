@@ -1,7 +1,7 @@
 package eladkay.quaritum.api.lib;
 
 public class LibMisc {
-    public static final String DEPENDENCIES = "required-after:GuideAPI";
+    public static final String DEPENDENCIES = "required-after:guideapi";
     public static final String BUILD = "GRADLE:BUILD";
     public static final String VERSION_ID = "GRADLE:VERSION";
     public static final String VERSION = BUILD + "-" + VERSION_ID;
