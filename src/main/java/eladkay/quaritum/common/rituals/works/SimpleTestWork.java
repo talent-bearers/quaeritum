@@ -3,7 +3,9 @@ package eladkay.quaritum.common.rituals.works;
 import eladkay.quaritum.api.rituals.IWork;
 import eladkay.quaritum.api.rituals.PositionedBlock;
 import eladkay.quaritum.common.block.tile.TileEntityFoundationStone;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -20,7 +22,7 @@ public class SimpleTestWork implements IWork {
 
     @Override
     public boolean updateTick(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntityFoundationStone tile, long ticksExisted) {
-        return ticksExisted != 100;
+        return ticksExisted < 100;
     }
 
     @Override
@@ -35,6 +37,6 @@ public class SimpleTestWork implements IWork {
 
     @Override
     public void buildPositions(@Nonnull List<PositionedBlock> blocks) {
-
+        blocks.add(new PositionedBlock(Block.REGISTRY.getObject(new ResourceLocation("minecraft:stone")).getDefaultState(), new BlockPos(1, 0, 1)));
     }
 }

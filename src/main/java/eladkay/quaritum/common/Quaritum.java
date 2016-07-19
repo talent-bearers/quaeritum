@@ -11,12 +11,12 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 //@Mod(modid = LibMisc.MOD_ID, name = LibMisc.NAME, version = LibMisc.VERSION, dependencies = LibMisc.DEPENDENCIES, acceptedMinecraftVersions = LibMisc.ACCEPTED_VERSION, guiFactory = LibMisc.GUI_FACTORY)
 @Mod(modid = LibMisc.MOD_ID, name = LibMisc.NAME, version = LibMisc.VERSION, dependencies = LibMisc.DEPENDENCIES)
-public class Quartium {
+public class Quaritum {
 
     @SidedProxy(clientSide = LibMisc.CLIENT_PROXY, serverSide = LibMisc.COMMON_PROXY)
     public static CommonProxy proxy;
     @Mod.Instance(LibMisc.MOD_ID)
-    public static Quartium instance;
+    public static Quaritum instance;
     private static boolean devEnvOverride = false; //if this is true, the environment will launch as normal, even in a
                                                    //dev environment
     public static boolean isDevEnv = (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment") && !devEnvOverride;

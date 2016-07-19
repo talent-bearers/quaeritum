@@ -1,7 +1,7 @@
 package eladkay.quaritum.common.networking;
 
 
-import eladkay.quaritum.common.Quartium;
+import eladkay.quaritum.common.Quaritum;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,9 +9,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-/**
- * Created by pixlepix on 11/29/14.
- */
 public class FancyLineParticlePacket extends MessageBase<FancyLineParticlePacket> {
 
     public double r;
@@ -64,7 +61,7 @@ public class FancyLineParticlePacket extends MessageBase<FancyLineParticlePacket
                 double xp = msg.from.getX() + (velocity.xCoord * i) + 0.25;
                 double yp = msg.from.getY() + (velocity.yCoord * i) + 0.25;
                 double zp = msg.from.getZ() + (velocity.zCoord * i) + 0.25;
-                Quartium.proxy.spawnParticleMagixFX(world, xp, yp, zp, velocity.xCoord * 0.1, 0.15, velocity.zCoord, msg.r, msg.g, msg.b);
+                Quaritum.proxy.spawnParticleMagixFX(world, xp, yp, zp, velocity.xCoord * 0.1, 0.15, velocity.zCoord, msg.r, msg.g, msg.b);
                 //ParticleHelper.spawnParticle("redBeamOfAwesome", xp, yp, zp, velocity.xCoord * 0.1, 0.15, velocity.zCoord, msg.r, msg.g, msg.b);
                 //System.out.println("xp=" + xp + "&yp=" + yp + "&zp=" + zp + "&count=" + count);
             }

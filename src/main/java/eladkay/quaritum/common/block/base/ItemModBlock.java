@@ -3,7 +3,7 @@ package eladkay.quaritum.common.block.base;
 
 import eladkay.quaritum.api.lib.LibMisc;
 import eladkay.quaritum.client.core.ModelHandler;
-import eladkay.quaritum.common.Quartium;
+import eladkay.quaritum.common.Quaritum;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.color.IItemColor;
@@ -32,7 +32,7 @@ public class ItemModBlock extends ItemBlock implements ModelHandler.IVariantHold
         /*try {
             ModelHandler.variantCache.add(this);
         } catch (Throwable ignored) {}*/
-        Quartium.proxy.addToVariantCache(this);
+        Quaritum.proxy.addToVariantCache(this);
 
     }
 

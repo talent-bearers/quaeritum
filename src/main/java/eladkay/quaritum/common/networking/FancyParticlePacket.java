@@ -1,6 +1,6 @@
 package eladkay.quaritum.common.networking;
 
-import eladkay.quaritum.common.Quartium;
+import eladkay.quaritum.common.Quaritum;
 import eladkay.quaritum.common.core.LogHelper;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
@@ -60,14 +60,14 @@ public class FancyParticlePacket extends MessageBase<FancyParticlePacket> {
         for (int i = 0; i < message.amount; i++) {
             //world, x, y, z
             if(Minecraft.getMinecraft().theWorld != null)
-                Quartium.proxy.spawnStafflikeParticles(
+                Quaritum.proxy.spawnStafflikeParticles(
                         Minecraft.getMinecraft().theWorld, //world
                         message.x + (Minecraft.getMinecraft().theWorld.rand.nextFloat()) * (Minecraft.getMinecraft().theWorld.rand.nextDouble()), //x
                         message.y + Minecraft.getMinecraft().theWorld.rand.nextDouble() - 0.5D, //y
                         message.z + (Minecraft.getMinecraft().theWorld.rand.nextFloat()) * (Minecraft.getMinecraft().theWorld.rand.nextDouble()) //z
                 );
             //world, x, y, z, motion, rgb
-            /*Quartium.proxy.spawnParticleMagixFX(
+            /*Quaritum.proxy.spawnParticleMagixFX(
                     Minecraft.getMinecraft().theWorld, //world
                     x + 2 * (Minecraft.getMinecraft().theWorld.rand.nextFloat() - 0.5), //x
                     y + 2.0 * (Minecraft.getMinecraft().theWorld.rand.nextFloat() - 0.5) + 1.0, //y

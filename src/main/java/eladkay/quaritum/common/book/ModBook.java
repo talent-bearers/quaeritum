@@ -11,7 +11,6 @@ import com.google.common.collect.Maps;
 import eladkay.quaritum.api.lib.LibBook;
 import eladkay.quaritum.api.lib.LibMisc;
 import eladkay.quaritum.client.core.TooltipHelper;
-import eladkay.quaritum.common.block.BlockBlueprint;
 import eladkay.quaritum.common.block.ModBlocks;
 import eladkay.quaritum.common.item.ModItems;
 import eladkay.quaritum.common.lib.LibNames;
@@ -39,7 +38,7 @@ public class ModBook {
 
     public static void init() {
 
-        BlockBlueprint.constructBook();
+        //BlockBlueprint.constructBook();
 
         catagoryDiagrams = new CategoryItemStack(pagesDiagrams, TooltipHelper.local(LibBook.DIAGRAMS), new ItemStack(ModBlocks.blueprint));
         categories.add(catagoryDiagrams);
@@ -51,7 +50,7 @@ public class ModBook {
         categories.add(catagoryAnimus);
 
         book = new Book();
-        book.setSpawnWithBook(true);
+        book.setSpawnWithBook(false);
         book.setTitle(TooltipHelper.local(LibBook.NAME));
         book.setDisplayName(TooltipHelper.local(LibBook.NAME));
         book.setAuthor(TooltipHelper.local(LibBook.AUTHOR));
@@ -59,7 +58,7 @@ public class ModBook {
         book.setColor(Color.cyan);
         book.setCategoryList(categories);
         book.setRegistryName(new ResourceLocation(LibMisc.MOD_ID, LibNames.BOOK));
-
+        //book.setPageTexture(new ResourceLocation("quaritum:textures/gui/book.png"));
         GuideAPI.BOOKS.register(book);
     }
     public static void register(Map<ResourceLocation, EntryAbstract> map, String entryName, List<IPage> pages, ItemStack stack) {

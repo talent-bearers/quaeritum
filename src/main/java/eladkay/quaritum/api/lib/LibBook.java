@@ -19,4 +19,6 @@ public class LibBook {
     public static final String ENTRY_SUMMONING_PAGE2 = "book.quaritum.summoning_page2";
     public static final String ENTRY_INFUSION_NAME = "book.quaritum.infusion_name";
     public static final String ENTRY_INFUSION_PAGE1 = "book.quaritum.infusion_page1";
+    public static final String ENTRY_TRANSDUCER = "book.quaritum.transducer_name";
+    public static final String ENTRY_TRANSDUCER_PAGE1 = "book.quaritum.transducer_page1";
 }

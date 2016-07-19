@@ -23,7 +23,7 @@ public class TileEntityBlueprint extends TileMod {
     public void updateEntity() {
         if (!worldObj.isRemote) {
             //LogHelper.logDebug(currentDiagram);
-            if (currentDiagram != null) {
+            if (currentDiagram != null)
                 if (stageTicks > 0) {
                     stage = RitualStage.PREP;
                     stageTicks--;
@@ -34,7 +34,6 @@ public class TileEntityBlueprint extends TileMod {
                     currentDiagram.run(worldObj, pos, this);
                     currentDiagram = null;
                 }
-            }
 
             if (currentDiagram == null) {
                 stage = RitualStage.IDLE;
@@ -56,6 +55,7 @@ public class TileEntityBlueprint extends TileMod {
                 bestDiagram = ritual;
                 highestChalks = chalks;
             }
+            System.out.println(chalks + ", " + requirementsMet + ", " + foundAll + ", " + ritual.getUnlocalizedName());
         }
         return bestDiagram;
     }

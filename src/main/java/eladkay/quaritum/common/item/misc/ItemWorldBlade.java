@@ -4,7 +4,7 @@ import com.google.common.collect.Multimap;
 import eladkay.quaritum.api.animus.AnimusHelper;
 import eladkay.quaritum.api.util.ItemNBTHelper;
 import eladkay.quaritum.api.util.Vector3;
-import eladkay.quaritum.common.Quartium;
+import eladkay.quaritum.common.Quaritum;
 import eladkay.quaritum.common.core.QuaritumMethodHandles;
 import eladkay.quaritum.common.core.RayHelper;
 import eladkay.quaritum.common.item.base.ItemModSword;
@@ -117,7 +117,7 @@ public class ItemWorldBlade extends ItemModSword {
                             -entityLiving.worldObj.rand.nextDouble(),
                             (entityLiving.worldObj.rand.nextDouble() - 0.5D) * 2.0D);
                     else
-                    Quartium.proxy.spawnStafflikeParticles(
+                    Quaritum.proxy.spawnStafflikeParticles(
                             entityLiving.worldObj, //world
                             entityLiving.posX + (entityLiving.worldObj.rand.nextDouble() - 0.5D) * (double) entityLiving.width, //x
                             entityLiving.posY + entityLiving.worldObj.rand.nextDouble() * (double) entityLiving.height - 0.25D, //y

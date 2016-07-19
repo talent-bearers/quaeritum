@@ -2,7 +2,7 @@ package eladkay.quaritum.common.block.base;
 
 import eladkay.quaritum.api.animus.IFlower;
 import eladkay.quaritum.client.core.ModelHandler;
-import eladkay.quaritum.common.Quartium;
+import eladkay.quaritum.common.Quaritum;
 import eladkay.quaritum.common.core.CreativeTab;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
@@ -54,7 +54,7 @@ public abstract class BlockModFlower extends BlockBush implements IFlower, Model
         if (shouldHaveItemForm())
             GameRegistry.register(new ItemModBlock(this)/*, new ResourceLocation(LibMisc.MOD_ID, name)*/);
         else
-            Quartium.proxy.addToVariantCache(this);
+            Quaritum.proxy.addToVariantCache(this);
         //ModelHandler.variantCache.add(this);
 
         return this;

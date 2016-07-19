@@ -2,7 +2,7 @@ package eladkay.quaritum.client.core;
 
 import eladkay.quaritum.client.fx.FXBeam;
 import eladkay.quaritum.client.fx.FXMagicLine;
-import eladkay.quaritum.common.Quartium;
+import eladkay.quaritum.common.Quaritum;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.renderer.GlStateManager;
@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 
 public class ParticleHelper {
     public static void summonParticleBetweenTwoVectors(World worldIn, BlockPos pos1, BlockPos pos2) {
-        if (pos1.subtract(pos2) == BlockPos.ORIGIN) Quartium.proxy.spawnStafflikeParticles(
+        if (pos1.subtract(pos2) == BlockPos.ORIGIN) Quaritum.proxy.spawnStafflikeParticles(
                 worldIn,
                 pos1.getX(),
                 pos1.getY(),
@@ -127,7 +127,7 @@ public class ParticleHelper {
                     entityfx = new FXBeam(Minecraft.getMinecraft().theWorld, posX, posY, posZ, (float) r, (float) g, (float) b, true);
                 }
 
-                Quartium.proxy.spawnParticle(entityfx, Minecraft.getMinecraft().theWorld);
+                Quaritum.proxy.spawnParticle(entityfx, Minecraft.getMinecraft().theWorld);
             }
         }
 

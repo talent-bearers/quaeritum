@@ -24,7 +24,8 @@ book.quaritum.summoning_page2=Unfortunately, the diagram is more intricate than 
 book.quaritum.infusion_name=Infusion
 book.quaritum.infusion_page1=<Infusion>
 quaritum.bookdescjei=This is your guide for all things Quaritum. It contains information about everything you need to know about the mod.
-
+book.quaritum.transducer_name=Transducer
+book.quaritum.transducer_page1=I developed a device that could help me with building. When I use it on a block, it places a block of that type behind that block! This device takes a little bit of §7animus§r from your player when used. I think I'm the first to make one of these though I could've sworn I've seen it before...
 book.quaritum.blueprint=Blueprint
 book.quaritum.blueprint_page1=this is a casting thingy or something lol
 
@@ -43,6 +44,7 @@ item.quaritum:awakenedSoulstone.name=Awakened Soulstone
 item.quaritum:oppressiveSoulstone.name=Oppressive Soulstone
 item.quaritum:passionateSoulstone.name=Passionate Soulstone
 item.quaritum:worldSoulstone.name=Stone of the Worldsoul
+item.quaritum:transducer.name=Transducer
 
 tile.quaritum:flowerCommon.name=Common Flower
 tile.quaritum:flowerCommonArcane.name=Rare Flower

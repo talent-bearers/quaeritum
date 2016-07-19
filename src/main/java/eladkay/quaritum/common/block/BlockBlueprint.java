@@ -9,6 +9,7 @@ import eladkay.quaritum.client.core.TooltipHelper;
 import eladkay.quaritum.common.block.base.BlockMod;
 import eladkay.quaritum.common.block.tile.TileEntityBlueprint;
 import eladkay.quaritum.common.book.ModBook;
+import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -70,9 +71,25 @@ public class BlockBlueprint extends BlockMod implements IGuideLinked, ITileEntit
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
-        //Quartium.proxy.spawnStafflikeParticles(worldIn, pos.getX(), pos.getY() + 1, pos.getZ());
+        //Quaritum.proxy.spawnStafflikeParticles(worldIn, pos.getX(), pos.getY() + 1, pos.getZ());
         TileEntity tile = worldIn.getTileEntity(pos);
         return tile instanceof TileEntityBlueprint && ((TileEntityBlueprint) tile).onBlockActivated();
+    }
+
+    @Override
+    public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
+        if(((World)world).isBlockPowered(pos)) {
+            TileEntity tile = world.getTileEntity(pos);
+            if(tile instanceof TileEntityBlueprint) ((TileEntityBlueprint) tile).onBlockActivated();
+        }
+    }
+
+    @Override
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn) {
+        if(worldIn.isBlockPowered(pos)) {
+            TileEntity tile = worldIn.getTileEntity(pos);
+            if(tile instanceof TileEntityBlueprint) ((TileEntityBlueprint) tile).onBlockActivated();
+        }
     }
 
     @Override
@@ -81,7 +98,8 @@ public class BlockBlueprint extends BlockMod implements IGuideLinked, ITileEntit
     }
     public static List<IPage> pages = new ArrayList<>();
 
-    public static void constructBook() {
+    @Override
+    public void constructBook() {
         pages.add(new PageText(TooltipHelper.local(LibBook.ENTRY_BLUEPRINT_PAGE1)));
         ModBook.register(ModBook.pagesAnimus, LibBook.ENTRY_BLUEPRINT_NAME, pages, new ItemStack(ModBlocks.blueprint));
     }

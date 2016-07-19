@@ -1,7 +1,7 @@
 package eladkay.quaritum.common.block.base;
 
 import eladkay.quaritum.client.core.ModelHandler;
-import eladkay.quaritum.common.Quartium;
+import eladkay.quaritum.common.Quaritum;
 import eladkay.quaritum.common.core.CreativeTab;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -30,6 +30,7 @@ public class BlockMod extends Block implements ModelHandler.IModBlock {
 
         if (shouldRegisterInCreative())
             CreativeTab.set(this);
+        constructBook();
     }
 
     public boolean shouldRegisterInCreative() {
@@ -47,7 +48,7 @@ public class BlockMod extends Block implements ModelHandler.IModBlock {
         GameRegistry.register(this);
         if (shouldHaveItemForm())
             GameRegistry.register(new ItemModBlock(this));
-        else Quartium.proxy.addToVariantCache(this);
+        else Quaritum.proxy.addToVariantCache(this);
         /* try {
             ModelHandler.variantCache.add(this);
         } catch (Throwable ignored) {}*/
@@ -89,4 +90,5 @@ public class BlockMod extends Block implements ModelHandler.IModBlock {
     public EnumRarity getBlockRarity(ItemStack stack) {
         return EnumRarity.COMMON;
     }
+    public void constructBook() {}
 }

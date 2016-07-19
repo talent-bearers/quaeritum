@@ -30,7 +30,7 @@ public final class PositionedBlockHelper {
             List<IProperty> comparables = block.getComparables();
 
             if (block.getState().getBlock() == state.getBlock()) {
-                LogHelper.logDebug("Block check OK");
+                LogHelper.logDebug("Block check OK for " + optionalName);
                 if (comparables != null) {
                     for (IProperty property : comparables) {
                         if (block.getState().getValue(property) != state.getValue(property)) {

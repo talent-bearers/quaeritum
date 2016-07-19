@@ -27,7 +27,8 @@ import java.util.List;
 
 public class BlockFoundationStone extends BlockMod implements IGuideLinked, ITileEntityProvider {
     public static List<IPage> pages = new ArrayList<>();
-    public static void constructBook() {
+    @Override
+    public void constructBook() {
         pages.add(new PageText(TooltipHelper.local(LibBook.ENTRY_BLUEPRINT_PAGE1)));
         ModBook.register(ModBook.pagesAnimus, LibBook.ENTRY_BLUEPRINT_NAME, pages, new ItemStack(ModBlocks.blueprint));
     }

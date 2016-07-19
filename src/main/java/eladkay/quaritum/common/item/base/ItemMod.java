@@ -3,7 +3,7 @@ package eladkay.quaritum.common.item.base;
 import eladkay.quaritum.api.lib.LibMisc;
 import eladkay.quaritum.client.core.ModelHandler;
 import eladkay.quaritum.client.core.TooltipHelper;
-import eladkay.quaritum.common.Quartium;
+import eladkay.quaritum.common.Quaritum;
 import eladkay.quaritum.common.core.CreativeTab;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.creativetab.CreativeTabs;
@@ -35,7 +35,8 @@ public class ItemMod extends Item implements ModelHandler.IVariantHolder {
         /*try {
             ModelHandler.variantCache.add(this);
         } catch(NoClassDefFoundError server) {}*/
-        Quartium.proxy.addToVariantCache(this);
+        Quaritum.proxy.addToVariantCache(this);
+        constructBook();
     }
 
 
@@ -91,5 +92,6 @@ public class ItemMod extends Item implements ModelHandler.IVariantHolder {
             subItems.add(new ItemStack(itemIn, 1, i));
         }
     }
+    public void constructBook() {}
 }
 

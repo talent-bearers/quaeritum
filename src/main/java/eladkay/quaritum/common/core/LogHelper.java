@@ -1,6 +1,6 @@
 package eladkay.quaritum.common.core;
 
-import eladkay.quaritum.common.Quartium;
+import eladkay.quaritum.common.Quaritum;
 import eladkay.quaritum.api.lib.LibMisc;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -15,7 +15,7 @@ public class LogHelper {
     }
 
     public static void logDebug(Object s) {
-        if (Quartium.isDevEnv) log(s);
+        if (Quaritum.isDevEnv) log(s);
     }
 
     public static void logErr(Object s) {
@@ -23,7 +23,7 @@ public class LogHelper {
     }
 
     public static void logDebugErr(Object s) {
-        if (Quartium.isDevEnv) logErr(s);
+        if (Quaritum.isDevEnv) logErr(s);
     }
 
 }
