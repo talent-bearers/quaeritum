@@ -92,5 +92,9 @@ public class ItemMod extends Item implements ModelHandler.IVariantHolder {
             subItems.add(new ItemStack(itemIn, 1, i));
         }
     }
+
+    public void constructBook() {
+        //NO-OP
+    }
 }
 
