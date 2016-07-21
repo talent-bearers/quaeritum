@@ -40,7 +40,9 @@ public interface IDiagram {
 
     void buildChalks(@Nonnull List<PositionedBlock> chalks);
 
-    void constructBook();
+    default void constructBook() {
+        //NO-OP
+    }
 
     class Helper {
 

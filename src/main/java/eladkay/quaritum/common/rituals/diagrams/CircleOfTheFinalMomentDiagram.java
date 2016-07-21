@@ -116,10 +116,4 @@ public class CircleOfTheFinalMomentDiagram implements IDiagram {
         chalks.add(new PositionedBlockChalk(EnumDyeColor.YELLOW, new BlockPos(2, 0, 4)));
         chalks.add(new PositionedBlockChalk(EnumDyeColor.BLACK, new BlockPos(4, 0, 4)));
     }
-
-
-    @Override
-    public void constructBook() {
-
-    }
 }

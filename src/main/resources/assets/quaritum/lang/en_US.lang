@@ -32,9 +32,9 @@ book.quaritum.blueprint_page1=this is a casting thingy or something lol
 
 quaritum.materialsRequired=Materials required:
 quaritum.itemsRequired=§7Items required:
-quaritum.diagramtooltip=§7This ritual is a §r§bdiagram§r§7
-quaritum.nochalk=§7This §r§bdiagram§r§7 does not take any chalk setup.
-quaritum.chalksnotconsumed=§7Structure is not consumed.
+quaritum.chalksRequired=§7Chalks required:
+quaritum.diagramtooltip=§7This ritual is a §r§bDiagram§r§7
+quaritum.nochalk=§7None
 itemGroup.quaritum=Quaritum
 
 tile.quaritum:blueprint.name=Blueprint
@@ -102,6 +102,3 @@ item.quaritum:tempestChalk.desc=The Æther, Chaos, Destruction, Power
 
 item.quaritum:fertilizer.name=Magical Fertilizer
 item.quaritum:reagentAtlas.name=Atlas Reagent
-
-item.quaritum:glowsandmeme.name=Glowsand Transmutator
-tile.quaritum:glowSand.name=Glowsand

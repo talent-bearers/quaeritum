@@ -93,5 +93,6 @@ public class BlockModFalling extends BlockFalling implements ModelHandler.IModBl
     }
 
     public void constructBook() {
+        //NO-OP
     }
 }

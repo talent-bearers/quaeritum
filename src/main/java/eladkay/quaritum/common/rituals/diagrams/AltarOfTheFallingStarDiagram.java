@@ -5,6 +5,7 @@ import eladkay.quaritum.api.animus.INetworkProvider;
 import eladkay.quaritum.api.animus.ISoulstone;
 import eladkay.quaritum.api.rituals.IDiagram;
 import eladkay.quaritum.api.rituals.PositionedBlock;
+import eladkay.quaritum.api.rituals.PositionedBlockChalk;
 import eladkay.quaritum.common.block.tile.TileEntityBlueprint;
 import eladkay.quaritum.common.core.ChatHelper;
 import eladkay.quaritum.common.core.PositionedBlockHelper;
@@ -81,14 +82,17 @@ public class AltarOfTheFallingStarDiagram implements IDiagram {
 
     @Override
     public void buildChalks(@Nonnull List<PositionedBlock> chalks) {
-        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(1, 0, 0), EnumDyeColor.GRAY));
-        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(-1, 0, 0), EnumDyeColor.GRAY));
-        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(0, 0, 1), EnumDyeColor.GRAY));
-        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(0, 0, -1), EnumDyeColor.GRAY));
-    }
-
-    @Override
-    public void constructBook() {
-
+        chalks.add(new PositionedBlockChalk(EnumDyeColor.PINK, new BlockPos(0, 0, -2)));
+        chalks.add(new PositionedBlockChalk(EnumDyeColor.WHITE, new BlockPos(-1, 0, -1)));
+        chalks.add(new PositionedBlockChalk(EnumDyeColor.WHITE, new BlockPos(0, 0, -1)));
+        chalks.add(new PositionedBlockChalk(EnumDyeColor.WHITE, new BlockPos(1, 0, -1)));
+        chalks.add(new PositionedBlockChalk(EnumDyeColor.PINK, new BlockPos(-2, 0, 0)));
+        chalks.add(new PositionedBlockChalk(EnumDyeColor.WHITE, new BlockPos(-1, 0, 0)));
+        chalks.add(new PositionedBlockChalk(EnumDyeColor.WHITE, new BlockPos(1, 0, 0)));
+        chalks.add(new PositionedBlockChalk(EnumDyeColor.PINK, new BlockPos(2, 0, 0)));
+        chalks.add(new PositionedBlockChalk(EnumDyeColor.WHITE, new BlockPos(-1, 0, 1)));
+        chalks.add(new PositionedBlockChalk(EnumDyeColor.WHITE, new BlockPos(0, 0, 1)));
+        chalks.add(new PositionedBlockChalk(EnumDyeColor.WHITE, new BlockPos(1, 0, 1)));
+        chalks.add(new PositionedBlockChalk(EnumDyeColor.PINK, new BlockPos(0, 0, 2)));
     }
 }

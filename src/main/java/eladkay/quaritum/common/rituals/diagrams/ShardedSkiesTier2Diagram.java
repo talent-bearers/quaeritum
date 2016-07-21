@@ -6,6 +6,7 @@ import com.google.common.collect.Lists;
 import eladkay.quaritum.api.lib.LibBook;
 import eladkay.quaritum.api.rituals.IDiagram;
 import eladkay.quaritum.api.rituals.PositionedBlock;
+import eladkay.quaritum.api.rituals.PositionedBlockChalk;
 import eladkay.quaritum.client.core.TooltipHelper;
 import eladkay.quaritum.common.block.ModBlocks;
 import eladkay.quaritum.common.block.flowers.BlockAnimusFlower;
@@ -91,16 +92,14 @@ public class ShardedSkiesTier2Diagram implements IDiagram {
 
     @Override
     public void buildChalks(@Nonnull List<PositionedBlock> chalks) {
-        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(1, 0, -1), EnumDyeColor.GREEN));
-        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(0, 0, 1), EnumDyeColor.LIME));
-        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(-1, 0, -1), EnumDyeColor.GREEN));
-
-        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(0, 0, -1), EnumDyeColor.LIME));
-        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(1, 0, 0), EnumDyeColor.LIME));
-
-        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(-1, 0, 1), EnumDyeColor.GREEN));
-        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(-1, 0, 0), EnumDyeColor.LIME));
-        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(1, 0, 1), EnumDyeColor.GREEN));
+        chalks.add(new PositionedBlockChalk(EnumDyeColor.GREEN, new BlockPos(-1, 0, -1)));
+        chalks.add(new PositionedBlockChalk(EnumDyeColor.LIME, new BlockPos(0, 0, -1)));
+        chalks.add(new PositionedBlockChalk(EnumDyeColor.GREEN, new BlockPos(1, 0, -1)));
+        chalks.add(new PositionedBlockChalk(EnumDyeColor.LIME, new BlockPos(-1, 0, 0)));
+        chalks.add(new PositionedBlockChalk(EnumDyeColor.LIME, new BlockPos(1, 0, 0)));
+        chalks.add(new PositionedBlockChalk(EnumDyeColor.GREEN, new BlockPos(-1, 0, 1)));
+        chalks.add(new PositionedBlockChalk(EnumDyeColor.LIME, new BlockPos(0, 0, 1)));
+        chalks.add(new PositionedBlockChalk(EnumDyeColor.GREEN, new BlockPos(1, 0, 1)));
     }
 
     @Override

@@ -34,6 +34,4 @@ public class LibNames {
     public static final String CHALK_TEMPEST = "tempestChalk";
     public static final String CHALK_BLOCK_TEMPEST = "tempestChalkBlock";
     public static final String CIRCLE = "circle";
-    public static final String GLOWSANDPLACER = "glowsandmeme";
-    public static final String GLOWSAND = "glowSand";
 }

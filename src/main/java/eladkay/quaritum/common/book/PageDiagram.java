@@ -28,7 +28,9 @@ import net.minecraft.util.text.TextFormatting;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class PageDiagram implements IPage {
@@ -96,28 +98,34 @@ public class PageDiagram implements IPage {
         GlStateManager.translate(0F, 0F, 200F);
         if (mx >= x && mx < x + 16 && my >= y && my < y + 16) {
             List<String> mats = new ArrayList<>();
+            Map<String, Integer> map = new HashMap<>();
             mats.add(I18n.format("quaritum.itemsRequired"));
             for (ItemStack stack : items) {
-                String size = "" + stack.stackSize;
-                mats.add(" " + TextFormatting.AQUA + size + " " + TextFormatting.GRAY + stack.getDisplayName());
+                String name = stack.getDisplayName();
+                if (!map.containsKey(name)) map.put(name, stack.stackSize);
+                else map.put(name, stack.stackSize + map.get(name));
             }
+            mats.addAll(map.keySet().stream()
+                    .map(name -> " " + TextFormatting.AQUA + map.get(name) + " " + TextFormatting.GRAY + name)
+                    .collect(Collectors.toList()));
+
 
             eladkay.quaritum.common.core.RenderHelper.renderTooltip(mx, my, mats);
         }
         if (mx >= x + 96 && mx < x + 16 + 96 && my >= y && my < y + 16) {
             List<String> mats = new ArrayList<>();
-            mats.add(I18n.format("quaritum.diagramtooltip"));
-            mats.add(I18n.format("quaritum.chalksnotconsumed"));
-            mats.add("");
-            if (mb.stream()
-                    .map(PositionedBlockHelper::getStackFromChalk)
-                    .collect(Collectors.toList()).size() > 3)
-                mats.addAll(mb.stream()
-                        .map(PositionedBlockHelper::getStackFromChalk)
-                        .filter(stack -> !(stack.getItem() instanceof ItemPicture))
-                        .map(stack -> TextFormatting.GRAY + stack.getDisplayName())
+            mats.add(I18n.format("quaritum.chalksRequired"));
+            if (mb.size() > 0) {
+                List<String> list = new ArrayList<>();
+                for (PositionedBlock block : mb) {
+                    String name = PositionedBlockHelper.getStackFromChalk(block).getDisplayName();
+                    if (!list.contains(name)) list.add(name);
+                }
+                mats.addAll(list.stream()
+                        .map(name -> " " + TextFormatting.GRAY + name)
                         .collect(Collectors.toList()));
-            else mats.add(I18n.format("quaritum.nochalk"));
+            }
+            else mats.add(" " + I18n.format("quaritum.nochalk"));
 
             eladkay.quaritum.common.core.RenderHelper.renderTooltip(mx, my, mats);
         }

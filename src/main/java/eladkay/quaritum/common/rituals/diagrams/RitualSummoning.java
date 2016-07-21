@@ -7,6 +7,7 @@ import eladkay.quaritum.api.animus.ISoulstone;
 import eladkay.quaritum.api.lib.LibBook;
 import eladkay.quaritum.api.rituals.IDiagram;
 import eladkay.quaritum.api.rituals.PositionedBlock;
+import eladkay.quaritum.api.rituals.PositionedBlockChalk;
 import eladkay.quaritum.client.core.TooltipHelper;
 import eladkay.quaritum.common.block.ModBlocks;
 import eladkay.quaritum.common.block.flowers.BlockAnimusFlower;
@@ -99,34 +100,30 @@ public class RitualSummoning implements IDiagram {
 
     @Override
     public void buildChalks(@Nonnull List<PositionedBlock> chalks) {
-        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(-2, 0, 2), EnumDyeColor.LIME));
-        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(1, 0, 2), EnumDyeColor.CYAN));
-        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(0, 0, 2), EnumDyeColor.CYAN));
-        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(-1, 0, 2), EnumDyeColor.CYAN));
-        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(2, 0, 2), EnumDyeColor.LIME));
-
-        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(2, 0, -1), EnumDyeColor.CYAN));
-        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(1, 0, -1), EnumDyeColor.YELLOW));
-        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(1, 0, 0), EnumDyeColor.RED));
-        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(1, 0, 1), EnumDyeColor.YELLOW));
-        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(2, 0, 0), EnumDyeColor.CYAN));
-
-        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(2, 0, 1), EnumDyeColor.CYAN));
-        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(0, 0, 1), EnumDyeColor.RED));
-        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(0, 0, -1), EnumDyeColor.RED));
-        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(1, 0, -2), EnumDyeColor.CYAN));
-
-        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(-2, 0, 0), EnumDyeColor.CYAN));
-        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(-1, 0, -1), EnumDyeColor.YELLOW));
-        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(-1, 0, 0), EnumDyeColor.RED));
-        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(-1, 0, 1), EnumDyeColor.YELLOW));
-        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(-2, 0, 1), EnumDyeColor.CYAN));
-
-        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(2, 0, -2), EnumDyeColor.LIME));
-        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(-2, 0, -1), EnumDyeColor.CYAN));
-        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(0, 0, -2), EnumDyeColor.CYAN));
-        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(-1, 0, -2), EnumDyeColor.CYAN));
-        chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(-2, 0, -2), EnumDyeColor.LIME));
+        chalks.add(new PositionedBlockChalk(EnumDyeColor.PINK, new BlockPos(-2, 0, -2)));
+        chalks.add(new PositionedBlockChalk(EnumDyeColor.LIME, new BlockPos(-1, 0, -2)));
+        chalks.add(new PositionedBlockChalk(EnumDyeColor.LIME, new BlockPos(0, 0, -2)));
+        chalks.add(new PositionedBlockChalk(EnumDyeColor.LIME, new BlockPos(1, 0, -2)));
+        chalks.add(new PositionedBlockChalk(EnumDyeColor.PINK, new BlockPos(2, 0, -2)));
+        chalks.add(new PositionedBlockChalk(EnumDyeColor.LIME, new BlockPos(-2, 0, -1)));
+        chalks.add(new PositionedBlockChalk(EnumDyeColor.SILVER, new BlockPos(-1, 0, -1)));
+        chalks.add(new PositionedBlockChalk(EnumDyeColor.RED, new BlockPos(0, 0, -1)));
+        chalks.add(new PositionedBlockChalk(EnumDyeColor.SILVER, new BlockPos(1, 0, -1)));
+        chalks.add(new PositionedBlockChalk(EnumDyeColor.LIME, new BlockPos(2, 0, -1)));
+        chalks.add(new PositionedBlockChalk(EnumDyeColor.LIME, new BlockPos(-2, 0, 0)));
+        chalks.add(new PositionedBlockChalk(EnumDyeColor.RED, new BlockPos(-1, 0, 0)));
+        chalks.add(new PositionedBlockChalk(EnumDyeColor.RED, new BlockPos(1, 0, 0)));
+        chalks.add(new PositionedBlockChalk(EnumDyeColor.LIME, new BlockPos(2, 0, 0)));
+        chalks.add(new PositionedBlockChalk(EnumDyeColor.LIME, new BlockPos(-2, 0, 1)));
+        chalks.add(new PositionedBlockChalk(EnumDyeColor.SILVER, new BlockPos(-1, 0, 1)));
+        chalks.add(new PositionedBlockChalk(EnumDyeColor.RED, new BlockPos(0, 0, 1)));
+        chalks.add(new PositionedBlockChalk(EnumDyeColor.SILVER, new BlockPos(1, 0, 1)));
+        chalks.add(new PositionedBlockChalk(EnumDyeColor.LIME, new BlockPos(2, 0, 1)));
+        chalks.add(new PositionedBlockChalk(EnumDyeColor.PINK, new BlockPos(-2, 0, 2)));
+        chalks.add(new PositionedBlockChalk(EnumDyeColor.LIME, new BlockPos(-1, 0, 2)));
+        chalks.add(new PositionedBlockChalk(EnumDyeColor.LIME, new BlockPos(0, 0, 2)));
+        chalks.add(new PositionedBlockChalk(EnumDyeColor.LIME, new BlockPos(1, 0, 2)));
+        chalks.add(new PositionedBlockChalk(EnumDyeColor.PINK, new BlockPos(2, 0, 2)));
 
     }
 

@@ -13,7 +13,6 @@ public class ModDiagrams {
         RitualRegistry.registerDiagram(new InfusionDiagram(), "infusion");
         RitualRegistry.registerDiagram(new CircleOfTheFinalMomentDiagram(), "circleofthefinalmoment");
 
-        RitualRegistry.registerDiagram(new GlowSandDiagram(), "glowsand");
         RitualRegistry.registerDiagram(new TransducerCraftingDiagram(), "transducer");
     }
 

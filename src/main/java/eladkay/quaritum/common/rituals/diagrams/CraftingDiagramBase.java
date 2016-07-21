@@ -17,30 +17,27 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class CraftingDiagramBase implements IDiagram {
+public abstract class CraftingDiagramBase implements IDiagram {
     public final ItemStack output;
     final String name;
     final ImmutableList<ItemStack> input;
-    final List<PositionedBlock> chalks;
     final int animus;
     final int rarity;
     final boolean onPlayers;
     final boolean requiress;
-    public CraftingDiagramBase(String name, ItemStack[] input, ItemStack output, List<PositionedBlock> chalks, int animus, boolean onPlayers, int rarity, boolean requiress) {
+    public CraftingDiagramBase(String name, ItemStack[] input, ItemStack output, int animus, boolean onPlayers, int rarity, boolean requiress) {
         this.name = name;
         this.input = ImmutableList.copyOf(input);
         this.output = output;
-        this.chalks = chalks;
         this.animus = animus;
         this.rarity = rarity;
         this.onPlayers = onPlayers;
         this.requiress = requiress;
     }
-    public CraftingDiagramBase(String name, ItemStack[] input, Item output, List<PositionedBlock> chalks, int animus, boolean onPlayers, int rarity, boolean requiress) {
+    public CraftingDiagramBase(String name, ItemStack[] input, Item output, int animus, boolean onPlayers, int rarity, boolean requiress) {
         this.name = name;
         this.input = ImmutableList.copyOf(input);
         this.output = new ItemStack(output);
-        this.chalks = chalks;
         this.animus = animus;
         this.rarity = rarity;
         this.onPlayers = onPlayers;
@@ -81,16 +78,5 @@ public class CraftingDiagramBase implements IDiagram {
     @Override
     public boolean hasRequiredItems(@Nullable World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile) {
         return Helper.matches(Helper.stacksAroundAltar(tile, 4), input);
-    }
-
-    @Override
-    public void buildChalks(@Nonnull List<PositionedBlock> chalks) {
-        if (this.chalks != null)
-            chalks.addAll(this.chalks);
-    }
-
-    @Override
-    public void constructBook() {
-
     }
 }

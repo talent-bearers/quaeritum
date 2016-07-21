@@ -23,8 +23,6 @@ public class ModBlocks {
     public static BlockFoundationStone foundation;
     public static BlockChalkTempest tempest;
 
-    public static GlowSandBlock glowsand;
-
     public static void init() {
         blueprint = new BlockBlueprint(LibNames.BLUEPRINT);
         chalk = new BlockChalk();
@@ -33,8 +31,6 @@ public class ModBlocks {
         foundation = new BlockFoundationStone();
         tempest = new BlockChalkTempest();
 
-
-        glowsand = new GlowSandBlock();
         GameRegistry.registerTileEntity(TileEntityBlueprint.class, new ResourceLocation(LibMisc.MOD_ID, LibNames.BLUEPRINT).toString());
         GameRegistry.registerTileEntity(TileEntityFoundationStone.class, new ResourceLocation(LibMisc.MOD_ID, LibNames.FOUNDATION).toString());
     }

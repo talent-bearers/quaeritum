@@ -87,9 +87,4 @@ public class DiagramCrafting implements IDiagram {
         if (this.chalks != null)
             chalks.addAll(this.chalks);
     }
-
-    @Override
-    public void constructBook() {
-
-    }
 }

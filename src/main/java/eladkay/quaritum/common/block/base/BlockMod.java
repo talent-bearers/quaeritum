@@ -97,5 +97,6 @@ public class BlockMod extends Block implements ModelHandler.IModBlock {
     }
 
     public void constructBook() {
+        //NO-OP
     }
 }
