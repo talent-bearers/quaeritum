@@ -11,7 +11,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class PositionedBlock {
-    public static final PositionedBlock BLUEPRINT = new PositionedBlock(ModBlocks.blueprint.getDefaultState(), new BlockPos(0, 0, 0));
+
     @Nonnull
     public final BlockPos pos;
     @Nonnull

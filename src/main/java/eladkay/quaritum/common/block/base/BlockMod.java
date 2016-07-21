@@ -8,6 +8,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.item.EnumRarity;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -19,6 +20,9 @@ public class BlockMod extends Block implements ModelHandler.IModBlock {
     private String[] variants;
     private String bareName;
 
+    @Nullable
+    public ItemBlock itemForm;
+
     public BlockMod(String name, Material materialIn, String... variants) {
         super(materialIn);
         this.variants = variants;
@@ -26,6 +30,7 @@ public class BlockMod extends Block implements ModelHandler.IModBlock {
             this.variants = new String[] {name};
         }
         this.bareName = name;
+        itemForm = createItemBlock();
         this.setUnlocalizedName(name);
 
         if (shouldRegisterInCreative())
@@ -37,8 +42,9 @@ public class BlockMod extends Block implements ModelHandler.IModBlock {
         return true;
     }
 
-    public boolean shouldHaveItemForm() {
-        return true;
+    @Nullable
+    protected ItemBlock createItemBlock() {
+        return new ItemModBlock(this);
     }
 
     @Override
@@ -46,8 +52,8 @@ public class BlockMod extends Block implements ModelHandler.IModBlock {
         super.setUnlocalizedName(name);
         setRegistryName(name);
         GameRegistry.register(this);
-        if (shouldHaveItemForm())
-            GameRegistry.register(new ItemModBlock(this));
+        if (itemForm != null)
+            GameRegistry.register(itemForm);
         else Quaritum.proxy.addToVariantCache(this);
         /* try {
             ModelHandler.variantCache.add(this);

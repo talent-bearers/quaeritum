@@ -11,6 +11,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -231,8 +232,9 @@ public class BlockChalkTempest extends BlockMod {
         return 0;
     }
 
+    @Nullable
     @Override
-    public boolean shouldHaveItemForm() {
-        return false;
+    protected ItemBlock createItemBlock() {
+        return null;
     }
 }

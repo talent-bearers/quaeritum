@@ -11,11 +11,9 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.color.IItemColor;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumDyeColor;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemDye;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -24,6 +22,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nullable;
 
 public class ItemChalk extends ItemMod implements ModelHandler.IColorProvider, ModelHandler.ICustomLogHolder {
     private static final String[] COLORS = new String[16];
@@ -35,7 +35,12 @@ public class ItemChalk extends ItemMod implements ModelHandler.IColorProvider, M
 
     public ItemChalk() {
         super(LibNames.CHALK, COLORS);
-        addPropertyOverride(LibLocations.FLAT_CHALK, (stack, world, entityLivingBase) -> ItemNBTHelper.getBoolean(stack.copy(), LibNBT.FLAT, false) ? 1.0f : 0.0f);
+        addPropertyOverride(LibLocations.FLAT_CHALK, new IItemPropertyGetter() {
+            @Override
+            public float apply(ItemStack stack, @Nullable World world, @Nullable EntityLivingBase entityLivingBase) {
+                return ItemNBTHelper.getBoolean(stack.copy(), LibNBT.FLAT, false) ? 1.0f : 0.0f;
+            }
+        });
         setMaxStackSize(1);
     }
 

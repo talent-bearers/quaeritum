@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -51,10 +52,24 @@ public final class PositionedBlockHelper {
 
         return chalks;
     }
-    public static BlockPos getDimensions(List<PositionedBlock> list) {
-        AxisAlignedBB bb = new AxisAlignedBB(0, 0, 0, 0, 0, 0);
-        for(PositionedBlock block : list) bb.addCoord(block.getPos().getX(), block.getPos().getY(), block.getPos().getZ());
-        return new BlockPos(bb.maxX - bb.minX, bb.maxY - bb.minY, bb.maxZ - bb.minZ);
+    public static Vec3i getDimensions(List<PositionedBlock> list) {
+        int minX = 0;
+        int maxX = 0;
+        int minY = 0;
+        int maxY = 0;
+        int minZ = 0;
+        int maxZ = 0;
+        for(PositionedBlock block : list) {
+            minX = Math.min(block.getPos().getX(), minX);
+            maxX = Math.max(block.getPos().getX(), maxX);
+
+            minY = Math.min(block.getPos().getY(), minY);
+            maxY = Math.max(block.getPos().getY(), maxY);
+
+            minZ = Math.min(block.getPos().getZ(), minZ);
+            maxZ = Math.max(block.getPos().getZ(), maxZ);
+        }
+        return new Vec3i(maxX - minX, maxY - minY, maxZ - minZ);
     }
     @Deprecated
     public static ItemStack[][][] getItemStackArrayArrayArrayFromPositionedBlockList(List<PositionedBlock> blocks) {
@@ -71,9 +86,8 @@ public final class PositionedBlockHelper {
     }
     public static ItemStack getStackFromChalk(PositionedBlock block, boolean flat) {
         ItemStack ret = new ItemStack(block.getState().getBlock(), 1, block.getState().getBlock().getMetaFromState(block.getState()));
-        if(block.getState().getBlock() == ModBlocks.blueprint) ret = new ItemStack(ModItems.picture, 1, 0);
-        else if(block.getState().getBlock() == ModBlocks.chalk) ret = new ItemStack(ModItems.chalk, 1, block.getState().getBlock().getMetaFromState(block.getState()));
-        else if(block.getState().getBlock() == ModBlocks.tempest) ret = new ItemStack(ModItems.tempest, 1);
+        if (block.getState().getBlock() == ModBlocks.chalk) ret = new ItemStack(ModItems.chalk, 1, block.getState().getBlock().getMetaFromState(block.getState()));
+        else if (block.getState().getBlock() == ModBlocks.tempest) ret = new ItemStack(ModItems.tempest, 1);
         if (flat)
             ItemNBTHelper.setBoolean(ret, LibNBT.FLAT, true);
 

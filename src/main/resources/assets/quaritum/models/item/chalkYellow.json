@@ -20,7 +20,7 @@
       "predicate": {
         "quaritum:flat": 1
       },
-      "model": "quaritum:item/solid_white"
+      "model": "quaritum:item/solidWhite"
     }
   ]
 }

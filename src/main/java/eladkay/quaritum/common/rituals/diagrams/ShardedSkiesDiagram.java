@@ -10,7 +10,7 @@ import eladkay.quaritum.client.core.TooltipHelper;
 import eladkay.quaritum.common.block.ModBlocks;
 import eladkay.quaritum.common.block.flowers.BlockAnimusFlower;
 import eladkay.quaritum.common.block.tile.TileEntityBlueprint;
-import eladkay.quaritum.common.book.Dimension;
+import eladkay.quaritum.common.book.Vec2i;
 import eladkay.quaritum.common.book.ModBook;
 import eladkay.quaritum.common.book.PageDiagram;
 import eladkay.quaritum.common.networking.FancyParticlePacket;
@@ -35,9 +35,9 @@ public class ShardedSkiesDiagram implements IDiagram {
     @Override
     public void constructBook() {
         pages.add(new PageText(TooltipHelper.local(LibBook.ENTRY_SHARDED_SKIES_PAGE1)));
-        List list = new ArrayList<>();
+        List<PositionedBlock> list = new ArrayList<>();
         buildChalks(list);
-        pages.add(new PageDiagram(list, getRequiredItems(), new Dimension(1, 1), 88, 64));
+        pages.add(new PageDiagram(list, getRequiredItems()));
         ModBook.register(ModBook.pagesDiagrams, LibBook.ENTRY_SHARDED_SKIES_NAME, pages, new ItemStack(ModBlocks.flower));
     }
     @Nonnull
@@ -97,7 +97,6 @@ public class ShardedSkiesDiagram implements IDiagram {
 
     @Override
     public void buildChalks(@Nonnull List<PositionedBlock> chalks) {
-        chalks.add(PositionedBlock.BLUEPRINT);
         //NO-OP
     }
 

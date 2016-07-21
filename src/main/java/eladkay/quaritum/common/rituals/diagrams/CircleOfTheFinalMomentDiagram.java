@@ -68,7 +68,6 @@ public class CircleOfTheFinalMomentDiagram implements IDiagram {
 
         chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(2, 0, 1), null));
         chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(0, 0, 1), EnumDyeColor.RED));
-        chalks.add(PositionedBlock.BLUEPRINT);
         chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(0, 0, -1), EnumDyeColor.RED));
         chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(1, 0, -2), null));
 

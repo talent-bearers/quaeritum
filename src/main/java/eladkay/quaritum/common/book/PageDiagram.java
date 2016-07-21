@@ -6,7 +6,9 @@ import amerifrance.guideapi.api.impl.abstraction.CategoryAbstract;
 import amerifrance.guideapi.api.impl.abstraction.EntryAbstract;
 import amerifrance.guideapi.gui.GuiBase;
 import amerifrance.guideapi.gui.GuiEntry;
+import eladkay.quaritum.api.lib.LibNBT;
 import eladkay.quaritum.api.rituals.PositionedBlock;
+import eladkay.quaritum.api.util.ItemNBTHelper;
 import eladkay.quaritum.common.block.ModBlocks;
 import eladkay.quaritum.common.core.PositionedBlockHelper;
 import eladkay.quaritum.common.item.ModItems;
@@ -14,12 +16,15 @@ import eladkay.quaritum.common.item.misc.ItemPicture;
 import eladkay.quaritum.common.lib.LibLocations;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.text.TextFormatting;
 import org.lwjgl.opengl.GL11;
 
@@ -30,53 +35,15 @@ import java.util.stream.Collectors;
 public class PageDiagram implements IPage {
     private List<PositionedBlock> mb;
     private List<ItemStack> items;
-    private int xt;
-    private int yt;
-    private Dimension dim;
+
+    private static ItemStack blueprintStack = new ItemStack(ModBlocks.blueprint);
+    static {
+        ItemNBTHelper.setBoolean(blueprintStack, LibNBT.FLAT, true);
+    }
+
     public PageDiagram(List<PositionedBlock> blocks, List<ItemStack> requiredItems) {
         mb = blocks;
         items = requiredItems;
-        int x = PositionedBlockHelper.getDimensions(blocks).getX();
-        int z = PositionedBlockHelper.getDimensions(blocks).getZ();
-        dim = new Dimension(x, z);
-        xt = 68;
-        yt = 50;
-    }
-    public PageDiagram(List<PositionedBlock> blocks, List<ItemStack> requiredItems, Dimension dimIn) {
-        mb = blocks;
-        items = requiredItems;
-        dim = dimIn;
-        //xt = 68;
-        xt = getXFromDim(dimIn);
-        //yt = 50;
-        yt = getYFromDim(dimIn);
-    }
-    public PageDiagram(List<PositionedBlock> blocks, List<ItemStack> requiredItems, int xta, int yta) {
-        mb = blocks;
-        items = requiredItems;
-        int x = PositionedBlockHelper.getDimensions(blocks).getX();
-        int z = PositionedBlockHelper.getDimensions(blocks).getZ();
-        dim = new Dimension(x, z);
-        xt = xta;
-        yt = yta;
-    }
-    public PageDiagram(List<PositionedBlock> blocks, List<ItemStack> requiredItems, Dimension dimIn, int x, int yta) {
-        mb = blocks;
-        items = requiredItems;
-        dim = dimIn;
-        xt = x;
-        yt = yta;
-
-    }
-    private static final double X_CONSTANT = 3.738344692 * Math.pow(10, -14);
-    private static int getXFromDim(Dimension dimt) {
-        //3.738344692·10^-14 x^2 - 9 x + 95
-        return (int) ((X_CONSTANT * dimt.getZ() * dimt.getZ()) - (9 * dimt.getZ()) + 95);
-    }
-    private static final double Y_CONSTANT = 0.25;
-    private static int getYFromDim(Dimension dimt) {
-        //0.25 x^2 - 8x + 71.75
-        return (int) ((Y_CONSTANT * dimt.getZ() * dimt.getZ()) - (8 * dimt.getZ()) + 71.75);
     }
 
     @Override
@@ -134,27 +101,42 @@ public class PageDiagram implements IPage {
             mats.add(I18n.format("quaritum.diagramtooltip"));
             mats.add(I18n.format("quaritum.chalksnotconsumed"));
             mats.add("");
-            if(mb.stream().map(PositionedBlockHelper::getStackFromChalk).collect(Collectors.toList()).size() > 3)
-                mats.addAll(mb.stream().map(PositionedBlockHelper::getStackFromChalk).filter(stack -> !(stack.getItem() instanceof ItemPicture)).collect(Collectors.toList()).stream().map(stack -> TextFormatting.GRAY + stack.getDisplayName()).collect(Collectors.toList()));
+            if (mb.stream()
+                    .map(PositionedBlockHelper::getStackFromChalk)
+                    .collect(Collectors.toList()).size() > 3)
+                mats.addAll(mb.stream()
+                        .map(PositionedBlockHelper::getStackFromChalk)
+                        .filter(stack -> !(stack.getItem() instanceof ItemPicture))
+                        .map(stack -> TextFormatting.GRAY + stack.getDisplayName())
+                        .collect(Collectors.toList()));
             else mats.add(I18n.format("quaritum.nochalk"));
 
             eladkay.quaritum.common.core.RenderHelper.renderTooltip(mx, my, mats);
         }
         GlStateManager.popMatrix();
-        int x0 = 0;
-        int y0 = 0;
-        int x1 = 0;
-        for(PositionedBlock block : mb) {
-            if(x1 == dim.getX()) {
-                x0 = 0;
-                y0 += 15;
-                x1 = 0;
-            }
+
+
+        Vec3i dims = PositionedBlockHelper.getDimensions(mb);
+        int shift = dims.getX() >= 4 || dims.getZ() >= 4 ? 2 : 1;
+        double s = shift == 2 ? 0.5 : 1;
+
+        GlStateManager.pushMatrix();
+        GlStateManager.scale(s, s, s);
+        Minecraft.getMinecraft().getRenderItem().renderItemIntoGUI(blueprintStack,
+                (getXFromPos(BlockPos.ORIGIN, gui, shift)) * shift, (getYFromPos(BlockPos.ORIGIN, gui, shift)) * shift);
+        for(PositionedBlock block : mb)
             Minecraft.getMinecraft().getRenderItem().renderItemIntoGUI(PositionedBlockHelper.getStackFromChalk(block, true),
-                        guiLeft + x0 + xt, guiTop + yt + y0);
-            x0 += 15;
-            x1++;
-        }
+                    (getXFromPos(block.getPos(), gui, shift)) * shift, (getYFromPos(block.getPos(), gui, shift)) * shift);
+        GlStateManager.popMatrix();
+
+    }
+
+    private static int getXFromPos(BlockPos pos, GuiBase gui, int scale) {
+        return gui.guiLeft + gui.xSize / 2 + pos.getX() * 16 / scale - 14 + scale * 6;
+    }
+
+    private static int getYFromPos(BlockPos pos, GuiBase gui, int scale) {
+        return gui.guiTop + gui.ySize / 2 + pos.getZ() * 16 / scale - 34 + scale * 5;
     }
 
     @Override

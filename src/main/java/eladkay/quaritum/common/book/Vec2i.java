@@ -1,7 +1,7 @@
 package eladkay.quaritum.common.book;
 
-public class Dimension {
-    public Dimension(int x, int z) {
+public class Vec2i {
+    public Vec2i(int x, int z) {
         this.x = x;
         this.z = z;
     }

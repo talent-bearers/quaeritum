@@ -1,3 +1,11 @@
 {
-  "parent": "quaritum:block/blueprint"
+  "parent": "quaritum:block/blueprint",
+  "overrides": [
+    {
+      "predicate": {
+        "quaritum:flat": 1
+      },
+      "model": "quaritum:item/solidBlueprint"
+    }
+  ]
 }

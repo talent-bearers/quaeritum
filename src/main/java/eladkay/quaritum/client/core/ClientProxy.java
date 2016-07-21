@@ -15,6 +15,10 @@ import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+
 public class ClientProxy extends CommonProxy {
     @Override
     public void pre(FMLPreInitializationEvent e) {
@@ -84,27 +88,11 @@ public class ClientProxy extends CommonProxy {
 
         return chance == 1F || Math.random() < chance;
     }
-    @Override
-    @Deprecated
-    public void wispFX(World world, double x, double y, double z, float r, float g, float b, float size) {
-        wispFX(world, x, y, z, r, g, b, size, 0F);
-    }
 
     @Override
-    @Deprecated
-    public void wispFX(World world, double x, double y, double z, float r, float g, float b, float size, float gravity) {
-        wispFX(world, x, y, z, r, g, b, size, gravity, 1F);
-    }
-
-    @Override
-    @Deprecated
-    public void wispFX(World world, double x, double y, double z, float r, float g, float b, float size, float gravity, float maxAgeMul) {
-        wispFX(world, x, y, z, r, g, b, size, 0, -gravity, 0, maxAgeMul);
-    }
-
-    @Override
-    @Deprecated
-    public void wispFX(World world, double x, double y, double z, float r, float g, float b, float size, float motionx, float motiony, float motionz) {
-        wispFX(world, x, y, z, r, g, b, size, motionx, motiony, motionz, 1F);
+    public void copyText(String s) {
+        StringSelection stringSelection = new StringSelection(s);
+        Clipboard board = Toolkit.getDefaultToolkit().getSystemClipboard();
+        board.setContents(stringSelection, null);
     }
 }

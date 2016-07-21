@@ -12,7 +12,7 @@ import eladkay.quaritum.client.core.TooltipHelper;
 import eladkay.quaritum.common.block.ModBlocks;
 import eladkay.quaritum.common.block.flowers.BlockAnimusFlower;
 import eladkay.quaritum.common.block.tile.TileEntityBlueprint;
-import eladkay.quaritum.common.book.Dimension;
+import eladkay.quaritum.common.book.Vec2i;
 import eladkay.quaritum.common.book.ModBook;
 import eladkay.quaritum.common.book.PageDiagram;
 import eladkay.quaritum.common.core.PositionedBlockHelper;
@@ -83,7 +83,6 @@ public class InfusionDiagram implements IDiagram {
         chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(-1, 0, -1), EnumDyeColor.MAGENTA));
         chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(-1, 0, 1), EnumDyeColor.MAGENTA));
         chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(1, 0, -1), EnumDyeColor.MAGENTA));
-        chalks.add(PositionedBlock.BLUEPRINT);
         chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(1, 0, 0), EnumDyeColor.MAGENTA));
         chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(-1, 0, 0), EnumDyeColor.MAGENTA));
         chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(0, 0, 1), EnumDyeColor.MAGENTA));
@@ -94,9 +93,9 @@ public class InfusionDiagram implements IDiagram {
     @Override
     public void constructBook() {
         pages.add(new PageText(TooltipHelper.local(LibBook.ENTRY_INFUSION_PAGE1)));
-        List l = Lists.newArrayList();
+        List<PositionedBlock> l = Lists.newArrayList();
         buildChalks(l);
-        pages.add(new PageDiagram(l, getRequiredItems(), new Dimension(3, 3), 71, 50));
+        pages.add(new PageDiagram(l, getRequiredItems()));
         ModBook.register(ModBook.pagesDiagrams, LibBook.ENTRY_INFUSION_NAME, pages, new ItemStack(ModBlocks.crystal));
 
     }

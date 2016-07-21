@@ -48,6 +48,7 @@ public class CommonProxy {
     }
 
     public void addToVariantCache(ModelHandler.IVariantHolder o) {
+        //NO-OP
     }
 
     public void spawnParticleMagixFX(World world, double x, double y, double z, double vx, double vy, double vz, double r, double g, double b) {
@@ -76,8 +77,16 @@ public class CommonProxy {
     public void wispFX(World world, double x, double y, double z, float r, float g, float b, float size, float motionx, float motiony, float motionz) {
         wispFX(world, x, y, z, r, g, b, size, motionx, motiony, motionz, 1F);
     }
+
     public void spawnStafflikeParticles(World world, double x, double y, double z) {
-        //noop
+        //NO-OP
     }
-    public void spawnParticle(Particle particle, World world) {}
+
+    public void spawnParticle(Particle particle, World world) {
+        //NO-OP
+    }
+
+    public void copyText(String s) {
+        //NO-OP
+    }
 }
