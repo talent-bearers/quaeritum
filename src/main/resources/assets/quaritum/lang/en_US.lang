@@ -80,7 +80,25 @@ item.quaritum:chalkBrown.name=Brown Chalk
 item.quaritum:chalkGreen.name=Green Chalk
 item.quaritum:chalkRed.name=Red Chalk
 item.quaritum:chalkBlack.name=Black Chalk
-item.quaritum:tempestChalk.name=Chalk of the Tempest
+item.quaritum:tempestChalk.name=Tempest Chalk
+
+item.quaritum:chalkWhite.desc=The Soul, Purity, Completion
+item.quaritum:chalkOrange.desc=The Nether, Heat, Flame
+item.quaritum:chalkMagenta.desc=Transmutation, Change, Discovery
+item.quaritum:chalkLightBlue.desc=Air, Weightlessness, Ascension
+item.quaritum:chalkYellow.desc=Time, Eternity, Determination
+item.quaritum:chalkLime.desc=Healing, Empowerment
+item.quaritum:chalkPink.desc=The Spirit, Connection
+item.quaritum:chalkGray.desc=Metal, Earth, Weight
+item.quaritum:chalkLightGray.desc=Instinct, Primacy, Truth
+item.quaritum:chalkCyan.desc=The Mind, Thought, Intelligence
+item.quaritum:chalkPurple.desc=The End, Unnatural, Eldritch, Strange
+item.quaritum:chalkBlue.desc=Water, Fluid, Emotion
+item.quaritum:chalkBrown.desc=Death, Rot, Regrowth
+item.quaritum:chalkGreen.desc=The Body, Strength, Growth
+item.quaritum:chalkRed.desc=Focus, Force, Blood
+item.quaritum:chalkBlack.desc=The Void
+item.quaritum:tempestChalk.desc=The Æther, Chaos, Destruction, Power
 
 item.quaritum:fertilizer.name=Magical Fertilizer
 item.quaritum:reagentAtlas.name=Atlas Reagent

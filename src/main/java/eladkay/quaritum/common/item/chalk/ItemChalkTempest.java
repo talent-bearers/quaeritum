@@ -23,6 +23,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.List;
 
 public class ItemChalkTempest extends ItemMod {
     public ItemChalkTempest() {
@@ -61,6 +62,11 @@ public class ItemChalkTempest extends ItemMod {
         {
             return EnumActionResult.FAIL;
         }
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
+        addToTooltip(tooltip, getUnlocalizedName(stack) + ".desc");
     }
 
     private boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, IBlockState newState) {

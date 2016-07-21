@@ -24,6 +24,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 public class ItemChalk extends ItemMod implements ModelHandler.IColorProvider, ModelHandler.ICustomLogHolder {
     private static final String[] COLORS = new String[16];
@@ -42,6 +43,11 @@ public class ItemChalk extends ItemMod implements ModelHandler.IColorProvider, M
             }
         });
         setMaxStackSize(1);
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
+        addToTooltip(tooltip, getUnlocalizedName(stack) + ".desc");
     }
 
     public static String capitalizeFirst(String str) {
