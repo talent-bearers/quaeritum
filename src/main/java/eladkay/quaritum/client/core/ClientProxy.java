@@ -37,21 +37,23 @@ public class ClientProxy extends CommonProxy {
         Minecraft.getMinecraft().getTextureMapBlocks().registerSprite(new ResourceLocation("quaritum:entity/magicParticle"));
         Minecraft.getMinecraft().getTextureMapBlocks().loadTextureAtlas(Minecraft.getMinecraft().getResourceManager());
     }
+
     @Override
     public void addToVariantCache(ModelHandler.IVariantHolder o) {
         ModelHandler.variantCache.add(o);
     }
+
     @Override
     public void spawnParticleMagixFX(World world, double x, double y, double z, double vx, double vy, double vz, double r, double g, double b) {
-        if(!doParticle(world))
+        if (!doParticle(world))
             return;
-        FXMagicLine particle = new FXMagicLine(world,x,y,z,vx,vy,vz,r,g,b);
+        FXMagicLine particle = new FXMagicLine(world, x, y, z, vx, vy, vz, r, g, b);
         Minecraft.getMinecraft().effectRenderer.addEffect(particle);
     }
 
     @Override
     public void spawnParticle(Particle particle, World world) {
-        if(!doParticle(world))
+        if (!doParticle(world))
             return;
         Minecraft.getMinecraft().effectRenderer.addEffect(particle);
     }
@@ -65,7 +67,7 @@ public class ClientProxy extends CommonProxy {
     @Deprecated
     @Override
     public void wispFX(World world, double x, double y, double z, float r, float g, float b, float size, float motionx, float motiony, float motionz, float maxAgeMul) {
-        if(!doParticle(world))
+        if (!doParticle(world))
             return;
         //todo params 9, 10
         FXWisp wisp = new FXWisp(world, x, y, z, size, r, g, b, true, true, maxAgeMul);
@@ -74,16 +76,16 @@ public class ClientProxy extends CommonProxy {
     }
 
     private boolean doParticle(World world) {
-        if(!world.isRemote)
+        if (!world.isRemote)
             return false;
 
         /*if(!ConfigHandler.useVanillaParticleLimiter)
             return true;*/
 
         float chance = 1F;
-        if(Minecraft.getMinecraft().gameSettings.particleSetting == 1)
+        if (Minecraft.getMinecraft().gameSettings.particleSetting == 1)
             chance = 0.6F;
-        else if(Minecraft.getMinecraft().gameSettings.particleSetting == 2)
+        else if (Minecraft.getMinecraft().gameSettings.particleSetting == 2)
             chance = 0.2F;
 
         return chance == 1F || Math.random() < chance;

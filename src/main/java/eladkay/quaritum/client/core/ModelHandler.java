@@ -142,7 +142,7 @@ public class ModelHandler {
                     ModelBakery.registerItemVariants(item, var13);
                     resourceLocations.put(variants[var11], var13);
                 }
-            } catch(Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -230,7 +230,9 @@ public class ModelHandler {
         @Override
         @Nullable
 
-        default IItemColor getColor() { return null; }
+        default IItemColor getColor() {
+            return null;
+        }
     }
 
     public interface ICustomLogHolder extends IVariantHolder {

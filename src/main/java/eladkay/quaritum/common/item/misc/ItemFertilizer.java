@@ -54,14 +54,14 @@ public class ItemFertilizer extends ItemMod {
                 d0 = itemRand.nextGaussian() * 0.02D;
                 d1 = itemRand.nextGaussian() * 0.02D;
                 d2 = itemRand.nextGaussian() * 0.02D;
-                worldIn.spawnParticle(EnumParticleTypes.VILLAGER_HAPPY, (double) ((float) pos.getX() + itemRand.nextFloat()), (double) pos.getY() + (double) itemRand.nextFloat() * iblockstate.getBoundingBox(worldIn, pos).maxY, (double) ((float) pos.getZ() + itemRand.nextFloat()), d0, d1, d2, new int[0]);
+                worldIn.spawnParticle(EnumParticleTypes.VILLAGER_HAPPY, (double) ((float) pos.getX() + itemRand.nextFloat()), (double) pos.getY() + (double) itemRand.nextFloat() * iblockstate.getBoundingBox(worldIn, pos).maxY, (double) ((float) pos.getZ() + itemRand.nextFloat()), d0, d1, d2);
             }
         } else {
             for (i1 = 0; i1 < amount; ++i1) {
                 d0 = itemRand.nextGaussian() * 0.02D;
                 d1 = itemRand.nextGaussian() * 0.02D;
                 d2 = itemRand.nextGaussian() * 0.02D;
-                worldIn.spawnParticle(EnumParticleTypes.VILLAGER_HAPPY, (double) ((float) pos.getX() + itemRand.nextFloat()), (double) pos.getY() + (double) itemRand.nextFloat() * 1.0D, (double) ((float) pos.getZ() + itemRand.nextFloat()), d0, d1, d2, new int[0]);
+                worldIn.spawnParticle(EnumParticleTypes.VILLAGER_HAPPY, (double) ((float) pos.getX() + itemRand.nextFloat()), (double) pos.getY() + (double) itemRand.nextFloat() * 1.0D, (double) ((float) pos.getZ() + itemRand.nextFloat()), d0, d1, d2);
             }
         }
 

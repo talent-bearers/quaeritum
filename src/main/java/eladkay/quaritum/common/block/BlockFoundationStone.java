@@ -27,13 +27,15 @@ import java.util.List;
 
 public class BlockFoundationStone extends BlockMod implements IGuideLinked, ITileEntityProvider {
     public static List<IPage> pages = new ArrayList<>();
+
+    public BlockFoundationStone() {
+        super(LibNames.FOUNDATION, Material.ROCK);
+    }
+
     @Override
     public void constructBook() {
         pages.add(new PageText(TooltipHelper.local(LibBook.ENTRY_BLUEPRINT_PAGE1)));
         ModBook.register(ModBook.pagesAnimus, LibBook.ENTRY_BLUEPRINT_NAME, pages, new ItemStack(ModBlocks.blueprint));
-    }
-    public BlockFoundationStone() {
-        super(LibNames.FOUNDATION, Material.ROCK);
     }
 
     @Override
@@ -45,6 +47,7 @@ public class BlockFoundationStone extends BlockMod implements IGuideLinked, ITil
     public TileEntity createNewTileEntity(World worldIn, int meta) {
         return new TileEntityFoundationStone();
     }
+
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
         TileEntity tile = worldIn.getTileEntity(pos);

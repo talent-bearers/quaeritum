@@ -12,7 +12,6 @@ import eladkay.quaritum.client.core.TooltipHelper;
 import eladkay.quaritum.common.block.ModBlocks;
 import eladkay.quaritum.common.block.flowers.BlockAnimusFlower;
 import eladkay.quaritum.common.block.tile.TileEntityBlueprint;
-import eladkay.quaritum.common.book.Vec2i;
 import eladkay.quaritum.common.book.ModBook;
 import eladkay.quaritum.common.book.PageDiagram;
 import eladkay.quaritum.common.core.PositionedBlockHelper;
@@ -32,6 +31,8 @@ import java.util.List;
 import java.util.UUID;
 
 public class InfusionDiagram implements IDiagram {
+    public static List<IPage> pages = new ArrayList<>();
+
     @Nonnull
     @Override
     public String getUnlocalizedName() {
@@ -45,7 +46,7 @@ public class InfusionDiagram implements IDiagram {
 
         world.spawnEntityInWorld(item);
         world.spawnEntityInWorld(item2);*/
-        for(EntityItem stack : Helper.entitiesAroundAltar(tes, 4)) {
+        for (EntityItem stack : Helper.entitiesAroundAltar(tes, 4)) {
             WorldServer server = (WorldServer) tes.getWorld();
             server.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, stack.getPosition().getX() + 0.5, stack.getPosition().getY() + 1, stack.getPosition().getZ() + 0.5, 1, 0.1, 0, 0.1, 0);
             stack.setDead();
@@ -89,7 +90,6 @@ public class InfusionDiagram implements IDiagram {
         chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(0, 0, -1), EnumDyeColor.MAGENTA));
     }
 
-    public static List<IPage> pages = new ArrayList<>();
     @Override
     public void constructBook() {
         pages.add(new PageText(TooltipHelper.local(LibBook.ENTRY_INFUSION_PAGE1)));

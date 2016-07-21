@@ -57,9 +57,7 @@ public class ItemChalkTempest extends ItemMod {
             }
 
             return EnumActionResult.SUCCESS;
-        }
-        else
-        {
+        } else {
             return EnumActionResult.FAIL;
         }
     }

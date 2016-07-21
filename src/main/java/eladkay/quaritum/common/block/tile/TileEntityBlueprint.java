@@ -15,10 +15,6 @@ public class TileEntityBlueprint extends TileMod {
     public int stageTicks = 0;
     public IDiagram currentDiagram = null;
 
-    public enum RitualStage {
-        IDLE, PREP, CRAFTING
-    }
-
     @Override
     public void updateEntity() {
         if (!worldObj.isRemote) {
@@ -87,6 +83,10 @@ public class TileEntityBlueprint extends TileMod {
         String diagramName = compound.getString("Diagram");
         currentDiagram = diagramName.equals("") ? null : RitualRegistry.getDiagramByName(diagramName);
         stageTicks = compound.getInteger("StageTicks");
+    }
+
+    public enum RitualStage {
+        IDLE, PREP, CRAFTING
     }
 
 }

@@ -10,7 +10,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
@@ -32,7 +31,8 @@ public final class PositionedBlockHelper {
 
             if (block.getState().getBlock() == state.getBlock()) {
                 LogHelper.logDebug("Block check OK for " + optionalName);
-                if((block.getState().getBlock() == ModBlocks.tempest && state.getBlock() == ModBlocks.tempest)) chalks++;
+                if ((block.getState().getBlock() == ModBlocks.tempest && state.getBlock() == ModBlocks.tempest))
+                    chalks++;
                 else if (comparables != null) {
                     for (IProperty property : comparables) {
                         if (block.getState().getValue(property) != state.getValue(property)) {
@@ -52,6 +52,7 @@ public final class PositionedBlockHelper {
 
         return chalks;
     }
+
     public static Vec3i getDimensions(List<PositionedBlock> list) {
         int minX = 0;
         int maxX = 0;
@@ -59,7 +60,7 @@ public final class PositionedBlockHelper {
         int maxY = 0;
         int minZ = 0;
         int maxZ = 0;
-        for(PositionedBlock block : list) {
+        for (PositionedBlock block : list) {
             minX = Math.min(block.getPos().getX(), minX);
             maxX = Math.max(block.getPos().getX(), maxX);
 
@@ -71,22 +72,26 @@ public final class PositionedBlockHelper {
         }
         return new Vec3i(maxX - minX, maxY - minY, maxZ - minZ);
     }
+
     @Deprecated
     public static ItemStack[][][] getItemStackArrayArrayArrayFromPositionedBlockList(List<PositionedBlock> blocks) {
         ItemStack[][][] ret = new ItemStack[50][50][50];
-        for(PositionedBlock block : blocks) {
+        for (PositionedBlock block : blocks) {
             ItemStack stack = new ItemStack(ModItems.chalk, 1, block.getState().getBlock().getMetaFromState(block.getState()));
             ret[block.getPos().getX() + 3][block.getPos().getY() + 3][block.getPos().getZ() + 3] = stack;
         }
         return ret;
     }
+
     public static ItemStack getStackFromChalk(PositionedBlock block) {
-        if(block.getState().getBlock() == ModBlocks.blueprint) return new ItemStack(ModItems.picture, 1, 0);
+        if (block.getState().getBlock() == ModBlocks.blueprint) return new ItemStack(ModItems.picture, 1, 0);
         return new ItemStack(ModItems.chalk, 1, block.getState().getBlock().getMetaFromState(block.getState()));
     }
+
     public static ItemStack getStackFromChalk(PositionedBlock block, boolean flat) {
         ItemStack ret = new ItemStack(block.getState().getBlock(), 1, block.getState().getBlock().getMetaFromState(block.getState()));
-        if (block.getState().getBlock() == ModBlocks.chalk) ret = new ItemStack(ModItems.chalk, 1, block.getState().getBlock().getMetaFromState(block.getState()));
+        if (block.getState().getBlock() == ModBlocks.chalk)
+            ret = new ItemStack(ModItems.chalk, 1, block.getState().getBlock().getMetaFromState(block.getState()));
         else if (block.getState().getBlock() == ModBlocks.tempest) ret = new ItemStack(ModItems.tempest, 1);
         if (flat)
             ItemNBTHelper.setBoolean(ret, LibNBT.FLAT, true);

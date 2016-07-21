@@ -24,7 +24,7 @@ public class BlockModFalling extends BlockFalling implements ModelHandler.IModBl
         super(materialIn);
         this.variants = variants;
         if (variants != null && variants.length == 0) {
-            this.variants = new String[] {name};
+            this.variants = new String[]{name};
         }
         this.bareName = name;
         this.setUnlocalizedName(name);
@@ -91,5 +91,7 @@ public class BlockModFalling extends BlockFalling implements ModelHandler.IModBl
     public EnumRarity getBlockRarity(ItemStack stack) {
         return EnumRarity.COMMON;
     }
-    public void constructBook() {}
+
+    public void constructBook() {
+    }
 }

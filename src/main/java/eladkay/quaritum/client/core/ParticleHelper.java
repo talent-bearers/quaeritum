@@ -44,10 +44,10 @@ public class ParticleHelper {
      */
     //Player x, y, z, partial ticks (Use 1 for now), TE x, y, z, total ticks (use world time), Item x, y, z
     public static void renderBeam(double x, double y, double z,
-                                          float partialTicks,
-                                          double entityPosX, double entityPosY, double entityPosZ,
-                                          int entityTickExisted,
-                                          double destinationPosX, double destinationPosY, double destinationPosZ) {
+                                  float partialTicks,
+                                  double entityPosX, double entityPosY, double entityPosZ,
+                                  int entityTickExisted,
+                                  double destinationPosX, double destinationPosY, double destinationPosZ) {
         float f = (float) (destinationPosX - entityPosX);
         float f1 = (float) (destinationPosY - 1.0D - entityPosY);
         float f2 = (float) (destinationPosZ - entityPosZ);
@@ -81,6 +81,7 @@ public class ParticleHelper {
         RenderHelper.enableStandardItemLighting();
         GlStateManager.popMatrix();
     }
+
     public static void spawnParticle(String particleName, double posX, double posY, double posZ, double motX, double motY, double motZ, double r, double g, double b) {
 
         Minecraft minecraft = Minecraft.getMinecraft();

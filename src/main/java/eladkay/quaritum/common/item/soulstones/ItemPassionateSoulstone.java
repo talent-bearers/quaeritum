@@ -17,7 +17,6 @@ import net.minecraftforge.fml.common.IFuelHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.List;
 
 public class ItemPassionateSoulstone extends ItemMod implements INetworkProvider, IFuelHandler {

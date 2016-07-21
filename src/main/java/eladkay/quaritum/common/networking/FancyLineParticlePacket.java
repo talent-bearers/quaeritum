@@ -55,7 +55,7 @@ public class FancyLineParticlePacket extends MessageBase<FancyLineParticlePacket
             Vec3d velocity = new Vec3d(msg.to.subtract(msg.from));
             velocity = velocity.normalize();
             double dist = Math.sqrt(msg.to.distanceSq(msg.from));
-            int density = (int)5D;
+            int density = (int) 5D;
             for (int count = 0; count < dist * density; count++) {
                 double i = count / density;
                 double xp = msg.from.getX() + (velocity.xCoord * i) + 0.25;

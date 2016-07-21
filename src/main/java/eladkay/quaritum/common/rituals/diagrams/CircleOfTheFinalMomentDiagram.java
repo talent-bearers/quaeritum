@@ -15,6 +15,10 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class CircleOfTheFinalMomentDiagram implements IDiagram {
+    public static void incrementAllWorldTimes(World worldserver, int amount) {
+        worldserver.setWorldTime(worldserver.getWorldTime() + (long) amount);
+    }
+
     @Nonnull
     @Override
     public String getUnlocalizedName() {
@@ -36,10 +40,6 @@ public class CircleOfTheFinalMomentDiagram implements IDiagram {
         NetworkHelper.tellEveryoneAround(new FancyParticlePacket(pos.getX() + 0.25, pos.up().getY(), pos.getZ() + 0.25, 50), world.provider.getDimension(), pos, 32);
         incrementAllWorldTimes(world, 20);
         return true;
-    }
-
-    public static void incrementAllWorldTimes(World worldserver, int amount) {
-        worldserver.setWorldTime(worldserver.getWorldTime() + (long) amount);
     }
 
     @Override

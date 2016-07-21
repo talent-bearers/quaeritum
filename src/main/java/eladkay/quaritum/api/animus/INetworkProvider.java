@@ -1,7 +1,7 @@
 package eladkay.quaritum.api.animus;
 
-import eladkay.quaritum.api.util.ItemNBTHelper;
 import eladkay.quaritum.api.lib.LibNBT;
+import eladkay.quaritum.api.util.ItemNBTHelper;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;

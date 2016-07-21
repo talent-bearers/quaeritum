@@ -16,7 +16,6 @@ import eladkay.quaritum.common.item.misc.ItemPicture;
 import eladkay.quaritum.common.lib.LibLocations;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.texture.TextureManager;
@@ -33,17 +32,26 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class PageDiagram implements IPage {
-    private List<PositionedBlock> mb;
-    private List<ItemStack> items;
-
     private static ItemStack blueprintStack = new ItemStack(ModBlocks.blueprint);
+
     static {
         ItemNBTHelper.setBoolean(blueprintStack, LibNBT.FLAT, true);
     }
 
+    private List<PositionedBlock> mb;
+    private List<ItemStack> items;
+
     public PageDiagram(List<PositionedBlock> blocks, List<ItemStack> requiredItems) {
         mb = blocks;
         items = requiredItems;
+    }
+
+    private static int getXFromPos(BlockPos pos, GuiBase gui, int scale) {
+        return gui.guiLeft + gui.xSize / 2 + pos.getX() * 16 / scale - 14 + scale * 6;
+    }
+
+    private static int getYFromPos(BlockPos pos, GuiBase gui, int scale) {
+        return gui.guiTop + gui.ySize / 2 + pos.getZ() * 16 / scale - 34 + scale * 5;
     }
 
     @Override
@@ -124,19 +132,11 @@ public class PageDiagram implements IPage {
         GlStateManager.scale(s, s, s);
         Minecraft.getMinecraft().getRenderItem().renderItemIntoGUI(blueprintStack,
                 (getXFromPos(BlockPos.ORIGIN, gui, shift)) * shift, (getYFromPos(BlockPos.ORIGIN, gui, shift)) * shift);
-        for(PositionedBlock block : mb)
+        for (PositionedBlock block : mb)
             Minecraft.getMinecraft().getRenderItem().renderItemIntoGUI(PositionedBlockHelper.getStackFromChalk(block, true),
                     (getXFromPos(block.getPos(), gui, shift)) * shift, (getYFromPos(block.getPos(), gui, shift)) * shift);
         GlStateManager.popMatrix();
 
-    }
-
-    private static int getXFromPos(BlockPos pos, GuiBase gui, int scale) {
-        return gui.guiLeft + gui.xSize / 2 + pos.getX() * 16 / scale - 14 + scale * 6;
-    }
-
-    private static int getYFromPos(BlockPos pos, GuiBase gui, int scale) {
-        return gui.guiTop + gui.ySize / 2 + pos.getZ() * 16 / scale - 34 + scale * 5;
     }
 
     @Override
@@ -145,16 +145,21 @@ public class PageDiagram implements IPage {
     }
 
     @Override
-    public boolean canSee(Book book, CategoryAbstract category, EntryAbstract entry, EntityPlayer player, ItemStack bookStack, GuiEntry guiEntry) { return true; }
+    public boolean canSee(Book book, CategoryAbstract category, EntryAbstract entry, EntityPlayer player, ItemStack bookStack, GuiEntry guiEntry) {
+        return true;
+    }
 
     @Override
-    public void onLeftClicked(Book book, CategoryAbstract category, EntryAbstract entry, int mouseX, int mouseY, EntityPlayer player, GuiEntry guiEntry) { }
+    public void onLeftClicked(Book book, CategoryAbstract category, EntryAbstract entry, int mouseX, int mouseY, EntityPlayer player, GuiEntry guiEntry) {
+    }
 
     @Override
-    public void onRightClicked(Book book, CategoryAbstract category, EntryAbstract entry, int mouseX, int mouseY, EntityPlayer player, GuiEntry guiEntry) { }
+    public void onRightClicked(Book book, CategoryAbstract category, EntryAbstract entry, int mouseX, int mouseY, EntityPlayer player, GuiEntry guiEntry) {
+    }
 
     @Override
-    public void onInit(Book book, CategoryAbstract category, EntryAbstract entry, EntityPlayer player, ItemStack bookStack, GuiEntry gui) { }
+    public void onInit(Book book, CategoryAbstract category, EntryAbstract entry, EntityPlayer player, ItemStack bookStack, GuiEntry gui) {
+    }
 
     public float getYSize() {
         return PositionedBlockHelper.getDimensions(mb).getY();

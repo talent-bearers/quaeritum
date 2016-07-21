@@ -61,6 +61,7 @@ public class ModBook {
         //book.setPageTexture(new ResourceLocation("quaritum:textures/gui/book.png"));
         GuideAPI.BOOKS.register(book);
     }
+
     public static void register(Map<ResourceLocation, EntryAbstract> map, String entryName, List<IPage> pages, ItemStack stack) {
         map.put(new ResourceLocation(LibMisc.MOD_ID, entryName), new EntryItemStack(pages, TooltipHelper.local(entryName), stack));
     }

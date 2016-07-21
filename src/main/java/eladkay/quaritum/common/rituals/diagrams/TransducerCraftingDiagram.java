@@ -8,7 +8,6 @@ import eladkay.quaritum.api.rituals.PositionedBlock;
 import eladkay.quaritum.client.core.TooltipHelper;
 import eladkay.quaritum.common.block.ModBlocks;
 import eladkay.quaritum.common.block.flowers.BlockAnimusFlower;
-import eladkay.quaritum.common.book.Vec2i;
 import eladkay.quaritum.common.book.ModBook;
 import eladkay.quaritum.common.book.PageDiagram;
 import eladkay.quaritum.common.item.ModItems;
@@ -19,18 +18,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TransducerCraftingDiagram extends CraftingDiagramBase {
+    public static List<IPage> pages = new ArrayList<>();
+
     public TransducerCraftingDiagram() {
         super
-             ("transducer", //name
-              new ItemStack[]{new ItemStack(Items.STICK), new ItemStack(ModItems.dormant), new ItemStack(ModBlocks.flower, 1, BlockAnimusFlower.Variants.COMMON_ARCANE.ordinal())}, //input
-              ModItems.transducer, //output
-              ImmutableList.of(), //positionedblocks
-              20, //animus
-              false, //onplayer
-              1, //rarity
-              true); //requiress)
+                ("transducer", //name
+                        new ItemStack[]{new ItemStack(Items.STICK), new ItemStack(ModItems.dormant), new ItemStack(ModBlocks.flower, 1, BlockAnimusFlower.Variants.COMMON_ARCANE.ordinal())}, //input
+                        ModItems.transducer, //output
+                        ImmutableList.of(), //positionedblocks
+                        20, //animus
+                        false, //onplayer
+                        1, //rarity
+                        true); //requiress)
     }
-    public static List<IPage> pages = new ArrayList<>();
 
     @Override
     public void constructBook() {

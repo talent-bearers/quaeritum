@@ -1,7 +1,6 @@
 package eladkay.quaritum.client.render.entity;
 
 import eladkay.quaritum.common.lib.LibLocations;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;

@@ -1,7 +1,7 @@
 package eladkay.quaritum.common;
 
-import eladkay.quaritum.common.core.CommonProxy;
 import eladkay.quaritum.api.lib.LibMisc;
+import eladkay.quaritum.common.core.CommonProxy;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -18,7 +18,7 @@ public class Quaritum {
     @Mod.Instance(LibMisc.MOD_ID)
     public static Quaritum instance;
     private static boolean devEnvOverride = false; //if this is true, the environment will launch as normal, even in a
-                                                   //dev environment
+    //dev environment
     public static boolean isDevEnv = (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment") && !devEnvOverride;
 
     @Mod.EventHandler

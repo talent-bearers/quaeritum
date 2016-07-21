@@ -26,32 +26,11 @@ import javax.annotation.Nullable;
 import java.util.Random;
 
 public class BlockChalkTempest extends BlockMod {
-    enum EnumAttachPosition implements IStringSerializable {
-        UP("up"),
-        SIDE("side"),
-        NONE("none");
-
-        private final String name;
-
-        EnumAttachPosition(String name) {
-            this.name = name;
-        }
-
-        public String toString() {
-            return this.getName();
-        }
-
-        public String getName() {
-            return this.name;
-        }
-    }
-
     public static final PropertyEnum<EnumAttachPosition> NORTH = PropertyEnum.create("north", EnumAttachPosition.class);
     public static final PropertyEnum<EnumAttachPosition> EAST = PropertyEnum.create("east", EnumAttachPosition.class);
     public static final PropertyEnum<EnumAttachPosition> SOUTH = PropertyEnum.create("south", EnumAttachPosition.class);
     public static final PropertyEnum<EnumAttachPosition> WEST = PropertyEnum.create("west", EnumAttachPosition.class);
-
-    private final AxisAlignedBB[] WIRE_AABBS = new AxisAlignedBB[] {
+    private final AxisAlignedBB[] WIRE_AABBS = new AxisAlignedBB[]{
             new AxisAlignedBB(0.1875D, 0.0D, 0.1875D, 0.8125D, 0.0625D, 0.8125D),
             new AxisAlignedBB(0.1875D, 0.0D, 0.1875D, 0.8125D, 0.0625D, 1.0D),
             new AxisAlignedBB(0.0D, 0.0D, 0.1875D, 0.8125D, 0.0625D, 0.8125D),
@@ -73,6 +52,20 @@ public class BlockChalkTempest extends BlockMod {
         super(LibNames.CHALK_BLOCK_TEMPEST, Material.CIRCUITS);
     }
 
+    private static int getAABBIndex(IBlockState state) {
+        int index = 0;
+        boolean north = state.getValue(NORTH) != EnumAttachPosition.NONE;
+        boolean east = state.getValue(EAST) != EnumAttachPosition.NONE;
+        boolean south = state.getValue(SOUTH) != EnumAttachPosition.NONE;
+        boolean west = state.getValue(WEST) != EnumAttachPosition.NONE;
+
+        if (north || south && !east && !west) index |= 1 << EnumFacing.NORTH.getHorizontalIndex();
+        if (east || west && !north && !south) index |= 1 << EnumFacing.EAST.getHorizontalIndex();
+        if (south || north && !east && !west) index |= 1 << EnumFacing.SOUTH.getHorizontalIndex();
+        if (west || east && !north && !south) index |= 1 << EnumFacing.WEST.getHorizontalIndex();
+
+        return index;
+    }
 
     @Override
     public BlockStateContainer createBlockState() {
@@ -88,21 +81,6 @@ public class BlockChalkTempest extends BlockMod {
     @Override
     public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos) {
         return NULL_AABB;
-    }
-
-    private static int getAABBIndex(IBlockState state) {
-        int index = 0;
-        boolean north = state.getValue(NORTH) != EnumAttachPosition.NONE;
-        boolean east = state.getValue(EAST) != EnumAttachPosition.NONE;
-        boolean south = state.getValue(SOUTH) != EnumAttachPosition.NONE;
-        boolean west = state.getValue(WEST) != EnumAttachPosition.NONE;
-
-        if (north || south && !east && !west) index |= 1 << EnumFacing.NORTH.getHorizontalIndex();
-        if (east || west && !north && !south) index |= 1 << EnumFacing.EAST.getHorizontalIndex();
-        if (south || north && !east && !west) index |= 1 << EnumFacing.SOUTH.getHorizontalIndex();
-        if (west || east && !north && !south) index |= 1 << EnumFacing.WEST.getHorizontalIndex();
-
-        return index;
     }
 
     @Override
@@ -134,9 +112,7 @@ public class BlockChalkTempest extends BlockMod {
             }
 
             return EnumAttachPosition.NONE;
-        }
-        else
-        {
+        } else {
             return EnumAttachPosition.SIDE;
         }
     }
@@ -208,6 +184,7 @@ public class BlockChalkTempest extends BlockMod {
         }
         return false;
     }
+
     @Override
     public int getMetaFromState(IBlockState state) {
         return 0;
@@ -236,5 +213,25 @@ public class BlockChalkTempest extends BlockMod {
     @Override
     protected ItemBlock createItemBlock() {
         return null;
+    }
+
+    enum EnumAttachPosition implements IStringSerializable {
+        UP("up"),
+        SIDE("side"),
+        NONE("none");
+
+        private final String name;
+
+        EnumAttachPosition(String name) {
+            this.name = name;
+        }
+
+        public String toString() {
+            return this.getName();
+        }
+
+        public String getName() {
+            return this.name;
+        }
     }
 }

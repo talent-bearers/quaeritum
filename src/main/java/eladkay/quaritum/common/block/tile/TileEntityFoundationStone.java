@@ -14,16 +14,13 @@ public class TileEntityFoundationStone extends TileMod {
     public RitualStage stage = RitualStage.IDLE;
     public long ticksExisted = 0;
     public IWork currentWork = null;
-    public enum RitualStage {
-        IDLE, IN_PROGRESS
-    }
 
     @Override
     public void updateEntity() {
         if (!worldObj.isRemote) {
             if (currentWork != null) {
                 stage = RitualStage.IN_PROGRESS;
-                if(!currentWork.updateTick(worldObj, pos, this, ticksExisted)) currentWork = null;
+                if (!currentWork.updateTick(worldObj, pos, this, ticksExisted)) currentWork = null;
                 ticksExisted++;
             }
             if (currentWork == null) {
@@ -74,5 +71,9 @@ public class TileEntityFoundationStone extends TileMod {
         stage = RitualStage.values()[compound.getInteger("Stage")];
         String WorkName = compound.getString("Work");
         currentWork = WorkName.equals("") ? null : RitualRegistry.getWorkByName(WorkName);
+    }
+
+    public enum RitualStage {
+        IDLE, IN_PROGRESS
     }
 }

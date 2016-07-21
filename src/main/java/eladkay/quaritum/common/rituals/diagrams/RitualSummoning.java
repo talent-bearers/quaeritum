@@ -11,7 +11,6 @@ import eladkay.quaritum.client.core.TooltipHelper;
 import eladkay.quaritum.common.block.ModBlocks;
 import eladkay.quaritum.common.block.flowers.BlockAnimusFlower;
 import eladkay.quaritum.common.block.tile.TileEntityBlueprint;
-import eladkay.quaritum.common.book.Vec2i;
 import eladkay.quaritum.common.book.ModBook;
 import eladkay.quaritum.common.book.PageDiagram;
 import eladkay.quaritum.common.core.PositionedBlockHelper;
@@ -32,6 +31,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RitualSummoning implements IDiagram {
+    public static List<IPage> pages = new ArrayList<>();
+
     @Nonnull
     @Override
     public String getUnlocalizedName() {
@@ -71,8 +72,8 @@ public class RitualSummoning implements IDiagram {
     @Override
     public boolean onPrepUpdate(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile, int ticksRemaining) {
         NetworkHelper.tellEveryoneAround(new LightningEffectPacket(pos.getX() + op(Math.random() * 4), pos.getY(), pos.getZ() + op(Math.random() * 4)), world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 4);
-        for(ItemStack stack : Helper.stacksAroundAltar(tile, 4))
-            if(Helper.isStackInList(stack, getRequiredItems())) return true;
+        for (ItemStack stack : Helper.stacksAroundAltar(tile, 4))
+            if (Helper.isStackInList(stack, getRequiredItems())) return true;
         return false;
     }
 
@@ -128,7 +129,6 @@ public class RitualSummoning implements IDiagram {
         chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(-2, 0, -2), EnumDyeColor.LIME));
 
     }
-    public static List<IPage> pages = new ArrayList<>();
 
     @Override
     public void constructBook() {

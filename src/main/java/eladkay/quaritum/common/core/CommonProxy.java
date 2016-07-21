@@ -54,10 +54,12 @@ public class CommonProxy {
     public void spawnParticleMagixFX(World world, double x, double y, double z, double vx, double vy, double vz, double r, double g, double b) {
         //NO-OP
     }
+
     @Deprecated
     public void wispFX(World world, double x, double y, double z, float r, float g, float b, float size, float motionx, float motiony, float motionz, float maxAgeMul) {
         //NO-OP
     }
+
     @Deprecated
     public void wispFX(World world, double x, double y, double z, float r, float g, float b, float size) {
         wispFX(world, x, y, z, r, g, b, size, 0F);

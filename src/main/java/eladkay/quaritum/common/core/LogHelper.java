@@ -1,7 +1,7 @@
 package eladkay.quaritum.common.core;
 
-import eladkay.quaritum.common.Quaritum;
 import eladkay.quaritum.api.lib.LibMisc;
+import eladkay.quaritum.common.Quaritum;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

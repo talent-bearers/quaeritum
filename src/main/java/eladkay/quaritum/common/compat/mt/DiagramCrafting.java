@@ -19,6 +19,14 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class DiagramCrafting implements IDiagram {
+    final String name;
+    final ImmutableList<ItemStack> input;
+    final ItemStack output;
+    final List<PositionedBlock> chalks;
+    final int animus;
+    final int rarity;
+    final boolean onPlayers;
+    final boolean requiress;
     public DiagramCrafting(String name, ItemStack[] input, ItemStack output, List<PositionedBlock> chalks, int animus, boolean onPlayers, int rarity, boolean requiress) {
         this.name = name;
         this.input = ImmutableList.copyOf(input);
@@ -29,14 +37,7 @@ public class DiagramCrafting implements IDiagram {
         this.onPlayers = onPlayers;
         this.requiress = requiress;
     }
-    final String name;
-    final ImmutableList<ItemStack> input;
-    final ItemStack output;
-    final List<PositionedBlock> chalks;
-    final int animus;
-    final int rarity;
-    final boolean onPlayers;
-    final boolean requiress;
+
     @Nonnull
     @Override
     public String getUnlocalizedName() {
@@ -47,20 +48,20 @@ public class DiagramCrafting implements IDiagram {
     public void run(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile) {
         EntityItem item = new EntityItem(world, pos.getX(), pos.getY() + 2, pos.getZ(), output);
         System.out.println(output.getDisplayName());
-        if(requiress)
+        if (requiress)
             if (onPlayers)
                 Helper.consumeAnimusForRitual(tile, true, animus, 0);
             else
                 Helper.takeAnimus(animus, rarity, tile, 4, true);
 
-        for(EntityItem stack : Helper.entitiesAroundAltar(tile, 4)) {
-            if(!Helper.isEntityItemInList(stack, input)) continue;
+        for (EntityItem stack : Helper.entitiesAroundAltar(tile, 4)) {
+            if (!Helper.isEntityItemInList(stack, input)) continue;
             WorldServer server = (WorldServer) tile.getWorld();
             server.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, stack.getPosition().getX() + 0.5, stack.getPosition().getY() + 1, stack.getPosition().getZ() + 0.5, 1, 0.1, 0, 0.1, 0);
             stack.setDead();
         }
         world.spawnEntityInWorld(item);
-        if(Loader.isModLoaded("MineTweaker3")) {
+        if (Loader.isModLoaded("MineTweaker3")) {
             RitualRegistry.getDiagramList().remove(this);
             MineTweakerAPI.tweaker.load(); //sorry, i let you down :(
         }
@@ -69,10 +70,10 @@ public class DiagramCrafting implements IDiagram {
 
     @Override
     public boolean canRitualRun(@Nullable World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile) {
-        if(!requiress) return true;
-        if(onPlayers)
-           return Helper.consumeAnimusForRitual(tile, false, animus, rarity);
-         else
+        if (!requiress) return true;
+        if (onPlayers)
+            return Helper.consumeAnimusForRitual(tile, false, animus, rarity);
+        else
             return Helper.takeAnimus(animus, rarity, tile, 4, false);
     }
 
@@ -83,7 +84,7 @@ public class DiagramCrafting implements IDiagram {
 
     @Override
     public void buildChalks(@Nonnull List<PositionedBlock> chalks) {
-        if(this.chalks != null)
+        if (this.chalks != null)
             chalks.addAll(this.chalks);
     }
 

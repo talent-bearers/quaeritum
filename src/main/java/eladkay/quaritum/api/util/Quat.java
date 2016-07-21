@@ -2,10 +2,10 @@
  * This class was created by <ChickenBones>. It's distributed as
  * part of the Botania Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Botania
- *
+ * <p>
  * Botania is Open Source and distributed under the
  * Botania License: http://botaniamod.net/license.php
- *
+ * <p>
  * File Created @ [? (GMT)]
  */
 package eladkay.quaritum.api.util;
@@ -28,13 +28,17 @@ public final class Quat {
         y = d2;
         z = d3;
         s = d;
-        this.hashCode = Arrays.hashCode(new double[] { d, d1, d2, d3 } );
+        this.hashCode = Arrays.hashCode(new double[]{d, d1, d2, d3});
     }
 
     public static Quat aroundAxis(double ax, double ay, double az, double angle) {
         angle *= 0.5D;
         double d4 = Math.sin(angle);
         return new Quat(Math.cos(angle), ax * d4, ay * d4, az * d4);
+    }
+
+    public static Quat aroundAxis(Vector3 axis, double angle) {
+        return aroundAxis(axis.x, axis.y, axis.z, angle);
     }
 
     public Quat multiply(Quat quat) {
@@ -102,10 +106,6 @@ public final class Quat {
         formatter.format("  < %f %f %f %f >%n", s, x, y, z);
         formatter.close();
         return stringbuilder.toString();
-    }
-
-    public static Quat aroundAxis(Vector3 axis, double angle) {
-        return aroundAxis(axis.x, axis.y, axis.z, angle);
     }
 
 }

@@ -25,33 +25,32 @@ public interface IDiagram {
     String getUnlocalizedName();
 
     void run(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile);
+
     boolean canRitualRun(@Nullable World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile);
+
     boolean hasRequiredItems(@Nullable World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile);
 
     default int getPrepTime(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile) {
         return 0;
     }
+
     default boolean onPrepUpdate(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile, int ticksRemaining) {
         return true;
     }
 
     void buildChalks(@Nonnull List<PositionedBlock> chalks);
+
     void constructBook();
+
     class Helper {
 
-        public static class MutableObject<T> {
-            public T value;
-            public MutableObject(T value) {
-                this.value = value;
-            }
-
-        }
         public static boolean consumeAnimusForRitual(TileEntityBlueprint tes, boolean drain, int animus, int rarity) {
             ItemStack stack1 = Helper.getNearestAttunedSoulstone(tes, 4);
-            if(stack1 == null) return false;
+            if (stack1 == null) return false;
             UUID uuid = ((INetworkProvider) stack1.getItem()).getPlayer(stack1);
             return AnimusHelper.Network.requestAnimus(uuid, animus, rarity, drain);
         }
+
         //ffs takeanimus
         /*public static boolean consumeAnimusForRitualFromSoulstone(TileEntityBlueprint tes, boolean drain, int animus, int rarity) {
             ItemStack stack1 = Helper.getNearestSoulstone(tes, 4);
@@ -67,28 +66,34 @@ public interface IDiagram {
         public static ItemStack getNearestAttunedSoulstone(TileEntityBlueprint tile, double range) {
             MutableObject<ItemStack> ret = new MutableObject(null);
             stacksAroundAltar(tile, range).forEach((stack -> {
-                if(stack.getItem() instanceof ItemAttunedSoulstone) ret.value = stack;
+                if (stack.getItem() instanceof ItemAttunedSoulstone) ret.value = stack;
             }));
             return ret.value;
         }
+
         public static ItemStack getNearestSoulstone(TileEntityBlueprint tile, double range) {
             MutableObject<ItemStack> ret = new MutableObject(null);
             stacksAroundAltar(tile, range).forEach((stack -> {
-                if(stack.getItem() instanceof ISoulstone) ret.value = stack;
+                if (stack.getItem() instanceof ISoulstone) ret.value = stack;
             }));
             return ret.value;
         }
+
         public static boolean isEntityItemInList(EntityItem item, List<ItemStack> stacks) {
             MutableObject<Boolean> flag = new MutableObject(false);
-            stacks.forEach((stack) -> { if(itemEquals(item.getEntityItem(), stack)) flag.value = true; });
+            stacks.forEach((stack) -> {
+                if (itemEquals(item.getEntityItem(), stack)) flag.value = true;
+            });
             return flag.value;
         }
+
         public static boolean isStackInList(ItemStack stack, List<ItemStack> stacks) {
-            for(ItemStack stack1 : stacks) {
-                if(itemEquals(stack1, stack)) return true;
+            for (ItemStack stack1 : stacks) {
+                if (itemEquals(stack1, stack)) return true;
             }
             return false;
         }
+
         public static List<EntityItem> entitiesAroundAltar(TileEntity tile, double range) {
             List<EntityItem> entities = tile.getWorld().getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(tile.getPos().add(3, 2, 3), tile.getPos().add(-3, -2, -3)));
             return entities.stream()
@@ -122,16 +127,17 @@ public interface IDiagram {
         public static boolean simpleAreStacksEqual(ItemStack stack, ItemStack stack2) {
             return stack.getItem() == stack2.getItem() && stack.getItemDamage() == stack2.getItemDamage();
         }
+
         public static boolean takeAnimus(int amount, int rarity, TileEntityBlueprint tile, double range, boolean drain) {
             EntityItem bestFit = null;
-            for(EntityItem stack : entitiesAroundAltar(tile, range).stream().filter((stack1 ->
+            for (EntityItem stack : entitiesAroundAltar(tile, range).stream().filter((stack1 ->
                     stack1.getEntityItem().getItem() instanceof ISoulstone)).collect(Collectors.toList())) {
-                if(bestFit == null) bestFit = stack;
-                else if(AnimusHelper.getRarity(stack.getEntityItem()) >= rarity && AnimusHelper.getAnimus(stack.getEntityItem()) >= amount)
+                if (bestFit == null) bestFit = stack;
+                else if (AnimusHelper.getRarity(stack.getEntityItem()) >= rarity && AnimusHelper.getAnimus(stack.getEntityItem()) >= amount)
                     bestFit = stack;
             }
-            if(bestFit != null && AnimusHelper.getRarity(bestFit.getEntityItem()) >= rarity && AnimusHelper.getAnimus(bestFit.getEntityItem()) >= amount) {
-                if(drain)
+            if (bestFit != null && AnimusHelper.getRarity(bestFit.getEntityItem()) >= rarity && AnimusHelper.getAnimus(bestFit.getEntityItem()) >= amount) {
+                if (drain)
                     AnimusHelper.addAnimus(bestFit.getEntityItem(), -amount);
                 return true;
             }
@@ -151,6 +157,15 @@ public interface IDiagram {
 
             } else return stack2 instanceof ItemStack && simpleAreStacksEqual(stack, (ItemStack) stack2);
             return false;
+        }
+
+        public static class MutableObject<T> {
+            public T value;
+
+            public MutableObject(T value) {
+                this.value = value;
+            }
+
         }
     }
 }

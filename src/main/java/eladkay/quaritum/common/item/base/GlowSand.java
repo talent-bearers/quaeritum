@@ -20,14 +20,15 @@ public class GlowSand extends ItemMod {
 
     @Override
     public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-        if(!(entityIn instanceof EntityPlayer)) return;
+        if (!(entityIn instanceof EntityPlayer)) return;
         EntityPlayer player = (EntityPlayer) entityIn;
         List<Block> list = Lists.newArrayList();
         list.addAll(OreDictionary.getOres("glowSand").stream().filter(stack0 -> Block.getBlockFromItem(stack0.getItem()) != null).map(stack1 -> Block.getBlockFromItem(stack1.getItem())).collect(Collectors.toList()));
-        if(list.size() > 0) {
+        if (list.size() > 0) {
             player.inventory.addItemStackToInventory(new ItemStack(list.get(new Random().nextInt(list.size()))));
             player.inventory.getStackInSlot(itemSlot).stackSize--;
-            if(player.inventory.getStackInSlot(itemSlot).stackSize <= 0) player.inventory.clearMatchingItems(this, -1, -1, null);
+            if (player.inventory.getStackInSlot(itemSlot).stackSize <= 0)
+                player.inventory.clearMatchingItems(this, -1, -1, null);
         }
 
     }

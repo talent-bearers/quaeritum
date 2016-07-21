@@ -29,7 +29,7 @@ public abstract class BlockModFlower extends BlockBush implements IFlower, Model
         super(materialIn);
         this.variants = variants;
         if (variants.length == 0) {
-            this.variants = new String[] {name};
+            this.variants = new String[]{name};
         }
         this.bareName = name;
         this.setUnlocalizedName(name);

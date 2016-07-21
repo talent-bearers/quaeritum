@@ -13,6 +13,21 @@ public class FancyParticlePacket extends MessageBase<FancyParticlePacket> {
     private double y;
     private double z;
     private int amount = 100;
+
+    public FancyParticlePacket() {
+        x = 0;
+        y = 0;
+        z = 0;
+    }
+
+    public FancyParticlePacket(double xc, double yc, double zc, int amount) {
+        x = xc;
+        y = yc;
+        z = zc;
+        this.amount = amount;
+        LogHelper.logDebug("x = " + x + " y = " + y + " z = " + z);
+    }
+
     @Override
     public void fromBytes(ByteBuf buf) {
 
@@ -39,19 +54,6 @@ public class FancyParticlePacket extends MessageBase<FancyParticlePacket> {
         LogHelper.logDebug("x = " + x + " y = " + y + " z = " + z);
     }
 
-    public FancyParticlePacket() {
-        x = 0;
-        y = 0;
-        z = 0;
-    }
-    public FancyParticlePacket(double xc, double yc, double zc, int amount) {
-        x = xc;
-        y = yc;
-        z = zc;
-        this.amount = amount;
-        LogHelper.logDebug("x = " + x + " y = " + y + " z = " + z);
-    }
-
     @Override
     public void handleClientSide(FancyParticlePacket message, EntityPlayer player) {
         LogHelper.logDebug("x = " + x + " y = " + y + " z = " + z);
@@ -59,7 +61,7 @@ public class FancyParticlePacket extends MessageBase<FancyParticlePacket> {
         //do packety stuff
         for (int i = 0; i < message.amount; i++) {
             //world, x, y, z
-            if(Minecraft.getMinecraft().theWorld != null)
+            if (Minecraft.getMinecraft().theWorld != null)
                 Quaritum.proxy.spawnStafflikeParticles(
                         Minecraft.getMinecraft().theWorld, //world
                         message.x + (Minecraft.getMinecraft().theWorld.rand.nextFloat()) * (Minecraft.getMinecraft().theWorld.rand.nextDouble()), //x

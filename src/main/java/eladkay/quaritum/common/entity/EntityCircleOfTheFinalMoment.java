@@ -9,10 +9,12 @@ public class EntityCircleOfTheFinalMoment extends Entity {
 
     private static final int RANGE = 16;
     public int ticksLeft;
+
     public EntityCircleOfTheFinalMoment(World worldIn) {
         super(worldIn);
         ticksLeft = 1000;
     }
+
     public EntityCircleOfTheFinalMoment(World worldIn, BlockPos pos) {
         super(worldIn);
     }
@@ -22,7 +24,7 @@ public class EntityCircleOfTheFinalMoment extends Entity {
         super.onUpdate();
         System.out.println("ticks: " + ticksLeft);
         ticksLeft--;
-        if(ticksLeft <= 0) {
+        if (ticksLeft <= 0) {
             kill();
             worldObj.removeEntity(this);
         }

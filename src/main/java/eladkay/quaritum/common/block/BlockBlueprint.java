@@ -8,7 +8,6 @@ import eladkay.quaritum.api.lib.LibMisc;
 import eladkay.quaritum.api.lib.LibNBT;
 import eladkay.quaritum.api.util.ItemNBTHelper;
 import eladkay.quaritum.client.core.TooltipHelper;
-import eladkay.quaritum.common.Quaritum;
 import eladkay.quaritum.common.block.base.BlockMod;
 import eladkay.quaritum.common.block.base.ItemModBlock;
 import eladkay.quaritum.common.block.tile.TileEntityBlueprint;
@@ -31,7 +30,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -41,6 +39,7 @@ import java.util.List;
 public class BlockBlueprint extends BlockMod implements IGuideLinked, ITileEntityProvider {
 
     public static final AxisAlignedBB BOUNDS = new AxisAlignedBB(0, 0, 0, 1, 0.5f, 1);
+    public static List<IPage> pages = new ArrayList<>();
 
     public BlockBlueprint(String name) {
         super(name, Material.PISTON);
@@ -100,17 +99,17 @@ public class BlockBlueprint extends BlockMod implements IGuideLinked, ITileEntit
 
     @Override
     public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
-        if(((World)world).isBlockPowered(pos)) {
+        if (((World) world).isBlockPowered(pos)) {
             TileEntity tile = world.getTileEntity(pos);
-            if(tile instanceof TileEntityBlueprint) ((TileEntityBlueprint) tile).onBlockActivated();
+            if (tile instanceof TileEntityBlueprint) ((TileEntityBlueprint) tile).onBlockActivated();
         }
     }
 
     @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn) {
-        if(worldIn.isBlockPowered(pos)) {
+        if (worldIn.isBlockPowered(pos)) {
             TileEntity tile = worldIn.getTileEntity(pos);
-            if(tile instanceof TileEntityBlueprint) ((TileEntityBlueprint) tile).onBlockActivated();
+            if (tile instanceof TileEntityBlueprint) ((TileEntityBlueprint) tile).onBlockActivated();
         }
     }
 
@@ -118,7 +117,6 @@ public class BlockBlueprint extends BlockMod implements IGuideLinked, ITileEntit
     public ResourceLocation getLinkedEntry(World world, BlockPos pos, EntityPlayer player, ItemStack stack) {
         return new ResourceLocation(LibMisc.MOD_ID, LibBook.ENTRY_BLUEPRINT_NAME);
     }
-    public static List<IPage> pages = new ArrayList<>();
 
     @Override
     public void constructBook() {

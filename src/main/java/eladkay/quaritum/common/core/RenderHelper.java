@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Botania Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Botania
- *
+ * <p>
  * Botania is Open Source and distributed under the
  * Botania License: http://botaniamod.net/license.php
- *
+ * <p>
  * File Created @ [Jan 19, 2014, 5:40:38 PM (GMT)]
  */
 package eladkay.quaritum.common.core;
@@ -46,7 +46,7 @@ public final class RenderHelper {
 
     public static void renderTooltip(int x, int y, List<String> tooltipData, int color, int color2) {
         boolean lighting = GL11.glGetBoolean(GL11.GL_LIGHTING);
-        if(lighting)
+        if (lighting)
             net.minecraft.client.renderer.RenderHelper.disableStandardItemLighting();
 
         if (!tooltipData.isEmpty()) {
@@ -86,7 +86,7 @@ public final class RenderHelper {
             }
             GlStateManager.enableDepth();
         }
-        if(!lighting)
+        if (!lighting)
             net.minecraft.client.renderer.RenderHelper.disableStandardItemLighting();
         GlStateManager.color(1F, 1F, 1F, 1F);
     }
@@ -190,8 +190,8 @@ public final class RenderHelper {
     public static String getKeyDisplayString(String keyName) {
         String key = null;
         KeyBinding[] keys = Minecraft.getMinecraft().gameSettings.keyBindings;
-        for(KeyBinding otherKey : keys)
-            if(otherKey.getKeyDescription().equals(keyName)) {
+        for (KeyBinding otherKey : keys)
+            if (otherKey.getKeyDescription().equals(keyName)) {
                 key = otherKey.getDisplayName();
                 break;
             }

@@ -30,7 +30,8 @@ public class ClientEventHandler {
     @SubscribeEvent
     public void onRenderTick(TickEvent.RenderTickEvent event) {
 
-        if (Minecraft.getMinecraft().thePlayer == null || !AnimusHelper.Network.getInfused(Minecraft.getMinecraft().thePlayer.getUniqueID())) return;
+        if (Minecraft.getMinecraft().thePlayer == null || !AnimusHelper.Network.getInfused(Minecraft.getMinecraft().thePlayer.getUniqueID()))
+            return;
         int w = 5; //width, change this if needed
         FontRenderer fontRendererObj = FMLClientHandler.instance().getClient().fontRendererObj; //get the font renderer
         String aDisplay = TextFormatting.RED + "Animus: " + AnimusHelper.Network.getAnimus(Minecraft.getMinecraft().thePlayer.getUniqueID());

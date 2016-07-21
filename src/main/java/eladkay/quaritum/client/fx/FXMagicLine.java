@@ -13,6 +13,8 @@ import java.util.Random;
 //copied with permission from elucent's roots
 public class FXMagicLine extends Particle {
 
+    //0 = none, 1 = elucent, 2 = wiresegal
+    private static final int ROTATION_MODE = 0;
     public double colorR = 0;
     public double colorG = 0;
     public double colorB = 0;
@@ -21,8 +23,9 @@ public class FXMagicLine extends Particle {
     Random random = new Random();
     double initialX, initialY, initialZ;
     long tt;
+    float xRotate;
+    float zRotate;
     private double rotationModifier = 0.2f;
-
     public FXMagicLine(World worldIn, double x, double y, double z, double vx, double vy, double vz, double r, double g, double b) {
         super(worldIn, x, y, z, 0, 0, 0);
         initialX = x;
@@ -51,15 +54,12 @@ public class FXMagicLine extends Particle {
     public boolean isTransparent() {
         return true;
     }
-    float xRotate;
-    float zRotate;
+
     @Override
     public int getFXLayer() {
         return 1;
     }
 
-    //0 = none, 1 = elucent, 2 = wiresegal
-    private static final int ROTATION_MODE = 0;
     @Override
     public void onUpdate() {
         super.onUpdate();
@@ -71,7 +71,7 @@ public class FXMagicLine extends Particle {
         this.particleBlue = Math.min(1.0f, (float) colorB * (1.5f - lifeCoeff) + lifeCoeff);
         GlStateManager.enableBlend();
         this.particleAlpha = alpha;
-        if(ROTATION_MODE == 2) {
+        if (ROTATION_MODE == 2) {
             //wiresegal's approach
             //https://www.youtube.com/watch?v=V-tja0YnCM8
             xRotate = (float) Math.sin(tt * rotationModifier / 2) / 2F;
@@ -80,7 +80,7 @@ public class FXMagicLine extends Particle {
             posZ = zRotate + initialZ;
             motionX = -xRotate;
             motionZ = -zRotate;
-        } else if(ROTATION_MODE == 1) {
+        } else if (ROTATION_MODE == 1) {
             //elucent's approach
             //https://www.youtube.com/watch?v=WUurkKbtRRI
             posX = initialX + Math.sin(Math.toRadians(tt));

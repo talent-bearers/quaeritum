@@ -10,12 +10,15 @@ public class LightningEffectPacket extends MessageBase<LightningEffectPacket> {
     double x;
     double y;
     double z;
+
     public LightningEffectPacket(double x, double y, double z) {
         this.x = x;
         this.y = y;
         this.z = z;
     }
-    public LightningEffectPacket() {}
+
+    public LightningEffectPacket() {
+    }
 
     @Override
     public void handleClientSide(LightningEffectPacket message, EntityPlayer player) {
@@ -24,7 +27,8 @@ public class LightningEffectPacket extends MessageBase<LightningEffectPacket> {
     }
 
     @Override
-    public void handleServerSide(LightningEffectPacket message, EntityPlayer player) {    }
+    public void handleServerSide(LightningEffectPacket message, EntityPlayer player) {
+    }
 
     @Override
     public void fromBytes(ByteBuf buf) {

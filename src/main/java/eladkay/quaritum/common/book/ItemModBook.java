@@ -29,6 +29,12 @@ public class ItemModBook extends ItemMod implements IGuideItem {
         setMaxStackSize(1);
     }
 
+    public static int meta() {
+        for (Book book : GuideAPI.BOOKS.getValues())
+            if (book.equals(ModBook.book)) return GuideAPI.BOOKS.getValues().indexOf(book);
+        return -1;
+    }
+
     @Override
     public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
         if (getBook(stack) != null) {
@@ -76,12 +82,6 @@ public class ItemModBook extends ItemMod implements IGuideItem {
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
         return getBook(stack) != null ? getBook(stack).getLocalizedDisplayName() : super.getItemStackDisplayName(stack);
-    }
-
-    public static int meta() {
-        for (Book book : GuideAPI.BOOKS.getValues())
-            if(book.equals(ModBook.book)) return GuideAPI.BOOKS.getValues().indexOf(book);
-        return -1;
     }
 
     /**

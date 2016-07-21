@@ -17,17 +17,16 @@ import javax.annotation.Nullable;
 
 public class BlockMod extends Block implements ModelHandler.IModBlock {
 
-    private String[] variants;
-    private String bareName;
-
     @Nullable
     public ItemBlock itemForm;
+    private String[] variants;
+    private String bareName;
 
     public BlockMod(String name, Material materialIn, String... variants) {
         super(materialIn);
         this.variants = variants;
         if (variants != null && variants.length == 0) {
-            this.variants = new String[] {name};
+            this.variants = new String[]{name};
         }
         this.bareName = name;
         itemForm = createItemBlock();
@@ -96,5 +95,7 @@ public class BlockMod extends Block implements ModelHandler.IModBlock {
     public EnumRarity getBlockRarity(ItemStack stack) {
         return EnumRarity.COMMON;
     }
-    public void constructBook() {}
+
+    public void constructBook() {
+    }
 }

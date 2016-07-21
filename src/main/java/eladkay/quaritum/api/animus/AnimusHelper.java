@@ -25,11 +25,12 @@ public final class AnimusHelper {
 
     public static void addInformation(ItemStack stack, List<String> tooltip, boolean advanced) {
         TooltipHelper.tooltipIfShift(tooltip, () -> {
-            if(Quaritum.isDevEnv) {
+            if (Quaritum.isDevEnv) {
                 tooltip.add("Animus: " + getAnimus(stack));
                 tooltip.add("Rarity: " + getRarity(stack));
-            } else for(BlockAnimusFlower.Variants variant : BlockAnimusFlower.Variants.values())
-                if(variant.rarity == getRarity(stack)) tooltip.add("Rarity: " + TooltipHelper.local(variant.getName()));
+            } else for (BlockAnimusFlower.Variants variant : BlockAnimusFlower.Variants.values())
+                if (variant.rarity == getRarity(stack))
+                    tooltip.add("Rarity: " + TooltipHelper.local(variant.getName()));
         });
     }
 

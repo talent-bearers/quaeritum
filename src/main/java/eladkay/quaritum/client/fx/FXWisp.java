@@ -2,10 +2,10 @@
  * This class was created by <Azanor>. It's distributed as
  * part of the Botania Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Botania
- *
+ * <p>
  * Botania is Open Source and distributed under the
  * Botania License: http://botaniamod.net/license.php
- *
+ * <p>
  * File Created @ [? (GMT)]
  */
 package eladkay.quaritum.client.fx;
@@ -32,7 +32,13 @@ public class FXWisp extends Particle {
 
     private static final Queue<FXWisp> queuedRenders = new ArrayDeque<>();
     private static final Queue<FXWisp> queuedDepthIgnoringRenders = new ArrayDeque<>();
-
+    private final float moteParticleScale;
+    private final int moteHalfLife;
+    public boolean distanceLimit = true;
+    public boolean tinkle = false;
+    public int blendmode = 1;
+    double initialX, initialY, initialZ;
+    long tt;
     // Queue values
     private float f;
     private float f1;
@@ -40,10 +46,9 @@ public class FXWisp extends Particle {
     private float f3;
     private float f4;
     private float f5;
-    double initialX, initialY, initialZ;
-    long tt;
+    private boolean depthTest = true;
 
-    public FXWisp(World world, double x, double y, double z,  float size, float red, float green, float blue, boolean distanceLimit, boolean depthTest, float maxAgeMul) {
+    public FXWisp(World world, double x, double y, double z, float size, float red, float green, float blue, boolean distanceLimit, boolean depthTest, float maxAgeMul) {
         super(world, x, y, z, 0.0D, 0.0D, 0.0D);
         initialX = x;
         initialY = y;
@@ -56,14 +61,14 @@ public class FXWisp extends Particle {
         motionX = motionY = motionZ = 0;
         particleScale *= size;
         moteParticleScale = particleScale;
-        particleMaxAge = (int)(28D / (Math.random() * 0.3D + 0.7D) * maxAgeMul);
+        particleMaxAge = (int) (28D / (Math.random() * 0.3D + 0.7D) * maxAgeMul);
         this.depthTest = depthTest;
 
         moteHalfLife = particleMaxAge / 2;
         setSize(0.01F, 0.01F);
         Entity renderentity = FMLClientHandler.instance().getClient().getRenderViewEntity();
 
-        if(distanceLimit) {
+        if (distanceLimit) {
             int visibleDistance = 50;
             if (!FMLClientHandler.instance().getClient().gameSettings.fancyGraphics)
                 visibleDistance = 25;
@@ -83,17 +88,17 @@ public class FXWisp extends Particle {
         GlStateManager.color(1.0F, 1.0F, 1.0F, 0.75F);
         Minecraft.getMinecraft().renderEngine.bindTexture(particles);
 
-        if(!queuedRenders.isEmpty()) {
+        if (!queuedRenders.isEmpty()) {
             tessellator.getBuffer().begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_LMAP_COLOR);
-            for(FXWisp wisp : queuedRenders)
+            for (FXWisp wisp : queuedRenders)
                 wisp.renderQueued(tessellator, true);
             tessellator.draw();
         }
 
-        if(!queuedDepthIgnoringRenders.isEmpty()) {
+        if (!queuedDepthIgnoringRenders.isEmpty()) {
             GlStateManager.disableDepth();
             tessellator.getBuffer().begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_LMAP_COLOR);
-            for(FXWisp wisp : queuedDepthIgnoringRenders)
+            for (FXWisp wisp : queuedDepthIgnoringRenders)
                 wisp.renderQueued(tessellator, false);
             tessellator.draw();
             GlStateManager.enableDepth();
@@ -104,20 +109,20 @@ public class FXWisp extends Particle {
     }
 
     private void renderQueued(Tessellator tessellator, boolean depthEnabled) {
-        if(depthEnabled)
+        if (depthEnabled)
             ParticleRenderDispatcher.wispFxCount++;
         else ParticleRenderDispatcher.depthIgnoringWispFxCount++;
 
-        float agescale = (float)particleAge / (float) moteHalfLife;
+        float agescale = (float) particleAge / (float) moteHalfLife;
         if (agescale > 1F)
             agescale = 2 - agescale;
 
         particleScale = moteParticleScale * agescale;
 
         float f10 = 0.5F * particleScale;
-        float f11 = (float)(prevPosX + (posX - prevPosX) * f - interpPosX);
-        float f12 = (float)(prevPosY + (posY - prevPosY) * f - interpPosY);
-        float f13 = (float)(prevPosZ + (posZ - prevPosZ) * f - interpPosZ);
+        float f11 = (float) (prevPosX + (posX - prevPosX) * f - interpPosX);
+        float f12 = (float) (prevPosY + (posY - prevPosY) * f - interpPosY);
+        float f13 = (float) (prevPosZ + (posZ - prevPosZ) * f - interpPosZ);
         int combined = 15 << 20 | 15 << 4;
         int k3 = combined >> 16 & 0xFFFF;
         int l3 = combined & 0xFFFF;
@@ -136,7 +141,7 @@ public class FXWisp extends Particle {
         this.f4 = f4;
         this.f5 = f5;
 
-        if(depthTest)
+        if (depthTest)
             queuedRenders.add(this);
         else queuedDepthIgnoringRenders.add(this);
     }
@@ -172,11 +177,4 @@ public class FXWisp extends Particle {
         motionY = my;
         motionZ = mz;
     }
-
-    private boolean depthTest = true;
-    public boolean distanceLimit = true;
-    private final float moteParticleScale;
-    private final int moteHalfLife;
-    public boolean tinkle = false;
-    public int blendmode = 1;
 }

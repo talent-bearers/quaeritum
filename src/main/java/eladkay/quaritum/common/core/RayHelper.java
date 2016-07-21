@@ -9,9 +9,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
-import javax.vecmath.Vector3d;
 import java.util.List;
-import java.util.Vector;
 
 /**
  * @author WireSegal
@@ -45,10 +43,10 @@ public class RayHelper {
 
         RayTraceResult pos = raycast(e, distance);
         Vec3d positionVector = e.getPositionVector();
-        if(e instanceof EntityPlayer)
+        if (e instanceof EntityPlayer)
             positionVector = positionVector.addVector(0, e.getEyeHeight(), 0);
 
-        if(pos != null)
+        if (pos != null)
             distance = pos.hitVec.distanceTo(positionVector);
 
         Vec3d lookVector = e.getLookVec();
@@ -58,28 +56,28 @@ public class RayHelper {
         List<Entity> entitiesInBoundingBox = e.worldObj.getEntitiesWithinAABBExcludingEntity(e, e.getEntityBoundingBox().addCoord(lookVector.xCoord * finalDistance, lookVector.yCoord * finalDistance, lookVector.zCoord * finalDistance).expand(1F, 1F, 1F));
         double minDistance = distance;
 
-        for(Entity entity : entitiesInBoundingBox) {
-            if(entity.canBeCollidedWith()) {
+        for (Entity entity : entitiesInBoundingBox) {
+            if (entity.canBeCollidedWith()) {
                 float collisionBorderSize = entity.getCollisionBorderSize();
                 AxisAlignedBB hitbox = entity.getEntityBoundingBox().expand(collisionBorderSize, collisionBorderSize, collisionBorderSize);
                 RayTraceResult interceptPosition = hitbox.calculateIntercept(positionVector, reachVector);
 
-                if(hitbox.isVecInside(positionVector)) {
-                    if(0.0D < minDistance || minDistance == 0.0D) {
+                if (hitbox.isVecInside(positionVector)) {
+                    if (0.0D < minDistance || minDistance == 0.0D) {
                         lookedEntity = entity;
                         minDistance = 0.0D;
                     }
-                } else if(interceptPosition != null) {
+                } else if (interceptPosition != null) {
                     double distanceToEntity = positionVector.distanceTo(interceptPosition.hitVec);
 
-                    if(distanceToEntity < minDistance || minDistance == 0.0D) {
+                    if (distanceToEntity < minDistance || minDistance == 0.0D) {
                         lookedEntity = entity;
                         minDistance = distanceToEntity;
                     }
                 }
             }
 
-            if(lookedEntity != null && (minDistance < distance || pos == null))
+            if (lookedEntity != null && (minDistance < distance || pos == null))
                 foundEntity = lookedEntity;
         }
 

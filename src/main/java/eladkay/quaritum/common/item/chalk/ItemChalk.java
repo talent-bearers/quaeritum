@@ -45,11 +45,6 @@ public class ItemChalk extends ItemMod implements ModelHandler.IColorProvider, M
         setMaxStackSize(1);
     }
 
-    @Override
-    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
-        addToTooltip(tooltip, getUnlocalizedName(stack) + ".desc");
-    }
-
     public static String capitalizeFirst(String str) {
         return str.substring(0, 1).toUpperCase() + str.substring(1);
     }
@@ -57,6 +52,11 @@ public class ItemChalk extends ItemMod implements ModelHandler.IColorProvider, M
     public static EnumDyeColor byMetadata(int meta) {
         if (meta == 16) return null;
         return EnumDyeColor.byMetadata(meta);
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
+        addToTooltip(tooltip, getUnlocalizedName(stack) + ".desc");
     }
 
     @Override
@@ -78,9 +78,7 @@ public class ItemChalk extends ItemMod implements ModelHandler.IColorProvider, M
             }
 
             return EnumActionResult.SUCCESS;
-        }
-        else
-        {
+        } else {
             return EnumActionResult.FAIL;
         }
     }
@@ -103,7 +101,7 @@ public class ItemChalk extends ItemMod implements ModelHandler.IColorProvider, M
         return new IItemColor() {
             @Override
             public int getColorFromItemstack(ItemStack stack, int tintIndex) {
-                return ItemNBTHelper.getBoolean(stack.copy(), LibNBT.FLAT, false) && stack.getItemDamage() < 16 ? ItemDye.DYE_COLORS[15- stack.getItemDamage()] : 0xFFFFFF;
+                return ItemNBTHelper.getBoolean(stack.copy(), LibNBT.FLAT, false) && stack.getItemDamage() < 16 ? ItemDye.DYE_COLORS[15 - stack.getItemDamage()] : 0xFFFFFF;
             }
         };
     }

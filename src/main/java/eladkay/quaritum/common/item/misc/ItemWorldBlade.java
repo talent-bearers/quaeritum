@@ -32,6 +32,7 @@ public class ItemWorldBlade extends ItemModSword {
     public static final String TAG_TELEPORTED = "teleportTicks";
 
     boolean shouldUseElucentParticles = true; //lol
+
     public ItemWorldBlade() {
         super(LibNames.WORLD_BLADE, LibMaterials.MYSTIC);
     }
@@ -62,7 +63,8 @@ public class ItemWorldBlade extends ItemModSword {
 
     @Override
     public boolean onEntitySwing(EntityLivingBase entityLiving, ItemStack stack) {
-        if (entityLiving instanceof EntityPlayer && ((EntityPlayer) entityLiving).getCooldownTracker().hasCooldown(this)) return false;
+        if (entityLiving instanceof EntityPlayer && ((EntityPlayer) entityLiving).getCooldownTracker().hasCooldown(this))
+            return false;
 
         Vector3 pos = Vector3.ZERO;
         boolean hitEntity = false;
@@ -97,9 +99,9 @@ public class ItemWorldBlade extends ItemModSword {
         if (entityLiving.worldObj.getBlockState(blockPos.up()).getCollisionBoundingBox(entityLiving.worldObj, blockPos.up()) == null) {
             if (entityLiving.worldObj.isRemote) for (int i = 0; i < 100; i++)
                 entityLiving.worldObj.spawnParticle(EnumParticleTypes.PORTAL,
-                        entityLiving.posX + (entityLiving.worldObj.rand.nextDouble() - 0.5D) * (double)entityLiving.width,
-                        entityLiving.posY + entityLiving.worldObj.rand.nextDouble() * (double)entityLiving.height - 0.25D,
-                        entityLiving.posZ + (entityLiving.worldObj.rand.nextDouble() - 0.5D) * (double)entityLiving.width,
+                        entityLiving.posX + (entityLiving.worldObj.rand.nextDouble() - 0.5D) * (double) entityLiving.width,
+                        entityLiving.posY + entityLiving.worldObj.rand.nextDouble() * (double) entityLiving.height - 0.25D,
+                        entityLiving.posZ + (entityLiving.worldObj.rand.nextDouble() - 0.5D) * (double) entityLiving.width,
                         (entityLiving.worldObj.rand.nextDouble() - 0.5D) * 2.0D, -entityLiving.worldObj.rand.nextDouble(),
                         (entityLiving.worldObj.rand.nextDouble() - 0.5D) * 2.0D);
 
@@ -108,21 +110,21 @@ public class ItemWorldBlade extends ItemModSword {
 
             if (entityLiving.worldObj.isRemote)
                 for (int i = 0; i < 100; i++) {
-                  if(!shouldUseElucentParticles)
-                   entityLiving.worldObj.spawnParticle(EnumParticleTypes.PORTAL,
-                            entityLiving.posX + (entityLiving.worldObj.rand.nextDouble() - 0.5D) * (double) entityLiving.width,
-                            entityLiving.posY + entityLiving.worldObj.rand.nextDouble() * (double) entityLiving.height - 0.25D,
-                            entityLiving.posZ + (entityLiving.worldObj.rand.nextDouble() - 0.5D) * (double) entityLiving.width,
-                            (entityLiving.worldObj.rand.nextDouble() - 0.5D) * 2.0D,
-                            -entityLiving.worldObj.rand.nextDouble(),
-                            (entityLiving.worldObj.rand.nextDouble() - 0.5D) * 2.0D);
+                    if (!shouldUseElucentParticles)
+                        entityLiving.worldObj.spawnParticle(EnumParticleTypes.PORTAL,
+                                entityLiving.posX + (entityLiving.worldObj.rand.nextDouble() - 0.5D) * (double) entityLiving.width,
+                                entityLiving.posY + entityLiving.worldObj.rand.nextDouble() * (double) entityLiving.height - 0.25D,
+                                entityLiving.posZ + (entityLiving.worldObj.rand.nextDouble() - 0.5D) * (double) entityLiving.width,
+                                (entityLiving.worldObj.rand.nextDouble() - 0.5D) * 2.0D,
+                                -entityLiving.worldObj.rand.nextDouble(),
+                                (entityLiving.worldObj.rand.nextDouble() - 0.5D) * 2.0D);
                     else
-                    Quaritum.proxy.spawnStafflikeParticles(
-                            entityLiving.worldObj, //world
-                            entityLiving.posX + (entityLiving.worldObj.rand.nextDouble() - 0.5D) * (double) entityLiving.width, //x
-                            entityLiving.posY + entityLiving.worldObj.rand.nextDouble() * (double) entityLiving.height - 0.25D, //y
-                            entityLiving.posZ + (entityLiving.worldObj.rand.nextDouble() - 0.5D) * (double) entityLiving.width //z
-                    );
+                        Quaritum.proxy.spawnStafflikeParticles(
+                                entityLiving.worldObj, //world
+                                entityLiving.posX + (entityLiving.worldObj.rand.nextDouble() - 0.5D) * (double) entityLiving.width, //x
+                                entityLiving.posY + entityLiving.worldObj.rand.nextDouble() * (double) entityLiving.height - 0.25D, //y
+                                entityLiving.posZ + (entityLiving.worldObj.rand.nextDouble() - 0.5D) * (double) entityLiving.width //z
+                        );
                 }
 
             entityLiving.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1f, 1f);

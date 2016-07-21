@@ -23,11 +23,17 @@ public class DiagramMT {
     public static void addRecipe(String name, IItemStack[] input, IItemStack output, boolean onPlayers, int drain, int rarity, int[][] chalks) {
         MineTweakerAPI.apply(new Add(new DiagramCrafting(name, CraftTweaker.getStacks(input), MineTweakerMC.getItemStack(output), getListOfChalks(chalks), drain, onPlayers, rarity, drain > 0)));
     }
+
     private static List<PositionedBlock> getListOfChalks(int[][] chalks) {
         List<PositionedBlock> ret = Lists.newArrayList();
-        for(int[] chal : chalks)
+        for (int[] chal : chalks)
             ret.add(new PositionedBlockChalk(EnumDyeColor.values()[chal[0]], new BlockPos(chal[1], chal[2], chal[3])));
         return ret;
+    }
+
+    @ZenMethod
+    public static void removeRecipe(IItemStack output) {
+        MineTweakerAPI.apply(new Remove(MineTweakerMC.getItemStack(output)));
     }
 
     private static class Add implements IUndoableAction {
@@ -72,11 +78,6 @@ public class DiagramMT {
         public Object getOverrideKey() {
             return null;
         }
-    }
-
-    @ZenMethod
-    public static void removeRecipe(IItemStack output) {
-        MineTweakerAPI.apply(new Remove(MineTweakerMC.getItemStack(output)));
     }
 
     private static class Remove implements IUndoableAction {

@@ -2,10 +2,10 @@ package eladkay.quaritum.common.item.soulstones;
 
 import eladkay.quaritum.api.animus.AnimusHelper;
 import eladkay.quaritum.api.animus.ISoulstone;
+import eladkay.quaritum.api.lib.LibNBT;
 import eladkay.quaritum.api.util.ItemNBTHelper;
 import eladkay.quaritum.common.item.ModItems;
 import eladkay.quaritum.common.item.base.ItemMod;
-import eladkay.quaritum.api.lib.LibNBT;
 import eladkay.quaritum.common.lib.LibNames;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;

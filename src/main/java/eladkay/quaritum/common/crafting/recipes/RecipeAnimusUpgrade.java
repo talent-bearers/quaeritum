@@ -13,6 +13,10 @@ import java.util.List;
 
 public class RecipeAnimusUpgrade extends ShapedOreRecipe {
 
+    public RecipeAnimusUpgrade(ItemStack output, Object... inputs) {
+        super(output, inputs);
+    }
+
     public static ItemStack output(ItemStack output, InventoryCrafting inv) {
         List<ItemStack> use = Lists.newArrayList();
         for (int i = 0; i < inv.getSizeInventory(); i++) use.add(inv.getStackInSlot(i));
@@ -39,11 +43,6 @@ public class RecipeAnimusUpgrade extends ShapedOreRecipe {
         });
         AnimusHelper.minimizeRarity(out, rarity.intValue());
         return out;
-    }
-
-
-    public RecipeAnimusUpgrade(ItemStack output, Object... inputs) {
-        super(output, inputs);
     }
 
     @Override

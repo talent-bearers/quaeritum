@@ -27,9 +27,63 @@ import static net.minecraft.util.EnumActionResult.SUCCESS;
 
  */
 public class ItemTransducer extends ItemMod {
+    private static final int[] sidesXY = new int[]{4, 5, 0, 1};
+    private static final int[] sidesYZ = new int[]{0, 1, 2, 3};
+    private static final int[] sidesZX = new int[]{2, 3, 4, 5};
+
     public ItemTransducer() {
         super(LibNames.TRANSDUCER);
         setMaxStackSize(1);
+    }
+
+    private static int getSide(int side, double xIn, double yIn, double zIn) {
+        //if the middle was clicked, place on the opposite side
+        float lo = .25f, hi = .75f;
+        int centeredSides = 0;
+        if (side != 0 && side != 1)
+            centeredSides += yIn > lo && yIn < hi ? 1 : 0;
+        if (side != 2 && side != 3)
+            centeredSides += zIn > lo && zIn < hi ? 1 : 0;
+        if (side != 4 && side != 5)
+            centeredSides += xIn > lo && xIn < hi ? 1 : 0;
+        if (centeredSides == 2)
+            return side;
+
+        //otherwise, place on the nearest side
+        double left, right;
+        int[] sides;
+        switch (side) {
+            case 0:
+            case 1:
+                left = zIn;
+                right = xIn;
+                sides = sidesZX;
+                break;
+            case 2:
+            case 3:
+                left = xIn;
+                right = yIn;
+                sides = sidesXY;
+                break;
+            case 4:
+            case 5:
+                left = yIn;
+                right = zIn;
+                sides = sidesYZ;
+                break;
+            default:
+                return -1;
+        }
+        boolean b0 = left > right;
+        boolean b1 = left > 1 - right;
+        if (b0 && b1)
+            return sides[0];
+        else if (!b0 && !b1)
+            return sides[1];
+        else if (b1)
+            return sides[2];
+        else
+            return sides[3];
     }
 
     @Override
@@ -87,60 +141,6 @@ public class ItemTransducer extends ItemMod {
             return SUCCESS;
         } else
             return PASS;
-    }
-
-    private static final int[] sidesXY = new int[]{4, 5, 0, 1};
-    private static final int[] sidesYZ = new int[]{0, 1, 2, 3};
-    private static final int[] sidesZX = new int[]{2, 3, 4, 5};
-
-    private static int getSide(int side, double xIn, double yIn, double zIn) {
-        //if the middle was clicked, place on the opposite side
-        float lo = .25f, hi = .75f;
-        int centeredSides = 0;
-        if (side != 0 && side != 1)
-            centeredSides += yIn > lo && yIn < hi ? 1 : 0;
-        if (side != 2 && side != 3)
-            centeredSides += zIn > lo && zIn < hi ? 1 : 0;
-        if (side != 4 && side != 5)
-            centeredSides += xIn > lo && xIn < hi ? 1 : 0;
-        if (centeredSides == 2)
-            return side;
-
-        //otherwise, place on the nearest side
-        double left, right;
-        int[] sides;
-        switch (side) {
-            case 0:
-            case 1:
-                left = zIn;
-                right = xIn;
-                sides = sidesZX;
-                break;
-            case 2:
-            case 3:
-                left = xIn;
-                right = yIn;
-                sides = sidesXY;
-                break;
-            case 4:
-            case 5:
-                left = yIn;
-                right = zIn;
-                sides = sidesYZ;
-                break;
-            default:
-                return -1;
-        }
-        boolean b0 = left > right;
-        boolean b1 = left > 1 - right;
-        if (b0 && b1)
-            return sides[0];
-        else if (!b0 && !b1)
-            return sides[1];
-        else if (b1)
-            return sides[2];
-        else
-            return sides[3];
     }
 
 

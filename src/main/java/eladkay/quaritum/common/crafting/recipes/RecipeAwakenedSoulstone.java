@@ -1,6 +1,5 @@
 package eladkay.quaritum.common.crafting.recipes;
 
-import com.google.common.collect.Lists;
 import eladkay.quaritum.api.animus.IFlower;
 import eladkay.quaritum.common.item.soulstones.ItemAwakenedSoulstone;
 import eladkay.quaritum.common.item.soulstones.ItemDormantSoulstone;
@@ -12,7 +11,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
 import javax.annotation.Nonnull;
-import java.util.List;
 
 public class RecipeAwakenedSoulstone implements IRecipe {
     @Override

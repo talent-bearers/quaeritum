@@ -25,11 +25,11 @@ public class ItemModSword extends ItemSword implements ModelHandler.IVariantHold
         super(material);
         setUnlocalizedName(name);
         CreativeTab.set(this);
-        if(variants.length > 1)
+        if (variants.length > 1)
             setHasSubtypes(true);
 
-        if(variants.length == 0)
-            variants = new String[] { name };
+        if (variants.length == 0)
+            variants = new String[]{name};
 
         bareName = name;
         this.variants = variants;

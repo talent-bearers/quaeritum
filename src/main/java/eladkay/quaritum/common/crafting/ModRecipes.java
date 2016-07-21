@@ -1,12 +1,12 @@
 package eladkay.quaritum.common.crafting;
 
+import eladkay.quaritum.api.lib.LibMisc;
 import eladkay.quaritum.common.block.ModBlocks;
 import eladkay.quaritum.common.block.flowers.BlockAnimusFlower;
 import eladkay.quaritum.common.crafting.recipes.RecipeAnimusUpgrade;
 import eladkay.quaritum.common.crafting.recipes.RecipeAwakenedSoulstone;
 import eladkay.quaritum.common.crafting.recipes.RecipeShapelessAnimusUpgrade;
 import eladkay.quaritum.common.item.ModItems;
-import eladkay.quaritum.api.lib.LibMisc;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -21,7 +21,7 @@ import java.util.Arrays;
 
 public class ModRecipes {
 
-    private static String[] dyeColors = new String[] {
+    private static String[] dyeColors = new String[]{
             "White", "Orange", "Magenta", "LightBlue", "Yellow", "Lime", "Pink", "Gray", "LightGray",
             "Cyan", "Purple", "Blue", "Brown", "Green", "Red", "Black"
     };

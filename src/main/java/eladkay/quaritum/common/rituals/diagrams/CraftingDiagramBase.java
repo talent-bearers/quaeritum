@@ -18,6 +18,14 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class CraftingDiagramBase implements IDiagram {
+    public final ItemStack output;
+    final String name;
+    final ImmutableList<ItemStack> input;
+    final List<PositionedBlock> chalks;
+    final int animus;
+    final int rarity;
+    final boolean onPlayers;
+    final boolean requiress;
     public CraftingDiagramBase(String name, ItemStack[] input, ItemStack output, List<PositionedBlock> chalks, int animus, boolean onPlayers, int rarity, boolean requiress) {
         this.name = name;
         this.input = ImmutableList.copyOf(input);
@@ -39,14 +47,7 @@ public class CraftingDiagramBase implements IDiagram {
         this.requiress = requiress;
         RitualRegistry.registerDiagram(this, name);
     }
-    final String name;
-    final ImmutableList<ItemStack> input;
-    public final ItemStack output;
-    final List<PositionedBlock> chalks;
-    final int animus;
-    final int rarity;
-    final boolean onPlayers;
-    final boolean requiress;
+
     @Nonnull
     @Override
     public String getUnlocalizedName() {
@@ -56,14 +57,14 @@ public class CraftingDiagramBase implements IDiagram {
     @Override
     public void run(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile) {
         EntityItem item = new EntityItem(world, pos.getX(), pos.getY() + 2, pos.getZ(), output);
-        if(requiress)
+        if (requiress)
             if (onPlayers)
                 Helper.consumeAnimusForRitual(tile, true, animus, 0);
             else
                 Helper.takeAnimus(animus, rarity, tile, 4, true);
 
-        for(EntityItem stack : Helper.entitiesAroundAltar(tile, 4)) {
-            if(!Helper.isEntityItemInList(stack, input)) continue;
+        for (EntityItem stack : Helper.entitiesAroundAltar(tile, 4)) {
+            if (!Helper.isEntityItemInList(stack, input)) continue;
             WorldServer server = (WorldServer) tile.getWorld();
             server.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, stack.getPosition().getX() + 0.5, stack.getPosition().getY() + 1, stack.getPosition().getZ() + 0.5, 1, 0.1, 0, 0.1, 0);
             stack.setDead();
@@ -84,7 +85,7 @@ public class CraftingDiagramBase implements IDiagram {
 
     @Override
     public void buildChalks(@Nonnull List<PositionedBlock> chalks) {
-        if(this.chalks != null)
+        if (this.chalks != null)
             chalks.addAll(this.chalks);
     }
 

@@ -37,13 +37,16 @@ public class JeiPlugin implements IModPlugin {
     private ItemStack ts(Item i) {
         return new ItemStack(i);
     }
+
     private ItemStack ts(Block i) {
         return new ItemStack(i);
     }
+
     @Override
     public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
 
     }
+
     private class DiagramRecipeCatagory implements IRecipeCategory {
 
         @Nonnull

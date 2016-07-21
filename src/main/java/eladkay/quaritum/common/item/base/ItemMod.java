@@ -24,11 +24,11 @@ public class ItemMod extends Item implements ModelHandler.IVariantHolder {
     public ItemMod(String name, String... variants) {
         setUnlocalizedName(name);
         CreativeTab.set(this);
-        if(variants.length > 1)
+        if (variants.length > 1)
             setHasSubtypes(true);
 
-        if(variants.length == 0)
-            variants = new String[] { name };
+        if (variants.length == 0)
+            variants = new String[]{name};
 
         bareName = name;
         this.variants = variants;
@@ -92,6 +92,8 @@ public class ItemMod extends Item implements ModelHandler.IVariantHolder {
             subItems.add(new ItemStack(itemIn, 1, i));
         }
     }
-    public void constructBook() {}
+
+    public void constructBook() {
+    }
 }
 

@@ -10,7 +10,6 @@ import eladkay.quaritum.client.core.TooltipHelper;
 import eladkay.quaritum.common.block.ModBlocks;
 import eladkay.quaritum.common.block.flowers.BlockAnimusFlower;
 import eladkay.quaritum.common.block.tile.TileEntityBlueprint;
-import eladkay.quaritum.common.book.Vec2i;
 import eladkay.quaritum.common.book.ModBook;
 import eladkay.quaritum.common.book.PageDiagram;
 import eladkay.quaritum.common.core.PositionedBlockHelper;
@@ -31,6 +30,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShardedSkiesTier2Diagram implements IDiagram {
+    public static List<IPage> pages = new ArrayList<>();
+
     @Nonnull
     @Override
     public String getUnlocalizedName() {
@@ -41,7 +42,7 @@ public class ShardedSkiesTier2Diagram implements IDiagram {
     public void run(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint te) {
         EntityItem item = new EntityItem(world, pos.getX(), pos.getY() + 2, pos.getZ(), new ItemStack(ModBlocks.flower, 1, BlockAnimusFlower.Variants.COMMON_ARCANE.ordinal()));
         world.spawnEntityInWorld(item);
-        for(EntityItem stack : Helper.entitiesAroundAltar(te, 4)) {
+        for (EntityItem stack : Helper.entitiesAroundAltar(te, 4)) {
             WorldServer server = (WorldServer) te.getWorld();
             server.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, stack.getPosition().getX() + 0.5, stack.getPosition().getY() + 1, stack.getPosition().getZ() + 0.5, 1, 0.1, 0, 0.1, 0);
             stack.setDead();
@@ -66,8 +67,8 @@ public class ShardedSkiesTier2Diagram implements IDiagram {
     @Override
     public boolean onPrepUpdate(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile, int ticksRemaining) {
         boolean flag = true;
-        for(ItemStack stack : getRequiredItems())
-            if(!Helper.isStackInList(stack, Helper.stacksAroundAltar(tile, 4))) return false;
+        for (ItemStack stack : getRequiredItems())
+            if (!Helper.isStackInList(stack, Helper.stacksAroundAltar(tile, 4))) return false;
         NetworkHelper.tellEveryoneAround(new FancyParticlePacket(pos.getX(), pos.getY(), pos.getZ(), 50), world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 16);
         /*for(EntityItem stack : Helper.entitiesAroundAltar(tile, 4)) {
             if (!Helper.isEntityItemInList(stack, getRequiredItems())) {
@@ -102,7 +103,6 @@ public class ShardedSkiesTier2Diagram implements IDiagram {
         chalks.add(PositionedBlockHelper.positionedBlockWith(new BlockPos(1, 0, 1), EnumDyeColor.GREEN));
     }
 
-    public static List<IPage> pages = new ArrayList<>();
     @Override
     public void constructBook() {
         pages.add(new PageText(TooltipHelper.local(LibBook.ENTRY_SHARDED_SKIES2_PAGE1)));

@@ -18,6 +18,7 @@ public class ModEntities {
                 Quaritum.instance, 80, 3, false);
         EntityRegistry.registerEgg(parEntityClass, parEggColor, parEggSpotsColor);
     }
+
     public static void registerModEntity(Class<? extends Entity> parEntityClass, String parEntityName) {
         EntityRegistry.registerModEntity(parEntityClass, parEntityName, ++id,
                 Quaritum.instance, 80, 3, false);

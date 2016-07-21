@@ -1,6 +1,5 @@
 package eladkay.quaritum.api.rituals;
 
-import eladkay.quaritum.common.block.ModBlocks;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.EnumDyeColor;
@@ -49,7 +48,6 @@ public class PositionedBlock {
     public BlockPos getPos() {
         return pos;
     }
-
 
 
 }

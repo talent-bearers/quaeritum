@@ -2,10 +2,10 @@
  * This class was created by <ChickenBones>. It's distributed as
  * part of the Botania Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Botania
- *
+ * <p>
  * Botania is Open Source and distributed under the
  * Botania License: http://botaniamod.net/license.php
- *
+ * <p>
  * File Created @ [? (GMT)]
  */
 package eladkay.quaritum.api.util;
@@ -25,11 +25,9 @@ import org.lwjgl.util.vector.Vector4f;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
-import java.util.Arrays;
 import java.util.Objects;
 
-public class Vector3
-{
+public class Vector3 {
     public static final Vector3 ZERO = new Vector3(0, 0, 0);
     public static final Vector3 ONE = new Vector3(1, 1, 1);
     public static final Vector3 CENTER = new Vector3(0.5, 0.5, 0.5);
@@ -75,9 +73,9 @@ public class Vector3
     public double dotProduct(Vector3 vec) {
         double d = vec.x * x + vec.y * y + vec.z * z;
 
-        if(d > 1 && d < 1.00001)
+        if (d > 1 && d < 1.00001)
             d = 1;
-        else if(d < -1 && d > -1.00001)
+        else if (d < -1 && d > -1.00001)
             d = -1;
         return d;
     }
@@ -131,7 +129,7 @@ public class Vector3
 
     public Vector3 normalize() {
         double d = mag();
-        if(d != 0)
+        if (d != 0)
             return multiply(1 / d);
 
         return this;
@@ -140,11 +138,11 @@ public class Vector3
     @Override
     public String toString() {
         MathContext cont = new MathContext(4, RoundingMode.HALF_UP);
-        return "Vector3(" + new BigDecimal(x, cont) + ", " +new BigDecimal(y, cont) + ", " + new BigDecimal(z, cont) + ")";
+        return "Vector3(" + new BigDecimal(x, cont) + ", " + new BigDecimal(y, cont) + ", " + new BigDecimal(z, cont) + ")";
     }
 
     public Vector3 perpendicular() {
-        if(z == 0)
+        if (z == 0)
             return zCrossProduct();
         return xCrossProduct();
     }
@@ -188,11 +186,11 @@ public class Vector3
     }
 
     public Vector3f vector3f() {
-        return new Vector3f((float)x, (float)y, (float)z);
+        return new Vector3f((float) x, (float) y, (float) z);
     }
 
     public Vector4f vector4f() {
-        return new Vector4f((float)x, (float)y, (float)z, 1);
+        return new Vector4f((float) x, (float) y, (float) z, 1);
     }
 
     @SideOnly(Side.CLIENT)
@@ -206,16 +204,16 @@ public class Vector3
 
     public double scalarProject(Vector3 b) {
         double l = b.mag();
-        return l == 0 ? 0 : dotProduct(b)/l;
+        return l == 0 ? 0 : dotProduct(b) / l;
     }
 
     public Vector3 project(Vector3 b) {
         double l = b.magSquared();
-        if(l == 0) {
+        if (l == 0) {
             return ZERO;
         }
 
-        double m = dotProduct(b)/l;
+        double m = dotProduct(b) / l;
         return b.multiply(m);
     }
 
@@ -225,10 +223,10 @@ public class Vector3
 
     @Override
     public boolean equals(Object o) {
-        if(!(o instanceof Vector3))
+        if (!(o instanceof Vector3))
             return false;
 
-        Vector3 v = (Vector3)o;
+        Vector3 v = (Vector3) o;
         return x == v.x && y == v.y && z == v.z;
     }
 

@@ -34,32 +34,11 @@ import java.util.Random;
 @MethodsReturnNonnullByDefault
 public class BlockChalk extends BlockModColored implements ModelHandler.IBlockColorProvider {
 
-    enum EnumAttachPosition implements IStringSerializable {
-        UP("up"),
-        SIDE("side"),
-        NONE("none");
-
-        private final String name;
-
-        EnumAttachPosition(String name) {
-            this.name = name;
-        }
-
-        public String toString() {
-            return this.getName();
-        }
-
-        public String getName() {
-            return this.name;
-        }
-    }
-
     public static final PropertyEnum<EnumAttachPosition> NORTH = PropertyEnum.create("north", EnumAttachPosition.class);
     public static final PropertyEnum<EnumAttachPosition> EAST = PropertyEnum.create("east", EnumAttachPosition.class);
     public static final PropertyEnum<EnumAttachPosition> SOUTH = PropertyEnum.create("south", EnumAttachPosition.class);
     public static final PropertyEnum<EnumAttachPosition> WEST = PropertyEnum.create("west", EnumAttachPosition.class);
-
-    private final AxisAlignedBB[] WIRE_AABBS = new AxisAlignedBB[] {
+    private final AxisAlignedBB[] WIRE_AABBS = new AxisAlignedBB[]{
             new AxisAlignedBB(0.1875D, 0.0D, 0.1875D, 0.8125D, 0.0625D, 0.8125D),
             new AxisAlignedBB(0.1875D, 0.0D, 0.1875D, 0.8125D, 0.0625D, 1.0D),
             new AxisAlignedBB(0.0D, 0.0D, 0.1875D, 0.8125D, 0.0625D, 0.8125D),
@@ -81,6 +60,21 @@ public class BlockChalk extends BlockModColored implements ModelHandler.IBlockCo
         super(LibNames.CHALK_BLOCK, Material.CIRCUITS);
     }
 
+    private static int getAABBIndex(IBlockState state) {
+        int index = 0;
+        boolean north = state.getValue(NORTH) != EnumAttachPosition.NONE;
+        boolean east = state.getValue(EAST) != EnumAttachPosition.NONE;
+        boolean south = state.getValue(SOUTH) != EnumAttachPosition.NONE;
+        boolean west = state.getValue(WEST) != EnumAttachPosition.NONE;
+
+        if (north || south && !east && !west) index |= 1 << EnumFacing.NORTH.getHorizontalIndex();
+        if (east || west && !north && !south) index |= 1 << EnumFacing.EAST.getHorizontalIndex();
+        if (south || north && !east && !west) index |= 1 << EnumFacing.SOUTH.getHorizontalIndex();
+        if (west || east && !north && !south) index |= 1 << EnumFacing.WEST.getHorizontalIndex();
+
+        return index;
+    }
+
     @Nullable
     @Override
     public IBlockColor getBlockColor() {
@@ -98,7 +92,7 @@ public class BlockChalk extends BlockModColored implements ModelHandler.IBlockCo
 
     @Override
     public IProperty[] getIgnoredProperties() {
-        return new IProperty[] {COLOR};
+        return new IProperty[]{COLOR};
     }
 
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
@@ -109,21 +103,6 @@ public class BlockChalk extends BlockModColored implements ModelHandler.IBlockCo
     @Override
     public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos) {
         return NULL_AABB;
-    }
-
-    private static int getAABBIndex(IBlockState state) {
-        int index = 0;
-        boolean north = state.getValue(NORTH) != EnumAttachPosition.NONE;
-        boolean east = state.getValue(EAST) != EnumAttachPosition.NONE;
-        boolean south = state.getValue(SOUTH) != EnumAttachPosition.NONE;
-        boolean west = state.getValue(WEST) != EnumAttachPosition.NONE;
-
-        if (north || south && !east && !west) index |= 1 << EnumFacing.NORTH.getHorizontalIndex();
-        if (east || west && !north && !south) index |= 1 << EnumFacing.EAST.getHorizontalIndex();
-        if (south || north && !east && !west) index |= 1 << EnumFacing.SOUTH.getHorizontalIndex();
-        if (west || east && !north && !south) index |= 1 << EnumFacing.WEST.getHorizontalIndex();
-
-        return index;
     }
 
     @Override
@@ -155,9 +134,7 @@ public class BlockChalk extends BlockModColored implements ModelHandler.IBlockCo
             }
 
             return EnumAttachPosition.NONE;
-        }
-        else
-        {
+        } else {
             return EnumAttachPosition.SIDE;
         }
     }
@@ -257,5 +234,25 @@ public class BlockChalk extends BlockModColored implements ModelHandler.IBlockCo
     @Override
     protected ItemBlock createItemBlock() {
         return null;
+    }
+
+    enum EnumAttachPosition implements IStringSerializable {
+        UP("up"),
+        SIDE("side"),
+        NONE("none");
+
+        private final String name;
+
+        EnumAttachPosition(String name) {
+            this.name = name;
+        }
+
+        public String toString() {
+            return this.getName();
+        }
+
+        public String getName() {
+            return this.name;
+        }
     }
 }
