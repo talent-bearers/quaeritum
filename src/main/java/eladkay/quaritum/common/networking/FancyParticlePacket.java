@@ -9,9 +9,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 public class FancyParticlePacket extends MessageBase<FancyParticlePacket> {
-    private int x;
-    private int y;
-    private int z;
+    private double x;
+    private double y;
+    private double z;
     private int amount = 100;
     @Override
     public void fromBytes(ByteBuf buf) {
@@ -21,9 +21,9 @@ public class FancyParticlePacket extends MessageBase<FancyParticlePacket> {
         z = buf.readInt();
         amount = buf.readInt();*/
         NBTTagCompound tag = ByteBufUtils.readTag(buf);
-        x = tag.getInteger("x");
-        y = tag.getInteger("y");
-        z = tag.getInteger("z");
+        x = tag.getDouble("x");
+        y = tag.getDouble("y");
+        z = tag.getDouble("z");
         amount = tag.getInteger("amount");
         LogHelper.logDebug("x = " + x + " y = " + y + " z = " + z);
     }
@@ -31,9 +31,9 @@ public class FancyParticlePacket extends MessageBase<FancyParticlePacket> {
     @Override
     public void toBytes(ByteBuf buf) {
         NBTTagCompound tag = new NBTTagCompound();
-        tag.setInteger("x", x);
-        tag.setInteger("y", y);
-        tag.setInteger("z", z);
+        tag.setDouble("x", x);
+        tag.setDouble("y", y);
+        tag.setDouble("z", z);
         tag.setInteger("amount", amount);
         ByteBufUtils.writeTag(buf, tag);
         LogHelper.logDebug("x = " + x + " y = " + y + " z = " + z);
@@ -44,7 +44,7 @@ public class FancyParticlePacket extends MessageBase<FancyParticlePacket> {
         y = 0;
         z = 0;
     }
-    public FancyParticlePacket(int xc, int yc, int zc, int amount) {
+    public FancyParticlePacket(double xc, double yc, double zc, int amount) {
         x = xc;
         y = yc;
         z = zc;

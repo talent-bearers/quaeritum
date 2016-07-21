@@ -26,12 +26,11 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemChalk extends ItemMod implements ModelHandler.IColorProvider, ModelHandler.ICustomLogHolder {
-    private static final String[] COLORS = new String[17];
+    private static final String[] COLORS = new String[16];
 
     static {
         for (EnumDyeColor dye : EnumDyeColor.values())
             COLORS[dye.ordinal()] = "chalk" + (capitalizeFirst(dye.toString())).replace("Silver", "LightGray");
-        COLORS[16] = "chalkTempest";
     }
 
     public ItemChalk() {

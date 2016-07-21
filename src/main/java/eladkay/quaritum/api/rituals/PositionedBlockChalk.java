@@ -12,11 +12,14 @@ import javax.annotation.Nullable;
 
 public final class PositionedBlockChalk extends PositionedBlock {
     @Nonnull
-    public static IBlockState getStateFromColor(@Nonnull EnumDyeColor chalkColor) {
-        return ModBlocks.chalk.getStateFromMeta(chalkColor.ordinal());
+    public static IBlockState getStateFromColor(@Nullable EnumDyeColor chalkColor) {
+        if(chalkColor != null)
+            return ModBlocks.chalk.getStateFromMeta(chalkColor.ordinal());
+        else
+            return ModBlocks.tempest.getDefaultState();
     }
 
-    public PositionedBlockChalk(@Nonnull EnumDyeColor state, @Nonnull BlockPos pos) {
-        super(getStateFromColor(state), pos, Lists.newArrayList(BlockChalk.COLOR));
+    public PositionedBlockChalk(@Nullable EnumDyeColor state, @Nonnull BlockPos pos) {
+        super(getStateFromColor(state), pos, state == null ? null : Lists.newArrayList(BlockChalk.COLOR));
     }
 }

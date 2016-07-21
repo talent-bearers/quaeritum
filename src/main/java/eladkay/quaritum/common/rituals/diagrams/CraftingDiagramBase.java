@@ -3,8 +3,10 @@ package eladkay.quaritum.common.rituals.diagrams;
 import com.google.common.collect.ImmutableList;
 import eladkay.quaritum.api.rituals.IDiagram;
 import eladkay.quaritum.api.rituals.PositionedBlock;
+import eladkay.quaritum.api.rituals.RitualRegistry;
 import eladkay.quaritum.common.block.tile.TileEntityBlueprint;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
@@ -26,8 +28,19 @@ public class CraftingDiagramBase implements IDiagram {
         this.onPlayers = onPlayers;
         this.requiress = requiress;
     }
+    public CraftingDiagramBase(String name, ItemStack[] input, Item output, List<PositionedBlock> chalks, int animus, boolean onPlayers, int rarity, boolean requiress) {
+        this.name = name;
+        this.input = ImmutableList.copyOf(input);
+        this.output = new ItemStack(output);
+        this.chalks = chalks;
+        this.animus = animus;
+        this.rarity = rarity;
+        this.onPlayers = onPlayers;
+        this.requiress = requiress;
+        RitualRegistry.registerDiagram(this, name);
+    }
     final String name;
-    public final ImmutableList<ItemStack> input;
+    final ImmutableList<ItemStack> input;
     public final ItemStack output;
     final List<PositionedBlock> chalks;
     final int animus;
@@ -55,16 +68,13 @@ public class CraftingDiagramBase implements IDiagram {
             server.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, stack.getPosition().getX() + 0.5, stack.getPosition().getY() + 1, stack.getPosition().getZ() + 0.5, 1, 0.1, 0, 0.1, 0);
             stack.setDead();
         }
+        System.out.println(item.getEntityItem().getItem());
         world.spawnEntityInWorld(item);
     }
 
     @Override
     public boolean canRitualRun(@Nullable World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile) {
-        if(!requiress) return true;
-        if(onPlayers)
-            return Helper.consumeAnimusForRitual(tile, false, animus, rarity);
-        else
-            return Helper.takeAnimus(animus, rarity, tile, 4, false);
+        return !requiress || (onPlayers ? Helper.consumeAnimusForRitual(tile, false, animus, rarity) : Helper.takeAnimus(animus, rarity, tile, 4, false));
     }
 
     @Override

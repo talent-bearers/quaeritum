@@ -1,16 +1,7 @@
 package eladkay.quaritum.common.item.misc;
 
-import amerifrance.guideapi.api.IPage;
-import amerifrance.guideapi.page.PageText;
-import eladkay.quaritum.api.lib.LibBook;
-import eladkay.quaritum.client.core.TooltipHelper;
-import eladkay.quaritum.common.block.ModBlocks;
-import eladkay.quaritum.common.book.Dimension;
-import eladkay.quaritum.common.book.ModBook;
-import eladkay.quaritum.common.book.PageDiagram;
 import eladkay.quaritum.common.item.base.ItemMod;
 import eladkay.quaritum.common.lib.LibNames;
-import eladkay.quaritum.common.rituals.ModDiagrams;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -27,9 +18,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static net.minecraft.util.EnumActionResult.PASS;
 import static net.minecraft.util.EnumActionResult.SUCCESS;
 
@@ -41,6 +29,7 @@ import static net.minecraft.util.EnumActionResult.SUCCESS;
 public class ItemTransducer extends ItemMod {
     public ItemTransducer() {
         super(LibNames.TRANSDUCER);
+        setMaxStackSize(1);
     }
 
     @Override
@@ -154,14 +143,5 @@ public class ItemTransducer extends ItemMod {
             return sides[3];
     }
 
-    public static List<IPage> pages = new ArrayList<>();
 
-    @Override
-    public void constructBook() {
-        pages.add(new PageText(TooltipHelper.local(LibBook.ENTRY_TRANSDUCER_PAGE1)));
-        List list = new ArrayList<>();
-        ModDiagrams.transducer.buildChalks(list);
-        pages.add(new PageDiagram(list, ModDiagrams.transducer.input, new Dimension(1, 1), 88, 64));
-        ModBook.register(ModBook.pagesAnimus, LibBook.ENTRY_TRANSDUCER, pages, new ItemStack(ModBlocks.blueprint));
-    }
 }

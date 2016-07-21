@@ -1,18 +1,14 @@
 package eladkay.quaritum.common.block.chalk;
 
-import eladkay.quaritum.client.core.ModelHandler;
 import eladkay.quaritum.common.block.ModBlocks;
-import eladkay.quaritum.common.block.base.BlockModColored;
+import eladkay.quaritum.common.block.base.BlockMod;
 import eladkay.quaritum.common.item.ModItems;
 import eladkay.quaritum.common.lib.LibNames;
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -26,13 +22,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Random;
 
-@ParametersAreNonnullByDefault
-@MethodsReturnNonnullByDefault
-public class BlockChalk extends BlockModColored implements ModelHandler.IBlockColorProvider {
-
+public class BlockChalkTempest extends BlockMod {
     enum EnumAttachPosition implements IStringSerializable {
         UP("up"),
         SIDE("side"),
@@ -76,29 +68,16 @@ public class BlockChalk extends BlockModColored implements ModelHandler.IBlockCo
             new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.0625D, 0.8125D),
             new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.0625D, 1.0D)};
 
-    public BlockChalk() {
-        super(LibNames.CHALK_BLOCK, Material.CIRCUITS);
+    public BlockChalkTempest() {
+        super(LibNames.CHALK_BLOCK_TEMPEST, Material.CIRCUITS);
     }
 
-    @Nullable
-    @Override
-    public IBlockColor getBlockColor() {
-        return this::getColor;
-    }
-
-    public int getColor(IBlockState state, @Nullable IBlockAccess worldIn, @Nullable BlockPos pos, int tintIndex) {
-        return state.getValue(COLOR).getMapColor().colorValue;
-    }
 
     @Override
     public BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, COLOR, NORTH, EAST, SOUTH, WEST);
+        return new BlockStateContainer(this, NORTH, EAST, SOUTH, WEST);
     }
 
-    @Override
-    public IProperty[] getIgnoredProperties() {
-        return new IProperty[] {COLOR};
-    }
 
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
         return WIRE_AABBS[getAABBIndex(state.getActualState(source, pos))];
@@ -166,7 +145,7 @@ public class BlockChalk extends BlockModColored implements ModelHandler.IBlockCo
     }
 
     private boolean canConnectTo(IBlockState selfState, IBlockState blockState) {
-        return blockState.getBlock() == this && selfState.getBlock() == this && blockState.getValue(COLOR) == selfState.getValue(COLOR);
+        return blockState.getBlock() == this && selfState.getBlock() == this;
     }
 
     @Override
@@ -223,14 +202,14 @@ public class BlockChalk extends BlockModColored implements ModelHandler.IBlockCo
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
         if (playerIn.inventory.getCurrentItem() != null && playerIn.inventory.getCurrentItem().getItem() == ModItems.chalk) {
-            worldIn.setBlockState(pos, getStateFromMeta(playerIn.inventory.getCurrentItem().getItemDamage()));
+            worldIn.setBlockState(pos, ModBlocks.chalk.getStateFromMeta(playerIn.inventory.getCurrentItem().getItemDamage()));
             return playerIn.inventory.getCurrentItem().getItemDamage() != getMetaFromState(state);
         }
-        if (playerIn.inventory.getCurrentItem() != null && playerIn.inventory.getCurrentItem().getItem() == ModItems.tempest) {
-            worldIn.setBlockState(pos, ModBlocks.tempest.getDefaultState());
-            return true;
-        }
         return false;
+    }
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return 0;
     }
 
     @Override
@@ -244,7 +223,7 @@ public class BlockChalk extends BlockModColored implements ModelHandler.IBlockCo
 
     @Override
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-        return new ItemStack(ModItems.chalk, 1, getMetaFromState(state));
+        return new ItemStack(ModItems.tempest, 1, getMetaFromState(state));
     }
 
     @Override

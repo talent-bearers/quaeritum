@@ -2,7 +2,9 @@ package eladkay.quaritum.common.item;
 
 import eladkay.quaritum.common.Quaritum;
 import eladkay.quaritum.common.book.ItemModBook;
+import eladkay.quaritum.common.item.base.GlowSand;
 import eladkay.quaritum.common.item.chalk.ItemChalk;
+import eladkay.quaritum.common.item.chalk.ItemChalkTempest;
 import eladkay.quaritum.common.item.misc.*;
 import eladkay.quaritum.common.item.soulstones.*;
 
@@ -23,6 +25,9 @@ public class ModItems {
     public static ItemModBook book;
     public static ItemPicture picture;
     public static ItemTransducer transducer;
+    public static ItemChalkTempest tempest;
+
+    public static GlowSand meme;
 
     public static void init() {
         dormant = new ItemDormantSoulstone();
@@ -39,8 +44,11 @@ public class ModItems {
         book = new ItemModBook();
         picture = new ItemPicture();
         transducer = new ItemTransducer();
+        tempest = new ItemChalkTempest();
         if (Quaritum.isDevEnv)
             debug = new ItemDebug();
+
+        meme = new GlowSand();
 
 
     }

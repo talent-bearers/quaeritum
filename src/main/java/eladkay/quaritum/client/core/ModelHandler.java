@@ -113,33 +113,37 @@ public class ModelHandler {
         }
 
         for (int var11 = 0; var11 < variants.length; var11++) {
-            if (var11 == 0) {
-                String print = modlength + " | Registering ";
-                if (!variants[var11].equals(item.getRegistryName().getResourcePath()) || variants.length != 1)
-                    print += "variant" + (variants.length == 1 ? "" : "s") + " of ";
-                print += item instanceof ItemBlock ? "block" : "item";
-                print += " " + item.getRegistryName().getResourcePath();
-                FMLLog.info(print);
-                if (item instanceof ICustomLogHolder)
-                    FMLLog.info(((ICustomLogHolder) item).customLog());
+            try {
+                if (var11 == 0) {
+                    String print = modlength + " | Registering ";
+                    if (!variants[var11].equals(item.getRegistryName().getResourcePath()) || variants.length != 1)
+                        print += "variant" + (variants.length == 1 ? "" : "s") + " of ";
+                    print += item instanceof ItemBlock ? "block" : "item";
+                    print += " " + item.getRegistryName().getResourcePath();
+                    FMLLog.info(print);
+                    if (item instanceof ICustomLogHolder)
+                        FMLLog.info(((ICustomLogHolder) item).customLog());
 
 
-            }
-            if ((!variants[var11].equals(item.getRegistryName().getResourcePath()) || variants.length != 1)) {
-                if (item instanceof ICustomLogHolder) {
-                    if (((ICustomLogHolder) item).shouldLogForVariant(var11, variants[var11]))
-                        FMLLog.info(((ICustomLogHolder) item).customLogVariant(var11 + 1, variants[var11]));
-                } else
-                    FMLLog.info(modlength + " |  Variant #" + Integer.toString(var11 + 1) + ": " + variants[var11]);
-            }
+                }
+                if ((!variants[var11].equals(item.getRegistryName().getResourcePath()) || variants.length != 1)) {
+                    if (item instanceof ICustomLogHolder) {
+                        if (((ICustomLogHolder) item).shouldLogForVariant(var11, variants[var11]))
+                            FMLLog.info(((ICustomLogHolder) item).customLogVariant(var11 + 1, variants[var11]));
+                    } else
+                        FMLLog.info(modlength + " |  Variant #" + Integer.toString(var11 + 1) + ": " + variants[var11]);
+                }
 
-            ModelResourceLocation var13 = new ModelResourceLocation(new ResourceLocation(mod, variants[var11]).toString(), "inventory");
-            if (!extra) {
-                ModelLoader.setCustomModelResourceLocation(item, var11, var13);
-                resourceLocations.put(getKey(item, var11), var13);
-            } else {
-                ModelBakery.registerItemVariants(item, var13);
-                resourceLocations.put(variants[var11], var13);
+                ModelResourceLocation var13 = new ModelResourceLocation(new ResourceLocation(mod, variants[var11]).toString(), "inventory");
+                if (!extra) {
+                    ModelLoader.setCustomModelResourceLocation(item, var11, var13);
+                    resourceLocations.put(getKey(item, var11), var13);
+                } else {
+                    ModelBakery.registerItemVariants(item, var13);
+                    resourceLocations.put(variants[var11], var13);
+                }
+            } catch(Exception e) {
+                e.printStackTrace();
             }
         }
 

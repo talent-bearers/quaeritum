@@ -80,7 +80,10 @@ item.quaritum:chalkBrown.name=Brown Chalk
 item.quaritum:chalkGreen.name=Green Chalk
 item.quaritum:chalkRed.name=Red Chalk
 item.quaritum:chalkBlack.name=Black Chalk
-item.quaritum:chalkTempest.name=Tempest Chalk
+item.quaritum:tempestChalk.name=Chalk of the Tempest
 
 item.quaritum:fertilizer.name=Magical Fertilizer
 item.quaritum:reagentAtlas.name=Atlas Reagent
+
+item.quaritum:glowsandmeme.name=Glowsand Transmutator
+tile.quaritum:glowSand.name=Glowsand

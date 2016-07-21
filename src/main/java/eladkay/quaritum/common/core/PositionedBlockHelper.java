@@ -31,7 +31,8 @@ public final class PositionedBlockHelper {
 
             if (block.getState().getBlock() == state.getBlock()) {
                 LogHelper.logDebug("Block check OK for " + optionalName);
-                if (comparables != null) {
+                if((block.getState().getBlock() == ModBlocks.tempest && state.getBlock() == ModBlocks.tempest)) chalks++;
+                else if (comparables != null) {
                     for (IProperty property : comparables) {
                         if (block.getState().getValue(property) != state.getValue(property)) {
                             LogHelper.logDebug("Expected " + block.getState() + " in " + block.getPos() + " for ritual " + optionalName + ". Got " + state);
@@ -69,11 +70,14 @@ public final class PositionedBlockHelper {
         return new ItemStack(ModItems.chalk, 1, block.getState().getBlock().getMetaFromState(block.getState()));
     }
     public static ItemStack getStackFromChalk(PositionedBlock block, boolean flat) {
-        if(block.getState().getBlock() == ModBlocks.blueprint) return new ItemStack(ModItems.picture, 1, 0);
-        ItemStack stack = new ItemStack(ModItems.chalk, 1, block.getState().getBlock().getMetaFromState(block.getState()));
-        if(flat)
-            ItemNBTHelper.setBoolean(stack, LibNBT.FLAT, true);
-        return stack;
+        ItemStack ret = new ItemStack(block.getState().getBlock(), 1, block.getState().getBlock().getMetaFromState(block.getState()));
+        if(block.getState().getBlock() == ModBlocks.blueprint) ret = new ItemStack(ModItems.picture, 1, 0);
+        else if(block.getState().getBlock() == ModBlocks.chalk) ret = new ItemStack(ModItems.chalk, 1, block.getState().getBlock().getMetaFromState(block.getState()));
+        else if(block.getState().getBlock() == ModBlocks.tempest) ret = new ItemStack(ModItems.tempest, 1);
+        if (flat)
+            ItemNBTHelper.setBoolean(ret, LibNBT.FLAT, true);
+
+        return ret;
     }
 
 }

@@ -1,6 +1,7 @@
 package eladkay.quaritum.common.networking;
 
 import eladkay.quaritum.api.lib.LibMisc;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
@@ -26,6 +27,9 @@ public class NetworkHelper {
     }
     public static void tellEveryoneAround(IMessage message, int dim, int x, int y, int z, int range) {
         instance.sendToAllAround(message, new NetworkRegistry.TargetPoint(dim, x, y, z, range));
+    }
+    public static void tellEveryoneAround(IMessage message, int dim, BlockPos pos, int range) {
+        instance.sendToAllAround(message, new NetworkRegistry.TargetPoint(dim, pos.getX(), pos.getY(), pos.getZ(), range));
     }
     public static void tellEveryoneAround(IMessage message, NetworkRegistry.TargetPoint point) {
         instance.sendToAllAround(message, point);
