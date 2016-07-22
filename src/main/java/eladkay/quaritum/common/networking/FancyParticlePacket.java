@@ -25,7 +25,6 @@ public class FancyParticlePacket extends MessageBase<FancyParticlePacket> {
         y = yc;
         z = zc;
         this.amount = amount;
-        LogHelper.logDebug("x = " + x + " y = " + y + " z = " + z);
     }
 
     @Override
@@ -40,7 +39,6 @@ public class FancyParticlePacket extends MessageBase<FancyParticlePacket> {
         y = tag.getDouble("y");
         z = tag.getDouble("z");
         amount = tag.getInteger("amount");
-        LogHelper.logDebug("x = " + x + " y = " + y + " z = " + z);
     }
 
     @Override

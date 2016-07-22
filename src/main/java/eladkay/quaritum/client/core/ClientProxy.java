@@ -97,4 +97,6 @@ public class ClientProxy extends CommonProxy {
         Clipboard board = Toolkit.getDefaultToolkit().getSystemClipboard();
         board.setContents(stringSelection, null);
     }
+
+
 }

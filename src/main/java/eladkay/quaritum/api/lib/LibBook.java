@@ -21,4 +21,7 @@ public class LibBook {
     public static final String ENTRY_INFUSION_PAGE1 = "book.quaritum.infusion_page1";
     public static final String ENTRY_TRANSDUCER = "book.quaritum.transducer_name";
     public static final String ENTRY_TRANSDUCER_PAGE1 = "book.quaritum.transducer_page1";
+    public static final String ENTRY_CIRCLE_OF_THE_FINAL_MOMENT = "book.quaritum.circleofthefinalmoment_name";
+    public static final String ENTRY_CIRCLE_OF_THE_FINAL_MOMENT_PAGE1 = "book.quaritum.circleofthefinalmoment_page1";
+    public static final String ENTRY_ALTAR_OF_THE_FALLING_STAR = "book.quaritum.altarofthefallingstar_name";
 }

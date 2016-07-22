@@ -28,7 +28,8 @@ book.quaritum.transducer_name=Transducer
 book.quaritum.transducer_page1=I developed a device that could help me with building. When I use it on a block, it places a block of that type behind that block! This device takes a little bit of §7animus§r from your player when used. I think I'm the first to make one of these though I could've sworn I've seen it before...
 book.quaritum.blueprint=Blueprint
 book.quaritum.blueprint_page1=this is a casting thingy or something lol
-
+book.quaritum.circleofthefinalmoment_name=Circle of the Final Moment
+book.quaritum.altarofthefallingstar_name=Altar of the Falling Star
 
 quaritum.materialsRequired=Materials required:
 quaritum.itemsRequired=§7Items required:

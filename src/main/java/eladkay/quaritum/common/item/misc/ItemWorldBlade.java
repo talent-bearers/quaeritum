@@ -31,7 +31,7 @@ public class ItemWorldBlade extends ItemModSword {
 
     public static final String TAG_TELEPORTED = "teleportTicks";
 
-    boolean shouldUseElucentParticles = true; //lol
+    boolean shouldUseElucentParticles = false; //lol
 
     public ItemWorldBlade() {
         super(LibNames.WORLD_BLADE, LibMaterials.MYSTIC);

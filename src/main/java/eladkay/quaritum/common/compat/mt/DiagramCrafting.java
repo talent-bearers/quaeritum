@@ -4,10 +4,10 @@ import com.google.common.collect.ImmutableList;
 import eladkay.quaritum.api.rituals.IDiagram;
 import eladkay.quaritum.api.rituals.PositionedBlock;
 import eladkay.quaritum.api.rituals.RitualRegistry;
-import eladkay.quaritum.common.block.tile.TileEntityBlueprint;
 import minetweaker.MineTweakerAPI;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -45,7 +45,7 @@ public class DiagramCrafting implements IDiagram {
     }
 
     @Override
-    public void run(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile) {
+    public void run(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntity tile) {
         EntityItem item = new EntityItem(world, pos.getX(), pos.getY() + 2, pos.getZ(), output);
         System.out.println(output.getDisplayName());
         if (requiress)
@@ -69,7 +69,7 @@ public class DiagramCrafting implements IDiagram {
 
 
     @Override
-    public boolean canRitualRun(@Nullable World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile) {
+    public boolean canRitualRun(@Nullable World world, @Nonnull BlockPos pos, @Nonnull TileEntity tile) {
         if (!requiress) return true;
         if (onPlayers)
             return Helper.consumeAnimusForRitual(tile, false, animus, rarity);
@@ -78,7 +78,7 @@ public class DiagramCrafting implements IDiagram {
     }
 
     @Override
-    public boolean hasRequiredItems(@Nullable World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile) {
+    public boolean hasRequiredItems(@Nullable World world, @Nonnull BlockPos pos, @Nonnull TileEntity tile) {
         return Helper.matches(Helper.stacksAroundAltar(tile, 4), input);
     }
 

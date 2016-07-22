@@ -10,16 +10,15 @@ import eladkay.quaritum.api.rituals.PositionedBlockChalk;
 import eladkay.quaritum.client.core.TooltipHelper;
 import eladkay.quaritum.common.block.ModBlocks;
 import eladkay.quaritum.common.block.flowers.BlockAnimusFlower;
-import eladkay.quaritum.common.block.tile.TileEntityBlueprint;
 import eladkay.quaritum.common.book.ModBook;
 import eladkay.quaritum.common.book.PageDiagram;
-import eladkay.quaritum.common.core.PositionedBlockHelper;
 import eladkay.quaritum.common.networking.FancyParticlePacket;
 import eladkay.quaritum.common.networking.NetworkHelper;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -40,7 +39,7 @@ public class ShardedSkiesTier2Diagram implements IDiagram {
     }
 
     @Override
-    public void run(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint te) {
+    public void run(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntity te) {
         EntityItem item = new EntityItem(world, pos.getX(), pos.getY() + 2, pos.getZ(), new ItemStack(ModBlocks.flower, 1, BlockAnimusFlower.Variants.COMMON_ARCANE.ordinal()));
         world.spawnEntityInWorld(item);
         for (EntityItem stack : Helper.entitiesAroundAltar(te, 4)) {
@@ -51,22 +50,22 @@ public class ShardedSkiesTier2Diagram implements IDiagram {
     }
 
     @Override
-    public boolean canRitualRun(World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile) {
+    public boolean canRitualRun(World world, @Nonnull BlockPos pos, @Nonnull TileEntity tile) {
         return true;
     }
 
     @Override
-    public boolean hasRequiredItems(@Nullable World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile) {
+    public boolean hasRequiredItems(@Nullable World world, @Nonnull BlockPos pos, @Nonnull TileEntity tile) {
         return Helper.matches(Helper.stacksAroundAltar(tile, 4), getRequiredItems());
     }
 
     @Override
-    public int getPrepTime(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile) {
+    public int getPrepTime(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntity tile) {
         return 50;
     }
 
     @Override
-    public boolean onPrepUpdate(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile, int ticksRemaining) {
+    public boolean onPrepUpdate(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntity tile, int ticksRemaining) {
         boolean flag = true;
         for (ItemStack stack : getRequiredItems())
             if (!Helper.isStackInList(stack, Helper.stacksAroundAltar(tile, 4))) return false;

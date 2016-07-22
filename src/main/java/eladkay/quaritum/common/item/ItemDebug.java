@@ -18,6 +18,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
 import java.util.Objects;
@@ -31,7 +32,7 @@ public class ItemDebug extends ItemMod {
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
-        if (worldIn.isRemote)
+        if (!worldIn.isRemote) //this doesn't work if not inverted and it doesn't matter anyways because this debug item only exists in a dev environment
             if (GuiScreen.isShiftKeyDown()) {
                 AnimusHelper.Network.addAnimus(playerIn, 50);
                 AnimusHelper.Network.addRarity(playerIn, 1);
@@ -65,9 +66,14 @@ public class ItemDebug extends ItemMod {
                         out += "chalks.add(new PositionedBlockChalk(null, new BlockPos(" + shift.getX() + ", " + shift.getY() + ", " + shift.getZ() + ")));";
                     }
                 }
-                Quaritum.proxy.copyText(out);
-                if (!worldIn.isRemote)
-                    playerIn.addChatComponentMessage(new TextComponentString("Copied diagrammatic information to clipboard"));
+                if(!Objects.equals(out, ""))
+                    Quaritum.proxy.copyText(out);
+                if (!worldIn.isRemote) {
+                    if (!Objects.equals(out, ""))
+                        playerIn.addChatComponentMessage(new TextComponentString(TextFormatting.GREEN + "Copied Diagrammic information to clipboard"));
+                    else
+                        playerIn.addChatComponentMessage(new TextComponentString(TextFormatting.RED + "Output is empty!"));
+                }
             } else if (state.getBlock() == ModBlocks.foundation) {
                 for (BlockPos shift : BlockPos.getAllInBox(new BlockPos(-12, 1, -12), new BlockPos(12, 25, 12))) {
                     BlockPos bpos = pos.add(shift);
@@ -84,14 +90,19 @@ public class ItemDebug extends ItemMod {
                         if (flag) out += "\n";
                         flag = true;
                         if (Objects.equals(bstate.getBlock().getRegistryName().getResourceDomain(), "minecraft"))
-                            out += "chalks.add(new PositionedBlock(Blocks." + bstate.getBlock().getRegistryName().getResourcePath().toUpperCase() + ".getDefaultState(), new BlockPos(" + shift.getX() + ", " + shift.getY() + ", " + shift.getZ() + "), null); // " + bstate;
+                            out += "chalks.add(new PositionedBlock(Blocks." + bstate.getBlock().getRegistryName().getResourcePath().toUpperCase() + ".getDefaultState(), new BlockPos(" + shift.getX() + ", " + shift.getY() + ", " + shift.getZ() + "), null)); // " + bstate;
                         else
                             out += "chalks.add(new PositionedBlock(UNKNOWN, new BlockPos(" + shift.getX() + ", " + shift.getY() + ", " + shift.getZ() + "), null); // " + bstate;
                     }
                 }
-                Quaritum.proxy.copyText(out);
-                if (!worldIn.isRemote)
-                    playerIn.addChatComponentMessage(new TextComponentString("Copied Work information to clipboard"));
+                if(!Objects.equals(out, ""))
+                    Quaritum.proxy.copyText(out);
+                if (!worldIn.isRemote) {
+                    if (!Objects.equals(out, ""))
+                        playerIn.addChatComponentMessage(new TextComponentString(TextFormatting.GREEN + "Copied Work information to clipboard"));
+                    else
+                        playerIn.addChatComponentMessage(new TextComponentString(TextFormatting.RED + "Output is empty!"));
+                }
             }
         }
         return super.onItemUse(stack, playerIn, worldIn, pos, hand, facing, hitX, hitY, hitZ);

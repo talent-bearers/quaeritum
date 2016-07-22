@@ -11,10 +11,8 @@ import eladkay.quaritum.api.rituals.PositionedBlockChalk;
 import eladkay.quaritum.client.core.TooltipHelper;
 import eladkay.quaritum.common.block.ModBlocks;
 import eladkay.quaritum.common.block.flowers.BlockAnimusFlower;
-import eladkay.quaritum.common.block.tile.TileEntityBlueprint;
 import eladkay.quaritum.common.book.ModBook;
 import eladkay.quaritum.common.book.PageDiagram;
-import eladkay.quaritum.common.core.PositionedBlockHelper;
 import eladkay.quaritum.common.entity.EntityChaosborn;
 import eladkay.quaritum.common.item.ModItems;
 import eladkay.quaritum.common.networking.LightningEffectPacket;
@@ -23,6 +21,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -42,7 +41,7 @@ public class RitualSummoning implements IDiagram {
 
     @Nonnull
     @Override
-    public void run(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint te) {
+    public void run(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntity te) {
         double x = pos.getX() + 0.5;
         double y = pos.getY() + 2;
         double z = pos.getZ() + 0.5;
@@ -66,12 +65,12 @@ public class RitualSummoning implements IDiagram {
     }
 
     @Override
-    public int getPrepTime(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile) {
+    public int getPrepTime(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntity tile) {
         return 50;
     }
 
     @Override
-    public boolean onPrepUpdate(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile, int ticksRemaining) {
+    public boolean onPrepUpdate(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntity tile, int ticksRemaining) {
         NetworkHelper.tellEveryoneAround(new LightningEffectPacket(pos.getX() + op(Math.random() * 4), pos.getY(), pos.getZ() + op(Math.random() * 4)), world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 4);
         for (ItemStack stack : Helper.stacksAroundAltar(tile, 4))
             if (Helper.isStackInList(stack, getRequiredItems())) return true;
@@ -79,12 +78,12 @@ public class RitualSummoning implements IDiagram {
     }
 
     @Override
-    public boolean canRitualRun(@Nullable World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile) {
+    public boolean canRitualRun(@Nullable World world, @Nonnull BlockPos pos, @Nonnull TileEntity tile) {
         return true;
     }
 
     @Override
-    public boolean hasRequiredItems(@Nullable World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile) {
+    public boolean hasRequiredItems(@Nullable World world, @Nonnull BlockPos pos, @Nonnull TileEntity tile) {
         return Helper.matches(Helper.stacksAroundAltar(tile, 4), getRequiredItems());
     }
 

@@ -46,6 +46,7 @@ public final class PositionedBlockHelper {
                     return -1;
                 } else chalks++;
             } else {
+                LogHelper.logDebug("Expected " + block.getState() + " in " + block.getPos() + " for ritual " + optionalName + ". Got " + state);
                 return -1;
             }
         }

@@ -1,28 +1,46 @@
 package eladkay.quaritum.common.rituals.diagrams;
 
+import amerifrance.guideapi.api.IPage;
+import amerifrance.guideapi.page.PageText;
+import com.google.common.collect.ImmutableList;
 import eladkay.quaritum.api.animus.AnimusHelper;
 import eladkay.quaritum.api.animus.INetworkProvider;
 import eladkay.quaritum.api.animus.ISoulstone;
+import eladkay.quaritum.api.lib.LibBook;
 import eladkay.quaritum.api.rituals.IDiagram;
 import eladkay.quaritum.api.rituals.PositionedBlock;
 import eladkay.quaritum.api.rituals.PositionedBlockChalk;
-import eladkay.quaritum.common.block.tile.TileEntityBlueprint;
+import eladkay.quaritum.client.core.TooltipHelper;
+import eladkay.quaritum.common.book.ModBook;
+import eladkay.quaritum.common.book.PageDiagram;
 import eladkay.quaritum.common.core.ChatHelper;
-import eladkay.quaritum.common.core.PositionedBlockHelper;
+import eladkay.quaritum.common.item.ModItems;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public class AltarOfTheFallingStarDiagram implements IDiagram {
+    public static List<IPage> pages = new ArrayList<>();
+
+    @Override
+    public void constructBook() {
+        pages.add(new PageText(TooltipHelper.local(LibBook.ENTRY_CIRCLE_OF_THE_FINAL_MOMENT_PAGE1)));
+        List<PositionedBlock> list = new ArrayList<>();
+        buildChalks(list);
+        pages.add(new PageDiagram(list, ImmutableList.of()));
+        ModBook.register(ModBook.pagesDiagrams, LibBook.ENTRY_ALTAR_OF_THE_FALLING_STAR, pages, new ItemStack(ModItems.awakened));
+    }
     @Nonnull
     @Override
     public String getUnlocalizedName() {
@@ -30,7 +48,7 @@ public class AltarOfTheFallingStarDiagram implements IDiagram {
     }
 
     @Override
-    public boolean hasRequiredItems(@Nullable World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile) {
+    public boolean hasRequiredItems(@Nullable World world, @Nonnull BlockPos pos, @Nonnull TileEntity tile) {
         List<ItemStack> stacks = Helper.stacksAroundAltar(tile, 4);
         for (ItemStack stack : stacks) {
             if (stack.getItem() instanceof ISoulstone) return true;
@@ -39,7 +57,7 @@ public class AltarOfTheFallingStarDiagram implements IDiagram {
     }
 
     @Override
-    public void run(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint te) {
+    public void run(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntity te) {
         boolean flag = false;
 
         List<EntityItem> entities = Helper.entitiesAroundAltar(te, 4);
@@ -70,7 +88,7 @@ public class AltarOfTheFallingStarDiagram implements IDiagram {
 
 
     @Override
-    public boolean canRitualRun(World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile) {
+    public boolean canRitualRun(World world, @Nonnull BlockPos pos, @Nonnull TileEntity tile) {
         List<EntityItem> entities = Helper.entitiesAroundAltar(tile, 4);
         for (EntityItem entity : entities) {
             ItemStack stack = entity.getEntityItem();

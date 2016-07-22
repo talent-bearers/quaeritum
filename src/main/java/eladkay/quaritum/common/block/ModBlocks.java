@@ -1,6 +1,7 @@
 package eladkay.quaritum.common.block;
 
 import eladkay.quaritum.api.lib.LibMisc;
+import eladkay.quaritum.api.rituals.PositionedBlockChalk;
 import eladkay.quaritum.common.block.base.BlockMod;
 import eladkay.quaritum.common.block.chalk.BlockChalk;
 import eladkay.quaritum.common.block.chalk.BlockChalkTempest;
@@ -33,5 +34,8 @@ public class ModBlocks {
 
         GameRegistry.registerTileEntity(TileEntityBlueprint.class, new ResourceLocation(LibMisc.MOD_ID, LibNames.BLUEPRINT).toString());
         GameRegistry.registerTileEntity(TileEntityFoundationStone.class, new ResourceLocation(LibMisc.MOD_ID, LibNames.FOUNDATION).toString());
+
+        PositionedBlockChalk.chalk = chalk;
+        PositionedBlockChalk.tempest = tempest;
     }
 }

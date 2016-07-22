@@ -12,7 +12,6 @@ import eladkay.quaritum.api.util.ItemNBTHelper;
 import eladkay.quaritum.common.block.ModBlocks;
 import eladkay.quaritum.common.core.PositionedBlockHelper;
 import eladkay.quaritum.common.item.ModItems;
-import eladkay.quaritum.common.item.misc.ItemPicture;
 import eladkay.quaritum.common.lib.LibLocations;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -118,7 +117,7 @@ public class PageDiagram implements IPage {
             if (mb.size() > 0) {
                 List<String> list = new ArrayList<>();
                 for (PositionedBlock block : mb) {
-                    String name = PositionedBlockHelper.getStackFromChalk(block).getDisplayName();
+                    String name = PositionedBlockHelper.getStackFromChalk(block, false).getDisplayName().replace("Tempest", TextFormatting.GOLD + "Tempest");
                     if (!list.contains(name)) list.add(name);
                 }
                 mats.addAll(list.stream()

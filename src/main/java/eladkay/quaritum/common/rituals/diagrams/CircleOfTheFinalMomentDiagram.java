@@ -1,18 +1,27 @@
 package eladkay.quaritum.common.rituals.diagrams;
 
+import amerifrance.guideapi.api.IPage;
+import amerifrance.guideapi.page.PageText;
+import com.google.common.collect.ImmutableList;
+import eladkay.quaritum.api.lib.LibBook;
 import eladkay.quaritum.api.rituals.IDiagram;
 import eladkay.quaritum.api.rituals.PositionedBlock;
 import eladkay.quaritum.api.rituals.PositionedBlockChalk;
-import eladkay.quaritum.common.block.tile.TileEntityBlueprint;
-import eladkay.quaritum.common.core.PositionedBlockHelper;
+import eladkay.quaritum.client.core.TooltipHelper;
+import eladkay.quaritum.common.book.ModBook;
+import eladkay.quaritum.common.book.PageDiagram;
 import eladkay.quaritum.common.networking.FancyParticlePacket;
 import eladkay.quaritum.common.networking.NetworkHelper;
+import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CircleOfTheFinalMomentDiagram implements IDiagram {
@@ -27,29 +36,40 @@ public class CircleOfTheFinalMomentDiagram implements IDiagram {
     }
 
     @Override
-    public void run(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile) {
+    public void run(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntity tile) {
         //noop lol
     }
 
+    public static List<IPage> pages = new ArrayList<>();
+
     @Override
-    public int getPrepTime(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile) {
+    public void constructBook() {
+        pages.add(new PageText(TooltipHelper.local(LibBook.ENTRY_CIRCLE_OF_THE_FINAL_MOMENT_PAGE1)));
+        List<PositionedBlock> list = new ArrayList<>();
+        buildChalks(list);
+        pages.add(new PageDiagram(list, ImmutableList.of()));
+        ModBook.register(ModBook.pagesDiagrams, LibBook.ENTRY_CIRCLE_OF_THE_FINAL_MOMENT, pages, new ItemStack(Items.CLOCK));
+    }
+
+    @Override
+    public int getPrepTime(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntity tile) {
         return 600;
     }
 
     @Override
-    public boolean onPrepUpdate(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile, int ticksRemaining) {
+    public boolean onPrepUpdate(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntity tile, int ticksRemaining) {
         NetworkHelper.tellEveryoneAround(new FancyParticlePacket(pos.getX() + 0.25, pos.up().getY(), pos.getZ() + 0.25, 50), world.provider.getDimension(), pos, 32);
         incrementAllWorldTimes(world, 20);
         return true;
     }
 
     @Override
-    public boolean canRitualRun(@Nullable World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile) {
+    public boolean canRitualRun(@Nullable World world, @Nonnull BlockPos pos, @Nonnull TileEntity tile) {
         return true;
     }
 
     @Override
-    public boolean hasRequiredItems(@Nullable World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile) {
+    public boolean hasRequiredItems(@Nullable World world, @Nonnull BlockPos pos, @Nonnull TileEntity tile) {
         return true;
     }
 

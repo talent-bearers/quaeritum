@@ -4,6 +4,7 @@ import eladkay.quaritum.api.animus.AnimusHelper;
 import eladkay.quaritum.api.animus.ISoulstone;
 import eladkay.quaritum.api.lib.LibNBT;
 import eladkay.quaritum.api.util.ItemNBTHelper;
+import eladkay.quaritum.client.core.ClientUtils;
 import eladkay.quaritum.common.item.base.ItemMod;
 import eladkay.quaritum.common.lib.LibNames;
 import net.minecraft.entity.Entity;
@@ -34,7 +35,7 @@ public class ItemWorldSoulstone extends ItemMod implements ISoulstone {
 
     @Override
     public void addInformation(ItemStack itemStack, EntityPlayer player, List<String> list, boolean par4) {
-        AnimusHelper.addInformation(itemStack, list, par4);
+        ClientUtils.addInformation(itemStack, list, par4);
     }
 
     @Override

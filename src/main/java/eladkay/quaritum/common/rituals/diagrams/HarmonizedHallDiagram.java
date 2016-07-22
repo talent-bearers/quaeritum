@@ -4,12 +4,11 @@ import eladkay.quaritum.api.animus.ISoulstone;
 import eladkay.quaritum.api.rituals.IDiagram;
 import eladkay.quaritum.api.rituals.PositionedBlock;
 import eladkay.quaritum.api.rituals.PositionedBlockChalk;
-import eladkay.quaritum.common.block.tile.TileEntityBlueprint;
-import eladkay.quaritum.common.core.PositionedBlockHelper;
 import eladkay.quaritum.common.crafting.recipes.RecipeAnimusUpgrade;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -25,7 +24,7 @@ public class HarmonizedHallDiagram implements IDiagram {
     }
 
     @Override
-    public void run(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile) {
+    public void run(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntity tile) {
         for (EntityItem item : Helper.entitiesAroundAltar(tile, 4)) {
             ItemStack stack = item.getEntityItem();
             if (stack.getItem() instanceof ISoulstone)
@@ -37,7 +36,7 @@ public class HarmonizedHallDiagram implements IDiagram {
     }
 
     @Override
-    public boolean hasRequiredItems(@Nullable World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile) {
+    public boolean hasRequiredItems(@Nullable World world, @Nonnull BlockPos pos, @Nonnull TileEntity tile) {
         boolean flag = false;
         List<ItemStack> stacks = Helper.stacksAroundAltar(tile, 4);
         for (ItemStack stack : stacks) {
@@ -50,7 +49,7 @@ public class HarmonizedHallDiagram implements IDiagram {
     }
 
     @Override
-    public boolean canRitualRun(@Nullable World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile) {
+    public boolean canRitualRun(@Nullable World world, @Nonnull BlockPos pos, @Nonnull TileEntity tile) {
         return true;
     }
 

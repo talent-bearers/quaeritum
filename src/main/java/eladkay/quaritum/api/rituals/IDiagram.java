@@ -3,8 +3,6 @@ package eladkay.quaritum.api.rituals;
 import eladkay.quaritum.api.animus.AnimusHelper;
 import eladkay.quaritum.api.animus.INetworkProvider;
 import eladkay.quaritum.api.animus.ISoulstone;
-import eladkay.quaritum.common.block.tile.TileEntityBlueprint;
-import eladkay.quaritum.common.item.soulstones.ItemAttunedSoulstone;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -24,17 +22,17 @@ public interface IDiagram {
     @Nonnull
     String getUnlocalizedName();
 
-    void run(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile);
+    void run(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntity tile);
 
-    boolean canRitualRun(@Nullable World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile);
+    boolean canRitualRun(@Nullable World world, @Nonnull BlockPos pos, @Nonnull TileEntity tile);
 
-    boolean hasRequiredItems(@Nullable World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile);
+    boolean hasRequiredItems(@Nullable World world, @Nonnull BlockPos pos, @Nonnull TileEntity tile);
 
-    default int getPrepTime(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile) {
+    default int getPrepTime(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntity tile) {
         return 0;
     }
 
-    default boolean onPrepUpdate(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile, int ticksRemaining) {
+    default boolean onPrepUpdate(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntity tile, int ticksRemaining) {
         return true;
     }
 
@@ -46,7 +44,7 @@ public interface IDiagram {
 
     class Helper {
 
-        public static boolean consumeAnimusForRitual(TileEntityBlueprint tes, boolean drain, int animus, int rarity) {
+        public static boolean consumeAnimusForRitual(TileEntity tes, boolean drain, int animus, int rarity) {
             ItemStack stack1 = Helper.getNearestAttunedSoulstone(tes, 4);
             if (stack1 == null) return false;
             UUID uuid = ((INetworkProvider) stack1.getItem()).getPlayer(stack1);
@@ -54,7 +52,7 @@ public interface IDiagram {
         }
 
         //ffs takeanimus
-        /*public static boolean consumeAnimusForRitualFromSoulstone(TileEntityBlueprint tes, boolean drain, int animus, int rarity) {
+        /*public static boolean consumeAnimusForRitualFromSoulstone(TileEntity tes, boolean drain, int animus, int rarity) {
             ItemStack stack1 = Helper.getNearestSoulstone(tes, 4);
             if(stack1 == null) return false;
             ISoulstone stone = (ISoulstone) stack1.getItem();
@@ -65,15 +63,15 @@ public interface IDiagram {
             }
             return true;
         }*/
-        public static ItemStack getNearestAttunedSoulstone(TileEntityBlueprint tile, double range) {
+        public static ItemStack getNearestAttunedSoulstone(TileEntity tile, double range) {
             MutableObject<ItemStack> ret = new MutableObject(null);
             stacksAroundAltar(tile, range).forEach((stack -> {
-                if (stack.getItem() instanceof ItemAttunedSoulstone) ret.value = stack;
+                if (stack.getItem() instanceof INetworkProvider) ret.value = stack;
             }));
             return ret.value;
         }
 
-        public static ItemStack getNearestSoulstone(TileEntityBlueprint tile, double range) {
+        public static ItemStack getNearestSoulstone(TileEntity tile, double range) {
             MutableObject<ItemStack> ret = new MutableObject(null);
             stacksAroundAltar(tile, range).forEach((stack -> {
                 if (stack.getItem() instanceof ISoulstone) ret.value = stack;
@@ -130,7 +128,7 @@ public interface IDiagram {
             return stack.getItem() == stack2.getItem() && stack.getItemDamage() == stack2.getItemDamage();
         }
 
-        public static boolean takeAnimus(int amount, int rarity, TileEntityBlueprint tile, double range, boolean drain) {
+        public static boolean takeAnimus(int amount, int rarity, TileEntity tile, double range, boolean drain) {
             EntityItem bestFit = null;
             for (EntityItem stack : entitiesAroundAltar(tile, range).stream().filter((stack1 ->
                     stack1.getEntityItem().getItem() instanceof ISoulstone)).collect(Collectors.toList())) {

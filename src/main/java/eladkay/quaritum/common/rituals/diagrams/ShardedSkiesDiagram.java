@@ -9,7 +9,6 @@ import eladkay.quaritum.api.rituals.PositionedBlock;
 import eladkay.quaritum.client.core.TooltipHelper;
 import eladkay.quaritum.common.block.ModBlocks;
 import eladkay.quaritum.common.block.flowers.BlockAnimusFlower;
-import eladkay.quaritum.common.block.tile.TileEntityBlueprint;
 import eladkay.quaritum.common.book.ModBook;
 import eladkay.quaritum.common.book.PageDiagram;
 import eladkay.quaritum.common.networking.FancyParticlePacket;
@@ -17,6 +16,7 @@ import eladkay.quaritum.common.networking.NetworkHelper;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -47,7 +47,7 @@ public class ShardedSkiesDiagram implements IDiagram {
     }
 
     @Override
-    public void run(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tes) {
+    public void run(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntity tes) {
         EntityItem item = new EntityItem(world, pos.getX(), pos.getY() + 2, pos.getZ(), new ItemStack(ModBlocks.flower, 1, BlockAnimusFlower.Variants.COMMON.ordinal()));
 
         for (EntityItem stack : Helper.entitiesAroundAltar(tes, 4)) {
@@ -60,7 +60,7 @@ public class ShardedSkiesDiagram implements IDiagram {
     }
 
     @Override
-    public boolean onPrepUpdate(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile, int ticksRemaining) {
+    public boolean onPrepUpdate(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntity tile, int ticksRemaining) {
         // NetworkHelper.tellEveryoneAround(new FancyParticlePacket(pos.getX(), pos.getY(), pos.getZ(), 100), world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 16);
         boolean flag = false;
         for (EntityItem stack : Helper.entitiesAroundAltar(tile, 4))
@@ -75,17 +75,17 @@ public class ShardedSkiesDiagram implements IDiagram {
     }
 
     @Override
-    public int getPrepTime(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile) {
+    public int getPrepTime(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntity tile) {
         return 50;
     }
 
     @Override
-    public boolean hasRequiredItems(@Nullable World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile) {
+    public boolean hasRequiredItems(@Nullable World world, @Nonnull BlockPos pos, @Nonnull TileEntity tile) {
         return Helper.matches(Helper.stacksAroundAltar(tile, 4), getRequiredItems());
     }
 
     @Override
-    public boolean canRitualRun(World world, @Nonnull BlockPos pos, @Nonnull TileEntityBlueprint tile) {
+    public boolean canRitualRun(World world, @Nonnull BlockPos pos, @Nonnull TileEntity tile) {
         return true;
     }
 
