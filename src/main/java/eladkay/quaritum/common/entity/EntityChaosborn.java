@@ -1,6 +1,7 @@
 package eladkay.quaritum.common.entity;
 
 import com.google.common.collect.Lists;
+import eladkay.quaritum.common.block.ModBlocks;
 import eladkay.quaritum.common.item.ModItems;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -143,7 +144,7 @@ public class EntityChaosborn extends EntityMob {// implements IRangedAttackMob {
     @Override
     protected Item getDropItem() {
         //And here, the world of Magical flora begins.
-        return ModItems.altas;
+        return Item.getItemFromBlock(ModBlocks.crystal);
     }
 
     @Override

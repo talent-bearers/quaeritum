@@ -25,7 +25,7 @@ public class ModItems {
     public static ItemPicture picture;
     public static ItemTransducer transducer;
     public static ItemChalkTempest tempest;
-
+    public static ItemHollower hollower;
     public static void init() {
         dormant = new ItemDormantSoulstone();
         awakened = new ItemAwakenedSoulstone();
@@ -42,8 +42,10 @@ public class ModItems {
         picture = new ItemPicture();
         transducer = new ItemTransducer();
         tempest = new ItemChalkTempest();
-        if (Quaritum.isDevEnv)
+        if (Quaritum.isDevEnv) {
             debug = new ItemDebug();
+            hollower = new ItemHollower();
+        }
 
 
     }

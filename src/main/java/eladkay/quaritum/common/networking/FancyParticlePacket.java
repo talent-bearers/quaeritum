@@ -49,12 +49,10 @@ public class FancyParticlePacket extends MessageBase<FancyParticlePacket> {
         tag.setDouble("z", z);
         tag.setInteger("amount", amount);
         ByteBufUtils.writeTag(buf, tag);
-        LogHelper.logDebug("x = " + x + " y = " + y + " z = " + z);
     }
 
     @Override
     public void handleClientSide(FancyParticlePacket message, EntityPlayer player) {
-        LogHelper.logDebug("x = " + x + " y = " + y + " z = " + z);
 
         //do packety stuff
         for (int i = 0; i < message.amount; i++) {

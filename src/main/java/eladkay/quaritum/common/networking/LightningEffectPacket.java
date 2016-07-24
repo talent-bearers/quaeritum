@@ -1,6 +1,7 @@
 package eladkay.quaritum.common.networking;
 
 import io.netty.buffer.ByteBuf;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -23,7 +24,7 @@ public class LightningEffectPacket extends MessageBase<LightningEffectPacket> {
     @Override
     public void handleClientSide(LightningEffectPacket message, EntityPlayer player) {
         System.out.println("hi");
-        player.worldObj.addWeatherEffect(new EntityLightningBolt(player.worldObj, message.x, message.y, message.z, true));
+        Minecraft.getMinecraft().theWorld.addWeatherEffect(new EntityLightningBolt(Minecraft.getMinecraft().theWorld, message.x, message.y, message.z, true));
     }
 
     @Override

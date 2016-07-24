@@ -29,10 +29,13 @@ public class CircleOfTheFinalMomentWork implements IWork {
     @Override
     public boolean updateTick(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntity tile, long ticksExisted) {
         for (BlockPos pos0 : BlockPos.getAllInBox(new BlockPos(-4, 1, -4).add(pos), new BlockPos(4, 8, 4).add(pos)))
-            if(world.getTileEntity(pos0) != null && world.getTileEntity(pos0) instanceof ITickable)
-                for(int i = 0; i < 4; i++) ((ITickable) world.getTileEntity(pos0)).update();
+            if(world.getTileEntity(pos0) != null && world.getTileEntity(pos0) instanceof ITickable) {
+                for (int i = 0; i < 4; i++) ((ITickable) world.getTileEntity(pos0)).update();
+                NetworkHelper.tellEveryoneAround(new FancyParticlePacket(pos0.getX() + 0.25, pos0.getY() - 0.5, pos0.getZ() + 0.25, 5), world.provider.getDimension(), pos, 32);
+            }
         NetworkHelper.tellEveryoneAround(new FancyParticlePacket(pos.getX() + 0.25, pos.getY(), pos.getZ() + 0.25, 50), world.provider.getDimension(), pos, 32);
-        return ticksExisted < 1200;
+        return IDiagram.Helper.consumeAnimusForRitual(tile, true, 1, 0);
+        //ticksExisted < 1200;
     }
 
     @Override
@@ -47,7 +50,6 @@ public class CircleOfTheFinalMomentWork implements IWork {
 
     @Override
     public void buildPositions(@Nonnull List<PositionedBlock> chalks) {
-        chalks.add(new PositionedBlockChalk(EnumDyeColor.YELLOW, new BlockPos(-4, 1, -7)));
         chalks.add(new PositionedBlockChalk(EnumDyeColor.YELLOW, new BlockPos(-3, 1, -7)));
         chalks.add(new PositionedBlockChalk(EnumDyeColor.YELLOW, new BlockPos(-2, 1, -7)));
         chalks.add(new PositionedBlockChalk(EnumDyeColor.YELLOW, new BlockPos(-1, 1, -7)));
@@ -58,6 +60,7 @@ public class CircleOfTheFinalMomentWork implements IWork {
         chalks.add(new PositionedBlock(Blocks.OBSIDIAN.getDefaultState(), new BlockPos(-6, 1, -6), null)); // minecraft:obsidian
         chalks.add(new PositionedBlockChalk(EnumDyeColor.YELLOW, new BlockPos(-5, 1, -6)));
         chalks.add(new PositionedBlockChalk(EnumDyeColor.YELLOW, new BlockPos(-4, 1, -6)));
+        chalks.add(new PositionedBlockChalk(EnumDyeColor.YELLOW, new BlockPos(-3, 1, -6)));
         chalks.add(new PositionedBlockChalk(EnumDyeColor.YELLOW, new BlockPos(3, 1, -6)));
         chalks.add(new PositionedBlockChalk(EnumDyeColor.YELLOW, new BlockPos(4, 1, -6)));
         chalks.add(new PositionedBlockChalk(EnumDyeColor.YELLOW, new BlockPos(5, 1, -6)));
