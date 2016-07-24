@@ -3,7 +3,10 @@ package eladkay.quaritum.common.rituals.works;
 import eladkay.quaritum.api.rituals.IDiagram;
 import eladkay.quaritum.api.rituals.IWork;
 import eladkay.quaritum.api.rituals.PositionedBlock;
+import eladkay.quaritum.common.block.ModBlocks;
+import eladkay.quaritum.common.block.flowers.BlockAnimusFlower;
 import eladkay.quaritum.common.rituals.diagrams.ShardedSkiesDiagram;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
@@ -13,6 +16,7 @@ import net.minecraft.world.World;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Random;
 
 public class ShardedSkiesWork implements IWork {
     @Nonnull
@@ -23,8 +27,14 @@ public class ShardedSkiesWork implements IWork {
 
     @Override
     public boolean updateTick(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntity tile, long ticksExisted) {
-        System.out.println("hi");
-        return ticksExisted < 20;
+        if(ticksExisted > 600) return false;
+        if(!ModBlocks.flower.canBlockStay(world, pos.up().up(), world.getBlockState(pos.up().up())) || world.getBlockState(pos.up().up()).getBlock() != Blocks.AIR || !IDiagram.Helper.takeAnimus(20, 0, tile, 4.0D ,true)) return true;
+        /*EntityItem item = new EntityItem(world, pos.getX(), pos.getY() + 2, pos.getZ(), new ItemStack(ModBlocks.flower, 1, new Random().nextInt(BlockAnimusFlower.Variants.values().length)));
+        world.spawnEntityInWorld(item);*/
+        IBlockState state = ModBlocks.flower.getStateFromMeta(new Random().nextInt(BlockAnimusFlower.Variants.values().length));
+        world.setBlockState(pos.up().up(), state);
+        return true;
+
     }
 
     @Override

@@ -46,6 +46,17 @@ public class ItemDebug extends ItemMod {
         return super.onItemRightClick(itemStackIn, worldIn, playerIn, hand);
     }
 
+    /*@Override
+    public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+        if(RayHelper.raycast(entityIn, 32) == null || !isSelected) return;
+        BlockPos pos = RayHelper.raycast(entityIn, 32).getBlockPos();
+        IBlockState state = worldIn.getBlockState(pos);
+        if(state.getBlock() == ModBlocks.blueprint)
+            renderAABB(Tessellator.getInstance(), Tessellator.getInstance().getBuffer(), pos.getX() - 4, pos.getY(), pos.getZ() - 4, pos.getX() + 4, pos.getY(), pos.getZ() + 4, 255, 223, 127);
+         else if(state.getBlock() == ModBlocks.foundation)
+            renderAABB(Tessellator.getInstance(), Tessellator.getInstance().getBuffer(), pos.getX() - 12, pos.getY() + 1, pos.getZ() - 12, pos.getX() + 12, pos.getY() + 25, pos.getZ() + 12, 255, 223, 127);
+    }*/
+
     @Override
     public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (playerIn.isSneaking()) {
@@ -66,7 +77,7 @@ public class ItemDebug extends ItemMod {
                         out += "chalks.add(new PositionedBlockChalk(null, new BlockPos(" + shift.getX() + ", " + shift.getY() + ", " + shift.getZ() + ")));";
                     }
                 }
-                if(!Objects.equals(out, ""))
+                if (!Objects.equals(out, ""))
                     Quaritum.proxy.copyText(out);
                 if (!worldIn.isRemote) {
                     if (!Objects.equals(out, ""))
@@ -95,7 +106,7 @@ public class ItemDebug extends ItemMod {
                             out += "chalks.add(new PositionedBlock(UNKNOWN, new BlockPos(" + shift.getX() + ", " + shift.getY() + ", " + shift.getZ() + "), null); // " + bstate;
                     }
                 }
-                if(!Objects.equals(out, ""))
+                if (!Objects.equals(out, ""))
                     Quaritum.proxy.copyText(out);
                 if (!worldIn.isRemote) {
                     if (!Objects.equals(out, ""))
@@ -107,4 +118,5 @@ public class ItemDebug extends ItemMod {
         }
         return super.onItemUse(stack, playerIn, worldIn, pos, hand, facing, hitX, hitY, hitZ);
     }
+
 }
