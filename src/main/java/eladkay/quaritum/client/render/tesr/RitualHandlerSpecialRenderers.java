@@ -12,28 +12,28 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 
 public class RitualHandlerSpecialRenderers {
     private static boolean always = false;
-    private static void func_190055_a(Tessellator p_190055_1_, VertexBuffer p_190055_2_, double p_190055_3_, double p_190055_5_, double p_190055_7_, double p_190055_9_, double p_190055_11_, double p_190055_13_, int p_190055_15_, int p_190055_16_, int p_190055_17_) {
+    private static void func_190055_a(Tessellator tesselator, VertexBuffer vb, double x1, double y1, double z1, double x2, double y2, double z2, int idk1, int idk2, int idk3) {
         GlStateManager.glLineWidth(2.0F);
-        p_190055_2_.begin(3, DefaultVertexFormats.POSITION_COLOR);
-        p_190055_2_.pos(p_190055_3_, p_190055_5_, p_190055_7_).color((float) p_190055_16_, (float) p_190055_16_, (float) p_190055_16_, 0.0F).endVertex();
-        p_190055_2_.pos(p_190055_3_, p_190055_5_, p_190055_7_).color(p_190055_16_, p_190055_16_, p_190055_16_, p_190055_15_).endVertex();
-        p_190055_2_.pos(p_190055_9_, p_190055_5_, p_190055_7_).color(p_190055_16_, p_190055_17_, p_190055_17_, p_190055_15_).endVertex();
-        p_190055_2_.pos(p_190055_9_, p_190055_5_, p_190055_13_).color(p_190055_16_, p_190055_16_, p_190055_16_, p_190055_15_).endVertex();
-        p_190055_2_.pos(p_190055_3_, p_190055_5_, p_190055_13_).color(p_190055_16_, p_190055_16_, p_190055_16_, p_190055_15_).endVertex();
-        p_190055_2_.pos(p_190055_3_, p_190055_5_, p_190055_7_).color(p_190055_17_, p_190055_17_, p_190055_16_, p_190055_15_).endVertex();
-        p_190055_2_.pos(p_190055_3_, p_190055_11_, p_190055_7_).color(p_190055_17_, p_190055_16_, p_190055_17_, p_190055_15_).endVertex();
-        p_190055_2_.pos(p_190055_9_, p_190055_11_, p_190055_7_).color(p_190055_16_, p_190055_16_, p_190055_16_, p_190055_15_).endVertex();
-        p_190055_2_.pos(p_190055_9_, p_190055_11_, p_190055_13_).color(p_190055_16_, p_190055_16_, p_190055_16_, p_190055_15_).endVertex();
-        p_190055_2_.pos(p_190055_3_, p_190055_11_, p_190055_13_).color(p_190055_16_, p_190055_16_, p_190055_16_, p_190055_15_).endVertex();
-        p_190055_2_.pos(p_190055_3_, p_190055_11_, p_190055_7_).color(p_190055_16_, p_190055_16_, p_190055_16_, p_190055_15_).endVertex();
-        p_190055_2_.pos(p_190055_3_, p_190055_11_, p_190055_13_).color(p_190055_16_, p_190055_16_, p_190055_16_, p_190055_15_).endVertex();
-        p_190055_2_.pos(p_190055_3_, p_190055_5_, p_190055_13_).color(p_190055_16_, p_190055_16_, p_190055_16_, p_190055_15_).endVertex();
-        p_190055_2_.pos(p_190055_9_, p_190055_5_, p_190055_13_).color(p_190055_16_, p_190055_16_, p_190055_16_, p_190055_15_).endVertex();
-        p_190055_2_.pos(p_190055_9_, p_190055_11_, p_190055_13_).color(p_190055_16_, p_190055_16_, p_190055_16_, p_190055_15_).endVertex();
-        p_190055_2_.pos(p_190055_9_, p_190055_11_, p_190055_7_).color(p_190055_16_, p_190055_16_, p_190055_16_, p_190055_15_).endVertex();
-        p_190055_2_.pos(p_190055_9_, p_190055_5_, p_190055_7_).color(p_190055_16_, p_190055_16_, p_190055_16_, p_190055_15_).endVertex();
-        p_190055_2_.pos(p_190055_9_, p_190055_5_, p_190055_7_).color((float) p_190055_16_, (float) p_190055_16_, (float) p_190055_16_, 0.0F).endVertex();
-        p_190055_1_.draw();
+        vb.begin(3, DefaultVertexFormats.POSITION_COLOR);
+        vb.pos(x1, y1, z1).color((float) idk2, (float) idk2, (float) idk2, 0.0F).endVertex();
+        vb.pos(x1, y1, z1).color(idk2, idk2, idk2, idk1).endVertex();
+        vb.pos(x2, y1, z1).color(idk2, idk3, idk3, idk1).endVertex();
+        vb.pos(x2, y1, z2).color(idk2, idk2, idk2, idk1).endVertex();
+        vb.pos(x1, y1, z2).color(idk2, idk2, idk2, idk1).endVertex();
+        vb.pos(x1, y1, z1).color(idk3, idk3, idk2, idk1).endVertex();
+        vb.pos(x1, y2, z1).color(idk3, idk2, idk3, idk1).endVertex();
+        vb.pos(x2, y2, z1).color(idk2, idk2, idk2, idk1).endVertex();
+        vb.pos(x2, y2, z2).color(idk2, idk2, idk2, idk1).endVertex();
+        vb.pos(x1, y2, z2).color(idk2, idk2, idk2, idk1).endVertex();
+        vb.pos(x1, y2, z1).color(idk2, idk2, idk2, idk1).endVertex();
+        vb.pos(x1, y2, z2).color(idk2, idk2, idk2, idk1).endVertex();
+        vb.pos(x1, y1, z2).color(idk2, idk2, idk2, idk1).endVertex();
+        vb.pos(x2, y1, z2).color(idk2, idk2, idk2, idk1).endVertex();
+        vb.pos(x2, y2, z2).color(idk2, idk2, idk2, idk1).endVertex();
+        vb.pos(x2, y2, z1).color(idk2, idk2, idk2, idk1).endVertex();
+        vb.pos(x2, y1, z1).color(idk2, idk2, idk2, idk1).endVertex();
+        vb.pos(x2, y1, z1).color((float) idk2, (float) idk2, (float) idk2, 0.0F).endVertex();
+        tesselator.draw();
         GlStateManager.glLineWidth(1.0F);
     }
     public static class BlueprintSpecialRenderer extends TileEntitySpecialRenderer<TileEntityBlueprint> {
