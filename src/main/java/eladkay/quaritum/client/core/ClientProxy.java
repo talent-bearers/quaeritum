@@ -1,5 +1,6 @@
 package eladkay.quaritum.client.core;
 
+import amerifrance.guideapi.api.GuideAPI;
 import eladkay.quaritum.api.lib.LibMisc;
 import eladkay.quaritum.client.fx.FXMagicLine;
 import eladkay.quaritum.client.fx.FXWisp;
@@ -8,10 +9,13 @@ import eladkay.quaritum.client.render.tesr.RitualHandlerSpecialRenderers;
 import eladkay.quaritum.common.Quaritum;
 import eladkay.quaritum.common.block.tile.TileEntityBlueprint;
 import eladkay.quaritum.common.block.tile.TileEntityFoundationStone;
+import eladkay.quaritum.common.book.ModBook;
 import eladkay.quaritum.common.core.CommonProxy;
 import eladkay.quaritum.common.entity.EntityChaosborn;
+import eladkay.quaritum.common.lib.LibNames;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -29,6 +33,7 @@ public class ClientProxy extends CommonProxy {
     public void pre(FMLPreInitializationEvent e) {
         super.pre(e);
         ModelHandler.preInit(LibMisc.MOD_ID);
+        GuideAPI.setModel(ModBook.book, new ModelResourceLocation(LibMisc.MOD_ID + ":" + LibNames.BOOK), "inventory");
     }
 
     @Override

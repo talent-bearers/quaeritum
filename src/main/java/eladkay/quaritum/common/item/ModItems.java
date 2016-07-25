@@ -1,7 +1,6 @@
 package eladkay.quaritum.common.item;
 
 import eladkay.quaritum.common.Quaritum;
-import eladkay.quaritum.common.book.ItemModBook;
 import eladkay.quaritum.common.item.chalk.ItemChalk;
 import eladkay.quaritum.common.item.chalk.ItemChalkTempest;
 import eladkay.quaritum.common.item.misc.*;
@@ -21,11 +20,11 @@ public class ModItems {
     public static ItemReagentAtlas altas;
     public static ItemRiftmakerPart riftmakerPart;
     public static ItemWorldBlade worldBlade;
-    public static ItemModBook book;
     public static ItemPicture picture;
     public static ItemTransducer transducer;
     public static ItemChalkTempest tempest;
     public static ItemHollower hollower;
+    public static ItemPlacer placer;
     public static void init() {
         dormant = new ItemDormantSoulstone();
         awakened = new ItemAwakenedSoulstone();
@@ -38,13 +37,13 @@ public class ModItems {
         altas = new ItemReagentAtlas();
         riftmakerPart = new ItemRiftmakerPart();
         worldBlade = new ItemWorldBlade();
-        book = new ItemModBook();
         picture = new ItemPicture();
         transducer = new ItemTransducer();
         tempest = new ItemChalkTempest();
         if (Quaritum.isDevEnv) {
             debug = new ItemDebug();
             hollower = new ItemHollower();
+            placer = new ItemPlacer();
         }
 
 

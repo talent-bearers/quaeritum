@@ -23,4 +23,8 @@ public interface IWork {
 
     @Nullable
     IDiagram getDiagramCounterpart();
+
+    default void constructBook() {
+        //NO-OP
+    }
 }

@@ -1,5 +1,6 @@
 package eladkay.quaritum.common.core;
 
+import com.google.common.collect.Lists;
 import eladkay.quaritum.api.lib.LibNBT;
 import eladkay.quaritum.api.rituals.PositionedBlock;
 import eladkay.quaritum.api.util.ItemNBTHelper;
@@ -14,12 +15,21 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public final class PositionedBlockHelper {
 
     public static PositionedBlock positionedBlockWith(BlockPos pos, EnumDyeColor chalkColor) {
         return PositionedBlock.constructPosChalk(chalkColor, pos);
+    }
+
+    public static ArrayList<ArrayList<PositionedBlock>> sort(ArrayList<PositionedBlock> list) {
+        ArrayList<ArrayList<PositionedBlock>> ret = Lists.newArrayList();
+        for(int i = 0; i < 25; i++) ret.add(Lists.newArrayList());
+        for(PositionedBlock block : list)
+            ret.get(block.getPos().getY()).add(new PositionedBlock(block.getState(), new BlockPos(block.getPos().getX(), 0, block.getPos().getZ()), block.getComparables()));
+        return ret;
     }
 
     public static int getChalkPriority(List<PositionedBlock> list, TileEntity entity, String optionalName) {

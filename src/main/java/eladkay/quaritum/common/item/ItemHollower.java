@@ -24,6 +24,7 @@ import java.util.List;
 public class ItemHollower extends ItemMod {
     public ItemHollower() {
         super(LibNames.HOLLOWER);
+        setMaxStackSize(1);
     }
 
     @Override
@@ -46,7 +47,7 @@ public class ItemHollower extends ItemMod {
         long pos2 = ItemNBTHelper.getLong(stack, LibNBT.CORNER2, -1);
         int flag = 0;
         List<BlockPos> poses = Lists.newArrayList();
-        if(pos1 == -1 || pos2 == -2) return ActionResult.newResult(EnumActionResult.FAIL, stack);
+        if(pos1 == -1 || pos2 == -1) return ActionResult.newResult(EnumActionResult.FAIL, stack);
         for(BlockPos pos : BlockPos.getAllInBox(BlockPos.fromLong(pos1), BlockPos.fromLong(pos2))) {
             boolean flag0 = true;
             for(EnumFacing facing : EnumFacing.values()) if(worldIn.getBlockState(pos.offset(facing)).getBlock() == Blocks.AIR) flag0 = false;

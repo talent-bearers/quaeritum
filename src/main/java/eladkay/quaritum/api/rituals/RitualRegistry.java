@@ -36,6 +36,7 @@ public final class RitualRegistry {
     public static IWork registerWork(IWork ritual, String name) {
         FMLLog.info("Registering work \"" + name + "\".");
 
+        ritual.constructBook();
         String modid = Loader.instance().activeModContainer().getModId();
 
         if (!modid.equals(LibMisc.MOD_ID)) {

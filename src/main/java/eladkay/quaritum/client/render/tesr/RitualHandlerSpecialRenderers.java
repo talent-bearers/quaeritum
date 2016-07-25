@@ -39,11 +39,10 @@ public class RitualHandlerSpecialRenderers {
     public static class BlueprintSpecialRenderer extends TileEntitySpecialRenderer<TileEntityBlueprint> {
         @Override
         public void renderTileEntityAt(TileEntityBlueprint te, double x, double y, double z, float partialTicks, int destroyStage) {
-            if (Minecraft.getMinecraft().thePlayer == null || Minecraft.getMinecraft().thePlayer.inventory.getCurrentItem() == null && !always)
+            if ((Minecraft.getMinecraft().thePlayer == null || Minecraft.getMinecraft().thePlayer.inventory.getCurrentItem() == null || Minecraft.getMinecraft().thePlayer.inventory == null || Minecraft.getMinecraft().thePlayer.inventory.getCurrentItem().getItem() == null) && !always)
                 super.renderTileEntityAt(te, x, y, z, partialTicks, destroyStage);
-            if ((Minecraft.getMinecraft().thePlayer.func_189808_dh() || Minecraft.getMinecraft().thePlayer.isSpectator()) &&
-                    (Minecraft.getMinecraft().thePlayer.inventory.getCurrentItem() != null &&
-                            Minecraft.getMinecraft().thePlayer.inventory.getCurrentItem().getItem() == ModItems.debug) || always) {
+            if ((Minecraft.getMinecraft().thePlayer.inventory.getCurrentItem() != null &&
+                    Minecraft.getMinecraft().thePlayer.inventory.getCurrentItem().getItem() == ModItems.debug) || always) {
                 super.renderTileEntityAt(te, x, y, z, partialTicks, destroyStage);
                 int i = 255;
                 int j = 223;
@@ -72,9 +71,8 @@ public class RitualHandlerSpecialRenderers {
         public void renderTileEntityAt(TileEntityFoundationStone te, double x, double y, double z, float partialTicks, int destroyStage) {
             if (Minecraft.getMinecraft().thePlayer == null || Minecraft.getMinecraft().thePlayer.inventory.getCurrentItem() == null && !always)
                 super.renderTileEntityAt(te, x, y, z, partialTicks, destroyStage);
-            if ((Minecraft.getMinecraft().thePlayer.func_189808_dh() || Minecraft.getMinecraft().thePlayer.isSpectator()) &&
-                    (Minecraft.getMinecraft().thePlayer.inventory.getCurrentItem() != null &&
-                            Minecraft.getMinecraft().thePlayer.inventory.getCurrentItem().getItem() == ModItems.debug) || always) {
+            if ((Minecraft.getMinecraft().thePlayer.inventory.getCurrentItem() != null &&
+                    Minecraft.getMinecraft().thePlayer.inventory.getCurrentItem().getItem() == ModItems.debug) || always) {
                 super.renderTileEntityAt(te, x, y, z, partialTicks, destroyStage);
                 int i = 255;
                 int j = 223;

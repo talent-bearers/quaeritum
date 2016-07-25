@@ -2,8 +2,7 @@ package eladkay.quaritum.common.compat.jei;
 
 import amerifrance.guideapi.api.GuideAPI;
 import eladkay.quaritum.common.block.ModBlocks;
-import eladkay.quaritum.common.book.ItemModBook;
-import eladkay.quaritum.common.item.ModItems;
+import eladkay.quaritum.common.book.ModBook;
 import mezz.jei.api.*;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IRecipeLayout;
@@ -28,16 +27,21 @@ public class JeiPlugin implements IModPlugin {
         jeiHelpers = registry.getJeiHelpers();
         //jeiHelpers.getItemBlacklist().addItemToBlacklist(new ItemStack(ModItems.picture, 1, OreDictionary.WILDCARD_VALUE));
         //No need because nooping in the getsubitems
-        jeiHelpers.getItemBlacklist().addItemToBlacklist(new ItemStack(GuideAPI.guideBook, 1, ItemModBook.meta()));
-        registry.addDescription(ts(ModItems.book), "quaritum.bookdescjei");
+        //jeiHelpers.getItemBlacklist().addItemToBlacklist(new ItemStack(GuideAPI.guideBook, 1, ItemModBook.meta()));
+        registry.addDescription(ts(GuideAPI.guideBook, ModBook.meta()), "quaritum.bookdescjei");
         registry.addRecipeCategories(new DiagramRecipeCatagory());
         registry.addRecipeCategoryCraftingItem(ts(ModBlocks.blueprint), "quaritum:diagram");
+
     }
+
+
 
     private ItemStack ts(Item i) {
         return new ItemStack(i);
     }
-
+    private ItemStack ts(Item i, int meta) {
+        return new ItemStack(i, 1, meta);
+    }
     private ItemStack ts(Block i) {
         return new ItemStack(i);
     }

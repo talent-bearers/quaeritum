@@ -34,6 +34,8 @@ book.quaritum.altarofthefallingstar_name=Altar of the Falling Star
 quaritum.materialsRequired=Materials required:
 quaritum.itemsRequired=§7Items required:
 quaritum.chalksRequired=§7Chalks required:
+quaritum.noblocks=§7None
+quaritum.blocksrequired=§7Blocks required:
 quaritum.diagramtooltip=§7This ritual is a §r§bDiagram§r§7
 quaritum.nochalk=§7None
 itemGroup.quaritum=Quaritum
@@ -58,6 +60,8 @@ item.quaritum:riftFang.name=Riftmaker's Fang
 item.quaritum:riftClaw.name=Riftmaker's Claw
 
 item.quaritum:debug.name=Debug Item
+item.quaritum:hollower.name=Hollower
+item.quaritum:devplacer.name=DevPlacer
 
 rituals.quaritum.altarofthefallingstar=Altar of the Falling Star
 
@@ -103,3 +107,5 @@ item.quaritum:tempestChalk.desc=The Æther, Chaos, Destruction, Power
 
 item.quaritum:fertilizer.name=Magical Fertilizer
 item.quaritum:reagentAtlas.name=Atlas Reagent
+
+tile.quaritum:foundation.name=Foundation Stone

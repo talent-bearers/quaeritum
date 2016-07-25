@@ -2,7 +2,6 @@ package eladkay.quaritum.common.rituals.diagrams;
 
 import com.google.common.collect.ImmutableList;
 import eladkay.quaritum.api.rituals.IDiagram;
-import eladkay.quaritum.api.rituals.RitualRegistry;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -40,7 +39,6 @@ public abstract class CraftingDiagramBase implements IDiagram {
         this.rarity = rarity;
         this.onPlayers = onPlayers;
         this.requiress = requiress;
-        RitualRegistry.registerDiagram(this, name);
     }
 
     @Nonnull

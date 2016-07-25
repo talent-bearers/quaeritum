@@ -5,10 +5,12 @@ import eladkay.quaritum.api.rituals.IWork;
 import eladkay.quaritum.api.rituals.PositionedBlock;
 import eladkay.quaritum.common.block.ModBlocks;
 import eladkay.quaritum.common.block.flowers.BlockAnimusFlower;
+import eladkay.quaritum.common.book.PageWorkFactory;
 import eladkay.quaritum.common.rituals.diagrams.ShardedSkiesDiagram;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -1426,4 +1428,10 @@ public class ShardedSkiesWork implements IWork {
     public IDiagram getDiagramCounterpart() {
         return new ShardedSkiesDiagram();
     }
+
+    @Override
+    public void constructBook() {
+        PageWorkFactory.addWorkToBook("test", this, new ItemStack(ModBlocks.flower));
+    }
+
 }

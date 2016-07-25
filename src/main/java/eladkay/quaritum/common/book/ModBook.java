@@ -50,19 +50,22 @@ public class ModBook {
         categories.add(catagoryAnimus);
 
         book = new Book();
-        book.setSpawnWithBook(false);
         book.setTitle(TooltipHelper.local(LibBook.NAME));
         book.setDisplayName(TooltipHelper.local(LibBook.NAME));
         book.setAuthor(TooltipHelper.local(LibBook.AUTHOR));
         book.setWelcomeMessage(TooltipHelper.local(LibBook.WELCOME_MESSAGE));
-        book.setColor(Color.cyan);
+        book.setColor(new Color(0xFFFFFF));
         book.setCategoryList(categories);
         book.setRegistryName(new ResourceLocation(LibMisc.MOD_ID, LibNames.BOOK));
-        //book.setPageTexture(new ResourceLocation("quaritum:textures/gui/book.png"));
         GuideAPI.BOOKS.register(book);
     }
 
     public static void register(Map<ResourceLocation, EntryAbstract> map, String entryName, List<IPage> pages, ItemStack stack) {
         map.put(new ResourceLocation(LibMisc.MOD_ID, entryName), new EntryItemStack(pages, TooltipHelper.local(entryName), stack));
+    }
+    public static int meta() {
+        for (Book book : GuideAPI.BOOKS.getValues())
+            if (book.equals(ModBook.book)) return GuideAPI.BOOKS.getValues().indexOf(book);
+        return -1;
     }
 }

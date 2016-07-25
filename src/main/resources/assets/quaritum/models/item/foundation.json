@@ -1,0 +1,14 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "quaritum:blocks/foundation"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "quaritum:flat": 1
+      },
+      "model": "quaritum:item/solidFoundation"
+    }
+  ]
+}

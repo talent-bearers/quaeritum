@@ -27,6 +27,7 @@ public class CommonProxy {
     public void pre(FMLPreInitializationEvent e) {
         ModBlocks.init();
         ModItems.init();
+        ModBook.init();
         ModEntities.init();
         ModRecipes.init();
         new Events().init();
@@ -40,7 +41,7 @@ public class CommonProxy {
     }
 
     public void init(FMLInitializationEvent e) {
-        ModBook.init();
+
     }
 
     public void post(FMLPostInitializationEvent e) {

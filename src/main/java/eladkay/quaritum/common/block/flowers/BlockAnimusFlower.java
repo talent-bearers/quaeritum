@@ -1,6 +1,5 @@
 package eladkay.quaritum.common.block.flowers;
 
-import eladkay.quaritum.common.Quaritum;
 import eladkay.quaritum.common.block.base.BlockModFlower;
 import eladkay.quaritum.common.lib.LibNames;
 import net.minecraft.block.material.Material;
@@ -83,8 +82,8 @@ public class BlockAnimusFlower extends BlockModFlower {
         static {
             for (Variants var : Variants.values()) {
                 vars[var.ordinal()] = LibNames.FLOWER + String.join(",", Arrays.asList(var.getName().split("_")).stream().map(BlockAnimusFlower::capitalizeFirst).collect(Collectors.joining()));
-                if (Quaritum.isDevEnv)
-                    System.out.println(LibNames.FLOWER + String.join(",", Arrays.asList(var.getName().split("_")).stream().map(BlockAnimusFlower::capitalizeFirst).collect(Collectors.joining())));
+                /*if (Quaritum.isDevEnv)
+                    System.out.println(LibNames.FLOWER + String.join(",", Arrays.asList(var.getName().split("_")).stream().map(BlockAnimusFlower::capitalizeFirst).collect(Collectors.joining())));*/
             }
 
         }
