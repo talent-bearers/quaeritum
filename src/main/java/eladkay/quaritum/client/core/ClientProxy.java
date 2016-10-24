@@ -45,7 +45,6 @@ public class ClientProxy extends CommonProxy {
 
         RenderingRegistry.registerEntityRenderingHandler(EntityChaosborn.class, RenderChaosborn::new);
         Minecraft.getMinecraft().getTextureMapBlocks().registerSprite(new ResourceLocation("quaritum:entity/magicParticle"));
-        Minecraft.getMinecraft().getTextureMapBlocks().loadTextureAtlas(Minecraft.getMinecraft().getResourceManager());
         if(Quaritum.isDevEnv) {
             ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBlueprint.class, new RitualHandlerSpecialRenderers.BlueprintSpecialRenderer());
             ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFoundationStone.class, new RitualHandlerSpecialRenderers.FoundationStoneSpecialRenderer());

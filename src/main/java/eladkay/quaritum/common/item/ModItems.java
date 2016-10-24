@@ -21,6 +21,7 @@ public class ModItems {
     public static ItemRiftmakerPart riftmakerPart;
     public static ItemWorldBlade worldBlade;
     public static ItemPicture picture;
+    public static ItemBook book;
     public static ItemTransducer transducer;
     public static ItemChalkTempest tempest;
     public static ItemHollower hollower;
@@ -40,6 +41,7 @@ public class ModItems {
         picture = new ItemPicture();
         transducer = new ItemTransducer();
         tempest = new ItemChalkTempest();
+        book = new ItemBook();
         if (Quaritum.isDevEnv) {
             debug = new ItemDebug();
             hollower = new ItemHollower();
