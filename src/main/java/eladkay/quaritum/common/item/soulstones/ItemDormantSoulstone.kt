@@ -1,0 +1,40 @@
+package eladkay.quaritum.common.item.soulstones
+
+import com.teamwizardry.librarianlib.common.base.item.ItemMod
+import eladkay.quaritum.common.item.ModItems
+import eladkay.quaritum.common.lib.LibNames
+import net.minecraft.entity.item.EntityItem
+import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.init.SoundEvents
+import net.minecraft.item.ItemStack
+import net.minecraft.util.ActionResult
+import net.minecraft.util.EnumActionResult
+import net.minecraft.util.EnumHand
+import net.minecraft.util.SoundCategory
+import net.minecraft.world.World
+
+class ItemDormantSoulstone : ItemMod(LibNames.DORMANT_SOULSTONE) {
+    init {
+        setMaxStackSize(1)
+    }
+
+    override fun onItemRightClick(itemStackIn: ItemStack, worldIn: World?, playerIn: EntityPlayer?, hand: EnumHand?): ActionResult<ItemStack> {
+        if (playerIn!!.isSneaking) {
+            worldIn!!.playSound(playerIn, playerIn.position, SoundEvents.ITEM_ARMOR_EQUIP_IRON, SoundCategory.PLAYERS, 1f, 1f)
+            return ActionResult(EnumActionResult.SUCCESS, ItemStack(ModItems.attuned))
+        }
+
+
+        return super.onItemRightClick(itemStackIn, worldIn, playerIn, hand)
+    }
+
+    override fun getEntityLifespan(itemStack: ItemStack?, world: World?): Int {
+        return Integer.MAX_VALUE
+    }
+
+    override fun onEntityItemUpdate(entityItem: EntityItem?): Boolean {
+        if (entityItem!!.isInWater)
+            entityItem.setEntityItemStack(ItemStack(ModItems.oppressive))
+        return false
+    }
+}

@@ -1,40 +1,22 @@
 buildscript {
+    ext.kotlin_version = '1.0.3'
     repositories {
         jcenter()
         maven {
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
         }
-        maven {
-            name "Mobius Repo"
-            url "http://mobiusstrip.eu/maven"
-        }
-        maven {
-            name "CB Repo"
-            url "http://chickenbones.net/maven/"
-        }
-        maven {
-            name = "sonatype"
-            url = "https://oss.sonatype.org/content/repositories/snapshots/"
-        }
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
-repositories {
-    maven {
-        url "http://mobiusstrip.eu/maven"
-    }
-    maven {
-        url "http://chickenbones.net/maven/"
-    }
-}
-repositories {
-    maven {
-        url 'http://tehnut.info/maven/'
-    }
-}
+
+
+apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'kotlin'
+apply plugin: 'idea'
 
 allprojects {
     tasks.withType(JavaCompile) {
@@ -43,28 +25,12 @@ allprojects {
     }
 }
 
-def parseConfig(File config) {
-    config.withReader {
-        def prop = new Properties()
-        prop.load(it)
-        return (new ConfigSlurper().parse(prop))
-    }
-}
-
-
-apply plugin: 'net.minecraftforge.gradle.forge'
-apply plugin: 'idea'
-
 ext.configFile = file('build.properties')
 ext.config = parseConfig(configFile)
 
 version = "${config.version}.${config.build_number}"
 group = "eladkay.quaritum"
 archivesBaseName = config.mod_name
-
-jar {
-    archiveName "${archivesBaseName}-r${version}.jar"
-}
 
 minecraft {
     useDepAts = true
@@ -76,6 +42,7 @@ minecraft {
     replace 'GRADLE:VERSION', config.version
 
     replaceIn 'LibMisc.java'
+    replaceIn 'LibMisc.kt'
 }
 
 repositories {
@@ -83,32 +50,90 @@ repositories {
         url "http://dvs1.progwml6.com/files/maven"
     }
 }
+repositories {
+    maven {
+        url "http://mobiusstrip.eu/maven"
+    }
+    maven {
+        url "http://chickenbones.net/maven/"
+    }
+    maven {
+        url 'http://tehnut.info/maven/'
+    }
+    maven { url "https://jitpack.io" }
+    maven { url "http://dvs1.progwml6.com/files/maven" }
+    maven {
+        name = "forge"
+        url = "http://files.minecraftforge.net/maven"
+    }
+    maven {
+        name = "sonatype"
+        url = "https://oss.sonatype.org/content/repositories/snapshots/"
+    }
 
-dependencies {
-    deobfCompile "mezz.jei:jei_1.9.4:3.6.8.225"
-    deobfCompile "info.amerifrance.guideapi:Guide-API:1.9.4-2.0.0-40"
-    compile "mcp.mobius.waila:Waila:1.7.0-B3_1.9.4"
-    //mcp/mobius/waila/Waila/1.7.0-B2_1.9/
-    //compile "mcp.mobius.waila:Waila:1.5.5_1.7.10"
 }
 
+configurations {
+
+    required
+    compile.extendsFrom(required)
+}
+
+dependencies {
+    deobfCompile "mezz.jei:jei_${config.jei_version}"
+    compile "mcp.mobius.waila:Waila:${config.waila_version}"
+    deobfCompile "info.amerifrance.guideapi:Guide-API:1.10.2-2.0.2-45"
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    required "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile 'com.github.TeamWizardry:LibrarianLib:-SNAPSHOT'
+}
+
+jar {
+    // We need to make sure we package kotlin runtimes.
+
+    archiveName "${archivesBaseName}-r${version}.jar"
+    dependsOn configurations.compile
+    from {
+        configurations.required.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+}
+
+def parseConfig(File config) {
+    config.withReader {
+        def prop = new Properties()
+        prop.load(it)
+        return (new ConfigSlurper().parse(prop))
+    }
+}
+
+sourceSets { main.java.srcDirs += 'src/main/kotlin' }
 idea {
+    module {
+        inheritOutputDirs = true
+    }
     project {
         languageLevel = '1.8'
     }
 }
 
 processResources
-{
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
+        {
+            // this will ensure that this task is redone when the versions change.
+            inputs.property "version", project.version
+            inputs.property "mcversion", project.minecraft.version
 
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-        expand 'version':project.version, 'mcversion':project.minecraft.version
-    }
+            // replace stuff in mcmod.info, nothing else
+            from(sourceSets.main.resources.srcDirs) {
+                include 'mcmod.info'
 
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
-    }
-}
+                // replace version and mcversion
+                expand 'version': project.version, 'mcversion': project.minecraft.version
+            }
+
+            // copy everything else, thats not the mcmod.info
+            from(sourceSets.main.resources.srcDirs) {
+                exclude 'mcmod.info'
+            }
+        }
