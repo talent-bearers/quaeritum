@@ -3,11 +3,11 @@ package eladkay.quaritum.common.rituals.diagrams
 import amerifrance.guideapi.api.IPage
 import amerifrance.guideapi.page.PageText
 import com.google.common.collect.Lists
+import com.teamwizardry.librarianlib.client.util.TooltipHelper
 import eladkay.quaritum.api.lib.LibBook
 import eladkay.quaritum.api.rituals.IDiagram
 import eladkay.quaritum.api.rituals.PositionedBlock
 import eladkay.quaritum.api.rituals.PositionedBlockChalk
-import eladkay.quaritum.client.core.TooltipHelper
 import eladkay.quaritum.common.block.ModBlocks
 import eladkay.quaritum.common.block.flowers.BlockAnimusFlower
 import eladkay.quaritum.common.book.ModBook
@@ -36,7 +36,7 @@ class ShardedSkiesTier2Diagram : IDiagram {
         world.spawnEntityInWorld(item)
         for (stack in IDiagram.Helper.entitiesAroundAltar(te, 4.0)) {
             val server = te.world as WorldServer
-            server.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, stack.position.x + 0.5, stack.position.y + 1, stack.position.z + 0.5, 1, 0.1, 0, 0.1, 0)
+            server.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, stack.position.x + 0.5, stack.position.y + 1.0, stack.position.z + 0.5, 1, 0.1, 0.0, 0.1, 0.0)
             stack.setDead()
         }
     }

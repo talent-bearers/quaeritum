@@ -13,7 +13,7 @@ import net.minecraft.world.World
 object RayHelper {
 
     @JvmOverloads fun raycast(e: Entity, len: Double, stopOnLiquid: Boolean = false): RayTraceResult? {
-        val vec = Vector3.fromEntity(e).add(0.0, if (e is EntityPlayer) e.getEyeHeight() else 0.0, 0.0)
+        val vec = Vector3.fromEntity(e).add(0.0, if (e is EntityPlayer) e.getEyeHeight().toDouble() else 0.0, 0.0)
         val look = e.lookVec ?: return null
         return raycast(e.worldObj, vec, Vector3(look), len, stopOnLiquid)
     }

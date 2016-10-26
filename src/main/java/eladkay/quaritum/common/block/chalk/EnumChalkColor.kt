@@ -3,8 +3,6 @@ package eladkay.quaritum.common.block.chalk
 import eladkay.quaritum.common.block.flowers.BlockAnimusFlower
 import eladkay.quaritum.common.lib.LibNames
 import net.minecraft.util.IStringSerializable
-import java.util.*
-import java.util.stream.Collectors
 
 enum class EnumChalkColor : IStringSerializable {
     WHITE,
@@ -30,14 +28,13 @@ enum class EnumChalkColor : IStringSerializable {
     }
 
     companion object {
-        var vars = arrayOfNulls<String>(EnumChalkColor.values().size)
-
-        init {
-            for (`var` in EnumChalkColor.values()) {
-                vars[`var`.ordinal] = LibNames.CHALK + arrayOf(Arrays.asList<String>(*`var`.getName().split("_".toRegex()).dropLastWhile({ it.isEmpty() }).toTypedArray()).stream().map(Function<String, String> { BlockAnimusFlower.capitalizeFirst(it) }).collect(Collectors.joining())).joinToString(",")
-                println(LibNames.CHALK + arrayOf(Arrays.asList<String>(*`var`.getName().split("_".toRegex()).dropLastWhile({ it.isEmpty() }).toTypedArray()).stream().map(Function<String, String> { BlockAnimusFlower.capitalizeFirst(it) }).collect(Collectors.joining())).joinToString(","))
-            }
-
+        var vars = Array(EnumChalkColor.values().size) {
+            val variant = EnumChalkColor.values()[it]
+            LibNames.CHALK + variant.getName()
+                    .split("_".toRegex())
+                    .filter(String::isNotEmpty)
+                    .map { BlockAnimusFlower.capitalizeFirst(it) }
+                    .joinToString("")
         }
 
 

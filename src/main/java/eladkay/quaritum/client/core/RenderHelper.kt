@@ -10,7 +10,7 @@
  *
  * File Created @ [Jan 19, 2014, 5:40:38 PM (GMT)]
  */
-package eladkay.quaritum.common.core
+package eladkay.quaritum.client.core
 
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.GlStateManager
@@ -185,7 +185,7 @@ object RenderHelper {
     }
 
 
-    fun getKeyDisplayString(keyName: String): String {
+    fun getKeyDisplayString(keyName: String): String? {
         var key: String? = null
         val keys = Minecraft.getMinecraft().gameSettings.keyBindings
         for (otherKey in keys)

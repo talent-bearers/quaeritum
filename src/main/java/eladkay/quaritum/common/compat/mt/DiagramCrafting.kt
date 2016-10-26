@@ -37,7 +37,7 @@ class DiagramCrafting(internal val name: String, input: Array<ItemStack>, intern
         for (stack in IDiagram.Helper.entitiesAroundAltar(tile, 4.0)) {
             if (!IDiagram.Helper.isEntityItemInList(stack, input)) continue
             val server = tile.world as WorldServer
-            server.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, stack.position.x + 0.5, stack.position.y + 1, stack.position.z + 0.5, 1, 0.1, 0, 0.1, 0)
+            server.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, stack.position.x + 0.5, stack.position.y + 1.0, stack.position.z + 0.5, 1, 0.1, 0.0, 0.1, 0.0)
             stack.setDead()
         }
         world.spawnEntityInWorld(item)

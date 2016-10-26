@@ -48,11 +48,11 @@ class ItemTransducer : ItemMod(LibNames.TRANSDUCER) {
         return tower(stack, player, block, state, world, pos, getSide(facing!!.index, hitX.toDouble(), hitY.toDouble(), hitZ.toDouble()), blockStack)
     }
 
-    private fun tower(stack: ItemStack, player: EntityPlayer, block: Block, state: IBlockState, world: World, pos: BlockPos, side: Int, blockStack: ItemStack): EnumActionResult {
+    private fun tower(stack: ItemStack?, player: EntityPlayer, block: Block, state: IBlockState, world: World, pos: BlockPos, side: Int, blockStack: ItemStack): EnumActionResult {
         return tower(stack, player, block, state, world, pos, EnumFacing.getFront(side).opposite, blockStack, 24)
     }
 
-    private fun tower(stack: ItemStack, player: EntityPlayer, block: Block, state: IBlockState, world: World, pos: BlockPos, side: EnumFacing, blockStack: ItemStack, range: Int): EnumActionResult {
+    private fun tower(stack: ItemStack?, player: EntityPlayer, block: Block, state: IBlockState, world: World, pos: BlockPos, side: EnumFacing, blockStack: ItemStack, range: Int): EnumActionResult {
         if (range == 0) return PASS
         val otherState = world.getBlockState(pos)
         val otherBlock = otherState.block
@@ -60,8 +60,8 @@ class ItemTransducer : ItemMod(LibNames.TRANSDUCER) {
             return tower(stack, player, block, state, world, pos.offset(side), side, blockStack, range - 1)
         else if (otherBlock.isReplaceable(world, pos)) {
             if (!world.canBlockBePlaced(block, pos, false, side.opposite, null, blockStack)) return PASS
-            stack.damageItem(1, player)
-            if (stack.stackSize == 0)
+            stack?.damageItem(1, player)
+            if (stack?.stackSize == 0)
                 world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ENDERMEN_TELEPORT,
                         SoundCategory.PLAYERS, 1f, 1f)
             if (!player.capabilities.isCreativeMode) {

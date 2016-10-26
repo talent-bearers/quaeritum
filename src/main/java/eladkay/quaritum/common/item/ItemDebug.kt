@@ -5,7 +5,7 @@ import com.teamwizardry.librarianlib.common.util.plus
 import eladkay.quaritum.api.animus.AnimusHelper
 import eladkay.quaritum.common.Quaritum
 import eladkay.quaritum.common.block.ModBlocks
-import eladkay.quaritum.common.block.chalk.BlockChalk
+import eladkay.quaritum.common.block.base.BlockModColored
 import eladkay.quaritum.common.core.ChatHelper
 import eladkay.quaritum.common.lib.LibNames
 import net.minecraft.client.gui.GuiScreen
@@ -66,7 +66,7 @@ class ItemDebug : ItemMod(LibNames.DEBUG) {
                     if (bstate.block === ModBlocks.chalk) {
                         if (flag) out += "\n"
                         flag = true
-                        out += "chalks.add(new PositionedBlockChalk(EnumDyeColor." + bstate.getValue(BlockChalk.COLOR).name + ", new BlockPos(" + shift.x + ", " + shift.y + ", " + shift.z + ")));"
+                        out += "chalks.add(new PositionedBlockChalk(EnumDyeColor." + bstate.getValue(BlockModColored.COLOR).name + ", new BlockPos(" + shift.x + ", " + shift.y + ", " + shift.z + ")));"
                     } else if (bstate.block === ModBlocks.tempest) {
                         if (flag) out += "\n"
                         flag = true
@@ -88,7 +88,7 @@ class ItemDebug : ItemMod(LibNames.DEBUG) {
                     if (bstate.block === ModBlocks.chalk) {
                         if (flag) out += "\n"
                         flag = true
-                        out += "chalks.add(new PositionedBlockChalk(EnumDyeColor." + bstate.getValue(BlockChalk.Companion.COLOR).name + ", new BlockPos(" + shift.x + ", " + shift.y + ", " + shift.z + ")));"
+                        out += "chalks.add(new PositionedBlockChalk(EnumDyeColor." + bstate.getValue(BlockModColored.COLOR).name + ", new BlockPos(" + shift.x + ", " + shift.y + ", " + shift.z + ")));"
                     } else if (bstate.block === ModBlocks.tempest) {
                         if (flag) out += "\n"
                         flag = true

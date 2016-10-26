@@ -7,7 +7,6 @@ fun String.capitalizeFirst(): String {
     return substring(0, 1).toUpperCase() + substring(1)
 }
 
-fun <T> T.stream(): T = this
 infix operator fun Int.plus(string: String) = "$this$string"
 infix operator fun String.plus(int: Int) = "$this$int"
 infix operator fun Long.plus(int: Int) = int.toLong() + this

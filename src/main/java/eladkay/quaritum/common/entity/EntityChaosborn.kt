@@ -3,7 +3,6 @@ package eladkay.quaritum.common.entity
 import com.google.common.collect.Lists
 import eladkay.quaritum.common.block.ModBlocks
 import eladkay.quaritum.common.item.ModItems
-import eladkay.quaritum.common.lib.stream
 import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.SharedMonsterAttributes
@@ -91,7 +90,7 @@ class EntityChaosborn : EntityMob {
             val source = source
             val l = worldObj.getEntitiesWithinAABB<EntityPlayer>(EntityPlayer::class.java, AxisAlignedBB(source.x + 0.5 - range, source.y + 0.5 - range, source.z + 0.5 - range, source.x.toDouble() + 0.5 + range.toDouble(), source.y.toDouble() + 0.5 + range.toDouble(), source.z.toDouble() + 0.5 + range.toDouble()))
             val ret = Lists.newArrayList<EntityPlayer>()
-            ret.addAll(l.stream().filter({ player -> !player.isCreative }))
+            ret.addAll(l.filter({ player -> !player.isCreative }))
             return ret
         }
 
@@ -116,7 +115,7 @@ class EntityChaosborn : EntityMob {
     //Used to apply status effects.
     override fun onLivingUpdate() {
         super.onLivingUpdate()
-        playersAround.stream().filter({ poorThing -> poorThing.posX > this.posX + 32 || poorThing.posY > this.posY + 32 || poorThing.posZ > this.posZ + 32 || poorThing.posX < this.posX - 32 || poorThing.posY < this.posY - 32 || poorThing.posZ < this.posZ - 32 }).forEach({ poorThing ->
+        playersAround.filter({ poorThing -> poorThing.posX > this.posX + 32 || poorThing.posY > this.posY + 32 || poorThing.posZ > this.posZ + 32 || poorThing.posX < this.posX - 32 || poorThing.posY < this.posY - 32 || poorThing.posZ < this.posZ - 32 }).forEach({ poorThing ->
             poorThing.addPotionEffect(PotionEffect(Potion.REGISTRY.getObject(ResourceLocation("minecraft:nausea"))!!, 10,
                     quality + 2))
             poorThing.addPotionEffect(PotionEffect(Potion.REGISTRY.getObject(ResourceLocation("minecraft:wither"))!!, 10, quality + 2))

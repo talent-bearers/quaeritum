@@ -52,8 +52,7 @@ object ModRecipes {
                     "dye" + dyeColors[i])
         }
         for (i in 1..9) {
-            val recipe = arrayOfNulls<Any>(i)
-            Arrays.fill(recipe, ItemStack(ModItems.awakened))
+            val recipe = Array(i) { ItemStack(ModItems.awakened) }
             addShapelessAnimusRecipe(ItemStack(ModItems.awakened), *recipe)
         }
         addOreDictRecipe(ItemStack(ModItems.worldBlade),

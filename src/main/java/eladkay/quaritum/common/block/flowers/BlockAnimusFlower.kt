@@ -2,7 +2,6 @@ package eladkay.quaritum.common.block.flowers
 
 import eladkay.quaritum.common.block.base.BlockModFlower
 import eladkay.quaritum.common.lib.LibNames
-import eladkay.quaritum.common.lib.stream
 import net.minecraft.block.material.Material
 import net.minecraft.block.properties.IProperty
 import net.minecraft.block.properties.PropertyEnum
@@ -45,15 +44,15 @@ class BlockAnimusFlower : BlockModFlower(LibNames.FLOWER, Material.PLANTS, *Bloc
         return BlockStateContainer(this, FLOWER_TYPE)
     }
 
-    override fun getRarity(stack: ItemStack): Int {
-        val `var` = Variants.of(stack.itemDamage) ?: return 0
-        return `var`.rarity
-    }
-
-    override fun getAnimusFromStack(stack: ItemStack): Int {
-        val `var` = Variants.of(stack.itemDamage) ?: return 0
-        return `var`.amount
-    }
+//    override fun getRarity(stack: ItemStack): Int {
+//        val `var` = Variants.of(stack.itemDamage) ?: return 0
+//        return `var`.rarity
+//    }
+//
+//    override fun getAnimusFromStack(stack: ItemStack): Int {
+//        val `var` = Variants.of(stack.itemDamage) ?: return 0
+//        return `var`.amount
+//    }
 
     enum class Variants private constructor(var rarity: Int, var amount: Int, var nm: String) : IStringSerializable {
         COMMON(0, 20, "common"), COMMON_ARCANE(1, 40, "commonArcane"), ARCANE(2, 60, "arcane");
@@ -67,12 +66,14 @@ class BlockAnimusFlower : BlockModFlower(LibNames.FLOWER, Material.PLANTS, *Bloc
             var vars = arrayOf<String>()
 
             init {
-                for (`var` in Variants.values()) {
-                    vars[`var`.ordinal] = LibNames.FLOWER + arrayOf(Arrays.asList<String>(*`var`.getName().split("_".toRegex()).dropLastWhile({ it.isEmpty() }).toTypedArray()).stream().map({ BlockAnimusFlower.capitalizeFirst(it) })).joinToString(",")
-                    /*if (Quaritum.isDevEnv)
-                    System.out.println(LibNames.FLOWER + String.join(",", Arrays.asList(var.getName().split("_")).stream().map(BlockAnimusFlower::capitalizeFirst).collect(Collectors.joining())));*/
+                Array(Variants.values().size) {
+                    val variant = Variants.values()[it]
+                    LibNames.CHALK + variant.getName()
+                            .split("_".toRegex())
+                            .filter(String::isNotEmpty)
+                            .map { BlockAnimusFlower.capitalizeFirst(it) }
+                            .joinToString("")
                 }
-
             }
 
             fun of(meta: Int): Variants? {
@@ -81,7 +82,7 @@ class BlockAnimusFlower : BlockModFlower(LibNames.FLOWER, Material.PLANTS, *Bloc
             }
 
             fun rarityToName(rarity: Int): String? {
-                return if (rarity == 0) "Common" else if (rarity == 1) "Common (Arcane)" else if (rarity == 2) "Arcane" else null
+                return if (rarity < vars.size && rarity > 0) vars[rarity] else null
             }
         }
     }

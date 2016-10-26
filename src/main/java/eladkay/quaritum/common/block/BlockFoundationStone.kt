@@ -3,13 +3,13 @@ package eladkay.quaritum.common.block
 import amerifrance.guideapi.api.IGuideLinked
 import amerifrance.guideapi.api.IPage
 import amerifrance.guideapi.page.PageText
+import com.teamwizardry.librarianlib.client.util.TooltipHelper
 import com.teamwizardry.librarianlib.common.base.block.BlockMod
 import com.teamwizardry.librarianlib.common.base.block.ItemModBlock
 import eladkay.quaritum.api.lib.LibBook
 import eladkay.quaritum.api.lib.LibMisc
 import eladkay.quaritum.api.lib.LibNBT
 import eladkay.quaritum.api.util.ItemNBTHelper
-import eladkay.quaritum.client.core.TooltipHelper
 import eladkay.quaritum.common.block.tile.TileEntityFoundationStone
 import eladkay.quaritum.common.book.ModBook
 import eladkay.quaritum.common.lib.LibLocations

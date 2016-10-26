@@ -27,7 +27,7 @@ class TileEntityFoundationStone : TileMod() {
         }
     }
 
-    private val bestRitual: IWork
+    private val bestRitual: IWork?
         get() {
             var bestWork: IWork? = null
             var highestChalks = -1

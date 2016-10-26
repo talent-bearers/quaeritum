@@ -48,7 +48,7 @@ class JeiPlugin : IModPlugin {
 
     }
 
-    private inner class DiagramRecipeCatagory : IRecipeCategory<IRecipeWrapper> {
+    private inner class DiagramRecipeCatagory : IRecipeCategory {
 
         override fun getUid(): String {
             return "quaritum:diagram"

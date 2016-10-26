@@ -31,11 +31,11 @@ abstract class TileSimpleInventory : TileMod() {
         return itemHandler
     }
 
-    override fun hasCapability(cap: Capability<*>, side: EnumFacing): Boolean {
+    override fun hasCapability(cap: Capability<*>, side: EnumFacing?): Boolean {
         return cap === CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(cap, side)
     }
 
-    override fun <T> getCapability(cap: Capability<T>, side: EnumFacing): T {
+    override fun <T> getCapability(cap: Capability<T>, side: EnumFacing?): T {
         if (cap === CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
             return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast<T>(itemHandler)
         return super.getCapability(cap, side)
@@ -45,7 +45,7 @@ abstract class TileSimpleInventory : TileMod() {
        allows control over stack limits, and allows for itemstack-slot validation */
     protected class SimpleItemStackHandler(private val tile: TileSimpleInventory, private val allowWrite: Boolean) : ItemStackHandler(tile.sizeInventory) {
 
-        override fun insertItem(slot: Int, stack: ItemStack?, simulate: Boolean): ItemStack {
+        override fun insertItem(slot: Int, stack: ItemStack?, simulate: Boolean): ItemStack? {
             if (allowWrite) {
                 return super.insertItem(slot, stack, simulate)
             } else

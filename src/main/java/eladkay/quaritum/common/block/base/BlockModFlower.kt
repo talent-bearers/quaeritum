@@ -1,58 +1,44 @@
 package eladkay.quaritum.common.block.base
 
+import com.teamwizardry.librarianlib.common.base.block.IModBlock
 import com.teamwizardry.librarianlib.common.base.block.ItemModBlock
-import eladkay.quaritum.common.Quaritum
-import eladkay.quaritum.common.core.CreativeTab
+import com.teamwizardry.librarianlib.common.util.VariantHelper
 import net.minecraft.block.Block
 import net.minecraft.block.BlockBush
+import net.minecraft.block.material.MapColor
 import net.minecraft.block.material.Material
-import net.minecraft.item.EnumRarity
-import net.minecraft.item.ItemStack
-import net.minecraftforge.fml.common.registry.GameRegistry
+import net.minecraft.item.ItemBlock
+import net.minecraftforge.fml.common.Loader
 
 /**
  * @author WireSegal
  * *         Created at 4:18 PM on 4/30/16.
  */
-abstract class BlockModFlower(override val bareName: String, materialIn: Material, vararg variants: String) : BlockBush(materialIn) {
+abstract class BlockModFlower(name: String, materialIn: Material, color: MapColor, vararg variants: String) : BlockBush(materialIn, color), IModBlock {
 
-    override var variants: Array<String> = null
-        private set
+    constructor(name: String, materialIn: Material, vararg variants: String) : this(name, materialIn, materialIn.materialMapColor, *variants)
+
+    final override val variants: Array<out String>
+
+    override val bareName: String = name
+    val modId: String
+
+    val itemForm: ItemBlock? by lazy { createItemForm() }
 
     init {
-        this.variants = variants
-        if (variants.size == 0) {
-            this.variants = arrayOf(bareName)
-        }
-        this.setUnlocalizedName(bareName)
-
-        if (shouldRegisterInCreative())
-            CreativeTab.set(this)
-    }
-
-    fun shouldRegisterInCreative(): Boolean {
-        return true
-    }
-
-    fun shouldHaveItemForm(): Boolean {
-        return true
+        modId = Loader.instance().activeModContainer().modId
+        this.variants = VariantHelper.beginSetupBlock(name, variants)
+        @Suppress("LeakingThis")
+        VariantHelper.finishSetupBlock(this, name, itemForm, creativeTab)
     }
 
     override fun setUnlocalizedName(name: String): Block {
         super.setUnlocalizedName(name)
-        setRegistryName(name)
-        GameRegistry.register(this)
-        if (shouldHaveItemForm())
-            GameRegistry.register(ItemModBlock(this)/*, new ResourceLocation(LibMisc.MOD_ID, name)*/)
-        else
-            Quaritum.proxy!!.addToVariantCache(this)
-        //ModelHandler.variantCache.add(this);
-
+        VariantHelper.setUnlocalizedNameForBlock(this, modId, name, itemForm)
         return this
     }
 
-
-    override fun getBlockRarity(stack: ItemStack): EnumRarity {
-        return EnumRarity.COMMON
+    open fun createItemForm(): ItemBlock? {
+        return ItemModBlock(this)
     }
 }

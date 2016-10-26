@@ -14,7 +14,6 @@ import eladkay.quaritum.api.util.ItemNBTHelper
 import eladkay.quaritum.common.block.ModBlocks
 import eladkay.quaritum.common.core.PositionedBlockHelper
 import eladkay.quaritum.common.lib.LibLocations
-import eladkay.quaritum.common.lib.stream
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.FontRenderer
 import net.minecraft.client.renderer.*
@@ -33,6 +32,8 @@ import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.text.TextFormatting
+import net.minecraftforge.client.ForgeHooksClient
+import net.minecraftforge.client.model.pipeline.LightUtil
 import org.lwjgl.opengl.GL11
 import java.awt.Color
 import java.util.*
@@ -93,20 +94,20 @@ class PageWork(private val mb: List<PositionedBlock>) : IPage {
                 }
                 val map = Maps.newHashMap<String, Int>()
                 for (name in list)
-                    (map as java.util.Map<String, Int>).putIfAbsent(name, Collections.frequency(list, name))
+                    map.putIfAbsent(name, Collections.frequency(list, name))
 
-                mats.addAll(map.keys.stream().map({ name -> " " + TextFormatting.AQUA + map[name] + " " + TextFormatting.GRAY + name }))
+                mats.addAll(map.keys.map({ name -> " " + TextFormatting.AQUA + map[name] + " " + TextFormatting.GRAY + name }))
             } else
                 mats.add(" " + I18n.format("quaritum.noblocks"))
 
-            eladkay.quaritum.common.core.RenderHelper.renderTooltip(mx, my, mats)
+            eladkay.quaritum.client.core.RenderHelper.renderTooltip(mx, my, mats)
         }
         GlStateManager.popMatrix()
 
 
         val dims = PositionedBlockHelper.getDimensions(mb)
         val shift = if (dims.x >= 4 || dims.z >= 4) 2 else 1
-        val s = if (shift == 2) 0.5 else 1
+        val s = if (shift == 2) 0.5 else 1.0
 
         GlStateManager.pushMatrix()
         GlStateManager.scale(s, s, s)
@@ -160,7 +161,7 @@ class PageWork(private val mb: List<PositionedBlock>) : IPage {
         GlStateManager.enableBlend()
         GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA)
         setupGuiTransform(x, y, bakedmodel.isGui3d)
-        bakedmodel = net.minecraftforge.client.ForgeHooksClient.handleCameraTransforms(bakedmodel, ItemCameraTransforms.TransformType.NONE, false)
+        bakedmodel = ForgeHooksClient.handleCameraTransforms(bakedmodel, ItemCameraTransforms.TransformType.NONE, false)
         GlStateManager.scale(s / 2 * 3, s / 2 * 3, s / 2 * 3)
         GlStateManager.rotate(90f, 1f, 0f, 0f)
         renderItem(stack, bakedmodel)
@@ -211,7 +212,7 @@ class PageWork(private val mb: List<PositionedBlock>) : IPage {
                 k = k or -16777216
             }
 
-            net.minecraftforge.client.model.pipeline.LightUtil.renderQuadColor(renderer, bakedquad, k)
+            LightUtil.renderQuadColor(renderer, bakedquad, k)
             ++i
         }
     }

@@ -27,7 +27,7 @@ class ItemWorldSoulstone : ItemMod(LibNames.STONE_OF_THE_WORLDSOUL), ISoulstone 
         AnimusHelper.addAnimus(stack, 1)
     }
 
-    override fun addInformation(itemStack: ItemStack?, player: EntityPlayer?, list: MutableList<String>?, par4: Boolean) {
+    override fun addInformation(itemStack: ItemStack, player: EntityPlayer?, list: MutableList<String>, par4: Boolean) {
         ClientUtils.addInformation(itemStack, list, par4)
     }
 

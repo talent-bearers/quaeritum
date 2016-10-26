@@ -8,9 +8,9 @@ import amerifrance.guideapi.api.impl.abstraction.EntryAbstract
 import amerifrance.guideapi.category.CategoryItemStack
 import amerifrance.guideapi.entry.EntryItemStack
 import com.google.common.collect.Maps
+import com.teamwizardry.librarianlib.client.util.TooltipHelper
 import eladkay.quaritum.api.lib.LibBook
 import eladkay.quaritum.api.lib.LibMisc
-import eladkay.quaritum.client.core.TooltipHelper
 import eladkay.quaritum.common.block.ModBlocks
 import eladkay.quaritum.common.item.ModItems
 import eladkay.quaritum.common.lib.LibNames

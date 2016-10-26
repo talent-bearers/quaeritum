@@ -41,7 +41,7 @@ class ItemAwakenedSoulstone @JvmOverloads constructor(name: String = LibNames.AW
         subItems.add(stack2)
     }
 
-    override fun getMaxDamage(stack: ItemStack?): Int {
+    override fun getMaxDamage(stack: ItemStack): Int {
         return getAnimusLevel(stack)
     }
 
@@ -53,7 +53,7 @@ class ItemAwakenedSoulstone @JvmOverloads constructor(name: String = LibNames.AW
         return Integer.MAX_VALUE
     }
 
-    override fun getAnimusLevel(stack: ItemStack?): Int {
+    override fun getAnimusLevel(stack: ItemStack): Int {
         return ItemNBTHelper.getInt(stack, LibNBT.TAG_ANIMUS, 0)
     }
 

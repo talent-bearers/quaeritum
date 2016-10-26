@@ -2,6 +2,10 @@ package eladkay.quaritum.common.compat.waila
 
 import eladkay.quaritum.common.block.chalk.BlockChalk
 import eladkay.quaritum.common.item.ModItems
+import mcp.mobius.waila.api.IWailaConfigHandler
+import mcp.mobius.waila.api.IWailaDataAccessor
+import mcp.mobius.waila.api.IWailaDataProvider
+import mcp.mobius.waila.api.IWailaRegistrar
 import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound

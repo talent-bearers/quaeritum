@@ -6,6 +6,7 @@ import eladkay.quaritum.api.rituals.PositionedBlock
 import eladkay.quaritum.api.util.ItemNBTHelper
 import eladkay.quaritum.common.block.ModBlocks
 import eladkay.quaritum.common.item.ModItems
+import net.minecraft.block.properties.IProperty
 import net.minecraft.item.EnumDyeColor
 import net.minecraft.item.ItemStack
 import net.minecraft.tileentity.TileEntity
@@ -40,7 +41,7 @@ object PositionedBlockHelper {
                     chalks++
                 else if (comparables != null) {
                     for (property in comparables) {
-                        if (block.state.getValue(property) !== state.getValue(property)) {
+                        if (block.state.getValue(property as IProperty<Comparable<Comparable<*>>>) != state.getValue(property)) {
                             LogHelper.logDebug("Expected " + block.state + " in " + block.getPos() + " for ritual " + optionalName + ". Got " + state)
                             return -1
                         }
@@ -81,8 +82,8 @@ object PositionedBlockHelper {
     }
 
     @Deprecated("")
-    fun getItemStackArrayArrayArrayFromPositionedBlockList(blocks: List<PositionedBlock>): Array<Array<Array<ItemStack>>> {
-        val ret = Array(50) { Array<Array<ItemStack>>(50) { arrayOfNulls<ItemStack>(50) } }
+    fun getItemStackArrayArrayArrayFromPositionedBlockList(blocks: List<PositionedBlock>): Array<Array<Array<ItemStack?>>> {
+        val ret = Array(50) { Array(50) { arrayOfNulls<ItemStack>(50) } }
         for (block in blocks) {
             val stack = ItemStack(ModItems.chalk, 1, block.state.block.getMetaFromState(block.state))
             ret[block.getPos().x + 3][block.getPos().y + 3][block.getPos().z + 3] = stack

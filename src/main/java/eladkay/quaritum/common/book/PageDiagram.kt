@@ -14,7 +14,6 @@ import eladkay.quaritum.common.block.ModBlocks
 import eladkay.quaritum.common.core.PositionedBlockHelper
 import eladkay.quaritum.common.item.ModItems
 import eladkay.quaritum.common.lib.LibLocations
-import eladkay.quaritum.common.lib.stream
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.FontRenderer
 import net.minecraft.client.renderer.GlStateManager
@@ -26,7 +25,6 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.util.text.TextFormatting
 import org.lwjgl.opengl.GL11
 import java.util.*
-import java.util.stream.Collectors
 
 class PageDiagram(private val mb: List<PositionedBlock>, private val items: List<ItemStack>) : IPage {
 
@@ -79,12 +77,12 @@ class PageDiagram(private val mb: List<PositionedBlock>, private val items: List
                 if (!map.containsKey(name))
                     map.put(name, stack.stackSize)
                 else
-                    map.put(name, stack.stackSize + map[name])
+                    map.put(name, stack.stackSize + (map[name] ?: 0))
             }
-            mats.addAll(map.keys.stream().map({ name -> " " + TextFormatting.AQUA + map[name] + " " + TextFormatting.GRAY + name }).collect(Collectors.toList<String>()))
+            mats.addAll(map.keys.map{ name -> " " + TextFormatting.AQUA + map[name] + " " + TextFormatting.GRAY + name })
 
 
-            eladkay.quaritum.common.core.RenderHelper.renderTooltip(mx, my, mats)
+            eladkay.quaritum.client.core.RenderHelper.renderTooltip(mx, my, mats)
         }
         if (mx >= x + 96 && mx < x + 16 + 96 && my >= y && my < y + 16) {
             val mats = ArrayList<String>()
@@ -95,11 +93,11 @@ class PageDiagram(private val mb: List<PositionedBlock>, private val items: List
                     val name = PositionedBlockHelper.getStackFromChalk(block, false).displayName.replace("Tempest", TextFormatting.GOLD + "Tempest")
                     if (!list.contains(name)) list.add(name)
                 }
-                mats.addAll(list.stream().map({ name -> " " + TextFormatting.GRAY + name }))
+                mats.addAll(list.map({ name -> " " + TextFormatting.GRAY + name }))
             } else
                 mats.add(" " + I18n.format("quaritum.nochalk"))
 
-            eladkay.quaritum.common.core.RenderHelper.renderTooltip(mx, my, mats)
+            eladkay.quaritum.client.core.RenderHelper.renderTooltip(mx, my, mats)
         }
         GlStateManager.popMatrix()
 

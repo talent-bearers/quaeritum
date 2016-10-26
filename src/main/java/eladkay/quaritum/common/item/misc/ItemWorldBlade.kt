@@ -1,13 +1,13 @@
 package eladkay.quaritum.common.item.misc
 
 import com.google.common.collect.Multimap
+import com.teamwizardry.librarianlib.common.base.item.ItemModSword
 import eladkay.quaritum.api.animus.AnimusHelper
 import eladkay.quaritum.api.util.ItemNBTHelper
 import eladkay.quaritum.api.util.Vector3
 import eladkay.quaritum.common.Quaritum
 import eladkay.quaritum.common.core.QuaritumMethodHandles
 import eladkay.quaritum.common.core.RayHelper
-import eladkay.quaritum.common.item.base.ItemModSword
 import eladkay.quaritum.common.lib.LibMaterials
 import eladkay.quaritum.common.lib.LibNames
 import net.minecraft.block.state.IBlockState
@@ -19,6 +19,7 @@ import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.SoundEvents
 import net.minecraft.inventory.EntityEquipmentSlot
 import net.minecraft.item.EnumRarity
+import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumParticleTypes
 import net.minecraft.util.math.BlockPos
@@ -50,7 +51,7 @@ class ItemWorldBlade : ItemModSword(LibNames.WORLD_BLADE, LibMaterials.MYSTIC) {
         return true
     }
 
-    override fun onEntitySwing(entityLiving: EntityLivingBase?, stack: ItemStack?): Boolean {
+    override fun onEntitySwing(entityLiving: EntityLivingBase, stack: ItemStack?): Boolean {
         if (entityLiving is EntityPlayer && entityLiving.cooldownTracker.hasCooldown(this))
             return false
 
@@ -73,6 +74,7 @@ class ItemWorldBlade : ItemModSword(LibNames.WORLD_BLADE, LibMaterials.MYSTIC) {
                         pos = Vector3.fromEntity(result.entityHit)
                         hitEntity = true
                     }
+                    null -> {}
                 }
             }
         }

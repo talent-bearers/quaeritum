@@ -1,10 +1,10 @@
 package eladkay.quaritum.common.block.chalk
 
+import com.teamwizardry.librarianlib.common.base.block.IBlockColorProvider
 import eladkay.quaritum.common.block.ModBlocks
 import eladkay.quaritum.common.block.base.BlockModColored
 import eladkay.quaritum.common.item.ModItems
 import eladkay.quaritum.common.lib.LibNames
-import mcp.MethodsReturnNonnullByDefault
 import net.minecraft.block.Block
 import net.minecraft.block.material.Material
 import net.minecraft.block.properties.IProperty
@@ -25,15 +25,14 @@ import net.minecraft.world.World
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import java.util.*
-import javax.annotation.ParametersAreNonnullByDefault
 
-@ParametersAreNonnullByDefault
-@MethodsReturnNonnullByDefault
-class BlockChalk : BlockModColored(LibNames.CHALK_BLOCK, Material.CIRCUITS) {
+class BlockChalk : BlockModColored(LibNames.CHALK_BLOCK, Material.CIRCUITS), IBlockColorProvider {
     private val WIRE_AABBS = arrayOf(AxisAlignedBB(0.1875, 0.0, 0.1875, 0.8125, 0.0625, 0.8125), AxisAlignedBB(0.1875, 0.0, 0.1875, 0.8125, 0.0625, 1.0), AxisAlignedBB(0.0, 0.0, 0.1875, 0.8125, 0.0625, 0.8125), AxisAlignedBB(0.0, 0.0, 0.1875, 0.8125, 0.0625, 1.0), AxisAlignedBB(0.1875, 0.0, 0.0, 0.8125, 0.0625, 0.8125), AxisAlignedBB(0.1875, 0.0, 0.0, 0.8125, 0.0625, 1.0), AxisAlignedBB(0.0, 0.0, 0.0, 0.8125, 0.0625, 0.8125), AxisAlignedBB(0.0, 0.0, 0.0, 0.8125, 0.0625, 1.0), AxisAlignedBB(0.1875, 0.0, 0.1875, 1.0, 0.0625, 0.8125), AxisAlignedBB(0.1875, 0.0, 0.1875, 1.0, 0.0625, 1.0), AxisAlignedBB(0.0, 0.0, 0.1875, 1.0, 0.0625, 0.8125), AxisAlignedBB(0.0, 0.0, 0.1875, 1.0, 0.0625, 1.0), AxisAlignedBB(0.1875, 0.0, 0.0, 1.0, 0.0625, 0.8125), AxisAlignedBB(0.1875, 0.0, 0.0, 1.0, 0.0625, 1.0), AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 0.0625, 0.8125), AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 0.0625, 1.0))
 
-    override val blockColor: IBlockColor?
-        get() = IBlockColor { state, worldIn, pos, tintIndex -> this.getColor(state, worldIn, pos, tintIndex) }
+    @SideOnly(Side.CLIENT)
+    override fun getBlockColor(): IBlockColor? {
+        return IBlockColor { state, worldIn, pos, tintIndex -> this.getColor(state, worldIn, pos, tintIndex) }
+    }
 
     fun getColor(state: IBlockState, worldIn: IBlockAccess?, pos: BlockPos?, tintIndex: Int): Int {
         return state.getValue(BlockModColored.COLOR).mapColor.colorValue
@@ -43,8 +42,8 @@ class BlockChalk : BlockModColored(LibNames.CHALK_BLOCK, Material.CIRCUITS) {
         return BlockStateContainer(this, BlockModColored.COLOR, NORTH, EAST, SOUTH, WEST)
     }
 
-    override val ignoredProperties: Array<IProperty<Comparable<T>>>
-        get() = arrayOf<IProperty<Comparable<T>>>(BlockModColored.COLOR)
+    override val ignoredProperties: Array<IProperty<*>>
+        get() = arrayOf(BlockModColored.COLOR)
 
     override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos): AxisAlignedBB {
         return WIRE_AABBS[getAABBIndex(state.getActualState(source, pos))]
@@ -55,12 +54,12 @@ class BlockChalk : BlockModColored(LibNames.CHALK_BLOCK, Material.CIRCUITS) {
     }
 
     override fun getActualState(state: IBlockState, worldIn: IBlockAccess, pos: BlockPos): IBlockState {
-        var state = state
-        state = state.withProperty(WEST, this.getAttachPosition(worldIn, pos, EnumFacing.WEST))
-        state = state.withProperty(EAST, this.getAttachPosition(worldIn, pos, EnumFacing.EAST))
-        state = state.withProperty(NORTH, this.getAttachPosition(worldIn, pos, EnumFacing.NORTH))
-        state = state.withProperty(SOUTH, this.getAttachPosition(worldIn, pos, EnumFacing.SOUTH))
-        return state
+        var newState = state
+        newState = newState.withProperty(WEST, this.getAttachPosition(worldIn, pos, EnumFacing.WEST))
+        newState = newState.withProperty(EAST, this.getAttachPosition(worldIn, pos, EnumFacing.EAST))
+        newState = newState.withProperty(NORTH, this.getAttachPosition(worldIn, pos, EnumFacing.NORTH))
+        newState = newState.withProperty(SOUTH, this.getAttachPosition(worldIn, pos, EnumFacing.SOUTH))
+        return newState
     }
 
     private fun getAttachPosition(worldIn: IBlockAccess, pos: BlockPos, direction: EnumFacing): EnumAttachPosition {

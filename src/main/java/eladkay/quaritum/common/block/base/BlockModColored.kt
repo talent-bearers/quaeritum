@@ -10,7 +10,6 @@ import net.minecraft.block.state.IBlockState
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.item.EnumDyeColor
 
-
 open class BlockModColored(name: String, materialIn: Material) : BlockMod(name, materialIn, *BlockModColored.generateVariants(name)) {
 
     init {

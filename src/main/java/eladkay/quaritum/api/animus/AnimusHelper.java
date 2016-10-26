@@ -1,7 +1,7 @@
 package eladkay.quaritum.api.animus;
 
+import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import eladkay.quaritum.api.lib.LibMisc;
-import eladkay.quaritum.client.core.TooltipHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;

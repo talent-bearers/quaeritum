@@ -1,5 +1,6 @@
 package eladkay.quaritum.client.core
 
+import com.teamwizardry.librarianlib.client.util.TooltipHelper
 import eladkay.quaritum.api.animus.AnimusHelper
 import eladkay.quaritum.common.Quaritum
 import eladkay.quaritum.common.block.flowers.BlockAnimusFlower

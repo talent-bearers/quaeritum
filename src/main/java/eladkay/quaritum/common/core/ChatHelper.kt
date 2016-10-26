@@ -1,7 +1,7 @@
 package eladkay.quaritum.common.core
 
+import com.teamwizardry.librarianlib.client.util.TooltipHelper
 import eladkay.quaritum.api.lib.LibMisc
-import eladkay.quaritum.client.core.TooltipHelper
 import io.netty.buffer.ByteBuf
 import net.minecraft.client.Minecraft
 import net.minecraft.entity.player.EntityPlayer
@@ -21,7 +21,7 @@ object ChatHelper {
     private val DELETION_ID_2 = 2535272
     private var lastAdded: Int = 0
 
-    private fun sendNoSpamMessages1(messages: Array<ITextComponent>) {
+    private fun sendNoSpamMessages1(messages: Array<out ITextComponent>) {
         val chat = Minecraft.getMinecraft().ingameGUI.chatGUI
         for (i in DELETION_ID_1 + messages.size - 1..lastAdded) {
             chat.deleteChatLine(i)
@@ -32,7 +32,7 @@ object ChatHelper {
         lastAdded = DELETION_ID_1 + messages.size - 1
     }
 
-    private fun sendNoSpamMessages2(messages: Array<ITextComponent>) {
+    private fun sendNoSpamMessages2(messages: Array<out ITextComponent>) {
         val chat = Minecraft.getMinecraft().ingameGUI.chatGUI
         for (i in DELETION_ID_2 + messages.size - 1..lastAdded) {
             chat.deleteChatLine(i)
@@ -48,11 +48,9 @@ object ChatHelper {
     }
 
     fun wrap(vararg s: String): Array<ITextComponent> {
-        val ret = arrayOfNulls<ITextComponent>(s.size)
-        for (i in ret.indices) {
-            ret[i] = wrap(s[i])
+        return Array(s.size) {
+            wrap(s[it])
         }
-        return ret
     }
 
     fun wrapFormatted(s: String, vararg args: Any): ITextComponent {
@@ -74,11 +72,11 @@ object ChatHelper {
     }
 
     @JvmStatic fun sendNoSpamClientUnloc1(unlocLines: Array<String>) {
-        sendNoSpamClient1(*TextHelper.localizeAll(unlocLines))
+        sendNoSpamClient1(*unlocLines.map { TextComponentTranslation(it) }.toTypedArray())
     }
 
     @JvmStatic fun sendNoSpamClientUnloc2(unlocLines: Array<String>) {
-        sendNoSpamClient1(*TextHelper.localizeAll(unlocLines))
+        sendNoSpamClient1(*unlocLines.map { TextComponentTranslation(it) }.toTypedArray())
     }
 
     @JvmStatic fun sendNoSpamClient1(lines: Array<String>) {
@@ -145,11 +143,11 @@ object ChatHelper {
 
     class PacketNoSpamChat : IMessage {
 
-        var chatLines: Array<ITextComponent>
+        var chatLines: Array<out ITextComponent>
         var type: Int = 0
 
         constructor() {
-            this.chatLines = arrayOfNulls<ITextComponent>(0)
+            this.chatLines = arrayOf<ITextComponent>()
             this.type = 1
         }
 
@@ -159,9 +157,9 @@ object ChatHelper {
         }
 
         override fun fromBytes(buf: ByteBuf) {
-            chatLines = arrayOfNulls<ITextComponent>(buf.readInt())
-            for (i in chatLines.indices) {
-                chatLines[i] = ITextComponent.Serializer.jsonToComponent(ByteBufUtils.readUTF8String(buf))
+            val int = buf.readInt()
+            chatLines = Array(int) {
+                ITextComponent.Serializer.jsonToComponent(ByteBufUtils.readUTF8String(buf))
             }
             type = buf.readInt()
         }
@@ -190,12 +188,8 @@ object ChatHelper {
             return TooltipHelper.local(input)
         }
 
-        fun localizeAll(input: Array<String>): Array<String> {
-            val ret = arrayOfNulls<String>(input.size)
-            for (i in input.indices)
-                ret[i] = localize(input[i])
-
-            return ret
+        fun localizeAll(input: Array<out String>): Array<String> {
+            return input.map { localize(it) }.toTypedArray()
         }
     }
 

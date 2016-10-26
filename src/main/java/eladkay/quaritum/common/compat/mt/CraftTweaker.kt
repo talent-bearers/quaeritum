@@ -13,9 +13,8 @@ object CraftTweaker {
     }
 
     fun getStacks(stacks: Array<IItemStack>): Array<ItemStack> {
-        val ret = arrayOfNulls<ItemStack>(stacks.size)
-        for (i in stacks.indices)
-            ret[i] = MineTweakerMC.getItemStack(stacks[i])
-        return ret
+        return Array(stacks.size) {
+            MineTweakerMC.getItemStack(stacks[it])
+        }
     }
 }

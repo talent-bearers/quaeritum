@@ -3,6 +3,7 @@ package eladkay.quaritum.common.rituals.diagrams
 import amerifrance.guideapi.api.IPage
 import amerifrance.guideapi.page.PageText
 import com.google.common.collect.ImmutableList
+import com.teamwizardry.librarianlib.client.util.TooltipHelper
 import eladkay.quaritum.api.animus.AnimusHelper
 import eladkay.quaritum.api.animus.INetworkProvider
 import eladkay.quaritum.api.animus.ISoulstone
@@ -10,7 +11,6 @@ import eladkay.quaritum.api.lib.LibBook
 import eladkay.quaritum.api.rituals.IDiagram
 import eladkay.quaritum.api.rituals.PositionedBlock
 import eladkay.quaritum.api.rituals.PositionedBlockChalk
-import eladkay.quaritum.client.core.TooltipHelper
 import eladkay.quaritum.common.book.ModBook
 import eladkay.quaritum.common.book.PageDiagram
 import eladkay.quaritum.common.core.ChatHelper

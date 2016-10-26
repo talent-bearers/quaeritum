@@ -1,5 +1,6 @@
 package eladkay.quaritum.common.item.soulstones
 
+import com.teamwizardry.librarianlib.common.base.item.ItemMod
 import eladkay.quaritum.api.animus.AnimusHelper
 import eladkay.quaritum.api.animus.INetworkProvider
 import eladkay.quaritum.common.lib.LibNames
@@ -22,7 +23,7 @@ class ItemPassionateSoulstone : ItemMod(LibNames.PASSIONATE_SOULSTONE), INetwork
         GameRegistry.registerFuelHandler(this)
     }
 
-    override fun getContainerItem(itemStack: ItemStack): ItemStack {
+    override fun getContainerItem(itemStack: ItemStack): ItemStack? {
         if (getPlayer(itemStack) == null) return null
         AnimusHelper.Network.addAnimus(getPlayer(itemStack), -4)
         val copiedStack = itemStack.copy()

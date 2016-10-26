@@ -1,5 +1,6 @@
 package eladkay.quaritum.common.item.soulstones
 
+import com.teamwizardry.librarianlib.common.base.item.ItemMod
 import eladkay.quaritum.common.lib.LibNames
 import net.minecraft.item.ItemStack
 import net.minecraft.world.World
