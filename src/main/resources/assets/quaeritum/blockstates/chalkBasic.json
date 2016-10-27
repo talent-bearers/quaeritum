@@ -1,0 +1,21 @@
+{
+  "variants": {
+    "type=White": { "model": "quaeritum:diagram" },
+    "type=Orange": { "model": "quaeritum:diagram" },
+    "type=Magenta": { "model": "cake_slice2" },
+    "type=LightBlue": { "model": "cake_slice3" },
+    "type=Yellow": { "model": "cake_slice4" },
+    "type=Lime": { "model": "cake_slice5" },
+    "type=Pink": { "model": "cake_slice4" },
+    "type=Gray": { "model": "cake_slice5" },
+    "type=LightGray": { "model": "cake_slice4" },
+    "type=cyan": { "model": "cake_slice5" },
+    "type=Purple": { "model": "cake_slice4" },
+    "type=Blue": { "model": "cake_slice5" },
+    "type=Brown": { "model": "cake_slice4" },
+    "type=Green": { "model": "cake_slice5" },
+    "type=Black": { "model": "cake_slice4" },
+    "type=Tempest": { "model": "cake_slice5" },
+    "type=Red": { "model": "cake_slice6" }
+  }
+}

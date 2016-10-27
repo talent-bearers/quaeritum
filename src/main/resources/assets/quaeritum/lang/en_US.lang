@@ -1,0 +1,111 @@
+common=Common
+common_arcane=Rare
+arcane=Arcane
+
+misc.quaeritum.shiftForInfo=&7Hold &bSHIFT&7 for more info
+misc.quaeritum.animusBound=Tied to %s
+misc.quaeritum.notBound=Untied
+
+#Flow Manipulation for Dummies
+book.quaeritum.name=Secrets of the Rift
+book.quaeritum.author=Notes of Elad Kay, Æther Researcher
+book.quaeritum.welcome_message=
+book.quaeritum.diagrams=Diagrams
+book.quaeritum.misc=Misc
+book.quaeritum.works=Works
+book.quaeritum.animus=Animus Manipulation
+book.quaeritum.sharded_skies_name=§oSharded Skies
+book.quaeritum.sharded_skies_page1=Diagrams are designs which echo the huge monuments known as Great Works. The first one I have discovered how to reconstruct is the original Sharded Sky, home of the Life Herald. It appears to channel life, making red flowers into more vibrant versions of themselves.
+book.quaeritum.sharded_skies2_name=Grand Sharded Skies
+book.quaeritum.sharded_skies2_page1=I cracked the problem of the Sharded Sky's weakness. It was rebuilt but the old one remained, so their patterns are different. After I added clarifying chalk, it served as a way to make the flowers the previous Sharded Sky made more potent.
+book.quaeritum.summoning_name=Summoning
+book.quaeritum.summoning_page1=I hit a road block with further development of my flowers. Seems like there's some sort of chaos force holding back my ability to make my flowers more vibrant. I have found a diagram that allows me to summon that chaos as a physical entity.
+book.quaeritum.summoning_page2=Unfortunately, the diagram is more intricate than before and it also requires §7animus§r from an §6Awakened Soulstone§r. It seems like the rarity and quantity of the §7animus§r used directly affects the drops.
+book.quaeritum.infusion_name=Infusion
+book.quaeritum.infusion_page1=<Infusion>
+quaeritum.bookdescjei=This is your guide for all things Quaeritum. It contains information about everything you need to know about the mod.
+book.quaeritum.transducer_name=Transducer
+book.quaeritum.transducer_page1=I developed a device that could help me with building. When I use it on a block, it places a block of that type behind that block! This device takes a little bit of §7animus§r from your player when used. I think I'm the first to make one of these though I could've sworn I've seen it before...
+book.quaeritum.blueprint=Blueprint
+book.quaeritum.blueprint_page1=this is a casting thingy or something lol
+book.quaeritum.circleofthefinalmoment_name=Circle of the Final Moment
+book.quaeritum.altarofthefallingstar_name=Altar of the Falling Star
+
+quaeritum.materialsRequired=Materials required:
+quaeritum.itemsRequired=§7Items required:
+quaeritum.chalksRequired=§7Chalks required:
+quaeritum.noblocks=§7None
+quaeritum.blocksrequired=§7Blocks required:
+quaeritum.diagramtooltip=§7This ritual is a §r§bDiagram§r§7
+quaeritum.nochalk=§7None
+itemGroup.quaeritum=Quaeritum
+
+tile.quaeritum:blueprint.name=Blueprint
+item.quaeritum:dormantSoulstone.name=Dormant Soulstone
+item.quaeritum:attunedSoulstone.name=Attuned Soulstone
+item.quaeritum:awakenedSoulstone.name=Awakened Soulstone
+item.quaeritum:oppressiveSoulstone.name=Oppressive Soulstone
+item.quaeritum:passionateSoulstone.name=Passionate Soulstone
+item.quaeritum:worldSoulstone.name=Stone of the Worldsoul
+item.quaeritum:transducer.name=Transducer
+
+tile.quaeritum:flowerCommon.name=Common Flower
+tile.quaeritum:flowerCommonArcane.name=Rare Flower
+tile.quaeritum:flowerArcane.name=Arcane Flower
+
+tile.quaeritum:crystal.name=Manifest Soul
+item.quaeritum:flowingWorldBlade.name=Blade of the Flowing World
+item.quaeritum:riftFur.name=Riftmaker's Fur
+item.quaeritum:riftFang.name=Riftmaker's Fang
+item.quaeritum:riftClaw.name=Riftmaker's Claw
+
+item.quaeritum:debug.name=Debug Item
+item.quaeritum:hollower.name=Hollower
+item.quaeritum:devplacer.name=DevPlacer
+
+rituals.quaeritum.altarofthefallingstar=Altar of the Falling Star
+
+entity.quaeritum.chaosborn.name=Chaosborn
+
+misc.quaeritum.rushOfEnergy=A rush of energy flows through your soul!
+
+item.quaeritum:chalkWhite.name=White Chalk
+item.quaeritum:chalkOrange.name=Orange Chalk
+item.quaeritum:chalkMagenta.name=Magenta Chalk
+item.quaeritum:chalkLightBlue.name=Light Blue Chalk
+item.quaeritum:chalkYellow.name=Yellow Chalk
+item.quaeritum:chalkLime.name=Lime Chalk
+item.quaeritum:chalkPink.name=Pink Chalk
+item.quaeritum:chalkGray.name=Gray Chalk
+item.quaeritum:chalkLightGray.name=Light Gray Chalk
+item.quaeritum:chalkCyan.name=Cyan Chalk
+item.quaeritum:chalkPurple.name=Purple Chalk
+item.quaeritum:chalkBlue.name=Blue Chalk
+item.quaeritum:chalkBrown.name=Brown Chalk
+item.quaeritum:chalkGreen.name=Green Chalk
+item.quaeritum:chalkRed.name=Red Chalk
+item.quaeritum:chalkBlack.name=Black Chalk
+item.quaeritum:tempestChalk.name=Tempest Chalk
+
+item.quaeritum:chalkWhite.desc=The Soul, Purity, Completion
+item.quaeritum:chalkOrange.desc=The Nether, Heat, Flame
+item.quaeritum:chalkMagenta.desc=Transmutation, Change, Discovery
+item.quaeritum:chalkLightBlue.desc=Air, Weightlessness, Ascension
+item.quaeritum:chalkYellow.desc=Time, Eternity, Determination
+item.quaeritum:chalkLime.desc=Healing, Empowerment
+item.quaeritum:chalkPink.desc=The Spirit, Connection
+item.quaeritum:chalkGray.desc=Metal, Earth, Weight
+item.quaeritum:chalkLightGray.desc=Instinct, Primacy, Truth
+item.quaeritum:chalkCyan.desc=The Mind, Thought, Intelligence
+item.quaeritum:chalkPurple.desc=The End, Unnatural, Eldritch, Strange
+item.quaeritum:chalkBlue.desc=Water, Fluid, Emotion
+item.quaeritum:chalkBrown.desc=Death, Rot, Regrowth
+item.quaeritum:chalkGreen.desc=The Body, Strength, Growth
+item.quaeritum:chalkRed.desc=Focus, Force, Blood
+item.quaeritum:chalkBlack.desc=The Void
+item.quaeritum:tempestChalk.desc=The Æther, Chaos, Destruction, Power
+
+item.quaeritum:fertilizer.name=Magical Fertilizer
+item.quaeritum:reagentAtlas.name=Atlas Reagent
+
+tile.quaeritum:foundation.name=Foundation Stone

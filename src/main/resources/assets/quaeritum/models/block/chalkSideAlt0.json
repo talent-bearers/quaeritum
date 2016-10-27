@@ -1,0 +1,6 @@
+{
+    "parent": "quaeritum:block/chalkSideAlt",
+    "textures": {
+        "line": "blocks/redstone_dust_line0"
+    }
+}
