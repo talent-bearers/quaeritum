@@ -1,7 +1,7 @@
 package eladkay.quaeritum.common.core
 
+import com.teamwizardry.librarianlib.LibrarianLib
 import eladkay.quaeritum.api.lib.LibMisc
-import eladkay.quaeritum.common.Quaeritum
 import org.apache.logging.log4j.Level
 import org.apache.logging.log4j.LogManager
 
@@ -14,7 +14,7 @@ object LogHelper {
     }
 
     fun logDebug(s: Any) {
-        if (Quaeritum.isDevEnv) log(s)
+        if (LibrarianLib.DEV_ENVIRONMENT) log(s)
     }
 
     fun logErr(s: Any) {
@@ -22,7 +22,7 @@ object LogHelper {
     }
 
     fun logDebugErr(s: Any) {
-        if (Quaeritum.isDevEnv) logErr(s)
+        if (LibrarianLib.DEV_ENVIRONMENT) logErr(s)
     }
 
 }

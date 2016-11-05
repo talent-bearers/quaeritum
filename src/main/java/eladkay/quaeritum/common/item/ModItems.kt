@@ -1,6 +1,6 @@
 package eladkay.quaeritum.common.item
 
-import eladkay.quaeritum.common.Quaeritum
+import com.teamwizardry.librarianlib.LibrarianLib
 import eladkay.quaeritum.common.item.chalk.ItemChalk
 import eladkay.quaeritum.common.item.chalk.ItemChalkTempest
 import eladkay.quaeritum.common.item.misc.*
@@ -43,7 +43,7 @@ object ModItems {
         transducer = ItemTransducer()
         tempest = ItemChalkTempest()
         book = ItemBook()
-        if (Quaeritum.isDevEnv) {
+        if (LibrarianLib.DEV_ENVIRONMENT) {
             debug = ItemDebug()
             hollower = ItemHollower()
             placer = ItemPlacer()

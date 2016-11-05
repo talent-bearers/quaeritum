@@ -1,10 +1,10 @@
 package eladkay.quaeritum.client.core
 
+import com.teamwizardry.librarianlib.LibrarianLib
 import eladkay.quaeritum.client.fx.FXMagicLine
 import eladkay.quaeritum.client.fx.FXWisp
 import eladkay.quaeritum.client.render.entity.RenderChaosborn
 import eladkay.quaeritum.client.render.tesr.RitualHandlerSpecialRenderers
-import eladkay.quaeritum.common.Quaeritum
 import eladkay.quaeritum.common.block.tile.TileEntityBlueprint
 import eladkay.quaeritum.common.block.tile.TileEntityFoundationStone
 import eladkay.quaeritum.common.core.CommonProxy
@@ -35,7 +35,7 @@ class ClientProxy : CommonProxy() {
 
         RenderingRegistry.registerEntityRenderingHandler<EntityChaosborn>(EntityChaosborn::class.java, IRenderFactory<EntityChaosborn> { RenderChaosborn(it) })
         Minecraft.getMinecraft().textureMapBlocks.registerSprite(ResourceLocation("quaeritum:entity/magicParticle"))
-        if (Quaeritum.isDevEnv) {
+        if (LibrarianLib.DEV_ENVIRONMENT) {
             ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBlueprint::class.java, RitualHandlerSpecialRenderers.BlueprintSpecialRenderer())
             ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFoundationStone::class.java, RitualHandlerSpecialRenderers.FoundationStoneSpecialRenderer())
         }
