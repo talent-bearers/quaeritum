@@ -1,6 +1,5 @@
 package eladkay.quaeritum.common.block.tile
 
-import com.google.common.collect.Lists
 import eladkay.quaeritum.api.rituals.IWork
 import eladkay.quaeritum.api.rituals.PositionedBlock
 import eladkay.quaeritum.api.rituals.RitualRegistry
@@ -33,7 +32,7 @@ class TileEntityFoundationStone : TileMod() {
             var highestChalks = -1
             for (ritual in RitualRegistry.getWorkList()) {
                 val requirementsMet = ritual.canRitualRun(this.world, pos, this)
-                val blocks = Lists.newArrayList<PositionedBlock>()
+                val blocks = arrayListOf<PositionedBlock>()
                 ritual.buildPositions(blocks)
                 val chalks = PositionedBlockHelper.getChalkPriority(blocks, this, ritual.unlocalizedName)
                 if (requirementsMet && highestChalks < chalks) {

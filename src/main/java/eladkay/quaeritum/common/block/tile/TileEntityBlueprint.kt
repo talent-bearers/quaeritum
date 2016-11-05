@@ -1,6 +1,5 @@
 package eladkay.quaeritum.common.block.tile
 
-import com.google.common.collect.Lists
 import eladkay.quaeritum.api.rituals.IDiagram
 import eladkay.quaeritum.api.rituals.PositionedBlock
 import eladkay.quaeritum.api.rituals.RitualRegistry
@@ -42,7 +41,7 @@ class TileEntityBlueprint : TileMod() {
             for (ritual in RitualRegistry.getDiagramList()) {
                 val foundAll = ritual.hasRequiredItems(worldObj, pos, this)
                 val requirementsMet = ritual.canRitualRun(this.world, pos, this)
-                val blocks = Lists.newArrayList<PositionedBlock>()
+                val blocks = arrayListOf<PositionedBlock>()
                 ritual.buildChalks(blocks)
                 val chalks = PositionedBlockHelper.getChalkPriority(blocks, this, ritual.unlocalizedName)
                 if (foundAll && requirementsMet && highestChalks < chalks) {

@@ -1,12 +1,9 @@
 package eladkay.quaeritum.common.block
 
-/*import amerifrance.guideapi.api.IGuideLinked
-import amerifrance.guideapi.api.IPage
-import amerifrance.guideapi.page.PageText*/
 import com.teamwizardry.librarianlib.common.base.block.BlockMod
 import com.teamwizardry.librarianlib.common.base.block.ItemModBlock
+import com.teamwizardry.librarianlib.common.util.ItemNBTHelper
 import eladkay.quaeritum.api.lib.LibNBT
-import eladkay.quaeritum.api.util.ItemNBTHelper
 import eladkay.quaeritum.common.block.tile.TileEntityBlueprint
 import eladkay.quaeritum.common.lib.LibLocations
 import net.minecraft.block.Block

@@ -1,6 +1,5 @@
 package eladkay.quaeritum.common.compat.mt
 
-import com.google.common.collect.ImmutableList
 import eladkay.quaeritum.api.rituals.IDiagram
 import eladkay.quaeritum.api.rituals.PositionedBlock
 import eladkay.quaeritum.api.rituals.RitualRegistry
@@ -15,10 +14,10 @@ import net.minecraft.world.WorldServer
 import net.minecraftforge.fml.common.Loader
 
 class DiagramCrafting(internal val name: String, input: Array<ItemStack>, internal val output: ItemStack, internal val chalks: List<PositionedBlock>?, internal val animus: Int, internal val onPlayers: Boolean, internal val rarity: Int, internal val requiress: Boolean) : IDiagram {
-    internal val input: ImmutableList<ItemStack>
+    internal val input: List<ItemStack>
 
     init {
-        this.input = ImmutableList.copyOf(input)
+        this.input = listOf(*input)
     }
 
     override fun getUnlocalizedName(): String {

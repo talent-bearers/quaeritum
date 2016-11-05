@@ -1,11 +1,11 @@
 package eladkay.quaeritum.api.animus;
 
+import com.teamwizardry.librarianlib.common.util.ItemNBTHelper;
 import eladkay.quaeritum.api.lib.LibNBT;
-import eladkay.quaeritum.api.util.ItemNBTHelper;
 import net.minecraft.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.UUID;
 
 public interface INetworkProvider {

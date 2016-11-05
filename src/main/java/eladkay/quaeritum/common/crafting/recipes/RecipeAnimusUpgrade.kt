@@ -7,7 +7,6 @@ import eladkay.quaeritum.common.item.ModItems
 import net.minecraft.inventory.InventoryCrafting
 import net.minecraft.item.ItemStack
 import net.minecraftforge.oredict.ShapedOreRecipe
-import org.apache.commons.lang3.mutable.MutableInt
 
 class RecipeAnimusUpgrade(output: ItemStack, vararg inputs: Any) : ShapedOreRecipe(output, inputs) {
 
@@ -30,7 +29,7 @@ class RecipeAnimusUpgrade(output: ItemStack, vararg inputs: Any) : ShapedOreReci
         fun output(output: ItemStack, list: List<ItemStack>): ItemStack {
             val out = output.copy()
 
-            val rarity = MutableInt(Integer.MAX_VALUE)
+            var rarity = Integer.MAX_VALUE
 
             if (out.item !is ISoulstone)
                 return out
@@ -38,8 +37,9 @@ class RecipeAnimusUpgrade(output: ItemStack, vararg inputs: Any) : ShapedOreReci
             val outItem = out.item as ISoulstone
             list.filter({ stack -> stack.item is ISoulstone }).forEach({ stack ->
                 AnimusHelper.addAnimus(out, (stack.item as ISoulstone).getAnimusLevel(stack))
-                rarity.setValue(Math.min(rarity.toInt(), outItem.getRarityLevel(stack)))
+                rarity = Math.min(rarity.toInt(), outItem.getRarityLevel(stack))
             })
+
             AnimusHelper.minimizeRarity(out, rarity.toInt())
             return out
         }

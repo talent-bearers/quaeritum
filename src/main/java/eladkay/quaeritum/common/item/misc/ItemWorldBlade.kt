@@ -2,9 +2,9 @@ package eladkay.quaeritum.common.item.misc
 
 import com.google.common.collect.Multimap
 import com.teamwizardry.librarianlib.common.base.item.ItemModSword
+import com.teamwizardry.librarianlib.common.util.ItemNBTHelper
+import com.teamwizardry.librarianlib.common.util.times
 import eladkay.quaeritum.api.animus.AnimusHelper
-import eladkay.quaeritum.api.util.ItemNBTHelper
-import eladkay.quaeritum.api.util.Vector3
 import eladkay.quaeritum.common.Quaeritum
 import eladkay.quaeritum.common.core.QuaeritumMethodHandles
 import eladkay.quaeritum.common.core.RayHelper
@@ -24,14 +24,15 @@ import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumParticleTypes
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.RayTraceResult
+import net.minecraft.util.math.Vec3d
 import net.minecraft.world.World
 
 class ItemWorldBlade : ItemModSword(LibNames.WORLD_BLADE, LibMaterials.MYSTIC) {
 
-    internal var shouldUseElucentParticles = false //lol
+    internal var shouldUseElucentParticles = false
 
-    override fun onUpdate(stack: ItemStack?, worldIn: World?, entityIn: Entity?, itemSlot: Int, isSelected: Boolean) {
-        if (worldIn!!.isRemote && entityIn is EntityPlayer && stack!!.itemDamage > 0 && AnimusHelper.Network.requestAnimus(entityIn as EntityPlayer?, 2, 0, true))
+    override fun onUpdate(stack: ItemStack, worldIn: World, entityIn: Entity?, itemSlot: Int, isSelected: Boolean) {
+        if (worldIn.isRemote && entityIn is EntityPlayer && stack.itemDamage > 0 && AnimusHelper.Network.requestAnimus(entityIn as EntityPlayer?, 2, 0, true))
             stack.itemDamage = stack.itemDamage - 1
 
         val ticks = ItemNBTHelper.getInt(stack, TAG_TELEPORTED, 0)
@@ -51,36 +52,35 @@ class ItemWorldBlade : ItemModSword(LibNames.WORLD_BLADE, LibMaterials.MYSTIC) {
         return true
     }
 
-    override fun onEntitySwing(entityLiving: EntityLivingBase, stack: ItemStack?): Boolean {
+    override fun onEntitySwing(entityLiving: EntityLivingBase, stack: ItemStack): Boolean {
         if (entityLiving is EntityPlayer && entityLiving.cooldownTracker.hasCooldown(this))
             return false
 
-        var pos = Vector3.ZERO
+        var pos = Vec3d.ZERO
         var hitEntity = false
 
         val hit = RayHelper.getEntityLookedAt(entityLiving, 8.0)
         if (hit != null) {
-            pos = Vector3.fromEntity(hit)
+            pos = hit.positionVector
             hitEntity = true
         } else {
             val result = RayHelper.raycast(entityLiving, 8.0)
             if (result == null) {
-                pos = Vector3.fromEntity(entityLiving).add(Vector3(entityLiving!!.lookVec).multiply(8.0))
+                pos = entityLiving.positionVector.add(entityLiving.lookVec * 8.0)
             } else {
                 when (result.typeOfHit) {
-                    RayTraceResult.Type.MISS -> pos = Vector3.fromEntity(entityLiving).add(Vector3(entityLiving!!.lookVec).multiply(8.0))
-                    RayTraceResult.Type.BLOCK -> pos = Vector3(result.blockPos).add(Vector3(result.sideHit.directionVec)).add(Vector3.CENTER)
+                    RayTraceResult.Type.BLOCK -> pos = Vec3d(result.blockPos).add(Vec3d(result.sideHit.directionVec)).addVector(0.5, 0.5, 0.5)
                     RayTraceResult.Type.ENTITY -> {
-                        pos = Vector3.fromEntity(result.entityHit)
+                        pos = result.entityHit.positionVector
                         hitEntity = true
                     }
-                    null -> {}
+                    else -> {}
                 }
             }
         }
 
-        pos = Vector3(pos.x, Math.max(pos.y, entityLiving!!.posY), pos.z)
-        val blockPos = BlockPos(pos.x, pos.y, pos.z)
+        pos = Vec3d(pos.xCoord, Math.max(pos.yCoord, entityLiving.posY), pos.zCoord)
+        val blockPos = BlockPos(pos)
 
         if (entityLiving.worldObj.getBlockState(blockPos.up()).getCollisionBoundingBox(entityLiving.worldObj, blockPos.up()) == null) {
             if (entityLiving.worldObj.isRemote)
@@ -92,7 +92,7 @@ class ItemWorldBlade : ItemModSword(LibNames.WORLD_BLADE, LibMaterials.MYSTIC) {
                             (entityLiving.worldObj.rand.nextDouble() - 0.5) * 2.0, -entityLiving.worldObj.rand.nextDouble(),
                             (entityLiving.worldObj.rand.nextDouble() - 0.5) * 2.0)
 
-            entityLiving.setPosition(pos.x, pos.y, pos.z)
+            entityLiving.setPosition(pos.xCoord, pos.yCoord, pos.zCoord)
             entityLiving.fallDistance = 0f
 
             if (entityLiving.worldObj.isRemote)

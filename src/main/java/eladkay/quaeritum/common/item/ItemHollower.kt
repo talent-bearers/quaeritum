@@ -2,9 +2,9 @@ package eladkay.quaeritum.common.item
 
 import com.google.common.collect.Lists
 import com.teamwizardry.librarianlib.common.base.item.ItemMod
+import com.teamwizardry.librarianlib.common.util.ItemNBTHelper
 import com.teamwizardry.librarianlib.common.util.plus
 import eladkay.quaeritum.api.lib.LibNBT
-import eladkay.quaeritum.api.util.ItemNBTHelper
 import eladkay.quaeritum.common.lib.LibNames
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.EntityLivingBase
@@ -26,14 +26,14 @@ class ItemHollower : ItemMod(LibNames.HOLLOWER) {
         setMaxStackSize(1)
     }
 
-    override fun onBlockDestroyed(stack: ItemStack?, worldIn: World?, state: IBlockState?, pos: BlockPos?, entityLiving: EntityLivingBase?): Boolean {
-        ItemNBTHelper.setLong(stack, LibNBT.CORNER1, pos!!.toLong())
+    override fun onBlockDestroyed(stack: ItemStack, worldIn: World?, state: IBlockState?, pos: BlockPos, entityLiving: EntityLivingBase?): Boolean {
+        ItemNBTHelper.setLong(stack, LibNBT.CORNER1, pos.toLong())
         if (entityLiving is EntityPlayer) entityLiving.addChatComponentMessage(TextComponentString(TextFormatting.GREEN + "First corner set to: " + pos))
         return false
     }
 
-    override fun onItemUse(stack: ItemStack?, playerIn: EntityPlayer?, worldIn: World?, pos: BlockPos?, hand: EnumHand?, facing: EnumFacing?, hitX: Float, hitY: Float, hitZ: Float): EnumActionResult {
-        ItemNBTHelper.setLong(stack, LibNBT.CORNER2, pos!!.toLong())
+    override fun onItemUse(stack: ItemStack, playerIn: EntityPlayer?, worldIn: World?, pos: BlockPos, hand: EnumHand?, facing: EnumFacing?, hitX: Float, hitY: Float, hitZ: Float): EnumActionResult {
+        ItemNBTHelper.setLong(stack, LibNBT.CORNER2, pos.toLong())
         playerIn!!.addChatComponentMessage(TextComponentString(TextFormatting.GREEN + "Second corner set to: " + pos))
         return EnumActionResult.PASS
     }

@@ -1,9 +1,9 @@
 package eladkay.quaeritum.common.core
 
 import com.google.common.collect.Lists
+import com.teamwizardry.librarianlib.common.util.ItemNBTHelper
 import eladkay.quaeritum.api.lib.LibNBT
 import eladkay.quaeritum.api.rituals.PositionedBlock
-import eladkay.quaeritum.api.util.ItemNBTHelper
 import eladkay.quaeritum.common.block.ModBlocks
 import eladkay.quaeritum.common.item.ModItems
 import net.minecraft.block.properties.IProperty

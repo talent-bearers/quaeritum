@@ -31,10 +31,7 @@ class JeiPlugin : IModPlugin {
     override fun register(registry: IModRegistry) {
 
         jeiHelpers = registry.jeiHelpers
-        //jeiHelpers.getItemBlacklist().addItemToBlacklist(new ItemStack(ModItems.picture, 1, OreDictionary.WILDCARD_VALUE));
-        //No need because nooping in the getsubitems
-        //jeiHelpers.getItemBlacklist().addItemToBlacklist(new ItemStack(GuideAPI.guideBook, 1, ItemModBook.meta()));
-        //registry.addDescription(ts(GuideAPI.guideBook, ModBook.meta()), "quaeritum.bookdescjei")
+
         registry.addRecipeCategories(DiagramRecipeCatagory())
         registry.addRecipeCategoryCraftingItem(ts(ModBlocks.blueprint), "quaeritum:diagram")
 

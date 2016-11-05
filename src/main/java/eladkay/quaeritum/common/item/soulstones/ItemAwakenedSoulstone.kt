@@ -1,10 +1,10 @@
 package eladkay.quaeritum.common.item.soulstones
 
 import com.teamwizardry.librarianlib.common.base.item.ItemMod
+import com.teamwizardry.librarianlib.common.util.ItemNBTHelper
 import eladkay.quaeritum.api.animus.AnimusHelper
 import eladkay.quaeritum.api.animus.ISoulstone
 import eladkay.quaeritum.api.lib.LibNBT
-import eladkay.quaeritum.api.util.ItemNBTHelper
 import eladkay.quaeritum.client.core.ClientUtils
 import eladkay.quaeritum.common.item.ModItems
 import eladkay.quaeritum.common.lib.LibNames

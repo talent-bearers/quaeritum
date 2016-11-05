@@ -1,9 +1,10 @@
 package eladkay.quaeritum.common.core
 
-import eladkay.quaeritum.api.util.Vector3
+import com.teamwizardry.librarianlib.common.util.times
 import net.minecraft.entity.Entity
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.util.math.RayTraceResult
+import net.minecraft.util.math.Vec3d
 import net.minecraft.world.World
 
 /**
@@ -13,36 +14,36 @@ import net.minecraft.world.World
 object RayHelper {
 
     @JvmOverloads fun raycast(e: Entity, len: Double, stopOnLiquid: Boolean = false): RayTraceResult? {
-        val vec = Vector3.fromEntity(e).add(0.0, if (e is EntityPlayer) e.getEyeHeight().toDouble() else 0.0, 0.0)
+        val vec = e.positionVector.addVector(0.0, if (e is EntityPlayer) e.getEyeHeight().toDouble() else 0.0, 0.0)
         val look = e.lookVec ?: return null
-        return raycast(e.worldObj, vec, Vector3(look), len, stopOnLiquid)
+        return raycast(e.worldObj, vec, look, len, stopOnLiquid)
     }
 
-    fun raycast(world: World, origin: Vector3, ray: Vector3, len: Double, stopOnLiquid: Boolean): RayTraceResult? {
-        val end = origin.add(ray.normalize().multiply(len))
-        return world.rayTraceBlocks(origin.toVec3D(), end.toVec3D(), stopOnLiquid)
+    fun raycast(world: World, origin: Vec3d, ray: Vec3d, len: Double, stopOnLiquid: Boolean): RayTraceResult? {
+        val end = origin.add(ray.normalize() * len)
+        return world.rayTraceBlocks(origin, end, stopOnLiquid)
     }
 
     fun getEntityLookedAt(e: Entity, distance: Double): Entity? {
-        var distance = distance
+        var dist = distance
         var foundEntity: Entity? = null
 
-        val finalDistance = distance
+        val finalDistance = dist
 
-        val pos = raycast(e, distance)
+        val pos = raycast(e, dist)
         var positionVector = e.positionVector
         if (e is EntityPlayer)
             positionVector = positionVector.addVector(0.0, e.getEyeHeight().toDouble(), 0.0)
 
         if (pos != null)
-            distance = pos.hitVec.distanceTo(positionVector)
+            dist = pos.hitVec.distanceTo(positionVector)
 
         val lookVector = e.lookVec
         val reachVector = positionVector.addVector(lookVector.xCoord * finalDistance, lookVector.yCoord * finalDistance, lookVector.zCoord * finalDistance)
 
         var lookedEntity: Entity? = null
         val entitiesInBoundingBox = e.worldObj.getEntitiesWithinAABBExcludingEntity(e, e.entityBoundingBox.addCoord(lookVector.xCoord * finalDistance, lookVector.yCoord * finalDistance, lookVector.zCoord * finalDistance).expand(1.0, 1.0, 1.0))
-        var minDistance = distance
+        var minDistance = dist
 
         for (entity in entitiesInBoundingBox) {
             if (entity.canBeCollidedWith()) {
@@ -65,7 +66,7 @@ object RayHelper {
                 }
             }
 
-            if (lookedEntity != null && (minDistance < distance || pos == null))
+            if (lookedEntity != null && (minDistance < dist || pos == null))
                 foundEntity = lookedEntity
         }
 
