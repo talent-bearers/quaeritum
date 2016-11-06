@@ -2,13 +2,14 @@ common=Common
 common_arcane=Rare
 arcane=Arcane
 
-misc.quaeritum.shiftForInfo=&7Hold &bSHIFT&7 for more info
+misc.quaeritum.shiftForInfo=Hold &bSHIFT&7 for more info
+misc.quaeritum.baubletooltip=Press &b%s&7 to open the Baubles menu
 misc.quaeritum.animusBound=Tied to %s
 misc.quaeritum.notBound=Untied
 
 #Flow Manipulation for Dummies
-book.quaeritum.name=Secrets of the Rift
-book.quaeritum.author=Notes of Elad Kay, Æther Researcher
+book.quaeritum.name=Secrets of the Soul
+book.quaeritum.author=Notes of the Lorist Writer of Chalk
 book.quaeritum.welcome_message=
 book.quaeritum.diagrams=Diagrams
 book.quaeritum.misc=Misc
@@ -30,6 +31,11 @@ book.quaeritum.blueprint=Blueprint
 book.quaeritum.blueprint_page1=this is a casting thingy or something lol
 book.quaeritum.circleofthefinalmoment_name=Circle of the Final Moment
 book.quaeritum.altarofthefallingstar_name=Altar of the Falling Star
+
+spell.quaeritum.repulse.name=Roar of Defiance
+
+item.quaeritum:repulsor.name=Circlet of Repulsion
+item.quaeritum:soulEvoker.name=Soul Evoker
 
 quaeritum.materialsRequired=Materials required:
 quaeritum.itemsRequired=§7Items required:

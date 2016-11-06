@@ -36,9 +36,13 @@ class Quaeritum {
         remap.all.filter { it.resourceLocation.resourceDomain == "quaritum" }.
                 forEach {
                     println("Fixing missing mapping quaritum:${it.resourceLocation.resourcePath} of type ${it.type} to ${LibMisc.MOD_ID}:${it.resourceLocation.resourcePath}")
-                    if(it.type == GameRegistry.Type.BLOCK) it.remap(Block.getBlockFromName("${LibMisc.MOD_ID}:${it.resourceLocation.resourcePath}"))
-                    else it.remap(Item.getByNameOrId("${LibMisc.MOD_ID}:${it.resourceLocation.resourcePath}"))
-
+                    if(it.type == GameRegistry.Type.BLOCK) {
+                        val toRemap = Block.getBlockFromName("${LibMisc.MOD_ID}:${it.resourceLocation.resourcePath}")
+                        if (toRemap != null) it.remap(toRemap)
+                    } else {
+                        val toRemap = Item.getByNameOrId("${LibMisc.MOD_ID}:${it.resourceLocation.resourcePath}")
+                        if (toRemap != null) it.remap(toRemap)
+                    }
                 }
     }
 

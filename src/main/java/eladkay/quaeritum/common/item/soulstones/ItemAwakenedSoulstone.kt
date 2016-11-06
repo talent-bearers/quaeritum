@@ -1,12 +1,12 @@
 package eladkay.quaeritum.common.item.soulstones
 
-import com.teamwizardry.librarianlib.common.base.item.ItemMod
 import com.teamwizardry.librarianlib.common.util.ItemNBTHelper
 import eladkay.quaeritum.api.animus.AnimusHelper
 import eladkay.quaeritum.api.animus.ISoulstone
 import eladkay.quaeritum.api.lib.LibNBT
 import eladkay.quaeritum.client.core.ClientUtils
 import eladkay.quaeritum.common.item.ModItems
+import eladkay.quaeritum.common.item.base.ItemQuaeritum
 import eladkay.quaeritum.common.lib.LibNames
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.entity.player.EntityPlayer
@@ -14,7 +14,7 @@ import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.world.World
 
-class ItemAwakenedSoulstone @JvmOverloads constructor(name: String = LibNames.AWAKENED_SOULSTONE) : ItemMod(name), ISoulstone {
+class ItemAwakenedSoulstone @JvmOverloads constructor(name: String = LibNames.AWAKENED_SOULSTONE) : ItemQuaeritum(name), ISoulstone {
 
     init {
         setMaxStackSize(1)

@@ -1,10 +1,10 @@
 package eladkay.quaeritum.common.item.chalk
 
 import com.teamwizardry.librarianlib.client.util.TooltipHelper
-import com.teamwizardry.librarianlib.common.base.item.ItemMod
 import com.teamwizardry.librarianlib.common.util.ItemNBTHelper
 import eladkay.quaeritum.api.lib.LibNBT
 import eladkay.quaeritum.common.block.ModBlocks
+import eladkay.quaeritum.common.item.base.ItemQuaeritum
 import eladkay.quaeritum.common.lib.LibLocations
 import eladkay.quaeritum.common.lib.LibNames
 import net.minecraft.block.state.IBlockState
@@ -18,7 +18,7 @@ import net.minecraft.util.SoundCategory
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 
-class ItemChalkTempest : ItemMod(LibNames.CHALK_TEMPEST) {
+class ItemChalkTempest : ItemQuaeritum(LibNames.CHALK_TEMPEST) {
     init {
         addPropertyOverride(LibLocations.FLAT_CHALK) { stack, world, entityLivingBase -> if (ItemNBTHelper.getBoolean(stack.copy(), LibNBT.FLAT, false)) 1.0f else 0.0f }
         setMaxStackSize(1)

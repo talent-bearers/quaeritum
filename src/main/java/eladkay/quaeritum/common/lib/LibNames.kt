@@ -36,4 +36,8 @@ object LibNames {
     val CIRCLE = "circle"
     val HOLLOWER = "hollower"
     val DEV_PLACER = "devplacer"
+    val SOUL_EVOKER = "soulEvoker"
+
+    val ROOTED = "rooted"
+    val REPULSOR = "repulsor"
 }

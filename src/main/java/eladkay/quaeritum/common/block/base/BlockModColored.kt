@@ -11,7 +11,7 @@ import net.minecraft.block.state.IBlockState
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.item.EnumDyeColor
 
-open class BlockModColored(name: String, materialIn: Material) : BlockMod(name, materialIn, *BlockModColored.generateVariants(name)) {
+open class BlockModColored(name: String, materialIn: Material) : BlockQuaeritum(name, materialIn, *BlockModColored.generateVariants(name)) {
 
     init {
         this.defaultState = this.blockState.baseState.withProperty(COLOR, EnumDyeColor.WHITE)

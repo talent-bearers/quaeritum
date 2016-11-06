@@ -9,6 +9,7 @@ import eladkay.quaeritum.common.crafting.ModRecipes
 import eladkay.quaeritum.common.entity.ModEntities
 import eladkay.quaeritum.common.item.ModItems
 import eladkay.quaeritum.common.networking.NetworkHelper
+import eladkay.quaeritum.common.potions.PotionRooted
 import eladkay.quaeritum.common.rituals.ModDiagrams
 import eladkay.quaeritum.common.rituals.ModWorks
 import net.minecraft.client.particle.Particle
@@ -26,7 +27,7 @@ open class CommonProxy {
     open fun pre(e: FMLPreInitializationEvent) {
         ModBlocks
         ModItems
-        //ModBook
+        PotionRooted
         ModEntities.init()
         ModRecipes.init()
         Events().init()

@@ -1,6 +1,6 @@
 package eladkay.quaeritum.common.item.misc
 
-import com.teamwizardry.librarianlib.common.base.item.ItemMod
+import eladkay.quaeritum.common.item.base.ItemQuaeritum
 import eladkay.quaeritum.common.lib.LibNames
 import net.minecraft.block.Block
 import net.minecraft.block.state.IBlockState
@@ -23,7 +23,7 @@ import net.minecraftforge.fml.relauncher.SideOnly
     Its license permits it.
 
  */
-class ItemTransducer : ItemMod(LibNames.TRANSDUCER) {
+class ItemTransducer : ItemQuaeritum(LibNames.TRANSDUCER) {
 
     init {
         setMaxStackSize(1)

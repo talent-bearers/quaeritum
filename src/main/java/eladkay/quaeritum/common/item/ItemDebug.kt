@@ -1,12 +1,12 @@
 package eladkay.quaeritum.common.item
 
-import com.teamwizardry.librarianlib.common.base.item.ItemMod
 import com.teamwizardry.librarianlib.common.util.plus
 import eladkay.quaeritum.api.animus.AnimusHelper
 import eladkay.quaeritum.common.Quaeritum
 import eladkay.quaeritum.common.block.ModBlocks
 import eladkay.quaeritum.common.block.base.BlockModColored
 import eladkay.quaeritum.common.core.ChatHelper
+import eladkay.quaeritum.common.item.base.ItemQuaeritum
 import eladkay.quaeritum.common.lib.LibNames
 import net.minecraft.client.gui.GuiScreen
 import net.minecraft.entity.player.EntityPlayer
@@ -21,7 +21,7 @@ import net.minecraft.util.text.TextComponentString
 import net.minecraft.util.text.TextFormatting
 import net.minecraft.world.World
 
-class ItemDebug : ItemMod(LibNames.DEBUG) {
+class ItemDebug : ItemQuaeritum(LibNames.DEBUG) {
 
     init {
         setMaxStackSize(1)

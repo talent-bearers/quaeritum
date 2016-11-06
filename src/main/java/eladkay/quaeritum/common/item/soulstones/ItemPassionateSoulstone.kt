@@ -1,8 +1,8 @@
 package eladkay.quaeritum.common.item.soulstones
 
-import com.teamwizardry.librarianlib.common.base.item.ItemMod
 import eladkay.quaeritum.api.animus.AnimusHelper
 import eladkay.quaeritum.api.animus.INetworkProvider
+import eladkay.quaeritum.common.item.base.ItemQuaeritum
 import eladkay.quaeritum.common.lib.LibNames
 import net.minecraft.entity.Entity
 import net.minecraft.entity.player.EntityPlayer
@@ -16,7 +16,7 @@ import net.minecraft.world.World
 import net.minecraftforge.fml.common.IFuelHandler
 import net.minecraftforge.fml.common.registry.GameRegistry
 
-class ItemPassionateSoulstone : ItemMod(LibNames.PASSIONATE_SOULSTONE), INetworkProvider, IFuelHandler {
+class ItemPassionateSoulstone : ItemQuaeritum(LibNames.PASSIONATE_SOULSTONE), INetworkProvider, IFuelHandler {
 
     init {
         setMaxStackSize(1)

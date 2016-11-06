@@ -2,10 +2,10 @@ package eladkay.quaeritum.common.item.chalk
 
 import com.teamwizardry.librarianlib.client.util.TooltipHelper
 import com.teamwizardry.librarianlib.common.base.item.IItemColorProvider
-import com.teamwizardry.librarianlib.common.base.item.ItemMod
 import com.teamwizardry.librarianlib.common.util.ItemNBTHelper
 import eladkay.quaeritum.api.lib.LibNBT
 import eladkay.quaeritum.common.block.ModBlocks
+import eladkay.quaeritum.common.item.base.ItemQuaeritum
 import eladkay.quaeritum.common.lib.LibLocations
 import eladkay.quaeritum.common.lib.LibNames
 import eladkay.quaeritum.common.lib.arrayOfStrings
@@ -24,7 +24,7 @@ import net.minecraft.util.SoundCategory
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 
-class ItemChalk : ItemMod(LibNames.CHALK, *ItemChalk.COLORS), IItemColorProvider {
+class ItemChalk : ItemQuaeritum(LibNames.CHALK, *ItemChalk.COLORS), IItemColorProvider {
     override fun getItemColor(): IItemColor? =
             IItemColor { stack, tintIndex -> if (ItemNBTHelper.getBoolean(stack.copy(), LibNBT.FLAT, false) && stack.itemDamage < 16) ItemDye.DYE_COLORS[15 - stack.itemDamage] else 0xFFFFFF }
 

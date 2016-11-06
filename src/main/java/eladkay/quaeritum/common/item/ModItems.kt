@@ -5,25 +5,29 @@ import eladkay.quaeritum.common.item.chalk.ItemChalk
 import eladkay.quaeritum.common.item.chalk.ItemChalkTempest
 import eladkay.quaeritum.common.item.misc.*
 import eladkay.quaeritum.common.item.soulstones.*
+import eladkay.quaeritum.common.item.spells.ItemRepulsionCirclet
 
 object ModItems {
 
-    var dormant: ItemDormantSoulstone
-    var awakened: ItemAwakenedSoulstone
-    var passionate: ItemPassionateSoulstone
-    var passive: ItemWorldSoulstone
-    var oppressive: ItemOppressiveSoulstone
-    var attuned: ItemAttunedSoulstone
+    val dormant: ItemDormantSoulstone
+    val awakened: ItemAwakenedSoulstone
+    val passionate: ItemPassionateSoulstone
+    val passive: ItemWorldSoulstone
+    val attuned: ItemAttunedSoulstone
+    val chalk: ItemChalk
+    val fertilizer: ItemFertilizer
+    val altas: ItemReagentAtlas
+    val riftmakerPart: ItemRiftmakerPart
+    val worldBlade: ItemWorldBlade
+    val picture: ItemPicture
+    val book: ItemBook
+    val transducer: ItemTransducer
+    val tempest: ItemChalkTempest
+    val soulEvoker: ItemSoulEvoker
+    val repulsor: ItemRepulsionCirclet
+
+
     lateinit var debug: ItemDebug
-    var chalk: ItemChalk
-    var fertilizer: ItemFertilizer
-    var altas: ItemReagentAtlas
-    var riftmakerPart: ItemRiftmakerPart
-    var worldBlade: ItemWorldBlade
-    var picture: ItemPicture
-    var book: ItemBook
-    var transducer: ItemTransducer
-    var tempest: ItemChalkTempest
     lateinit var hollower: ItemHollower
     lateinit var placer: ItemPlacer
 
@@ -32,7 +36,6 @@ object ModItems {
         awakened = ItemAwakenedSoulstone()
         passionate = ItemPassionateSoulstone()
         passive = ItemWorldSoulstone()
-        oppressive = ItemOppressiveSoulstone()
         attuned = ItemAttunedSoulstone()
         chalk = ItemChalk()
         fertilizer = ItemFertilizer()
@@ -43,6 +46,9 @@ object ModItems {
         transducer = ItemTransducer()
         tempest = ItemChalkTempest()
         book = ItemBook()
+        soulEvoker = ItemSoulEvoker()
+        repulsor = ItemRepulsionCirclet()
+
         if (LibrarianLib.DEV_ENVIRONMENT) {
             debug = ItemDebug()
             hollower = ItemHollower()
