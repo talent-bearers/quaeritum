@@ -1,7 +1,6 @@
 package eladkay.quaeritum.common.item.misc
 
 import com.google.common.collect.Multimap
-import com.teamwizardry.librarianlib.common.base.ModCreativeTab
 import com.teamwizardry.librarianlib.common.base.item.ItemModSword
 import com.teamwizardry.librarianlib.common.util.ItemNBTHelper
 import com.teamwizardry.librarianlib.common.util.times
@@ -9,7 +8,6 @@ import eladkay.quaeritum.api.animus.AnimusHelper
 import eladkay.quaeritum.common.Quaeritum
 import eladkay.quaeritum.common.core.QuaeritumMethodHandles
 import eladkay.quaeritum.common.core.RayHelper
-import eladkay.quaeritum.common.core.Tab
 import eladkay.quaeritum.common.lib.LibMaterials
 import eladkay.quaeritum.common.lib.LibNames
 import net.minecraft.block.state.IBlockState
@@ -147,10 +145,6 @@ class ItemWorldBlade : ItemModSword(LibNames.WORLD_BLADE, LibMaterials.MYSTIC) {
     }
 
     companion object {
-
         val TAG_TELEPORTED = "teleportTicks"
     }
-
-    override val creativeTab: ModCreativeTab?
-        get() = Tab
 }

@@ -5,7 +5,7 @@ import com.teamwizardry.librarianlib.common.base.item.ItemMod
 import eladkay.quaeritum.api.rituals.PositionedBlock
 import eladkay.quaeritum.api.rituals.PositionedBlockChalk
 import eladkay.quaeritum.common.block.ModBlocks
-import eladkay.quaeritum.common.item.base.ItemQuaeritum
+
 import eladkay.quaeritum.common.lib.LibNames
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.EnumDyeColor
@@ -16,7 +16,7 @@ import net.minecraft.util.EnumHand
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 
-class ItemPlacer : ItemQuaeritum(LibNames.DEV_PLACER) {
+class ItemPlacer : ItemMod(LibNames.DEV_PLACER) {
     init {
         setMaxStackSize(1)
     }

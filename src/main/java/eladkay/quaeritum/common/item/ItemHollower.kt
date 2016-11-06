@@ -1,10 +1,11 @@
 package eladkay.quaeritum.common.item
 
 import com.google.common.collect.Lists
+import com.teamwizardry.librarianlib.common.base.item.ItemMod
 import com.teamwizardry.librarianlib.common.util.ItemNBTHelper
 import com.teamwizardry.librarianlib.common.util.plus
 import eladkay.quaeritum.api.lib.LibNBT
-import eladkay.quaeritum.common.item.base.ItemQuaeritum
+
 import eladkay.quaeritum.common.lib.LibNames
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.EntityLivingBase
@@ -21,7 +22,7 @@ import net.minecraft.util.text.TextFormatting
 import net.minecraft.world.World
 import java.util.function.Consumer
 
-class ItemHollower : ItemQuaeritum(LibNames.HOLLOWER) {
+class ItemHollower : ItemMod(LibNames.HOLLOWER) {
     init {
         setMaxStackSize(1)
     }

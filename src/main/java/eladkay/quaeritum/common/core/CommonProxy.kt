@@ -26,6 +26,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
 open class CommonProxy {
     open fun pre(e: FMLPreInitializationEvent) {
         ModBlocks
+        ModTab
         ModItems
         PotionRooted
         ModEntities.init()

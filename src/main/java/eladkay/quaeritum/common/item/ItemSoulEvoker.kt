@@ -1,11 +1,12 @@
 package eladkay.quaeritum.common.item
 
 import baubles.api.BaublesApi
+import com.teamwizardry.librarianlib.common.base.item.ItemMod
 import com.teamwizardry.librarianlib.common.util.ItemNBTHelper
 import eladkay.quaeritum.api.lib.LibMisc
 import eladkay.quaeritum.api.spell.ISpellProvider
 import eladkay.quaeritum.client.render.RemainingItemsRenderHandler
-import eladkay.quaeritum.common.item.base.ItemQuaeritum
+
 import eladkay.quaeritum.common.lib.LibNames
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.SoundEvents
@@ -19,7 +20,7 @@ import net.minecraft.world.World
  * @author WireSegal
  * Created at 5:18 PM on 11/5/16.
  */
-class ItemSoulEvoker() : ItemQuaeritum(LibNames.SOUL_EVOKER) {
+class ItemSoulEvoker() : ItemMod(LibNames.SOUL_EVOKER) {
 
     /*
         todo:

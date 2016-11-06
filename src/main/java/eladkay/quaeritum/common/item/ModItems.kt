@@ -21,7 +21,6 @@ object ModItems {
     val worldBlade: ItemWorldBlade
     val picture: ItemPicture
     val book: ItemBook
-    val transducer: ItemTransducer
     val tempest: ItemChalkTempest
     val soulEvoker: ItemSoulEvoker
     val repulsor: ItemRepulsionCirclet
@@ -43,7 +42,6 @@ object ModItems {
         riftmakerPart = ItemRiftmakerPart()
         worldBlade = ItemWorldBlade()
         picture = ItemPicture()
-        transducer = ItemTransducer()
         tempest = ItemChalkTempest()
         book = ItemBook()
         soulEvoker = ItemSoulEvoker()

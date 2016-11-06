@@ -21,7 +21,7 @@ import net.minecraft.world.World
  * @author WireSegal
  * Created at 4:37 PM on 11/5/16.
  */
-abstract class ItemModBauble(name: String, vararg variants: String) : ItemQuaeritum(name, *variants), IBauble {
+abstract class ItemModBauble(name: String, vararg variants: String) : ItemMod(name, *variants), IBauble {
     companion object {
         val TAG_HASHCODE = "playerHashcode"
 

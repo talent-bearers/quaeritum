@@ -12,8 +12,6 @@ object ModDiagrams {
         RitualRegistry.registerDiagram(HarmonizedHallDiagram(), "merger")
         RitualRegistry.registerDiagram(InfusionDiagram(), "infusion")
         RitualRegistry.registerDiagram(CircleOfTheFinalMomentDiagram(), "circleofthefinalmoment")
-
-        RitualRegistry.registerDiagram(TransducerCraftingDiagram(), "transducer")
     }
 
 }

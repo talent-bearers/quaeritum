@@ -1,8 +1,9 @@
 package eladkay.quaeritum.common.item.misc
 
+import com.teamwizardry.librarianlib.common.base.item.ItemMod
 import eladkay.quaeritum.common.block.ModBlocks
 import eladkay.quaeritum.common.block.flowers.BlockAnimusFlower
-import eladkay.quaeritum.common.item.base.ItemQuaeritum
+
 import eladkay.quaeritum.common.lib.LibNames
 import net.minecraft.block.material.Material
 import net.minecraft.entity.player.EntityPlayer
@@ -15,7 +16,7 @@ import net.minecraft.util.EnumParticleTypes
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 
-class ItemFertilizer : ItemQuaeritum(LibNames.FERTILIZER) {
+class ItemFertilizer : ItemMod(LibNames.FERTILIZER) {
 
     override fun onItemUse(stack: ItemStack, playerIn: EntityPlayer?, worldIn: World, pos: BlockPos, hand: EnumHand?, facing: EnumFacing?, hitX: Float, hitY: Float, hitZ: Float): EnumActionResult {
         return if (applyBonemeal(stack, worldIn, pos)) EnumActionResult.SUCCESS else EnumActionResult.FAIL

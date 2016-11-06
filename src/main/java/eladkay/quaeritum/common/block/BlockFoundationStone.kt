@@ -3,10 +3,10 @@ package eladkay.quaeritum.common.block
 
 
 
+import com.teamwizardry.librarianlib.common.base.block.BlockMod
 import com.teamwizardry.librarianlib.common.base.block.ItemModBlock
 import com.teamwizardry.librarianlib.common.util.ItemNBTHelper
 import eladkay.quaeritum.api.lib.LibNBT
-import eladkay.quaeritum.common.block.base.BlockQuaeritum
 import eladkay.quaeritum.common.block.tile.TileEntityFoundationStone
 import eladkay.quaeritum.common.lib.LibLocations
 import eladkay.quaeritum.common.lib.LibNames
@@ -22,7 +22,7 @@ import net.minecraft.util.EnumHand
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 
-class BlockFoundationStone : BlockQuaeritum(LibNames.FOUNDATION, Material.ROCK), /*IGuideLinked, */ITileEntityProvider {
+class BlockFoundationStone : BlockMod(LibNames.FOUNDATION, Material.ROCK), /*IGuideLinked, */ITileEntityProvider {
 
     init {
         //constructBook()

@@ -1,7 +1,8 @@
 package eladkay.quaeritum.common.item.soulstones
 
+import com.teamwizardry.librarianlib.common.base.item.ItemMod
 import eladkay.quaeritum.common.item.ModItems
-import eladkay.quaeritum.common.item.base.ItemQuaeritum
+
 import eladkay.quaeritum.common.lib.LibNames
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.SoundEvents
@@ -12,7 +13,7 @@ import net.minecraft.util.EnumHand
 import net.minecraft.util.SoundCategory
 import net.minecraft.world.World
 
-class ItemDormantSoulstone : ItemQuaeritum(LibNames.DORMANT_SOULSTONE) {
+class ItemDormantSoulstone : ItemMod(LibNames.DORMANT_SOULSTONE) {
     init {
         setMaxStackSize(1)
     }

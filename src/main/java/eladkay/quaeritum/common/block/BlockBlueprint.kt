@@ -1,9 +1,9 @@
 package eladkay.quaeritum.common.block
 
+import com.teamwizardry.librarianlib.common.base.block.BlockMod
 import com.teamwizardry.librarianlib.common.base.block.ItemModBlock
 import com.teamwizardry.librarianlib.common.util.ItemNBTHelper
 import eladkay.quaeritum.api.lib.LibNBT
-import eladkay.quaeritum.common.block.base.BlockQuaeritum
 import eladkay.quaeritum.common.block.tile.TileEntityBlueprint
 import eladkay.quaeritum.common.lib.LibLocations
 import net.minecraft.block.Block
@@ -21,7 +21,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 
-class BlockBlueprint(name: String) : BlockQuaeritum(name, Material.PISTON), /*IGuideLinked, */ITileEntityProvider {
+class BlockBlueprint(name: String) : BlockMod(name, Material.PISTON), /*IGuideLinked, */ITileEntityProvider {
 
     init {
         setHardness(1.2f)
