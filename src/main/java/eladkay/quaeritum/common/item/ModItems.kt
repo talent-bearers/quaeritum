@@ -6,6 +6,7 @@ import eladkay.quaeritum.common.item.chalk.ItemChalkTempest
 import eladkay.quaeritum.common.item.misc.*
 import eladkay.quaeritum.common.item.soulstones.*
 import eladkay.quaeritum.common.item.spells.ItemRepulsionCirclet
+import eladkay.quaeritum.common.item.spells.ItemWindwalkerCharm
 
 object ModItems {
 
@@ -24,6 +25,7 @@ object ModItems {
     val tempest: ItemChalkTempest
     val soulEvoker: ItemSoulEvoker
     val repulsor: ItemRepulsionCirclet
+    val windwalker: ItemWindwalkerCharm
 
 
     lateinit var debug: ItemDebug
@@ -46,6 +48,7 @@ object ModItems {
         book = ItemBook()
         soulEvoker = ItemSoulEvoker()
         repulsor = ItemRepulsionCirclet()
+        windwalker = ItemWindwalkerCharm()
 
         if (LibrarianLib.DEV_ENVIRONMENT) {
             debug = ItemDebug()

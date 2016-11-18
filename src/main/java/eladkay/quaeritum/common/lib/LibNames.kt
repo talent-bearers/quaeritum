@@ -40,4 +40,5 @@ object LibNames {
 
     val ROOTED = "rooted"
     val REPULSOR = "repulsor"
+    val WINDWALKER = "windwalker"
 }

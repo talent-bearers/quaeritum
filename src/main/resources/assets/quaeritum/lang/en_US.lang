@@ -33,8 +33,11 @@ book.quaeritum.circleofthefinalmoment_name=Circle of the Final Moment
 book.quaeritum.altarofthefallingstar_name=Altar of the Falling Star
 
 spell.quaeritum.repulse.name=Roar of Defiance
+spell.quaeritum.windwalk.name=Force Reversal
+
 
 item.quaeritum:repulsor.name=Circlet of Repulsion
+item.quaeritum:windwalker.name=Charm of the Windwalker
 item.quaeritum:soulEvoker.name=Soul Evoker
 
 quaeritum.materialsRequired=Materials required:
