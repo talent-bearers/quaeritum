@@ -19,7 +19,7 @@ class ItemWindwalkerCharm : ItemSpellBauble(LibNames.WINDWALKER) {
 
         override fun getSpellName(bauble: ItemStack, slot: Int) = TooltipHelper.local("spell.${LibMisc.MOD_ID}.windwalk.name")
 
-        override fun onCast(player: EntityPlayer, bauble: ItemStack, slot: Int) = true
+        override fun onCast(player: EntityPlayer, bauble: ItemStack, slot: Int) = true // Always succeed
 
         override fun getCooldown(player: EntityPlayer, bauble: ItemStack, slot: Int) = 1800
 

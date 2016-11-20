@@ -165,15 +165,16 @@
 		},
 		{
 			"__comment": "Cube14",
-			"from": [ 7.5, 7, 4.5 ],
-			"to": [ 8.5, 8, 6.5 ],
+			"from": [ 8, 7, 5.5 ],
+			"to": [ 10, 8, 6.5 ],
+			"rotation": { "origin": [ 8, 7, 5.5 ], "axis": "y", "angle": -45 },
 			"faces": {
-				"down": { "uv": [ 7.5, 9, 8.5, 11 ], "texture": "#soulstone", "tintindex": 1 },
-				"up": { "uv": [ 7.5, 5, 8.5, 7 ], "texture": "#soulstone", "tintindex": 1 },
+				"down": { "uv": [ 7.5, 9.5, 8.5, 11 ], "texture": "#soulstone", "tintindex": 1 },
+				"up": { "uv": [ 7.5, 5, 8.5, 6.5 ], "texture": "#soulstone", "tintindex": 1 },
 				"north": { "uv": [ 7.5, 8, 8.5, 9 ], "texture": "#soulstone", "tintindex": 1 },
 				"south": { "uv": [ 7.5, 8, 8.5, 9 ], "texture": "#soulstone", "tintindex": 1 },
-				"west": { "uv": [ 5, 8, 7, 9 ], "texture": "#soulstone", "tintindex": 1 },
-				"east": { "uv": [ 9, 8, 11, 9 ], "texture": "#soulstone", "tintindex": 1 }
+				"west": { "uv": [ 5, 8, 6.5, 9 ], "texture": "#soulstone", "tintindex": 1 },
+				"east": { "uv": [ 9.5, 8, 11, 9 ], "texture": "#soulstone", "tintindex": 1 }
 			}
 		}
 	],
@@ -207,24 +208,5 @@
 			"rotation":  [ -90, 0, 0 ],
 			"scale":  [ 1.25, 1.25, 1.25 ]
 		}
-	},
-	"overrides": [{
-		"predicate": { "quaeritum:evocation": 6 },
-		"model": "quaeritum:item/soulEvoker6"
-	}, {
-		"predicate": { "quaeritum:evocation": 5 },
-		"model": "quaeritum:item/soulEvoker5"
-	}, {
-		"predicate": { "quaeritum:evocation": 4 },
-		"model": "quaeritum:item/soulEvoker4"
-	}, {
-		"predicate": { "quaeritum:evocation": 3 },
-		"model": "quaeritum:item/soulEvoker3"
-	}, {
-		"predicate": { "quaeritum:evocation": 2 },
-		"model": "quaeritum:item/soulEvoker2"
-	}, {
-		"predicate": { "quaeritum:evocation": 1 },
-		"model": "quaeritum:item/soulEvoker1"
-	}]
+	}
 }

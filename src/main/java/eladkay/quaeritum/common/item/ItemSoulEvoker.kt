@@ -1,6 +1,8 @@
 package eladkay.quaeritum.common.item
 
 import baubles.api.BaublesApi
+import com.teamwizardry.librarianlib.client.core.ClientTickHandler
+import com.teamwizardry.librarianlib.common.base.item.IItemColorProvider
 import com.teamwizardry.librarianlib.common.base.item.ItemMod
 import com.teamwizardry.librarianlib.common.util.ItemNBTHelper
 import eladkay.quaeritum.api.lib.LibMisc
@@ -8,24 +10,28 @@ import eladkay.quaeritum.api.spell.ISpellProvider
 import eladkay.quaeritum.client.render.RemainingItemsRenderHandler
 
 import eladkay.quaeritum.common.lib.LibNames
+import net.minecraft.client.renderer.color.IItemColor
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.SoundEvents
 import net.minecraft.item.ItemStack
 import net.minecraft.util.*
 import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.MathHelper
 import net.minecraft.util.text.TextComponentString
 import net.minecraft.world.World
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
+import java.awt.Color
 
 /**
  * @author WireSegal
  * Created at 5:18 PM on 11/5/16.
  */
-class ItemSoulEvoker() : ItemMod(LibNames.SOUL_EVOKER) {
+class ItemSoulEvoker() : ItemMod(LibNames.SOUL_EVOKER), IItemColorProvider {
 
     /*
         todo:
         scroll support for turning wheel
-        model (wheel has 7 ticks, 7 lights, stone bracer)
         showing cooldowns/spells in HUD while equipped
      */
 
@@ -38,6 +44,34 @@ class ItemSoulEvoker() : ItemMod(LibNames.SOUL_EVOKER) {
         addPropertyOverride(ResourceLocation(LibMisc.MOD_ID, "evocation")) { itemStack, world, entityLivingBase ->
             ItemNBTHelper.getInt(itemStack, TAG_SLOT, 0).toFloat()
         }
+    }
+
+    private val COLORS_FROM_SLOT = arrayOf(
+            Color(0x73CECE), // Amulet
+            Color(0x8B9E9B), // Ring 1
+            Color(0x8B9E9B), // Ring 2
+            Color(0x6B3F2E), // Belt
+            Color(0xD36363), // Head
+            Color(0x404454), // Body
+            Color(0x75AA77)  // Charm
+    )
+
+    @SideOnly(Side.CLIENT)
+    override fun getItemColor(): IItemColor? {
+        return IItemColor { itemStack, i ->
+            if (i == 1) {
+                COLORS_FROM_SLOT[ItemNBTHelper.getInt(itemStack, TAG_SLOT, 0) % COLORS_FROM_SLOT.size].pulseColor().rgb
+            } else 0xFFFFFF
+        }
+    }
+
+    fun Color.pulseColor(variance: Int = 24, pulseSpeed: Float = 0.2f): Color {
+        val add = (MathHelper.sin(ClientTickHandler.ticksInGame * pulseSpeed) * variance).toInt()
+        val newColor = Color(
+                Math.max(Math.min(red + add, 255), 0),
+                Math.max(Math.min(green + add, 255), 0),
+                Math.max(Math.min(blue + add, 255), 0))
+        return newColor
     }
 
     override fun onItemRightClick(itemStackIn: ItemStack, worldIn: World, playerIn: EntityPlayer, hand: EnumHand): ActionResult<ItemStack> {
