@@ -8,9 +8,7 @@ import com.teamwizardry.librarianlib.common.util.ItemNBTHelper
 import eladkay.quaeritum.api.lib.LibMisc
 import eladkay.quaeritum.api.spell.ISpellProvider
 import eladkay.quaeritum.client.render.RemainingItemsRenderHandler
-
 import eladkay.quaeritum.common.lib.LibNames
-import net.minecraft.client.renderer.color.IItemColor
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.SoundEvents
 import net.minecraft.item.ItemStack
@@ -19,8 +17,6 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.MathHelper
 import net.minecraft.util.text.TextComponentString
 import net.minecraft.world.World
-import net.minecraftforge.fml.relauncher.Side
-import net.minecraftforge.fml.relauncher.SideOnly
 import java.awt.Color
 
 /**
@@ -56,14 +52,12 @@ class ItemSoulEvoker() : ItemMod(LibNames.SOUL_EVOKER), IItemColorProvider {
             Color(0x75AA77)  // Charm
     )
 
-    @SideOnly(Side.CLIENT)
-    override fun getItemColor(): IItemColor? {
-        return IItemColor { itemStack, i ->
+    override val itemColorFunction: ((ItemStack, Int) -> Int)?
+        get() = { itemStack, i ->
             if (i == 1) {
                 COLORS_FROM_SLOT[ItemNBTHelper.getInt(itemStack, TAG_SLOT, 0) % COLORS_FROM_SLOT.size].pulseColor().rgb
             } else 0xFFFFFF
         }
-    }
 
     fun Color.pulseColor(variance: Int = 24, pulseSpeed: Float = 0.2f): Color {
         val add = (MathHelper.sin(ClientTickHandler.ticksInGame * pulseSpeed) * variance).toInt()

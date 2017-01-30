@@ -3,15 +3,12 @@ package eladkay.quaeritum.common.item.base
 import baubles.api.BaublesApi
 import com.teamwizardry.librarianlib.common.base.item.IItemColorProvider
 import eladkay.quaeritum.api.spell.ISpellProvider
-import net.minecraft.client.renderer.color.IItemColor
 import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.item.EntityItem
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.world.World
-import net.minecraftforge.fml.relauncher.Side
-import net.minecraftforge.fml.relauncher.SideOnly
 
 /**
  * @author WireSegal
@@ -26,11 +23,8 @@ abstract class ItemSpellBauble(name: String, vararg variants: String) : ItemModB
         super<ItemModBauble>.onWornTick(stack, player)
         if (player is EntityPlayer) {
             val baubles = BaublesApi.getBaublesHandler(player)
-            var slot = 0
-            for (i in 0 until 7) if (baubles.getStackInSlot(i) === stack) {
-                slot = i
-                break
-            }
+            val slot = (0 until 7).firstOrNull { baubles.getStackInSlot(it) === stack }
+                    ?: 0
             ISpellProvider.Helper.tickCooldown(player, stack, slot)
         }
     }
@@ -44,10 +38,8 @@ abstract class ItemSpellBauble(name: String, vararg variants: String) : ItemModB
         return super.onEntityItemUpdate(entityItem)
     }
 
-    @SideOnly(Side.CLIENT)
-    override fun getItemColor(): IItemColor? {
-        return IItemColor { itemStack, i ->
+    override val itemColorFunction: ((ItemStack, Int) -> Int)?
+        get() = { itemStack, i ->
             if (ISpellProvider.Helper.getCooldown(itemStack) != 0) 0xFF4040 else 0xFFFFFF
         }
-    }
 }

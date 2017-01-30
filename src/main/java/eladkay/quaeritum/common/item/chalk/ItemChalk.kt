@@ -6,13 +6,11 @@ import com.teamwizardry.librarianlib.common.base.item.ItemMod
 import com.teamwizardry.librarianlib.common.util.ItemNBTHelper
 import eladkay.quaeritum.api.lib.LibNBT
 import eladkay.quaeritum.common.block.ModBlocks
-
 import eladkay.quaeritum.common.lib.LibLocations
 import eladkay.quaeritum.common.lib.LibNames
 import eladkay.quaeritum.common.lib.arrayOfStrings
 import eladkay.quaeritum.common.lib.capitalizeFirst
 import net.minecraft.block.state.IBlockState
-import net.minecraft.client.renderer.color.IItemColor
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.EnumDyeColor
 import net.minecraft.item.ItemBlock
@@ -26,9 +24,9 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 
 class ItemChalk : ItemMod(LibNames.CHALK, *ItemChalk.COLORS), IItemColorProvider {
-    override fun getItemColor(): IItemColor? =
-            IItemColor { stack, tintIndex -> if (ItemNBTHelper.getBoolean(stack.copy(), LibNBT.FLAT, false) && stack.itemDamage < 16) ItemDye.DYE_COLORS[15 - stack.itemDamage] else 0xFFFFFF }
-
+    override val itemColorFunction: ((ItemStack, Int) -> Int)?
+        get() = { stack, tintIndex -> if (ItemNBTHelper.getBoolean(stack.copy(), LibNBT.FLAT, false) && stack.itemDamage < 16)
+            ItemDye.DYE_COLORS[15 - stack.itemDamage] else 0xFFFFFF }
 
     init {
         addPropertyOverride(LibLocations.FLAT_CHALK) { stack, world, entityLivingBase -> if (ItemNBTHelper.getBoolean(stack.copy(), LibNBT.FLAT, false)) 1.0f else 0.0f }

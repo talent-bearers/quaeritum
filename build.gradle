@@ -56,6 +56,9 @@ repositories {
         url "http://mobiusstrip.eu/maven"
     }
     maven {
+        url "http://mvn.rx14.co.uk/shadowfacts/"
+    }
+    maven {
         url "http://mobiusstrip.eu/maven"
     }
     maven {
@@ -64,7 +67,6 @@ repositories {
     maven {
         url 'http://tehnut.info/maven/'
     }
-    maven { url "https://jitpack.io" }
     maven { url "http://dvs1.progwml6.com/files/maven" }
     maven {
         name = "forge"
@@ -86,10 +88,9 @@ configurations {
 dependencies {
     deobfCompile "mezz.jei:jei_${config.jei_version}"
     deobfCompile "mcp.mobius.waila:Waila:1.7.0-B3_1.9.4"
-    //deobfCompile "info.amerifrance.guideapi:Guide-API:1.10.2-2.0.2-45"
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     required "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    compile 'com.github.TeamWizardry:LibrarianLib:-SNAPSHOT'
+    compile "net.shadowfacts:Forgelin:1.2.0"
 }
 
 jar {

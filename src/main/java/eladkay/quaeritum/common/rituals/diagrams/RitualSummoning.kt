@@ -1,7 +1,7 @@
 package eladkay.quaeritum.common.rituals.diagrams
 
 import com.google.common.collect.Lists
-import com.teamwizardry.librarianlib.client.book.gui.PageText
+//import com.teamwizardry.librarianlib.client.book.gui.PageText
 import com.teamwizardry.librarianlib.client.util.TooltipHelper
 import eladkay.quaeritum.api.animus.ISoulstone
 import eladkay.quaeritum.api.lib.LibBook
