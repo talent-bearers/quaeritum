@@ -1,5 +1,6 @@
 package eladkay.quaeritum.common.block.chalk
 
+import com.teamwizardry.librarianlib.common.base.block.EnumStringSerializable
 import com.teamwizardry.librarianlib.common.base.block.IBlockColorProvider
 import eladkay.quaeritum.common.block.ModBlocks
 import eladkay.quaeritum.common.block.base.BlockModColored
@@ -29,11 +30,7 @@ class BlockChalk : BlockModColored(LibNames.CHALK_BLOCK, Material.CIRCUITS), IBl
     private val WIRE_AABBS = arrayOf(AxisAlignedBB(0.1875, 0.0, 0.1875, 0.8125, 0.0625, 0.8125), AxisAlignedBB(0.1875, 0.0, 0.1875, 0.8125, 0.0625, 1.0), AxisAlignedBB(0.0, 0.0, 0.1875, 0.8125, 0.0625, 0.8125), AxisAlignedBB(0.0, 0.0, 0.1875, 0.8125, 0.0625, 1.0), AxisAlignedBB(0.1875, 0.0, 0.0, 0.8125, 0.0625, 0.8125), AxisAlignedBB(0.1875, 0.0, 0.0, 0.8125, 0.0625, 1.0), AxisAlignedBB(0.0, 0.0, 0.0, 0.8125, 0.0625, 0.8125), AxisAlignedBB(0.0, 0.0, 0.0, 0.8125, 0.0625, 1.0), AxisAlignedBB(0.1875, 0.0, 0.1875, 1.0, 0.0625, 0.8125), AxisAlignedBB(0.1875, 0.0, 0.1875, 1.0, 0.0625, 1.0), AxisAlignedBB(0.0, 0.0, 0.1875, 1.0, 0.0625, 0.8125), AxisAlignedBB(0.0, 0.0, 0.1875, 1.0, 0.0625, 1.0), AxisAlignedBB(0.1875, 0.0, 0.0, 1.0, 0.0625, 0.8125), AxisAlignedBB(0.1875, 0.0, 0.0, 1.0, 0.0625, 1.0), AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 0.0625, 0.8125), AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 0.0625, 1.0))
 
     override val blockColorFunction: ((IBlockState, IBlockAccess?, BlockPos?, Int) -> Int)?
-        get() = { state, worldIn, pos, tintIndex -> this.getColor(state, worldIn, pos, tintIndex) }
-
-    fun getColor(state: IBlockState, worldIn: IBlockAccess?, pos: BlockPos?, tintIndex: Int): Int {
-        return state.getValue(BlockModColored.COLOR).mapColor.colorValue
-    }
+        get() = { state, worldIn, pos, tintIndex -> state.getValue(BlockModColored.COLOR).mapColor.colorValue }
 
     public override fun createBlockState(): BlockStateContainer {
         return BlockStateContainer(this, BlockModColored.COLOR, NORTH, EAST, SOUTH, WEST)
@@ -71,16 +68,16 @@ class BlockChalk : BlockModColored(LibNames.CHALK_BLOCK, Material.CIRCUITS), IBl
 
                 if (flag && canConnectUpwardsTo(worldIn, pos, blockpos.up())) {
                     if (iblockstate.isBlockNormalCube) {
-                        return EnumAttachPosition.up
+                        return EnumAttachPosition.UP
                     }
 
-                    return EnumAttachPosition.side
+                    return EnumAttachPosition.SIDE
                 }
             }
 
-            return EnumAttachPosition.none
+            return EnumAttachPosition.NONE
         } else {
-            return EnumAttachPosition.side
+            return EnumAttachPosition.SIDE
         }
     }
 
@@ -162,18 +159,10 @@ class BlockChalk : BlockModColored(LibNames.CHALK_BLOCK, Material.CIRCUITS), IBl
         return null
     }
 
-    enum class EnumAttachPosition private constructor(private val nm: String) : IStringSerializable {
-        up("up"),
-        side("side"),
-        none("none");
-
-        override fun toString(): String {
-            return this.getName()
-        }
-
-        override fun getName(): String {
-            return this.name
-        }
+    enum class EnumAttachPosition() : EnumStringSerializable {
+        UP,
+        SIDE,
+        NONE;
     }
 
     companion object {
@@ -185,10 +174,10 @@ class BlockChalk : BlockModColored(LibNames.CHALK_BLOCK, Material.CIRCUITS), IBl
 
         private fun getAABBIndex(state: IBlockState): Int {
             var index = 0
-            val north = state.getValue(NORTH) != EnumAttachPosition.none
-            val east = state.getValue(EAST) != EnumAttachPosition.none
-            val south = state.getValue(SOUTH) != EnumAttachPosition.none
-            val west = state.getValue(WEST) != EnumAttachPosition.none
+            val north = state.getValue(NORTH) != EnumAttachPosition.NONE
+            val east = state.getValue(EAST) != EnumAttachPosition.NONE
+            val south = state.getValue(SOUTH) != EnumAttachPosition.NONE
+            val west = state.getValue(WEST) != EnumAttachPosition.NONE
 
             if (north || south && !east && !west) index = index or (1 shl EnumFacing.NORTH.horizontalIndex)
             if (east || west && !north && !south) index = index or (1 shl EnumFacing.EAST.horizontalIndex)

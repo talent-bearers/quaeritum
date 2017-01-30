@@ -96,11 +96,11 @@ class ItemSoulEvoker() : ItemMod(LibNames.SOUL_EVOKER), IItemColorProvider {
             if (stack != null && stack.item is ISpellProvider) {
                 val spell = (stack.item as ISpellProvider).getSpell(stack, slot)
                 if (spell != null) {
-                    if (ISpellProvider.Helper.getCooldown(stack) == 0) {
+                    if (ISpellProvider.getCooldown(stack) == 0) {
                         val success = spell.onCast(playerIn, stack, slot)
                         if (success) {
                             val cooldown = spell.getCooldown(playerIn, stack, slot)
-                            if (cooldown > 0) ISpellProvider.Helper.setCooldown(stack, cooldown)
+                            if (cooldown > 0) ISpellProvider.setCooldown(stack, cooldown, true)
                             return ActionResult(EnumActionResult.SUCCESS, itemStackIn)
                         }
                     }

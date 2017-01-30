@@ -16,7 +16,7 @@ import net.minecraft.world.World
  */
 abstract class ItemSpellBauble(name: String, vararg variants: String) : ItemModBauble(name, *variants), ISpellProvider, IItemColorProvider {
     override fun canUnequip(stack: ItemStack, player: EntityLivingBase): Boolean {
-        return ISpellProvider.Helper.getCooldown(stack) == 0
+        return ISpellProvider.getCooldown(stack) == 0
     }
 
     override fun onWornTick(stack: ItemStack, player: EntityLivingBase) {
@@ -25,21 +25,21 @@ abstract class ItemSpellBauble(name: String, vararg variants: String) : ItemModB
             val baubles = BaublesApi.getBaublesHandler(player)
             val slot = (0 until 7).firstOrNull { baubles.getStackInSlot(it) === stack }
                     ?: 0
-            ISpellProvider.Helper.tickCooldown(player, stack, slot)
+            ISpellProvider.tickCooldown(player, stack, slot)
         }
     }
 
     override fun onUpdate(stack: ItemStack, worldIn: World?, entityIn: Entity?, itemSlot: Int, isSelected: Boolean) {
-        ISpellProvider.Helper.setCooldown(stack, 0)
+        ISpellProvider.setCooldown(stack, 0)
     }
 
     override fun onEntityItemUpdate(entityItem: EntityItem): Boolean {
-        ISpellProvider.Helper.setCooldown(entityItem.entityItem, 0)
+        ISpellProvider.setCooldown(entityItem.entityItem, 0)
         return super.onEntityItemUpdate(entityItem)
     }
 
     override val itemColorFunction: ((ItemStack, Int) -> Int)?
         get() = { itemStack, i ->
-            if (ISpellProvider.Helper.getCooldown(itemStack) != 0) 0xFF4040 else 0xFFFFFF
+            if (ISpellProvider.getCooldown(itemStack) != 0) 0xFF4040 else 0xFFFFFF
         }
 }

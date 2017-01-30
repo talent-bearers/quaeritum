@@ -26,7 +26,7 @@ object ModItems {
     val soulEvoker: ItemSoulEvoker
     val repulsor: ItemRepulsionCirclet
     val windwalker: ItemWindwalkerCharm
-
+    val resource: ItemResource
 
     lateinit var debug: ItemDebug
     lateinit var hollower: ItemHollower
@@ -49,6 +49,7 @@ object ModItems {
         soulEvoker = ItemSoulEvoker()
         repulsor = ItemRepulsionCirclet()
         windwalker = ItemWindwalkerCharm()
+        resource = ItemResource()
 
         if (LibrarianLib.DEV_ENVIRONMENT) {
             debug = ItemDebug()
