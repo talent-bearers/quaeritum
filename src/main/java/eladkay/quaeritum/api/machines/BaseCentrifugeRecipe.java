@@ -89,9 +89,17 @@ public class BaseCentrifugeRecipe implements ICentrifugeRecipe {
 
         ItemStack itemOne = handler.extractItem(0, 1, true);
         ItemStack itemTwo = handler.extractItem(1, 1, true);
-        if (inputOne.contains(itemOne))
-            return (itemTwo == null || inputTwo != null && inputTwo.contains(itemTwo));
-        return inputTwo != null && inputTwo.contains(itemOne) && (itemTwo == null || inputOne.contains(itemTwo));
+        if (matches(itemOne, inputOne))
+            return (inputTwo == null || matches(itemTwo, inputTwo));
+        return matches(itemOne, inputTwo) && matches(itemTwo, inputOne);
+    }
+
+    private boolean matches(@Nullable ItemStack stack, @Nullable List<ItemStack> inputs) {
+        if (stack == null || inputs == null) return false;
+        for (ItemStack ore : inputs)
+            if (OreDictionary.itemMatches(ore, stack, false))
+                return true;
+        return false;
     }
 
     @Override
@@ -103,13 +111,13 @@ public class BaseCentrifugeRecipe implements ICentrifugeRecipe {
     public void consumeInputs(@NotNull IItemHandler handler, boolean heated) {
         ItemStack itemOne = handler.extractItem(0, 1, true);
         ItemStack itemTwo = handler.extractItem(1, 1, true);
-        if (inputOne.contains(itemOne)) {
+        if (matches(itemOne, inputOne)) {
             handler.extractItem(0, 1, false);
-            if (itemTwo != null && inputTwo != null && inputTwo.contains(itemTwo))
+            if (matches(itemTwo, inputTwo))
                 handler.extractItem(1, 1, false);
-        } else if (inputTwo != null && inputTwo.contains(itemOne)) {
+        } else if (matches(itemOne, inputTwo)) {
             handler.extractItem(0, 1, false);
-            if (itemTwo != null && inputOne.contains(itemTwo))
+            if (matches(itemTwo, inputOne))
                 handler.extractItem(1, 1, false);
         }
     }

@@ -118,3 +118,7 @@ item.quaeritum:fertilizer.name=Magical Fertilizer
 item.quaeritum:reagentAtlas.name=Atlas Reagent
 
 tile.quaeritum:foundation.name=Foundation Stone
+
+
+quaeritum.subtitle.equipBauble=Bauble is equipped
+quaeritum.subtitle.centrifuge=Centrifuge spins

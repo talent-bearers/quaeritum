@@ -11,10 +11,15 @@ import net.minecraftforge.fml.common.registry.GameRegistry
  */
 object QuaeritumSoundEvents {
     val baubleEquip: SoundEvent
+    val centrifuge: SoundEvent
 
     init {
-        val loc = ResourceLocation(LibMisc.MOD_ID, "baubleEquip")
+        var loc = ResourceLocation(LibMisc.MOD_ID, "baubleEquip")
         baubleEquip = SoundEvent(loc)
         GameRegistry.register(baubleEquip, loc)
+
+        loc = ResourceLocation(LibMisc.MOD_ID, "centrifuge")
+        centrifuge = SoundEvent(loc)
+        GameRegistry.register(centrifuge, loc)
     }
 }
