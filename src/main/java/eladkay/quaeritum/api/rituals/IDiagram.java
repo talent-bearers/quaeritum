@@ -64,7 +64,7 @@ public interface IDiagram {
             return true;
         }*/
         public static ItemStack getNearestAttunedSoulstone(TileEntity tile, double range) {
-            MutableObject<ItemStack> ret = new MutableObject(null);
+            MutableObject<ItemStack> ret = new MutableObject<>(null);
             stacksAroundAltar(tile, range).forEach((stack -> {
                 if (stack.getItem() instanceof INetworkProvider) ret.value = stack;
             }));
@@ -72,7 +72,7 @@ public interface IDiagram {
         }
 
         public static ItemStack getNearestSoulstone(TileEntity tile, double range) {
-            MutableObject<ItemStack> ret = new MutableObject(null);
+            MutableObject<ItemStack> ret = new MutableObject<>(null);
             stacksAroundAltar(tile, range).forEach((stack -> {
                 if (stack.getItem() instanceof ISoulstone) ret.value = stack;
             }));
@@ -80,7 +80,7 @@ public interface IDiagram {
         }
 
         public static boolean isEntityItemInList(EntityItem item, List<ItemStack> stacks) {
-            MutableObject<Boolean> flag = new MutableObject(false);
+            MutableObject<Boolean> flag = new MutableObject<>(false);
             stacks.forEach((stack) -> {
                 if (itemEquals(item.getEntityItem(), stack)) flag.value = true;
             });
