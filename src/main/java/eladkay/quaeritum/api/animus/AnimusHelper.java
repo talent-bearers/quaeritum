@@ -13,7 +13,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -186,7 +186,7 @@ public final class AnimusHelper {
             return compound.getString(tag);
         }
 
-        @Nonnull
+        @NotNull
         private static NBTTagCompound getPersistentCompound(UUID uuid) {
             if (uuid == null) return new NBTTagCompound();
 
@@ -198,7 +198,7 @@ public final class AnimusHelper {
             return saveData.animusData.get(uuid);
         }
 
-        @Nonnull
+        @NotNull
         private static AnimusSaveData getSaveData() {
             World world = DimensionManager.getWorld(0);
             if (world == null || world.getMapStorage() == null)
@@ -227,15 +227,15 @@ public final class AnimusHelper {
             }
 
             @Override
-            @Nonnull
-            public NBTTagCompound writeToNBT(@Nonnull NBTTagCompound compound) {
+            @NotNull
+            public NBTTagCompound writeToNBT(@NotNull NBTTagCompound compound) {
                 for (UUID key : animusData.keySet())
                     compound.setTag(key.toString(), animusData.get(key));
                 return compound;
             }
 
             @Override
-            public void readFromNBT(@Nonnull NBTTagCompound compound) {
+            public void readFromNBT(@NotNull NBTTagCompound compound) {
                 for (String key : compound.getKeySet()) {
                     animusData.put(UUID.fromString(key), compound.getCompoundTag(key));
                 }

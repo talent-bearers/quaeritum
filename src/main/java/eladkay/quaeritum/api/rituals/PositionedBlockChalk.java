@@ -7,17 +7,17 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.math.BlockPos;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public final class PositionedBlockChalk extends PositionedBlock {
     public static Block chalk;
     public static Block tempest;
-    public PositionedBlockChalk(@Nullable EnumDyeColor state, @Nonnull BlockPos pos) {
+    public PositionedBlockChalk(@Nullable EnumDyeColor state, @NotNull BlockPos pos) {
         super(getStateFromColor(state), pos, state == null ? null : Lists.newArrayList(BlockModColored.Companion.getCOLOR())); // todo don't reference main from api
     }
 
-    @Nonnull
+    @NotNull
     public static IBlockState getStateFromColor(@Nullable EnumDyeColor chalkColor) {
         if (chalkColor != null)
             return chalk.getStateFromMeta(chalkColor.ordinal());

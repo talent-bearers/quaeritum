@@ -5,30 +5,30 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.math.BlockPos;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class PositionedBlock {
 
-    @Nonnull
+    @NotNull
     public final BlockPos pos;
-    @Nonnull
+    @NotNull
     private final IBlockState state;
     @Nullable
     private final List<IProperty> toCompare;
 
-    public PositionedBlock(@Nonnull IBlockState state, @Nonnull BlockPos pos, @Nullable List<IProperty> toCompare) {
+    public PositionedBlock(@NotNull IBlockState state, @NotNull BlockPos pos, @Nullable List<IProperty> toCompare) {
         this.state = state;
         this.pos = pos;
         this.toCompare = toCompare;
     }
 
-    public PositionedBlock(@Nonnull IBlockState state, @Nonnull BlockPos pos) {
+    public PositionedBlock(@NotNull IBlockState state, @NotNull BlockPos pos) {
         this(state, pos, null);
     }
 
-    @Nonnull
+    @NotNull
     public static PositionedBlock constructPosChalk(@Nullable EnumDyeColor color, BlockPos pos) {
         return new PositionedBlockChalk(color, pos);
     }
@@ -38,13 +38,13 @@ public class PositionedBlock {
         return toCompare;
     }
 
-    @Nonnull
+    @NotNull
     public IBlockState getState() {
         return state;
     }
 
 
-    @Nonnull
+    @NotNull
     public BlockPos getPos() {
         return pos;
     }

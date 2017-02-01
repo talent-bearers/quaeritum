@@ -1,6 +1,7 @@
 package eladkay.quaeritum.common.crafting
 
 import eladkay.quaeritum.api.lib.LibMisc
+import eladkay.quaeritum.api.machines.CentrifugeRecipes
 import eladkay.quaeritum.common.block.ModBlocks
 import eladkay.quaeritum.common.block.flowers.BlockAnimusFlower
 import eladkay.quaeritum.common.crafting.recipes.RecipeAnimusUpgrade
@@ -16,7 +17,6 @@ import net.minecraftforge.fml.common.registry.GameRegistry
 import net.minecraftforge.oredict.RecipeSorter
 import net.minecraftforge.oredict.ShapedOreRecipe
 import net.minecraftforge.oredict.ShapelessOreRecipe
-import java.util.*
 
 object ModRecipes {
 
@@ -39,22 +39,14 @@ object ModRecipes {
                 'H', ItemStack(Items.LAVA_BUCKET),
                 'X', ItemStack(Items.FIRE_CHARGE),
                 'Z', ItemStack(ModItems.dormant))
-        addOreDictRecipe(ItemStack(ModItems.dormant),
-                "XYX",
-                "XZX",
-                "XYX",
-                'X', ItemStack(Blocks.SOUL_SAND),
-                'Z', "gemDiamond",
-                'Y', "blockGlass")
         for (i in dyeColors.indices) {
             addShapelessOreDictRecipe(ItemStack(ModItems.chalk, 1, i),
                     ItemStack(Items.CLAY_BALL),
                     "dye" + dyeColors[i])
         }
-        for (i in 1..9) {
-            val recipe = Array(i) { ItemStack(ModItems.awakened) }
-            addShapelessAnimusRecipe(ItemStack(ModItems.awakened), *recipe)
-        }
+        (1..9)
+                .map { Array(it) { ItemStack(ModItems.awakened) } }
+                .forEach { addShapelessAnimusRecipe(ItemStack(ModItems.awakened), *it) }
         addOreDictRecipe(ItemStack(ModItems.worldBlade),
                 " FI",
                 "CWF",
@@ -65,6 +57,8 @@ object ModRecipes {
                 'W', ItemStack(ModItems.passive),
                 'S', ItemStack(Items.STICK))
         addShapelessAnimusRecipe(ItemStack(ModItems.passive), ItemStack(ModItems.awakened), ItemStack(ModBlocks.crystal), ItemStack(ModBlocks.flower, 1, BlockAnimusFlower.Variants.ARCANE.ordinal))
+
+        CentrifugeRecipes.registerRecipe("stone", Items.CLAY_BALL, ItemStack(ModItems.dormant))
     }
 
     private fun addOreDictRecipe(output: ItemStack, vararg recipe: Any): IRecipe {

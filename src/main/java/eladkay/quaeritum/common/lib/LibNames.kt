@@ -43,4 +43,5 @@ object LibNames {
     val REPULSOR = "repulsor"
     val WINDWALKER = "windwalker"
     val HIVE_CIRCLET = "hive_circlet"
+    val CENTRIFUGE = "centrifuge"
 }

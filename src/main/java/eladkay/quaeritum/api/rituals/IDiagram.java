@@ -11,32 +11,32 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 public interface IDiagram {
-    @Nonnull
+    @NotNull
     String getUnlocalizedName();
 
-    void run(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntity tile);
+    void run(@NotNull World world, @NotNull BlockPos pos, @NotNull TileEntity tile);
 
-    boolean canRitualRun(@Nullable World world, @Nonnull BlockPos pos, @Nonnull TileEntity tile);
+    boolean canRitualRun(@Nullable World world, @NotNull BlockPos pos, @NotNull TileEntity tile);
 
-    boolean hasRequiredItems(@Nullable World world, @Nonnull BlockPos pos, @Nonnull TileEntity tile);
+    boolean hasRequiredItems(@Nullable World world, @NotNull BlockPos pos, @NotNull TileEntity tile);
 
-    default int getPrepTime(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntity tile) {
+    default int getPrepTime(@NotNull World world, @NotNull BlockPos pos, @NotNull TileEntity tile) {
         return 0;
     }
 
-    default boolean onPrepUpdate(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntity tile, int ticksRemaining) {
+    default boolean onPrepUpdate(@NotNull World world, @NotNull BlockPos pos, @NotNull TileEntity tile, int ticksRemaining) {
         return true;
     }
 
-    void buildChalks(@Nonnull List<PositionedBlock> chalks);
+    void buildChalks(@NotNull List<PositionedBlock> chalks);
 
     default void constructBook() {
         //NO-OP

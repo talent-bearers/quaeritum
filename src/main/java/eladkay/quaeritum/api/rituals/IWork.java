@@ -5,21 +5,21 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public interface IWork {
-    @Nonnull
+    @NotNull
     String getUnlocalizedName();
 
-    boolean updateTick(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntity tile, long ticksExisted);
+    boolean updateTick(@NotNull World world, @NotNull BlockPos pos, @NotNull TileEntity tile, long ticksExisted);
 
-    boolean initialTick(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntity tile, @Nullable EntityPlayer player);
+    boolean initialTick(@NotNull World world, @NotNull BlockPos pos, @NotNull TileEntity tile, @Nullable EntityPlayer player);
 
-    boolean canRitualRun(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull TileEntity tile);
+    boolean canRitualRun(@NotNull World world, @NotNull BlockPos pos, @NotNull TileEntity tile);
 
-    void buildPositions(@Nonnull List<PositionedBlock> chalks);
+    void buildPositions(@NotNull List<PositionedBlock> chalks);
 
     @Nullable
     IDiagram getDiagramCounterpart();

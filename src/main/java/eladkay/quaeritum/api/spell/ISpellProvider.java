@@ -6,22 +6,22 @@ import com.teamwizardry.librarianlib.common.util.ItemNBTHelper;
 import eladkay.quaeritum.api.lib.LibMisc;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 public interface ISpellProvider extends IBauble {
     @Nullable
-    IBaubleSpell getSpell(@Nonnull ItemStack bauble, int slot);
+    IBaubleSpell getSpell(@NotNull ItemStack bauble, int slot);
 
     String TAG_COOLDOWN = LibMisc.MOD_ID + ".cooldown";
     String TAG_MAX_COOLDOWN = LibMisc.MOD_ID + ".maxcooldown";
 
-    static void setCooldown(@Nonnull ItemStack stack, int cooldown) {
+    static void setCooldown(@NotNull ItemStack stack, int cooldown) {
         setCooldown(stack, cooldown, false);
     }
 
-    static void setCooldown(@Nonnull ItemStack stack, int cooldown, boolean max) {
+    static void setCooldown(@NotNull ItemStack stack, int cooldown, boolean max) {
         ItemNBTHelper.setInt(stack, TAG_COOLDOWN, cooldown);
         if (cooldown == 0)
             ItemNBTHelper.setInt(stack, TAG_MAX_COOLDOWN, 0);
@@ -29,14 +29,14 @@ public interface ISpellProvider extends IBauble {
             ItemNBTHelper.setInt(stack, TAG_MAX_COOLDOWN, cooldown);
     }
 
-    static int getCooldown(@Nonnull ItemStack stack) {
+    static int getCooldown(@NotNull ItemStack stack) {
         return ItemNBTHelper.getInt(stack, TAG_COOLDOWN, 0);
     }
-    static int getMaxCooldown(@Nonnull ItemStack stack) {
+    static int getMaxCooldown(@NotNull ItemStack stack) {
         return ItemNBTHelper.getInt(stack, TAG_COOLDOWN, 0);
     }
 
-    static void tickCooldown(@Nonnull EntityPlayer player, @Nonnull ItemStack stack, int baubleSlot) {
+    static void tickCooldown(@NotNull EntityPlayer player, @NotNull ItemStack stack, int baubleSlot) {
         int cooldown = getCooldown(stack);
         if (cooldown == 0) return;
         cooldown--;
@@ -46,7 +46,7 @@ public interface ISpellProvider extends IBauble {
         setCooldown(stack, cooldown);
     }
 
-    @Nonnull
+    @NotNull
     static BaubleType baubleFromSlot(int slot) {
         switch (slot) {
             case 0:
