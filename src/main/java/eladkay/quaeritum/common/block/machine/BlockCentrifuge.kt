@@ -16,11 +16,14 @@ import net.minecraft.block.state.BlockStateContainer
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.init.Blocks
+import net.minecraft.inventory.InventoryHelper
+import net.minecraft.item.ItemStack
 import net.minecraft.util.*
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.items.CapabilityItemHandler
+import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.ItemStackHandler
 import net.minecraftforge.items.wrapper.RangedWrapper
 
@@ -36,35 +39,79 @@ class BlockCentrifuge : BlockModContainer(LibNames.CENTRIFUGE, Material.CLOTH) {
 
     override fun createBlockState() = BlockStateContainer(this, FACING)
 
-    override fun withRotation(state: IBlockState, rot: Rotation)
+    override fun withRotation(state: IBlockState, rot: Rotation): IBlockState
             = state.withProperty(FACING, rot.rotate(state.getValue(FACING)))
-    override fun withMirror(state: IBlockState, mirrorIn: Mirror)
+    override fun withMirror(state: IBlockState, mirrorIn: Mirror): IBlockState
             = state.withRotation(mirrorIn.toRotation(state.getValue(FACING)))
 
-    override fun getStateFromMeta(meta: Int)
+    override fun getStateFromMeta(meta: Int): IBlockState
             = defaultState.withProperty(FACING, EnumFacing.getHorizontal(meta))
     override fun getMetaFromState(state: IBlockState)
             = state.getValue(FACING).horizontalIndex
 
-    override fun onBlockPlaced(worldIn: World?, pos: BlockPos?, facing: EnumFacing?, hitX: Float, hitY: Float, hitZ: Float, meta: Int, placer: EntityLivingBase)
+    override fun onBlockPlaced(worldIn: World?, pos: BlockPos?, facing: EnumFacing?, hitX: Float, hitY: Float, hitZ: Float, meta: Int, placer: EntityLivingBase): IBlockState
             = defaultState.withProperty(BlockHorizontal.FACING, placer.horizontalFacing)
 
+    override fun hasComparatorInputOverride(state: IBlockState) = true
+    override fun getComparatorInputOverride(blockState: IBlockState, worldIn: World, pos: BlockPos): Int {
+        return (worldIn.getTileEntity(pos) as? TileCentrifuge)?.getComparatorOutput() ?: 0
+    }
+
+    override fun breakBlock(worldIn: World, pos: BlockPos, state: IBlockState) {
+        val handler = (worldIn.getTileEntity(pos) as? TileCentrifuge)?.handler
+        if (handler != null)
+            dropInventoryItems(worldIn, pos, handler)
+        super.breakBlock(worldIn, pos, state)
+    }
+
+    fun dropInventoryItems(worldIn: World, pos: BlockPos, inventory: IItemHandler) {
+        dropInventoryItems(worldIn, pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble(), inventory)
+    }
+
+    private fun dropInventoryItems(worldIn: World, x: Double, y: Double, z: Double, inventory: IItemHandler) {
+        (0 until inventory.slots)
+                .mapNotNull { inventory.getStackInSlot(it) }
+                .forEach { InventoryHelper.spawnItemStack(worldIn, x, y, z, it) }
+    }
+
     override fun createTileEntity(world: World, state: IBlockState) = TileCentrifuge()
+
+    private class CentrifugeHandler(val tile: TileMod) : ItemStackHandler(3) {
+        override fun onContentsChanged(slot: Int) {
+            tile.markDirty()
+        }
+
+        public override fun getStackLimit(slot: Int, stack: ItemStack?): Int {
+            return super.getStackLimit(slot, stack)
+        }
+    }
 
     @TileRegister("centrifuge")
     class TileCentrifuge : TileMod(), ITickable {
 
-        var handler = object : ItemStackHandler(3) {
-            override fun onContentsChanged(slot: Int) {
-                markDirty()
-            }}
-            @SaveMethodGetter("handler") get
+        private val internalHandler = CentrifugeHandler(this)
+        var handler: ItemStackHandler
+            @SaveMethodGetter("handler") get() = internalHandler
             @SaveMethodSetter("handler") set(value) {
                 handler.deserializeNBT(value.serializeNBT())
             }
 
         val inputs = RangedWrapper(handler, 0, 2)
         val output = RangedWrapper(handler, 2, 3)
+
+        fun getComparatorOutput(): Int {
+            val unfloored = ((0 until internalHandler.slots)
+                    .flatMap {
+                        val stack = internalHandler.getStackInSlot(it)
+                        if (stack == null) listOf()
+                        else listOf(IndexedValue(it, stack))
+                    }.sumByDouble {
+                        it.value.stackSize / Math.min(internalHandler.getStackLimit(it.index, it.value), it.value.maxStackSize).toDouble()
+                    } / internalHandler.slots.toFloat()) * 14.0
+            val floored = Math.floor(unfloored).toInt()
+
+            return floored + if (unfloored > 0.0) 1 else 0
+        }
 
         @Suppress("UNCHECKED_CAST")
         override fun <T : Any> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
@@ -99,10 +146,9 @@ class BlockCentrifuge : BlockModContainer(LibNames.CENTRIFUGE, Material.CLOTH) {
                     }
                 } else {
                     totalSteam += 20 // temporary
+                    if (totalSteam % 50 == 0)
+                        world.playSound(null, pos, QuaeritumSoundEvents.centrifuge, SoundCategory.BLOCKS, 1f, 5f)
                 }
-
-                if (totalSteam % 50 == 0)
-                    world.playSound(null, pos, QuaeritumSoundEvents.centrifuge, SoundCategory.BLOCKS, 1f, 5f)
 
                 world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.x + 0.5, pos.y + 0.5, pos.z + 0.5, 0.0, 0.0, 0.0)
                 markDirty()

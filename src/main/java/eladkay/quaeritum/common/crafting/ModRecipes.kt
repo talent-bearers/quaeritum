@@ -7,6 +7,7 @@ import eladkay.quaeritum.common.block.flowers.BlockAnimusFlower
 import eladkay.quaeritum.common.crafting.recipes.RecipeAnimusUpgrade
 import eladkay.quaeritum.common.crafting.recipes.RecipeAwakenedSoulstone
 import eladkay.quaeritum.common.crafting.recipes.RecipeShapelessAnimusUpgrade
+import eladkay.quaeritum.common.item.ItemResource.Resources
 import eladkay.quaeritum.common.item.ModItems
 import net.minecraft.init.Blocks
 import net.minecraft.init.Items
@@ -59,6 +60,7 @@ object ModRecipes {
         addShapelessAnimusRecipe(ItemStack(ModItems.passive), ItemStack(ModItems.awakened), ItemStack(ModBlocks.crystal), ItemStack(ModBlocks.flower, 1, BlockAnimusFlower.Variants.ARCANE.ordinal))
 
         CentrifugeRecipes.registerRecipe("stone", Items.CLAY_BALL, ItemStack(ModItems.dormant))
+        CentrifugeRecipes.registerRecipe(Resources.ARCANE_ESSENCE.stackOf(), "goldIngot", Resources.VICTIUM_INGOT.stackOf())
     }
 
     private fun addOreDictRecipe(output: ItemStack, vararg recipe: Any): IRecipe {
