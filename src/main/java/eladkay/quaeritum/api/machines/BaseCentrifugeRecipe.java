@@ -24,16 +24,24 @@ public class BaseCentrifugeRecipe implements ICentrifugeRecipe {
     @NotNull
     private final ItemStack output;
     private int steamRequired = 2000;
+    private boolean requiresHeat = false;
 
-    public boolean getRequiresHeat() {
+    public boolean requiresHeat() {
         return requiresHeat;
     }
 
-    public void setRequiresHeat(boolean requiresHeat) {
-        this.requiresHeat = requiresHeat;
+    public int steamRequired() {
+        return steamRequired;
     }
 
-    private boolean requiresHeat = false;
+    public BaseCentrifugeRecipe setRequiresHeat(boolean requiresHeat) {
+        this.requiresHeat = requiresHeat;
+        return this;
+    }
+    public BaseCentrifugeRecipe setSteamRequired(int steamRequired) {
+        this.steamRequired = steamRequired;
+        return this;
+    }
 
     @NotNull
     public List<ItemStack> getInputOne() {
@@ -47,14 +55,6 @@ public class BaseCentrifugeRecipe implements ICentrifugeRecipe {
     @NotNull
     public ItemStack getOutput() {
         return output;
-    }
-
-    public int getSteamRequired() {
-        return steamRequired;
-    }
-
-    public void setSteamRequired(int steamRequired) {
-        this.steamRequired = steamRequired;
     }
 
     public BaseCentrifugeRecipe(@NotNull Object inputOne, @Nullable Object inputTwo, @NotNull ItemStack output) {

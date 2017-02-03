@@ -60,7 +60,8 @@ object ModRecipes {
         addShapelessAnimusRecipe(ItemStack(ModItems.passive), ItemStack(ModItems.awakened), ItemStack(ModBlocks.crystal), ItemStack(ModBlocks.flower, 1, BlockAnimusFlower.Variants.ARCANE.ordinal))
 
         CentrifugeRecipes.registerRecipe("stone", Items.CLAY_BALL, ItemStack(ModItems.dormant))
-        CentrifugeRecipes.registerRecipe(Resources.ARCANE_ESSENCE.stackOf(), "goldIngot", Resources.VICTIUM_INGOT.stackOf())
+        CentrifugeRecipes.registerRecipe(Resources.ARCANE_ESSENCE.stackOf(), "ingotGold", Resources.VICTIUM_INGOT.stackOf())
+                .setRequiresHeat(true)
     }
 
     private fun addOreDictRecipe(output: ItemStack, vararg recipe: Any): IRecipe {

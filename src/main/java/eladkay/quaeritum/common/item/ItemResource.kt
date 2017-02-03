@@ -3,6 +3,7 @@ package eladkay.quaeritum.common.item
 import com.teamwizardry.librarianlib.common.base.item.ItemMod
 import eladkay.quaeritum.common.lib.LibNames
 import net.minecraft.item.ItemStack
+import net.minecraftforge.oredict.OreDictionary
 
 /**
  * @author WireSegal
@@ -15,9 +16,16 @@ class ItemResource : ItemMod(LibNames.RESOURCE, *Resources.NAMES) {
         @JvmOverloads
         fun stackOf(size: Int = 1) = ItemStack(ModItems.resource, size, ordinal)
 
+        val oreName = name.toLowerCase().split("_").map(String::capitalize).joinToString("").decapitalize()
+
         companion object {
             @JvmField
-            val NAMES = values().map { it.name.toLowerCase().split("_").map(String::capitalize).joinToString("").decapitalize() }.toTypedArray()
+            val NAMES = values().map { it.oreName }.toTypedArray()
         }
+    }
+
+    init {
+        for (variant in Resources.values())
+            OreDictionary.registerOre(variant.oreName, variant.stackOf())
     }
 }

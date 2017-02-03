@@ -119,6 +119,9 @@ item.quaeritum:reagentAtlas.name=Atlas Reagent
 
 tile.quaeritum:foundation.name=Foundation Stone
 
+tile.quaeritum:centrifuge.name=Centrifuge
+jei.quaeritum.recipe.centrifuge=Centrifuge
+
 
 quaeritum.subtitle.equipBauble=Bauble is equipped
 quaeritum.subtitle.centrifuge=Centrifuge spins
