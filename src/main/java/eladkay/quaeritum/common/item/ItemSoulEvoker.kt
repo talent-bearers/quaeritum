@@ -40,6 +40,7 @@ class ItemSoulEvoker() : ItemMod(LibNames.SOUL_EVOKER), IItemColorProvider {
         addPropertyOverride(ResourceLocation(LibMisc.MOD_ID, "evocation")) { itemStack, world, entityLivingBase ->
             ItemNBTHelper.getInt(itemStack, TAG_SLOT, 0).toFloat()
         }
+        setMaxStackSize(1)
     }
 
     private val COLORS_FROM_SLOT = arrayOf(

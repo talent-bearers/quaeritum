@@ -27,7 +27,7 @@ import net.minecraft.util.math.RayTraceResult
 import net.minecraft.util.math.Vec3d
 import net.minecraft.world.World
 
-class ItemWorldBlade : ItemModSword(LibNames.WORLD_BLADE, LibMaterials.MYSTIC) {
+class ItemWorldBlade : ItemModSword(LibNames.WORLD_BLADE, LibMaterials.TEMPESTEEL) {
 
     internal var shouldUseElucentParticles = false
 

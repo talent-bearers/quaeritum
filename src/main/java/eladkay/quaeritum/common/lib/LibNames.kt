@@ -44,4 +44,5 @@ object LibNames {
     val WINDWALKER = "windwalker"
     val HIVE_CIRCLET = "hive_circlet"
     val CENTRIFUGE = "centrifuge"
+    val CRAFTER = "crafter"
 }
