@@ -7,7 +7,7 @@ import com.teamwizardry.librarianlib.common.base.item.ItemMod
 import com.teamwizardry.librarianlib.common.util.ItemNBTHelper
 import eladkay.quaeritum.api.lib.LibMisc
 import eladkay.quaeritum.api.spell.ISpellProvider
-import eladkay.quaeritum.client.render.RemainingItemsRenderHandler
+import eladkay.quaeritum.common.Quaeritum
 import eladkay.quaeritum.common.lib.LibNames
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.SoundEvents
@@ -15,7 +15,6 @@ import net.minecraft.item.ItemStack
 import net.minecraft.util.*
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.MathHelper
-import net.minecraft.util.text.TextComponentString
 import net.minecraft.world.World
 import java.awt.Color
 
@@ -81,15 +80,10 @@ class ItemSoulEvoker() : ItemMod(LibNames.SOUL_EVOKER), IItemColorProvider {
 
             val stack = baubles.getStackInSlot(newSlot)
             if (stack != null && stack.item is ISpellProvider) {
-                //debug
-                if (!worldIn.isRemote) playerIn.addChatComponentMessage(stack.textComponent)
-
-                val spell = (stack.item as ISpellProvider).getSpell(stack, slot)
+                val spell = (stack.item as ISpellProvider).getSpell(stack, newSlot)
                 if (spell != null)
-                    RemainingItemsRenderHandler.set(spell.getIconStack(stack, slot), spell.getSpellName(stack, slot))
+                    Quaeritum.proxy.setRemainingItemDisplay(playerIn, spell.getIconStack(stack, newSlot), spell.getSpellName(stack, newSlot))
             }
-            //debug
-            if (!worldIn.isRemote) playerIn.addChatComponentMessage(TextComponentString("slot $newSlot"))
 
             return ActionResult(EnumActionResult.SUCCESS, itemStackIn)
         } else {

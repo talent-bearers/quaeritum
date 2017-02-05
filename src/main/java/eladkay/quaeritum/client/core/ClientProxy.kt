@@ -2,7 +2,7 @@ package eladkay.quaeritum.client.core
 
 import com.teamwizardry.librarianlib.LibrarianLib
 import eladkay.quaeritum.client.fx.FXMagicLine
-import eladkay.quaeritum.client.fx.FXWisp
+import eladkay.quaeritum.client.render.RemainingItemsRenderHandler
 import eladkay.quaeritum.client.render.entity.RenderChaosborn
 import eladkay.quaeritum.client.render.tesr.RitualHandlerSpecialRenderers
 import eladkay.quaeritum.common.block.tile.TileEntityBlueprint
@@ -11,6 +11,8 @@ import eladkay.quaeritum.common.core.CommonProxy
 import eladkay.quaeritum.common.entity.EntityChaosborn
 import net.minecraft.client.Minecraft
 import net.minecraft.client.particle.Particle
+import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.item.ItemStack
 import net.minecraft.util.ResourceLocation
 import net.minecraft.world.World
 import net.minecraftforge.common.MinecraftForge
@@ -24,8 +26,8 @@ import java.awt.datatransfer.StringSelection
 
 class ClientProxy : CommonProxy() {
     override fun pre(e: FMLPreInitializationEvent) {
+        RemainingItemsRenderHandler
         super.pre(e)
-        //GuideAPI.setModel(ModBook.book, ModelResourceLocation(LibMisc.MOD_ID + ":" + LibNames.BOOK), "inventory")
     }
 
     override fun init(e: FMLInitializationEvent) {
@@ -59,17 +61,6 @@ class ClientProxy : CommonProxy() {
         spawnParticleMagixFX(world, x + 2 * (world.rand.nextFloat() - 0.5), y + 2.0 * (world.rand.nextFloat() - 0.5) + 1.0, z + 2.0 * (world.rand.nextFloat() - 0.5), x, y + 1.0, z, 0.0, 0.0, 0.0)
     }
 
-    //This doesn't work
-    @Deprecated("")
-    override fun wispFX(world: World, x: Double, y: Double, z: Double, r: Float, g: Float, b: Float, size: Float, motionx: Float, motiony: Float, motionz: Float, maxAgeMul: Float) {
-        if (!doParticle(world))
-            return
-        //todo params 9, 10
-        val wisp = FXWisp(world, x, y, z, size, r, g, b, true, true, maxAgeMul)
-        wisp.setSpeed(motionx, motiony, motionz)
-        Minecraft.getMinecraft().effectRenderer.addEffect(wisp)
-    }
-
     private fun doParticle(world: World): Boolean {
         if (!world.isRemote)
             return false
@@ -92,5 +83,8 @@ class ClientProxy : CommonProxy() {
         board.setContents(stringSelection, null)
     }
 
+    override fun setRemainingItemDisplay(player: EntityPlayer?, stack: ItemStack?, str: String?, count: Int) {
+        RemainingItemsRenderHandler.set(stack, str, count)
+    }
 
 }

@@ -33,7 +33,8 @@ book.quaeritum.circleofthefinalmoment_name=Circle of the Final Moment
 book.quaeritum.altarofthefallingstar_name=Altar of the Falling Star
 
 spell.quaeritum.repulse.name=Roar of Defiance
-spell.quaeritum.windwalk.name=Force Reversal
+spell.quaeritum.windwalk.name=Weight of Winds
+spell.quaeritum.windwalkRing.name=Flurry of Motion
 
 
 item.quaeritum:repulsor.name=Circlet of Repulsion
@@ -79,7 +80,7 @@ entity.quaeritum.chaosborn.name=Chaosborn
 
 misc.quaeritum.rushOfEnergy=A rush of energy flows through your soul!
 
-death.attack.shield
+death.attack.shield=%s experienced kinetic energy
 
 item.quaeritum:chalkWhite.name=White Chalk
 item.quaeritum:chalkOrange.name=Orange Chalk

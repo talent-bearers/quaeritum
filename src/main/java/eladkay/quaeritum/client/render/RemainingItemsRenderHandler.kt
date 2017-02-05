@@ -1,6 +1,7 @@
 package eladkay.quaeritum.client.render
 
 import com.teamwizardry.librarianlib.common.util.plus
+import eladkay.quaeritum.common.Quaeritum
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.ScaledResolution
 import net.minecraft.client.renderer.GlStateManager
@@ -8,6 +9,10 @@ import net.minecraft.client.renderer.RenderHelper
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.util.text.TextFormatting
+import net.minecraftforge.client.event.RenderGameOverlayEvent
+import net.minecraftforge.common.MinecraftForge
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
+import net.minecraftforge.fml.common.gameevent.TickEvent
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import org.lwjgl.opengl.GL11
@@ -27,13 +32,24 @@ object RemainingItemsRenderHandler {
     private var ticks: Int = 0
     private var count: Int = 0
 
+    init {
+        MinecraftForge.EVENT_BUS.register(this)
+    }
+
+    @SubscribeEvent
+    @SideOnly(Side.CLIENT)
+    fun onScreenRender(e: RenderGameOverlayEvent.Post) {
+        if (e.type == RenderGameOverlayEvent.ElementType.ALL)
+            render(e.resolution, e.partialTicks)
+    }
+
     @SideOnly(Side.CLIENT)
     fun render(resolution: ScaledResolution, partTicks: Float) {
         if (ticks > 0 && stack != null) {
             val pos = maxTicks - ticks
             val mc = Minecraft.getMinecraft()
-            val x = resolution.getScaledWidth() / 2 + 10 + Math.max(0, pos - leaveTicks)
-            val y = resolution.getScaledHeight() / 2
+            val x = resolution.scaledWidth / 2 + 10 + Math.max(0, pos - leaveTicks)
+            val y = resolution.scaledHeight / 2
 
             val start = maxTicks - leaveTicks
             val alpha = if (ticks + partTicks > start) 1f else (ticks + partTicks) / start
@@ -89,7 +105,14 @@ object RemainingItemsRenderHandler {
             --ticks
     }
 
-    @JvmOverloads fun set(stack: ItemStack?, str: String? = null, count: Int = 0) {
+    @SubscribeEvent
+    @SideOnly(Side.CLIENT)
+    fun clientTick(e: TickEvent.ClientTickEvent) {
+        if (e.phase == TickEvent.Phase.END)
+            tick()
+    }
+
+    fun set(stack: ItemStack?, str: String? = null, count: Int = 0) {
         this.stack = stack
         this.count = count
         customString = str
@@ -97,14 +120,12 @@ object RemainingItemsRenderHandler {
     }
 
     fun set(player: EntityPlayer, displayStack: ItemStack, pattern: Pattern) {
-        var count = 0
-        for (i in 0..player.inventory.sizeInventory - 1) {
-            val stack = player.inventory.getStackInSlot(i)
-            if (stack != null && pattern.matcher(stack.unlocalizedName).find())
-                count += stack.stackSize
-        }
+        val count = (0..player.inventory.sizeInventory - 1)
+                .mapNotNull { player.inventory.getStackInSlot(it) }
+                .filter { pattern.matcher(it.unlocalizedName).find() }
+                .sumBy { it.stackSize }
 
-        set(displayStack, null, count)
+        Quaeritum.proxy.setRemainingItemDisplay(null, displayStack, null, count)
     }
 
 }
