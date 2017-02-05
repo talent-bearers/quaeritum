@@ -122,6 +122,11 @@ tile.quaeritum:foundation.name=Foundation Stone
 tile.quaeritum:centrifuge.name=Centrifuge
 jei.quaeritum.recipe.centrifuge=Centrifuge
 
+item.quaeritum:ruinedSlag.name=Ruined Slag
+item.quaeritum:victiumIngot.name=Victium Ingot
+item.quaeritum:victiumNugget.name=Victium Nugget
+item.quaeritum:arcaneEssence.name=Arcane Essence
+item.quaeritum:tempesteel.name=Tempesteel Ingot
 
 quaeritum.subtitle.equipBauble=Bauble is equipped
 quaeritum.subtitle.centrifuge=Centrifuge spins
