@@ -27,6 +27,7 @@ object ModItems {
     val repulsor: ItemRepulsionCirclet
     val windwalker: ItemWindwalkerCharm
     val resource: ItemResource
+    val worldShield: ItemWorldShield
 
     lateinit var debug: ItemDebug
     lateinit var hollower: ItemHollower
@@ -50,6 +51,7 @@ object ModItems {
         repulsor = ItemRepulsionCirclet()
         windwalker = ItemWindwalkerCharm()
         resource = ItemResource()
+        worldShield = ItemWorldShield()
 
         if (LibrarianLib.DEV_ENVIRONMENT) {
             debug = ItemDebug()

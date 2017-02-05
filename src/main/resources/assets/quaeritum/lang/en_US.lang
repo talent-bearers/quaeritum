@@ -64,6 +64,7 @@ tile.quaeritum:flowerArcane.name=Arcane Flower
 
 tile.quaeritum:crystal.name=Manifest Soul
 item.quaeritum:flowingWorldBlade.name=Blade of the Flowing World
+item.quaeritum:shield.name=Shield of the Black Eternities
 item.quaeritum:riftFur.name=Riftmaker's Fur
 item.quaeritum:riftFang.name=Riftmaker's Fang
 item.quaeritum:riftClaw.name=Riftmaker's Claw
@@ -77,6 +78,8 @@ rituals.quaeritum.altarofthefallingstar=Altar of the Falling Star
 entity.quaeritum.chaosborn.name=Chaosborn
 
 misc.quaeritum.rushOfEnergy=A rush of energy flows through your soul!
+
+death.attack.shield
 
 item.quaeritum:chalkWhite.name=White Chalk
 item.quaeritum:chalkOrange.name=Orange Chalk
