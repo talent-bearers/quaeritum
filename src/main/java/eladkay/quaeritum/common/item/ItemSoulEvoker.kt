@@ -2,13 +2,17 @@ package eladkay.quaeritum.common.item
 
 import baubles.api.BaublesApi
 import com.teamwizardry.librarianlib.client.core.ClientTickHandler
+import com.teamwizardry.librarianlib.client.util.TooltipHelper
 import com.teamwizardry.librarianlib.common.base.item.IItemColorProvider
 import com.teamwizardry.librarianlib.common.base.item.ItemMod
+import com.teamwizardry.librarianlib.common.network.PacketHandler
 import com.teamwizardry.librarianlib.common.util.ItemNBTHelper
 import eladkay.quaeritum.api.lib.LibMisc
 import eladkay.quaeritum.api.spell.ISpellProvider
 import eladkay.quaeritum.common.Quaeritum
 import eladkay.quaeritum.common.lib.LibNames
+import eladkay.quaeritum.common.networking.SelectSlotPacket
+import net.minecraft.client.Minecraft
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.SoundEvents
 import net.minecraft.item.ItemStack
@@ -16,6 +20,12 @@ import net.minecraft.util.*
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.MathHelper
 import net.minecraft.world.World
+import net.minecraftforge.client.event.MouseEvent
+import net.minecraftforge.common.MinecraftForge
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
+import org.lwjgl.input.Keyboard
 import java.awt.Color
 
 /**
@@ -26,13 +36,58 @@ class ItemSoulEvoker() : ItemMod(LibNames.SOUL_EVOKER), IItemColorProvider {
 
     /*
         todo:
-        scroll support for turning wheel
         showing cooldowns/spells in HUD while equipped
      */
 
     companion object {
         val TAG_SLOT = "slot"
         val MAX_SLOT = 7
+
+        init {
+            MinecraftForge.EVENT_BUS.register(this)
+        }
+
+        @SubscribeEvent
+        @SideOnly(Side.CLIENT)
+        fun onKeyInput(e: MouseEvent) {
+            val player = Minecraft.getMinecraft().thePlayer
+            if (Keyboard.isCreated() && e.dwheel != 0 && player.isSneaking) {
+                val world = Minecraft.getMinecraft().theWorld
+                var theStack = player.heldItemMainhand
+                var theHand = EnumHand.MAIN_HAND
+                if (theStack == null || theStack.item !is ItemSoulEvoker) {
+                    theStack = player.heldItemOffhand
+                    theHand = EnumHand.OFF_HAND
+                }
+
+                if (theStack == null || theStack.item !is ItemSoulEvoker)
+                    return
+
+                e.isCanceled = true
+
+                val slot = getSlot(theStack)
+                val newSlot = ((slot + if (e.dwheel < 0) -1 else 1) + MAX_SLOT) % MAX_SLOT
+                world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.BLOCK_STONE_BUTTON_CLICK_ON, SoundCategory.PLAYERS, 0.6F, (1.0F + (player.worldObj.rand.nextFloat() - player.worldObj.rand.nextFloat()) * 0.2F) * 0.7F)
+                PacketHandler.NETWORK.sendToServer(SelectSlotPacket(newSlot, theHand))
+
+                val baubles = BaublesApi.getBaublesHandler(player) ?: return
+                val stack = baubles.getStackInSlot(newSlot)
+                if (stack != null && stack.item is ISpellProvider) {
+                    val spell = (stack.item as ISpellProvider).getSpell(stack, newSlot)
+                    if (spell != null) {
+                        Quaeritum.proxy.setRemainingItemDisplay(null, spell.getIconStack(stack, newSlot), spell.getSpellName(stack, newSlot))
+                        return
+                    }
+                }
+                Quaeritum.proxy.setRemainingItemDisplay(null, theStack, TooltipHelper.local("misc.${LibMisc.MOD_ID}.noSpell"))
+            }
+        }
+
+        fun setSlot(itemStackIn: ItemStack, newSlot: Int) {
+            ItemNBTHelper.setInt(itemStackIn, TAG_SLOT, (newSlot + MAX_SLOT) % MAX_SLOT)
+        }
+
+        fun getSlot(itemStackIn: ItemStack) = (ItemNBTHelper.getInt(itemStackIn, TAG_SLOT, 0) + MAX_SLOT) % MAX_SLOT
     }
 
     init {
@@ -55,7 +110,7 @@ class ItemSoulEvoker() : ItemMod(LibNames.SOUL_EVOKER), IItemColorProvider {
     override val itemColorFunction: ((ItemStack, Int) -> Int)?
         get() = { itemStack, i ->
             if (i == 1) {
-                COLORS_FROM_SLOT[ItemNBTHelper.getInt(itemStack, TAG_SLOT, 0) % COLORS_FROM_SLOT.size].pulseColor().rgb
+                COLORS_FROM_SLOT[getSlot(itemStack) % COLORS_FROM_SLOT.size].pulseColor().rgb
             } else 0xFFFFFF
         }
 
@@ -69,21 +124,24 @@ class ItemSoulEvoker() : ItemMod(LibNames.SOUL_EVOKER), IItemColorProvider {
     }
 
     override fun onItemRightClick(itemStackIn: ItemStack, worldIn: World, playerIn: EntityPlayer, hand: EnumHand): ActionResult<ItemStack> {
-        val slot = ItemNBTHelper.getInt(itemStackIn, TAG_SLOT, 0)
+        val slot = getSlot(itemStackIn)
         val baubles = BaublesApi.getBaublesHandler(playerIn)
 
         if (playerIn.isSneaking) {
             val newSlot = (slot + 1) % MAX_SLOT
             worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.BLOCK_STONE_BUTTON_CLICK_ON, SoundCategory.PLAYERS, 0.6F, (1.0F + (playerIn.worldObj.rand.nextFloat() - playerIn.worldObj.rand.nextFloat()) * 0.2F) * 0.7F)
             if (!worldIn.isRemote)
-                ItemNBTHelper.setInt(itemStackIn, TAG_SLOT, newSlot)
+                setSlot(itemStackIn, newSlot)
 
             val stack = baubles.getStackInSlot(newSlot)
             if (stack != null && stack.item is ISpellProvider) {
                 val spell = (stack.item as ISpellProvider).getSpell(stack, newSlot)
-                if (spell != null)
+                if (spell != null) {
                     Quaeritum.proxy.setRemainingItemDisplay(playerIn, spell.getIconStack(stack, newSlot), spell.getSpellName(stack, newSlot))
+                    return ActionResult(EnumActionResult.SUCCESS, itemStackIn)
+                }
             }
+            Quaeritum.proxy.setRemainingItemDisplay(playerIn, itemStackIn, TooltipHelper.local("misc.${LibMisc.MOD_ID}.noSpell"))
 
             return ActionResult(EnumActionResult.SUCCESS, itemStackIn)
         } else {

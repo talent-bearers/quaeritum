@@ -36,6 +36,7 @@ spell.quaeritum.repulse.name=Roar of Defiance
 spell.quaeritum.windwalk.name=Weight of Winds
 spell.quaeritum.windwalkRing.name=Flurry of Motion
 
+misc.quaeritum.noSpell=No spell
 
 item.quaeritum:repulsor.name=Circlet of Repulsion
 item.quaeritum:windwalker.name=Array of the Windwalker

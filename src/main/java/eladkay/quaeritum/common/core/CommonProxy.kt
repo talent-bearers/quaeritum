@@ -31,7 +31,6 @@ import net.minecraftforge.fml.relauncher.Side
  */
 open class CommonProxy {
     open fun pre(e: FMLPreInitializationEvent) {
-        PacketHandler.register(RemainingItemRenderPacket::class.java, Side.CLIENT)
         ModBlocks
         ModTab
         ModItems
