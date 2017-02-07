@@ -9,8 +9,10 @@ import eladkay.quaeritum.common.crafting.recipes.RecipeAwakenedSoulstone
 import eladkay.quaeritum.common.crafting.recipes.RecipeShapelessAnimusUpgrade
 import eladkay.quaeritum.common.item.ItemResource.Resources
 import eladkay.quaeritum.common.item.ModItems
+import eladkay.quaeritum.common.potions.ModPotionTypes
 import net.minecraft.init.Blocks
 import net.minecraft.init.Items
+import net.minecraft.init.PotionTypes
 import net.minecraft.item.ItemStack
 import net.minecraft.item.crafting.CraftingManager
 import net.minecraft.item.crafting.IRecipe
@@ -62,6 +64,8 @@ object ModRecipes {
         CentrifugeRecipes.registerRecipe("stone", Items.CLAY_BALL, ItemStack(ModItems.dormant))
         CentrifugeRecipes.registerRecipe(Resources.ARCANE_ESSENCE.stackOf(), "ingotGold", Resources.VICTIUM_INGOT.stackOf())
                 .setRequiresHeat(true)
+
+        ModPotionTypes.addCompletePotionRecipes(ModPotionTypes.potionPredicate("dyeBlack"), PotionTypes.AWKWARD, ModPotionTypes.BLINDNESS, ModPotionTypes.BLINDNESS_LONG, null)
     }
 
     private fun addOreDictRecipe(output: ItemStack, vararg recipe: Any): IRecipe {

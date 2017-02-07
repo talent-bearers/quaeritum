@@ -1,5 +1,6 @@
 package eladkay.quaeritum.common.potions;
 
+import com.teamwizardry.librarianlib.common.base.PotionMod
 import eladkay.quaeritum.common.lib.LibNames
 import net.minecraft.entity.EntityLiving
 import net.minecraft.entity.EntityLivingBase

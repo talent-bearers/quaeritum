@@ -4,14 +4,15 @@ import com.teamwizardry.librarianlib.common.network.PacketHandler
 import eladkay.quaeritum.api.animus.AnimusHelper
 import eladkay.quaeritum.client.core.ClientEventHandler
 import eladkay.quaeritum.common.block.ModBlocks
-//import eladkay.quaeritum.common.book.ModBook
 import eladkay.quaeritum.common.compat.mt.CraftTweaker
 import eladkay.quaeritum.common.crafting.ModRecipes
 import eladkay.quaeritum.common.entity.ModEntities
 import eladkay.quaeritum.common.item.ModItems
 import eladkay.quaeritum.common.networking.NetworkHelper
 import eladkay.quaeritum.common.networking.RemainingItemRenderPacket
+import eladkay.quaeritum.common.potions.ModPotionTypes
 import eladkay.quaeritum.common.potions.PotionRooted
+import eladkay.quaeritum.common.potions.PotionSoulgaze
 import eladkay.quaeritum.common.rituals.ModDiagrams
 import eladkay.quaeritum.common.rituals.ModWorks
 import net.minecraft.client.particle.Particle
@@ -23,7 +24,6 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import net.minecraftforge.fml.common.event.FMLInterModComms
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
-import net.minecraftforge.fml.relauncher.Side
 
 /**
  * @author WireSegal
@@ -35,9 +35,11 @@ open class CommonProxy {
         ModTab
         ModItems
         PotionRooted
+        PotionSoulgaze
+        ModPotionTypes
+        SightHandler
         ModEntities.init()
         ModRecipes.init()
-        Events().init()
         ClientEventHandler().init()
         AnimusHelper.Network.EventHandler()
         NetworkHelper
@@ -75,5 +77,4 @@ open class CommonProxy {
         if (player !is EntityPlayerMP) return
         PacketHandler.NETWORK.sendTo(RemainingItemRenderPacket(stack, str, count), player)
     }
-
 }

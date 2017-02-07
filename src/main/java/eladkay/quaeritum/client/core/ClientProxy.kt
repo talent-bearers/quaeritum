@@ -3,6 +3,7 @@ package eladkay.quaeritum.client.core
 import com.teamwizardry.librarianlib.LibrarianLib
 import eladkay.quaeritum.client.fx.FXMagicLine
 import eladkay.quaeritum.client.render.RemainingItemsRenderHandler
+import eladkay.quaeritum.client.render.entity.LayerSight
 import eladkay.quaeritum.client.render.entity.RenderChaosborn
 import eladkay.quaeritum.client.render.tesr.RitualHandlerSpecialRenderers
 import eladkay.quaeritum.common.block.tile.TileEntityBlueprint
@@ -26,12 +27,20 @@ import java.awt.datatransfer.StringSelection
 
 class ClientProxy : CommonProxy() {
     override fun pre(e: FMLPreInitializationEvent) {
-        RemainingItemsRenderHandler
         super.pre(e)
+        RemainingItemsRenderHandler
     }
 
     override fun init(e: FMLInitializationEvent) {
         super.init(e)
+
+        val skinMap = Minecraft.getMinecraft().renderManager.skinMap
+
+        var render = skinMap["default"]
+        render?.addLayer(LayerSight)
+
+        render = skinMap["slim"]
+        render?.addLayer(LayerSight)
 
         MinecraftForge.EVENT_BUS.register(ClientTickHandler())
 
@@ -86,5 +95,4 @@ class ClientProxy : CommonProxy() {
     override fun setRemainingItemDisplay(player: EntityPlayer?, stack: ItemStack?, str: String?, count: Int) {
         RemainingItemsRenderHandler.set(stack, str, count)
     }
-
 }
