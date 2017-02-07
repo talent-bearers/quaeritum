@@ -33,7 +33,7 @@ public interface ISpellProvider extends IBauble {
         return ItemNBTHelper.getInt(stack, TAG_COOLDOWN, 0);
     }
     static int getMaxCooldown(@NotNull ItemStack stack) {
-        return ItemNBTHelper.getInt(stack, TAG_COOLDOWN, 0);
+        return ItemNBTHelper.getInt(stack, TAG_MAX_COOLDOWN, 0);
     }
 
     static void tickCooldown(@NotNull EntityPlayer player, @NotNull ItemStack stack, int baubleSlot) {
