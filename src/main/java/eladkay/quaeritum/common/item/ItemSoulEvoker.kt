@@ -51,6 +51,8 @@ class ItemSoulEvoker() : ItemMod(LibNames.SOUL_EVOKER), IItemColorProvider {
         val TAG_SLOT = "slot"
         val MAX_SLOT = 7
 
+        lateinit var displayStack: ItemStack
+
         init {
             MinecraftForge.EVENT_BUS.register(this)
         }
@@ -109,7 +111,7 @@ class ItemSoulEvoker() : ItemMod(LibNames.SOUL_EVOKER), IItemColorProvider {
             val baubles = BaublesApi.getBaublesHandler(Minecraft.getMinecraft().thePlayer) ?: return (0..7).map { false }
             return (0 until 7).map {
                 val stack = baubles.getStackInSlot(it)
-                stack?.item is ISpellProvider
+                stack != null && stack.item is ISpellProvider && (stack.item as ISpellProvider).getSpell(stack, it) != null
             }
         }
 
@@ -120,24 +122,39 @@ class ItemSoulEvoker() : ItemMod(LibNames.SOUL_EVOKER), IItemColorProvider {
         fun onRenderHUD(e: RenderGameOverlayEvent.Pre) {
             if (e.type == RenderGameOverlayEvent.ElementType.ALL) {
                 val mc = Minecraft.getMinecraft()
+                val selectedSlots = mutableListOf<Int>()
+
+                val baubles = BaublesApi.getBaublesHandler(mc.thePlayer) ?: return
+
+                val allSlots = getAvailableSlots()
+                val flag = allSlots.indices
+                        .mapNotNull { baubles.getStackInSlot(it) }
+                        .any { it.item is ISpellProvider && ISpellProvider.getMaxCooldown(it) != 0 }
+
                 val mainStack = mc.thePlayer.heldItemMainhand
                 val offStack = mc.thePlayer.heldItemOffhand
-                if (mainStack?.item != ModItems.soulEvoker && offStack?.item != ModItems.soulEvoker)
+                if (mainStack?.item != ModItems.soulEvoker && offStack?.item != ModItems.soulEvoker && !flag)
                     return
 
-                val selectedSlots = mutableListOf<Int>()
                 if (mainStack != null && mainStack.item == ModItems.soulEvoker)
                     selectedSlots.add(getSlot(mainStack))
                 if (offStack != null && offStack.item == ModItems.soulEvoker)
                     selectedSlots.add(getSlot(offStack))
 
-                val baubles = BaublesApi.getBaublesHandler(mc.thePlayer) ?: return
-
-                mc.renderEngine.bindTexture(HUD)
-
-                val allSlots = getAvailableSlots()
+                GlStateManager.pushMatrix()
+                GlStateManager.scale(10f, 10f, 10f)
+                GlStateManager.translate(0f, 0f, -10f)
+                GlStateManager.enableDepth()
+                mc.renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE)
+                GlStateManager.enableRescaleNormal()
+                RenderHelper.enableGUIStandardItemLighting()
+                mc.renderItem.renderItemIntoGUI(displayStack, 0, 0)
+                RenderHelper.disableStandardItemLighting()
+                GlStateManager.disableRescaleNormal()
+                GlStateManager.popMatrix()
 
                 GlStateManager.pushMatrix()
+                mc.renderEngine.bindTexture(HUD)
                 GlStateManager.scale(4f, 4f, 4f)
                 GlStateManager.translate(10F, 2F, 0F)
                 for (count in 0 until 7) {
@@ -224,12 +241,15 @@ class ItemSoulEvoker() : ItemMod(LibNames.SOUL_EVOKER), IItemColorProvider {
             ItemNBTHelper.getInt(itemStack, TAG_SLOT, 0).toFloat()
         }
         setMaxStackSize(1)
+        displayStack = ItemStack(this)
+        ItemNBTHelper.setInt(displayStack, TAG_SLOT, -MAX_SLOT - 1)
     }
 
     override val itemColorFunction: ((ItemStack, Int) -> Int)?
         get() = { itemStack, i ->
             if (i == 1) {
-                COLORS_FROM_SLOT[getSlot(itemStack) % COLORS_FROM_SLOT.size].pulseColor().rgb
+                val slot = getSlot(itemStack) % COLORS_FROM_SLOT.size
+                if (slot == -1) 0 else COLORS_FROM_SLOT[slot].pulseColor().rgb
             } else 0xFFFFFF
         }
 

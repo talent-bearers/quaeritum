@@ -9,7 +9,9 @@ import eladkay.quaeritum.common.lib.LibNames
 import eladkay.quaeritum.common.potions.PotionRooted
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.item.ItemStack
+import net.minecraft.network.play.server.SPacketEntityVelocity
 import net.minecraft.potion.PotionEffect
 
 /**
@@ -29,15 +31,19 @@ class ItemRepulsionCirclet : ItemSpellBauble(LibNames.REPULSOR) {
                 val distSquared = (entity.posX - player.posX) * (entity.posX - player.posX) +
                         (entity.posY - player.posY) * (entity.posY - player.posY) +
                         (entity.posZ - player.posZ) * (entity.posZ - player.posZ)
-                if (distSquared < 100 && !player.worldObj.isRemote) {
+                if (distSquared < 100) {
                     flag = true
-                    entity.addPotionEffect(PotionEffect(PotionRooted, 60))
-                    val vec = entity.positionVector.subtract(player.positionVector).normalize()
-                    entity.setPosition(entity.posX, entity.posY + 1, entity.posZ)
-                    entity.onGround = false
-                    entity.motionY += 1 + vec.yCoord
-                    entity.motionX += vec.xCoord * 1.5
-                    entity.motionZ += vec.zCoord * 1.5
+                    if (!player.worldObj.isRemote) {
+                        entity.addPotionEffect(PotionEffect(PotionRooted, 60))
+                        val vec = entity.positionVector.subtract(player.positionVector).normalize()
+                        entity.setPosition(entity.posX, entity.posY + 1, entity.posZ)
+                        entity.onGround = false
+                        entity.motionY += 1 + vec.yCoord
+                        entity.motionX += vec.xCoord * 1.5
+                        entity.motionZ += vec.zCoord * 1.5
+                        if (entity is EntityPlayerMP)
+                            entity.connection.sendPacket(SPacketEntityVelocity(entity))
+                    }
                 }
             }
             return flag
