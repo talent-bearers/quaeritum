@@ -8,6 +8,7 @@ import net.minecraft.init.PotionTypes
 import net.minecraft.item.ItemStack
 import net.minecraft.potion.PotionEffect
 import net.minecraft.potion.PotionHelper
+import net.minecraft.potion.PotionHelper.registerPotionTypeConversion
 import net.minecraft.potion.PotionType
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.fml.common.registry.GameRegistry
@@ -22,24 +23,16 @@ object ModPotionTypes {
     val predicateRedstone = potionPredicate(ItemStack(Items.REDSTONE))
     val predicateGlowstone = potionPredicate(ItemStack(Items.GLOWSTONE_DUST))
 
-    fun potionPredicate(stack: ItemStack): Predicate<ItemStack> {
-        return Predicate { OreDictionary.itemMatches(stack, it!!, false) }
+    fun potionPredicate(stack: ItemStack): (ItemStack?) -> Boolean {
+        return { OreDictionary.itemMatches(stack, it, false) }
     }
 
-    fun potionPredicate(input: String): Predicate<ItemStack> {
+    fun potionPredicate(input: String): (ItemStack?) -> Boolean {
         val ores = OreDictionary.getOres(input)
-        return Predicate { ores.any { ore -> OreDictionary.itemMatches(ore, it!!, false) } }
+        return { ores.any { ore -> OreDictionary.itemMatches(ore, it, false) } }
     }
 
-    val potionRegister = MethodHandleHelper.wrapperForStaticMethod(PotionHelper::class.java,
-            arrayOf("a", "func_185204_a", "registerPotionTypeConversion"),
-            PotionType::class.java, Predicate::class.java, PotionType::class.java)
-
-    fun registerPotionTypeConversion(from: PotionType, predicate: Predicate<ItemStack>, to: PotionType) {
-        potionRegister(arrayOf(from, predicate, to))
-    }
-
-    fun addCompletePotionRecipes(predicate: Predicate<ItemStack>, fromType: PotionType, normalType: PotionType, longType: PotionType?, strongType: PotionType?) {
+    fun addCompletePotionRecipes(predicate: (ItemStack?) -> Boolean, fromType: PotionType, normalType: PotionType, longType: PotionType?, strongType: PotionType?) {
         if (fromType == PotionTypes.AWKWARD)
             registerPotionTypeConversion(PotionTypes.WATER, predicate, PotionTypes.MUNDANE)
         registerPotionTypeConversion(fromType, predicate, normalType)
@@ -47,7 +40,7 @@ object ModPotionTypes {
         if (strongType != null) registerPotionTypeConversion(normalType, predicateGlowstone, strongType)
     }
 
-    fun addPotionConversionRecipes(predicate: Predicate<ItemStack>, fromTypeNormal: PotionType, fromTypeLong: PotionType?, fromTypeStrong: PotionType?, normalType: PotionType, longType: PotionType?, strongType: PotionType?) {
+    fun addPotionConversionRecipes(predicate: (ItemStack?) -> Boolean, fromTypeNormal: PotionType, fromTypeLong: PotionType?, fromTypeStrong: PotionType?, normalType: PotionType, longType: PotionType?, strongType: PotionType?) {
         addCompletePotionRecipes(predicate, fromTypeNormal, normalType, longType, strongType)
         if (longType != null && fromTypeLong != null)
             registerPotionTypeConversion(fromTypeLong, predicate, longType)
