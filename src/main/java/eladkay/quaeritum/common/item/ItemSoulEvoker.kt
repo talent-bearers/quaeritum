@@ -42,11 +42,6 @@ import java.awt.Color
  */
 class ItemSoulEvoker() : ItemMod(LibNames.SOUL_EVOKER), IItemColorProvider {
 
-    /*
-        todo:
-        showing cooldowns/spells in HUD while equipped
-     */
-
     companion object {
         val TAG_SLOT = "slot"
         val MAX_SLOT = 7
