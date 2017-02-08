@@ -1,19 +1,16 @@
 package eladkay.quaeritum.common.potions
 
-import com.teamwizardry.librarianlib.common.util.MethodHandleHelper
 import eladkay.quaeritum.api.lib.LibMisc
 import net.minecraft.init.Items
 import net.minecraft.init.MobEffects
 import net.minecraft.init.PotionTypes
 import net.minecraft.item.ItemStack
 import net.minecraft.potion.PotionEffect
-import net.minecraft.potion.PotionHelper
 import net.minecraft.potion.PotionHelper.registerPotionTypeConversion
 import net.minecraft.potion.PotionType
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.fml.common.registry.GameRegistry
 import net.minecraftforge.oredict.OreDictionary
-import java.util.function.Predicate
 
 /**
  * @author WireSegal

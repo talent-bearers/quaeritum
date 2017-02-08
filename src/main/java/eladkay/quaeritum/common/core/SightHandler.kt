@@ -20,7 +20,10 @@ object SightHandler {
         MinecraftForge.EVENT_BUS.register(this)
     }
 
-    private var sightOverride = false
+    private val sightHolder = ThreadLocal.withInitial { true }
+    private var sightOverride: Boolean
+        get() = sightHolder.get()
+        set(value) = sightHolder.set(value)
 
     fun hasTheSight(player: EntityPlayer): Boolean {
         if (sightOverride) return true
