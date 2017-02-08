@@ -2,6 +2,7 @@ package eladkay.quaeritum.common.crafting.recipes
 
 import com.google.common.collect.Lists
 import eladkay.quaeritum.api.animus.AnimusHelper
+import eladkay.quaeritum.api.animus.EnumAnimusTier
 import eladkay.quaeritum.api.animus.ISoulstone
 import eladkay.quaeritum.common.item.ModItems
 import net.minecraft.inventory.InventoryCrafting
@@ -37,10 +38,10 @@ class RecipeAnimusUpgrade(output: ItemStack, vararg inputs: Any) : ShapedOreReci
             val outItem = out.item as ISoulstone
             list.filter({ stack -> stack.item is ISoulstone }).forEach({ stack ->
                 AnimusHelper.addAnimus(out, (stack.item as ISoulstone).getAnimusLevel(stack))
-                rarity = Math.min(rarity.toInt(), outItem.getRarityLevel(stack))
+                rarity = Math.min(rarity, outItem.getAnimusTier(stack).ordinal)
             })
 
-            AnimusHelper.minimizeRarity(out, rarity.toInt())
+            AnimusHelper.setTier(out, EnumAnimusTier.fromMeta(rarity))
             return out
         }
     }

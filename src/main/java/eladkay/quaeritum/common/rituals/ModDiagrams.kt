@@ -9,8 +9,6 @@ object ModDiagrams {
         RitualRegistry.registerDiagram(ShardedSkiesTier2Diagram(), "shardedSkies2")
         RitualRegistry.registerDiagram(RitualSummoning(), "summonChaosborn")
         RitualRegistry.registerDiagram(AltarOfTheFallingStarDiagram(), "altarOfTheFallingStar")
-        RitualRegistry.registerDiagram(HarmonizedHallDiagram(), "merger")
-        RitualRegistry.registerDiagram(InfusionDiagram(), "infusion")
         RitualRegistry.registerDiagram(CircleOfTheFinalMomentDiagram(), "circleofthefinalmoment")
     }
 

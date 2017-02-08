@@ -1,6 +1,7 @@
 package eladkay.quaeritum.common.rituals.diagrams
 
 import com.google.common.collect.ImmutableList
+import eladkay.quaeritum.api.animus.EnumAnimusTier
 import eladkay.quaeritum.api.rituals.IDiagram
 import net.minecraft.entity.item.EntityItem
 import net.minecraft.item.Item
@@ -16,11 +17,11 @@ abstract class CraftingDiagramBase : IDiagram {
     internal val name: String
     internal val input: ImmutableList<ItemStack>
     internal val animus: Int
-    internal val rarity: Int
+    internal val rarity: EnumAnimusTier
     internal val onPlayers: Boolean
     internal val requiress: Boolean
 
-    constructor(name: String, input: Array<ItemStack>, output: ItemStack, animus: Int, onPlayers: Boolean, rarity: Int, requiress: Boolean) {
+    constructor(name: String, input: Array<ItemStack>, output: ItemStack, animus: Int, onPlayers: Boolean, rarity: EnumAnimusTier, requiress: Boolean) {
         this.name = name
         this.input = ImmutableList.copyOf(input)
         this.output = output
@@ -30,7 +31,7 @@ abstract class CraftingDiagramBase : IDiagram {
         this.requiress = requiress
     }
 
-    constructor(name: String, input: Array<ItemStack>, output: Item, animus: Int, onPlayers: Boolean, rarity: Int, requiress: Boolean) {
+    constructor(name: String, input: Array<ItemStack>, output: Item, animus: Int, onPlayers: Boolean, rarity: EnumAnimusTier, requiress: Boolean) {
         this.name = name
         this.input = ImmutableList.copyOf(input)
         this.output = ItemStack(output)
@@ -48,7 +49,7 @@ abstract class CraftingDiagramBase : IDiagram {
         val item = EntityItem(world, pos.x.toDouble(), (pos.y + 2).toDouble(), pos.z.toDouble(), output)
         if (requiress)
             if (onPlayers)
-                IDiagram.Helper.consumeAnimusForRitual(tile, true, animus, 0)
+                IDiagram.Helper.consumeAnimusForRitual(tile, true, animus, EnumAnimusTier.VERDIS)
             else
                 IDiagram.Helper.takeAnimus(animus, rarity, tile, 4.0, true)
 

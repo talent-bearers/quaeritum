@@ -4,13 +4,11 @@ import com.google.common.collect.Multimap
 import com.teamwizardry.librarianlib.common.base.item.ItemModSword
 import com.teamwizardry.librarianlib.common.util.ItemNBTHelper
 import com.teamwizardry.librarianlib.common.util.times
-import eladkay.quaeritum.api.animus.AnimusHelper
 import eladkay.quaeritum.common.Quaeritum
 import eladkay.quaeritum.common.core.QuaeritumMethodHandles
 import eladkay.quaeritum.common.core.RayHelper
 import eladkay.quaeritum.common.lib.LibMaterials
 import eladkay.quaeritum.common.lib.LibNames
-import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.SharedMonsterAttributes
@@ -32,24 +30,10 @@ class ItemWorldBlade : ItemModSword(LibNames.WORLD_BLADE, LibMaterials.TEMPESTEE
     internal var shouldUseElucentParticles = false
 
     override fun onUpdate(stack: ItemStack, worldIn: World, entityIn: Entity?, itemSlot: Int, isSelected: Boolean) {
-        if (worldIn.isRemote && entityIn is EntityPlayer && stack.itemDamage > 0 && AnimusHelper.Network.requestAnimus(entityIn as EntityPlayer?, 2, 0, true))
-            stack.itemDamage = stack.itemDamage - 1
-
         val ticks = ItemNBTHelper.getInt(stack, TAG_TELEPORTED, 0)
         if (ticks > 0 && entityIn is EntityLivingBase)
             QuaeritumMethodHandles.setSwingTicks((entityIn as EntityLivingBase?)!!, ticks)
         ItemNBTHelper.removeEntry(stack, TAG_TELEPORTED)
-    }
-
-    override fun onBlockDestroyed(stack: ItemStack, worldIn: World, state: IBlockState, pos: BlockPos, entityLiving: EntityLivingBase): Boolean {
-        if (state.getBlockHardness(worldIn, pos) > 0)
-            AnimusHelper.damageItem(stack, 1, entityLiving, 1, 0)
-        return true
-    }
-
-    override fun hitEntity(stack: ItemStack, target: EntityLivingBase?, attacker: EntityLivingBase): Boolean {
-        AnimusHelper.damageItem(stack, 1, attacker, 1, 0)
-        return true
     }
 
     override fun onEntitySwing(entityLiving: EntityLivingBase, stack: ItemStack): Boolean {
@@ -119,8 +103,6 @@ class ItemWorldBlade : ItemModSword(LibNames.WORLD_BLADE, LibMaterials.TEMPESTEE
 
             if (!hitEntity)
                 ItemNBTHelper.setInt(stack, TAG_TELEPORTED, QuaeritumMethodHandles.getSwingTicks(entityLiving))
-
-            AnimusHelper.damageItem(stack, 1, entityLiving, 1, 0)
 
             if (entityLiving is EntityPlayer && entityLiving.worldObj.isRemote)
                 entityLiving.cooldownTracker.setCooldown(this, entityLiving.cooldownPeriod.toInt())

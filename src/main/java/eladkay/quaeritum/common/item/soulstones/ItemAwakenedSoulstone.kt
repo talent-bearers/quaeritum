@@ -3,6 +3,7 @@ package eladkay.quaeritum.common.item.soulstones
 import com.teamwizardry.librarianlib.common.base.item.ItemMod
 import com.teamwizardry.librarianlib.common.util.ItemNBTHelper
 import eladkay.quaeritum.api.animus.AnimusHelper
+import eladkay.quaeritum.api.animus.EnumAnimusTier
 import eladkay.quaeritum.api.animus.ISoulstone
 import eladkay.quaeritum.api.lib.LibNBT
 import eladkay.quaeritum.client.core.ClientUtils
@@ -62,20 +63,12 @@ class ItemAwakenedSoulstone @JvmOverloads constructor(name: String = LibNames.AW
         return 800
     }
 
-    override fun getMaxRarity(stack: ItemStack): Int {
-        return 10
-    }
-
-    override fun isRechargeable(stack: ItemStack): Boolean {
-        return true
-    }
-
     companion object {
 
         @JvmOverloads fun withAnimus(animus: Int, rarity: Int = 0): ItemStack {
             val stack = ItemStack(ModItems.awakened)
             ModItems.awakened.setAnimus(stack, animus)
-            ModItems.awakened.setRarity(stack, rarity)
+            ModItems.awakened.setAnimusTier(stack, EnumAnimusTier.fromMeta(rarity))
             return stack
         }
     }

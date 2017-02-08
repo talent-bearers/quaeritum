@@ -27,8 +27,8 @@ public final class AnimusHelper {
         return stack;
     }
 
-    public static ItemStack setRarity(ItemStack stack, int rarity) {
-        ((ISoulstone) stack.getItem()).setRarity(stack, rarity);
+    public static ItemStack setTier(ItemStack stack, EnumAnimusTier tier) {
+        ((ISoulstone) stack.getItem()).setAnimusTier(stack, tier);
         return stack;
     }
 
@@ -36,26 +36,18 @@ public final class AnimusHelper {
         return setAnimus(stack, getAnimus(stack) + animus);
     }
 
-    public static ItemStack addRarity(ItemStack stack, int rarity) {
-        return setRarity(stack, Math.max(getRarity(stack), rarity));
-    }
-
-    public static ItemStack minimizeRarity(ItemStack stack, int rarity) {
-        return setRarity(stack, Math.min(getRarity(stack), rarity));
-    }
-
-    public static int getRarity(ItemStack stack) {
-        return ((ISoulstone) stack.getItem()).getRarityLevel(stack);
+    public static EnumAnimusTier getTier(ItemStack stack) {
+        return ((ISoulstone) stack.getItem()).getAnimusTier(stack);
     }
 
     public static int getAnimus(ItemStack stack) {
         return ((ISoulstone) stack.getItem()).getAnimusLevel(stack);
     }
 
-    public static void damageItem(ItemStack stack, int damageToApply, EntityLivingBase entity, int animusPerDamage, int rarity) {
+    public static void damageItem(ItemStack stack, int damageToApply, EntityLivingBase entity, int animusPerDamage, EnumAnimusTier tier) {
         int animusToDrain = damageToApply * animusPerDamage;
         if (entity instanceof EntityPlayer && ((EntityPlayer) entity).capabilities.isCreativeMode) return;
-        boolean shouldDamage = !(entity instanceof EntityPlayer) || !Network.requestAnimus((EntityPlayer) entity, animusToDrain, rarity, true);
+        boolean shouldDamage = !(entity instanceof EntityPlayer) || !Network.requestAnimus((EntityPlayer) entity, animusToDrain, tier, true);
         if (shouldDamage)
             stack.damageItem(damageToApply, entity);
     }
@@ -89,12 +81,12 @@ public final class AnimusHelper {
 
         }
 
-        public static void setRarity(EntityPlayer player, int rarity) {
-            setRarity(player.getUniqueID(), rarity);
+        public static void setTier(EntityPlayer player, EnumAnimusTier tier) {
+            setTier(player.getUniqueID(), tier);
         }
 
-        public static void setRarity(UUID uuid, int rarity) {
-            getPersistentCompound(uuid).setInteger(TAG_ANIMUS_RARITY, rarity);
+        public static void setTier(UUID uuid, EnumAnimusTier tier) {
+            getPersistentCompound(uuid).setInteger(TAG_ANIMUS_RARITY, tier.ordinal());
             getSaveData().markDirty();
         }
 
@@ -106,12 +98,12 @@ public final class AnimusHelper {
             return getIntegerSafe(getPersistentCompound(uuid), TAG_ANIMUS_LEVEL, 0);
         }
 
-        public static int getRarity(EntityPlayer player) {
-            return getRarity(player.getUniqueID());
+        public static EnumAnimusTier getTier(EntityPlayer player) {
+            return getTier(player.getUniqueID());
         }
 
-        public static int getRarity(UUID uuid) {
-            return getIntegerSafe(getPersistentCompound(uuid), TAG_ANIMUS_RARITY, 0);
+        public static EnumAnimusTier getTier(UUID uuid) {
+            return EnumAnimusTier.fromMeta(getIntegerSafe(getPersistentCompound(uuid), TAG_ANIMUS_RARITY, 0));
         }
 
         public static void addAnimus(EntityPlayer player, int animus) {
@@ -122,21 +114,21 @@ public final class AnimusHelper {
             setAnimus(uuid, animus + getAnimus(uuid));
         }
 
-        public static void addRarity(EntityPlayer player, int rarity) {
-            addRarity(player.getUniqueID(), rarity);
+        public static void addTier(EntityPlayer player, EnumAnimusTier tier) {
+            addTier(player.getUniqueID(), tier);
         }
 
-        public static void addRarity(UUID uuid, int rarity) {
-            setRarity(uuid, Math.max(rarity, getRarity(uuid)));
+        public static void addTier(UUID uuid, EnumAnimusTier tier) {
+            setTier(uuid, EnumAnimusTier.fromMeta(Math.max(tier.ordinal(), getTier(uuid).ordinal())));
         }
 
-        public static boolean requestAnimus(EntityPlayer player, int animus, int rarity, boolean drain) {
-            return requestAnimus(player.getUniqueID(), animus, rarity, drain);
+        public static boolean requestAnimus(EntityPlayer player, int animus, EnumAnimusTier tier, boolean drain) {
+            return requestAnimus(player.getUniqueID(), animus, tier, drain);
         }
 
-        public static boolean requestAnimus(UUID uuid, int animus, int rarity, boolean drain) {
+        public static boolean requestAnimus(UUID uuid, int animus, EnumAnimusTier tier, boolean drain) {
             if (getAnimus(uuid) < animus) return false;
-            if (getRarity(uuid) < rarity) return false;
+            if (getTier(uuid).ordinal() < tier.ordinal()) return false;
             if (drain) addAnimus(uuid, -animus);
             return true;
         }
@@ -151,24 +143,6 @@ public final class AnimusHelper {
 
         public static String getLastKnownUsername(UUID uuid) {
             return getStringSafe(getPersistentCompound(uuid), TAG_LAST_KNOWN_USERNAME, null);
-        }
-
-        public static void setInfused(EntityPlayer uuid, boolean infused) {
-            getPersistentCompound(uuid.getUniqueID()).setBoolean(TAG_INFUSED, infused);
-            getSaveData().markDirty();
-        }
-
-        public static void setInfused(UUID uuid, boolean infused) {
-            getPersistentCompound(uuid).setBoolean(TAG_INFUSED, infused);
-            getSaveData().markDirty();
-        }
-
-        public static boolean getInfused(EntityPlayer uuid) {
-            return getBooleanSafe(getPersistentCompound(uuid.getUniqueID()), TAG_INFUSED, true);
-        }
-
-        public static boolean getInfused(UUID uuid) {
-            return getBooleanSafe(getPersistentCompound(uuid), TAG_INFUSED, false);
         }
 
         private static boolean getBooleanSafe(NBTTagCompound compound, String tag, boolean fallback) {

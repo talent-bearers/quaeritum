@@ -44,7 +44,7 @@ class BlockAnimusFlower : BlockModFlower(LibNames.FLOWER, Material.PLANTS, *Bloc
         return BlockStateContainer(this, FLOWER_TYPE)
     }
 
-//    override fun getRarity(stack: ItemStack): Int {
+//    override fun getTier(stack: ItemStack): Int {
 //        val `var` = Variants.of(stack.itemDamage) ?: return 0
 //        return `var`.rarity
 //    }

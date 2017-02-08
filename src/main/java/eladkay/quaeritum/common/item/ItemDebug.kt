@@ -3,6 +3,7 @@ package eladkay.quaeritum.common.item
 import com.teamwizardry.librarianlib.common.base.item.ItemMod
 import com.teamwizardry.librarianlib.common.util.plus
 import eladkay.quaeritum.api.animus.AnimusHelper
+import eladkay.quaeritum.api.animus.EnumAnimusTier
 import eladkay.quaeritum.common.Quaeritum
 import eladkay.quaeritum.common.block.ModBlocks
 import eladkay.quaeritum.common.block.base.BlockModColored
@@ -33,13 +34,13 @@ class ItemDebug : ItemMod(LibNames.DEBUG) {
         //this doesn't work if not inverted and it doesn't matter anyways because this debug item only exists in a dev environment
             if (GuiScreen.isShiftKeyDown()) {
                 AnimusHelper.Network.addAnimus(playerIn, 50)
-                AnimusHelper.Network.addRarity(playerIn, 1)
+                AnimusHelper.Network.addTier(playerIn, EnumAnimusTier.QUAERITUS)
                 ChatHelper.sendNoSpam2(playerIn, "Added 50, current animus level for " + playerIn.name + " is: " + AnimusHelper.Network.getAnimus(playerIn))
             } else if (GuiScreen.isCtrlKeyDown()) {
                 AnimusHelper.Network.addAnimus(playerIn, -50)
                 ChatHelper.sendNoSpam2(playerIn, "Took 50, current animus level for " + playerIn.name + " is: " + AnimusHelper.Network.getAnimus(playerIn))
             } else
-                ChatHelper.sendNoSpam2(playerIn, "Current animus level for " + playerIn.name + " is: " + AnimusHelper.Network.getAnimus(playerIn) + " and current rarity is " + AnimusHelper.Network.getRarity(playerIn))
+                ChatHelper.sendNoSpam2(playerIn, "Current animus level for " + playerIn.name + " is: " + AnimusHelper.Network.getAnimus(playerIn) + " and current rarity is " + AnimusHelper.Network.getTier(playerIn))
 
         return super.onItemRightClick(itemStackIn, worldIn, playerIn, hand)
     }

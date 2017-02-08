@@ -1,5 +1,6 @@
 package eladkay.quaeritum.common.rituals.works
 
+import eladkay.quaeritum.api.animus.EnumAnimusTier
 import eladkay.quaeritum.api.rituals.IDiagram
 import eladkay.quaeritum.api.rituals.IWork
 import eladkay.quaeritum.api.rituals.PositionedBlock
@@ -20,7 +21,7 @@ class ShardedSkiesWork : IWork {
 
     override fun updateTick(world: World, pos: BlockPos, tile: TileEntity, ticksExisted: Long): Boolean {
         if (ticksExisted > 600) return false
-        if (!ModBlocks.flower.canBlockStay(world, pos.up().up(), world.getBlockState(pos.up().up())) || world.getBlockState(pos.up().up()).block !== Blocks.AIR || !IDiagram.Helper.takeAnimus(20, 0, tile, 4.0, true)) return true
+        if (!ModBlocks.flower.canBlockStay(world, pos.up().up(), world.getBlockState(pos.up().up())) || world.getBlockState(pos.up().up()).block !== Blocks.AIR || !IDiagram.Helper.takeAnimus(20, EnumAnimusTier.VERDIS, tile, 4.0, true)) return true
         /*EntityItem item = new EntityItem(world, pos.getX(), pos.getY() + 2, pos.getZ(), new ItemStack(ModBlocks.flower, 1, new Random().nextInt(BlockAnimusFlower.Variants.values().length)));
         world.spawnEntityInWorld(item);*/
         val state = ModBlocks.flower.getStateFromMeta(Random().nextInt(BlockAnimusFlower.Variants.values().size))

@@ -1,10 +1,8 @@
 package eladkay.quaeritum.common.rituals.diagrams
 
-import com.google.common.collect.Lists
 //import com.teamwizardry.librarianlib.client.book.gui.PageText
-import com.teamwizardry.librarianlib.client.util.TooltipHelper
+import com.google.common.collect.Lists
 import eladkay.quaeritum.api.animus.ISoulstone
-import eladkay.quaeritum.api.lib.LibBook
 import eladkay.quaeritum.api.rituals.IDiagram
 import eladkay.quaeritum.api.rituals.PositionedBlock
 import eladkay.quaeritum.api.rituals.PositionedBlockChalk
@@ -38,7 +36,7 @@ class RitualSummoning : IDiagram {
             val stack = item.entityItem
             if (stack.item !is ISoulstone) continue
             val ss = stack.item as ISoulstone
-            rarity = Math.max(ss.getRarityLevel(stack), rarity)
+            rarity = Math.max(ss.getAnimusTier(stack).ordinal, rarity)
             NetworkHelper.tellEveryoneAround(LightningEffectPacket(item.posX, item.posY, item.posZ), world.provider.dimension, pos.x, pos.y, pos.z, 4)
             item.setDead()
         }

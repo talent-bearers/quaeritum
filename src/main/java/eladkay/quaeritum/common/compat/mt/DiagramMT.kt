@@ -1,6 +1,7 @@
 package eladkay.quaeritum.common.compat.mt
 
 import com.google.common.collect.Lists
+import eladkay.quaeritum.api.animus.EnumAnimusTier
 import eladkay.quaeritum.api.rituals.IDiagram
 import eladkay.quaeritum.api.rituals.PositionedBlock
 import eladkay.quaeritum.api.rituals.PositionedBlockChalk
@@ -20,13 +21,12 @@ object DiagramMT {
     @ZenMethod
     @JvmStatic
     fun addRecipe(name: String, input: Array<IItemStack>, output: IItemStack, onPlayers: Boolean, drain: Int, rarity: Int, chalks: Array<IntArray>) {
-        MineTweakerAPI.apply(Add(DiagramCrafting(name, CraftTweaker.getStacks(input), MineTweakerMC.getItemStack(output), getListOfChalks(chalks), drain, onPlayers, rarity, drain > 0)))
+        MineTweakerAPI.apply(Add(DiagramCrafting(name, CraftTweaker.getStacks(input), MineTweakerMC.getItemStack(output), getListOfChalks(chalks), drain, onPlayers, EnumAnimusTier.fromMeta(rarity), drain > 0)))
     }
 
     private fun getListOfChalks(chalks: Array<IntArray>): List<PositionedBlock> {
         val ret = Lists.newArrayList<PositionedBlock>()
-        for (chal in chalks)
-            ret.add(PositionedBlockChalk(EnumDyeColor.values()[chal[0]], BlockPos(chal[1], chal[2], chal[3])))
+        chalks.mapTo(ret) { PositionedBlockChalk(EnumDyeColor.values()[it[0]], BlockPos(it[1], it[2], it[3])) }
         return ret
     }
 

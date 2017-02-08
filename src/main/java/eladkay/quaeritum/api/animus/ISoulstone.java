@@ -18,24 +18,23 @@ public interface ISoulstone {
         return stack;
     }
 
-    default int getRarityLevel(@NotNull ItemStack stack) {
-        return ItemNBTHelper.getInt(stack, LibNBT.TAG_RARITY, 0);
+    @NotNull
+    default EnumAnimusTier getAnimusTier(@NotNull ItemStack stack) {
+        return EnumAnimusTier.fromMeta(ItemNBTHelper.getInt(stack, LibNBT.TAG_RARITY, 0));
     }
 
     @NotNull
-    default ItemStack setRarity(@NotNull ItemStack stack, int rarity) {
-        ItemNBTHelper.setInt(stack, LibNBT.TAG_RARITY,
-                Math.min(getMaxAnimus(stack), Math.max(0, rarity)));
+    default ItemStack setAnimusTier(@NotNull ItemStack stack, @NotNull EnumAnimusTier tier) {
+        EnumAnimusTier maxTier = getMaxAnimusTier(stack);
+        EnumAnimusTier newTier = maxTier.compareTo(maxTier) < 0 ? tier : maxTier;
+        ItemNBTHelper.setInt(stack, LibNBT.TAG_RARITY, newTier.ordinal());
         return stack;
     }
 
-    int getMaxAnimus(@NotNull ItemStack stack);
-
-    int getMaxRarity(@NotNull ItemStack stack);
-
-    boolean isRechargeable(@NotNull ItemStack stack);
-
-    default void doPassive(@NotNull ItemStack stack) {
-        //NO-OP
+    @NotNull
+    default EnumAnimusTier getMaxAnimusTier(@NotNull ItemStack stack) {
+        return EnumAnimusTier.QUAERITUS;
     }
+
+    int getMaxAnimus(@NotNull ItemStack stack);
 }

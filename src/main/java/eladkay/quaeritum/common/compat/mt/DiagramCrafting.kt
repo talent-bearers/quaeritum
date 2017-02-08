@@ -1,5 +1,6 @@
 package eladkay.quaeritum.common.compat.mt
 
+import eladkay.quaeritum.api.animus.EnumAnimusTier
 import eladkay.quaeritum.api.rituals.IDiagram
 import eladkay.quaeritum.api.rituals.PositionedBlock
 import eladkay.quaeritum.api.rituals.RitualRegistry
@@ -13,7 +14,7 @@ import net.minecraft.world.World
 import net.minecraft.world.WorldServer
 import net.minecraftforge.fml.common.Loader
 
-class DiagramCrafting(internal val name: String, input: Array<ItemStack>, internal val output: ItemStack, internal val chalks: List<PositionedBlock>?, internal val animus: Int, internal val onPlayers: Boolean, internal val rarity: Int, internal val requiress: Boolean) : IDiagram {
+class DiagramCrafting(internal val name: String, input: Array<ItemStack>, internal val output: ItemStack, internal val chalks: List<PositionedBlock>?, internal val animus: Int, internal val onPlayers: Boolean, internal val rarity: EnumAnimusTier, internal val requiress: Boolean) : IDiagram {
     internal val input: List<ItemStack>
 
     init {
@@ -29,7 +30,7 @@ class DiagramCrafting(internal val name: String, input: Array<ItemStack>, intern
         println(output.displayName)
         if (requiress)
             if (onPlayers)
-                IDiagram.Helper.consumeAnimusForRitual(tile, true, animus, 0)
+                IDiagram.Helper.consumeAnimusForRitual(tile, true, animus, EnumAnimusTier.VERDIS)
             else
                 IDiagram.Helper.takeAnimus(animus, rarity, tile, 4.0, true)
 

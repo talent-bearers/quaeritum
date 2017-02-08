@@ -1,6 +1,7 @@
 package eladkay.quaeritum.api.rituals;
 
 import eladkay.quaeritum.api.animus.AnimusHelper;
+import eladkay.quaeritum.api.animus.EnumAnimusTier;
 import eladkay.quaeritum.api.animus.INetworkProvider;
 import eladkay.quaeritum.api.animus.ISoulstone;
 import net.minecraft.entity.item.EntityItem;
@@ -44,7 +45,7 @@ public interface IDiagram {
 
     class Helper {
 
-        public static boolean consumeAnimusForRitual(TileEntity tes, boolean drain, int animus, int rarity) {
+        public static boolean consumeAnimusForRitual(TileEntity tes, boolean drain, int animus, EnumAnimusTier rarity) {
             ItemStack stack1 = Helper.getNearestAttunedSoulstone(tes, 4);
             if (stack1 == null) return false;
             UUID uuid = ((INetworkProvider) stack1.getItem()).getPlayer(stack1);
@@ -128,15 +129,15 @@ public interface IDiagram {
             return stack.getItem() == stack2.getItem() && stack.getItemDamage() == stack2.getItemDamage();
         }
 
-        public static boolean takeAnimus(int amount, int rarity, TileEntity tile, double range, boolean drain) {
+        public static boolean takeAnimus(int amount, EnumAnimusTier rarity, TileEntity tile, double range, boolean drain) {
             EntityItem bestFit = null;
             for (EntityItem stack : entitiesAroundAltar(tile, range).stream().filter((stack1 ->
                     stack1.getEntityItem().getItem() instanceof ISoulstone)).collect(Collectors.toList())) {
                 if (bestFit == null) bestFit = stack;
-                else if (AnimusHelper.getRarity(stack.getEntityItem()) >= rarity && AnimusHelper.getAnimus(stack.getEntityItem()) >= amount)
+                else if (AnimusHelper.getTier(stack.getEntityItem()).ordinal() >= rarity.ordinal() && AnimusHelper.getAnimus(stack.getEntityItem()) >= amount)
                     bestFit = stack;
             }
-            if (bestFit != null && AnimusHelper.getRarity(bestFit.getEntityItem()) >= rarity && AnimusHelper.getAnimus(bestFit.getEntityItem()) >= amount) {
+            if (bestFit != null && AnimusHelper.getTier(bestFit.getEntityItem()).ordinal() >= rarity.ordinal() && AnimusHelper.getAnimus(bestFit.getEntityItem()) >= amount) {
                 if (drain)
                     AnimusHelper.addAnimus(bestFit.getEntityItem(), -amount);
                 return true;
