@@ -11,7 +11,7 @@ import net.minecraftforge.oredict.OreDictionary
  */
 class ItemResource : ItemMod(LibNames.RESOURCE, *Resources.NAMES) {
     enum class Resources {
-        RUINED_SLAG, VICTIUM_INGOT, VICTIUM_NUGGET, ARCANE_ESSENCE, TEMPESTEEL;
+        RUINED_SLAG, VICTIUM_INGOT, VICTIUM_NUGGET, TEMPESTEEL;
 
         @JvmOverloads
         fun stackOf(size: Int = 1) = ItemStack(ModItems.resource, size, ordinal)

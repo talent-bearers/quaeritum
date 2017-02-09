@@ -4,6 +4,7 @@ import com.teamwizardry.librarianlib.common.base.item.ItemMod
 import com.teamwizardry.librarianlib.common.util.ItemNBTHelper
 import eladkay.quaeritum.api.animus.AnimusHelper
 import eladkay.quaeritum.api.animus.EnumAnimusTier
+import eladkay.quaeritum.api.animus.IAnimusResource
 import eladkay.quaeritum.api.animus.ISoulstone
 import eladkay.quaeritum.api.lib.LibNBT
 import eladkay.quaeritum.client.core.ClientUtils
@@ -16,11 +17,16 @@ import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.world.World
 
-class ItemAwakenedSoulstone @JvmOverloads constructor(name: String = LibNames.AWAKENED_SOULSTONE) : ItemMod(name), ISoulstone {
+class ItemAwakenedSoulstone @JvmOverloads constructor(name: String = LibNames.AWAKENED_SOULSTONE) : ItemMod(name), ISoulstone, IAnimusResource {
 
     init {
         setMaxStackSize(1)
     }
+
+    val MAX_ANIMUS = 800
+
+    override fun getAnimus(stack: ItemStack) = getAnimusLevel(stack)
+    override fun getAnimusTier(stack: ItemStack) = super.getAnimusTier(stack)
 
     override fun getDurabilityForDisplay(stack: ItemStack): Double {
         return 1 - getAnimusLevel(stack).toDouble() / getMaxAnimus(stack).toDouble()
@@ -60,7 +66,7 @@ class ItemAwakenedSoulstone @JvmOverloads constructor(name: String = LibNames.AW
     }
 
     override fun getMaxAnimus(stack: ItemStack): Int {
-        return 800
+        return MAX_ANIMUS
     }
 
     companion object {

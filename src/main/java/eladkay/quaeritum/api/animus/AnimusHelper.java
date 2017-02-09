@@ -21,7 +21,6 @@ import java.util.UUID;
 
 public final class AnimusHelper {
 
-
     public static ItemStack setAnimus(ItemStack stack, int animus) {
         ((ISoulstone) stack.getItem()).setAnimus(stack, animus);
         return stack;

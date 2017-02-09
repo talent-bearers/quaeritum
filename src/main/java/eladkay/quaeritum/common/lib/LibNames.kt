@@ -47,4 +47,5 @@ object LibNames {
     val CENTRIFUGE = "centrifuge"
     val CRAFTER = "crafter"
     val SHIELD = "shield"
+    val ESSENCE = "essence"
 }

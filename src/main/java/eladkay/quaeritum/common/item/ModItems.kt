@@ -10,55 +10,35 @@ import eladkay.quaeritum.common.item.spells.ItemWindwalkerCharm
 
 object ModItems {
 
-    val dormant: ItemDormantSoulstone
-    val awakened: ItemAwakenedSoulstone
-    val passionate: ItemPassionateSoulstone
-    val passive: ItemWorldSoulstone
-    val attuned: ItemAttunedSoulstone
-    val chalk: ItemChalk
-    val fertilizer: ItemFertilizer
-    val altas: ItemReagentAtlas
-    val riftmakerPart: ItemRiftmakerPart
-    val worldBlade: ItemWorldBlade
-    val picture: ItemPicture
-    val book: ItemBook
-    val tempest: ItemChalkTempest
-    val soulEvoker: ItemSoulEvoker
-    val repulsor: ItemRepulsionCirclet
-    val windwalker: ItemWindwalkerCharm
-    val resource: ItemResource
-    val worldShield: ItemWorldShield
+    val dormant: ItemDormantSoulstone = ItemDormantSoulstone()
+    val awakened: ItemAwakenedSoulstone = ItemAwakenedSoulstone()
+    val passionate: ItemPassionateSoulstone = ItemPassionateSoulstone()
+    val passive: ItemWorldSoulstone = ItemWorldSoulstone()
+    val attuned: ItemAttunedSoulstone = ItemAttunedSoulstone()
+    val chalk: ItemChalk = ItemChalk()
+    val fertilizer: ItemFertilizer = ItemFertilizer()
+    val altas: ItemReagentAtlas = ItemReagentAtlas()
+    val riftmakerPart: ItemRiftmakerPart = ItemRiftmakerPart()
+    val worldBlade: ItemWorldBlade = ItemWorldBlade()
+    val picture: ItemPicture = ItemPicture()
+    val book: ItemBook = ItemBook()
+    val tempest: ItemChalkTempest = ItemChalkTempest()
+    val soulEvoker: ItemSoulEvoker = ItemSoulEvoker()
+    val repulsor: ItemRepulsionCirclet = ItemRepulsionCirclet()
+    val windwalker: ItemWindwalkerCharm = ItemWindwalkerCharm()
+    val resource: ItemResource = ItemResource()
+    val worldShield: ItemWorldShield = ItemWorldShield()
+    val essence: ItemEssence = ItemEssence()
 
     lateinit var debug: ItemDebug
     lateinit var hollower: ItemHollower
     lateinit var placer: ItemPlacer
 
     init {
-        dormant = ItemDormantSoulstone()
-        awakened = ItemAwakenedSoulstone()
-        passionate = ItemPassionateSoulstone()
-        passive = ItemWorldSoulstone()
-        attuned = ItemAttunedSoulstone()
-        chalk = ItemChalk()
-        fertilizer = ItemFertilizer()
-        altas = ItemReagentAtlas()
-        riftmakerPart = ItemRiftmakerPart()
-        worldBlade = ItemWorldBlade()
-        picture = ItemPicture()
-        tempest = ItemChalkTempest()
-        book = ItemBook()
-        soulEvoker = ItemSoulEvoker()
-        repulsor = ItemRepulsionCirclet()
-        windwalker = ItemWindwalkerCharm()
-        resource = ItemResource()
-        worldShield = ItemWorldShield()
-
         if (LibrarianLib.DEV_ENVIRONMENT) {
             debug = ItemDebug()
             hollower = ItemHollower()
             placer = ItemPlacer()
         }
-
-
     }
 }

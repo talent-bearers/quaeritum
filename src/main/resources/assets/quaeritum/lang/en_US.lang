@@ -142,5 +142,12 @@ item.quaeritum:victiumNugget.name=Victium Nugget
 item.quaeritum:arcaneEssence.name=Arcane Essence
 item.quaeritum:tempesteel.name=Tempesteel Ingot
 
+item.quaeritum:verdis.name=Arcane Essence
+item.quaeritum:lucis.name=Shining Stardust
+item.quaeritum:ferrus.name=Alchemist's Ash
+item.quaeritum:argentus.name=Philosopher's Dust
+item.quaeritum:atlas.name=Traveller's Heart
+item.quaeritum:quaeritus.name=Seeker's Soul
+
 quaeritum.subtitle.equipBauble=Bauble is equipped
 quaeritum.subtitle.centrifuge=Centrifuge spins
