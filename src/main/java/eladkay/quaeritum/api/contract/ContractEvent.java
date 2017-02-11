@@ -22,7 +22,6 @@ public final class ContractEvent extends Event {
     }
 
     public IContractOath getOath() {
-
         return oath;
     }
 

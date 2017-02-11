@@ -1,41 +1,45 @@
 package eladkay.quaeritum.api.contract;
 
-import com.google.common.collect.HashBiMap;
+import eladkay.quaeritum.api.misc.RegistryEntry;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.RegistryNamespaced;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * @author WireSegal
  *         Created at 9:19 PM on 2/10/17.
  */
 public final class ContractRegistry {
-    private static final HashBiMap<String, IContractOath> oaths = HashBiMap.create();
+    private static final RegistryNamespaced<ResourceLocation, IContractOath> oaths = new RegistryNamespaced<>();
+    private static int lastId = 0;
 
     @NotNull
-    public static IContractOath registerOath(@NotNull String id, @NotNull IContractOath oath) {
-        oaths.put(id, oath);
+    public static IContractOath registerOath(@NotNull ResourceLocation id, @NotNull IContractOath oath) {
+        oaths.register(lastId++, id, oath);
         return oath;
     }
 
     @Nullable
-    public static IContractOath getOathFromId(@NotNull String id) {
-        return oaths.get(id);
+    public static IContractOath getOathFromName(@NotNull ResourceLocation id) {
+        return oaths.getObject(id);
     }
 
     @Nullable
-    public static String getIdFromOath(@NotNull IContractOath oath) {
-        return oaths.inverse().get(oath);
+    public static IContractOath getOathFromId(@NotNull int id) {
+        return oaths.getObjectById(id);
+    }
+
+    @Nullable
+    public static ResourceLocation getIdFromOath(@NotNull IContractOath oath) {
+        return oaths.getNameForObject(oath);
     }
 
     @NotNull
-    public static Collection<String> getAllOathIds() {
-        return oaths.keySet();
+    public static Iterator<RegistryEntry<ResourceLocation, IContractOath>> getOaths() {
+        return RegistryEntry.iterateOverRegistry(oaths);
     }
 
-    @NotNull
-    public static Collection<IContractOath> getAllOaths() {
-        return oaths.values();
-    }
 }
