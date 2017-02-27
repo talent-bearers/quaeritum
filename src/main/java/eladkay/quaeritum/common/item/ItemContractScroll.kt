@@ -42,11 +42,11 @@ class ItemContractScroll : ItemMod(LibNames.SCROLL, LibNames.SCROLL, LibNames.SE
         }
 
     /*
-    May secrets be kept in the shadows of light,
-    may truth be found in the apex of night.
-    May life flow through all flesh and blood,
-    through soul and storm, let our hope be a flood.
-         */
+        May secrets be kept in the shadows of light,
+        may truth be found in the apex of night.
+        May life flow through all flesh and blood,
+        through soul and storm, let our hope be a flood.
+     */
     val WORDS_OF_AGES = 0x2F0E38FE
 
     override fun onItemRightClick(itemStackIn: ItemStack, worldIn: World, playerIn: EntityPlayer, hand: EnumHand): ActionResult<ItemStack> {
