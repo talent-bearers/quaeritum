@@ -1,5 +1,7 @@
 package eladkay.quaeritum.api.contract;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.eventhandler.Cancelable;
@@ -12,17 +14,21 @@ import net.minecraftforge.fml.common.eventhandler.Event;
 @Cancelable
 public final class ContractEvent extends Event {
     private final IContractOath oath;
+    private final ItemStack contractStack;
+    private final EntityPlayer player;
     private final World world;
     private final BlockPos pos;
 
-    public ContractEvent(IContractOath oath, World world, BlockPos pos) {
-        this.oath = oath;
-        this.world = world;
-        this.pos = pos;
-    }
-
     public IContractOath getOath() {
         return oath;
+    }
+
+    public ItemStack getContractStack() {
+        return contractStack;
+    }
+
+    public EntityPlayer getPlayer() {
+        return player;
     }
 
     public World getWorld() {
@@ -31,5 +37,14 @@ public final class ContractEvent extends Event {
 
     public BlockPos getPos() {
         return pos;
+    }
+
+    public ContractEvent(IContractOath oath, ItemStack contractStack, EntityPlayer player, World world, BlockPos pos) {
+
+        this.oath = oath;
+        this.contractStack = contractStack;
+        this.player = player;
+        this.world = world;
+        this.pos = pos;
     }
 }

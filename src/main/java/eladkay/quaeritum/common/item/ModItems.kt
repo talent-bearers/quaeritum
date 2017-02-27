@@ -29,6 +29,7 @@ object ModItems {
     val resource: ItemResource = ItemResource()
     val worldShield: ItemWorldShield = ItemWorldShield()
     val essence: ItemEssence = ItemEssence()
+    val scroll: ItemContractScroll = ItemContractScroll()
 
     lateinit var debug: ItemDebug
     lateinit var hollower: ItemHollower

@@ -1,5 +1,6 @@
 package eladkay.quaeritum.api.contract;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -18,5 +19,9 @@ public interface IContractOath {
     @NotNull
     String getUnlocName(@NotNull ItemStack stack);
 
-    void fireContract(@NotNull ItemStack stack, @NotNull World world, @NotNull BlockPos pos);
+    default boolean unlocked(@NotNull EntityPlayer player) {
+        return true;
+    }
+
+    void fireContract(@NotNull EntityPlayer player, @NotNull ItemStack stack, @NotNull World world, @NotNull BlockPos pos);
 }

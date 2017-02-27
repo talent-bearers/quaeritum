@@ -14,10 +14,10 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import org.jetbrains.annotations.NotNull;
-import java.util.HashMap;
+
+import java.awt.*;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 public final class AnimusHelper {
 
@@ -57,6 +57,20 @@ public final class AnimusHelper {
         private static final String TAG_INFUSED = "infused";
         private static final String TAG_ANIMUS_RARITY = "animusRarity";
         private static final String TAG_LAST_KNOWN_USERNAME = "lastUsername";
+
+        public static int getAnimusColor(EntityPlayer player) {
+            return getAnimusColor(player.getUniqueID());
+        }
+
+        private static final Map<UUID, Integer> cachedColors = new HashMap<>();
+
+        public static int getAnimusColor(UUID uuid) {
+            if (cachedColors.containsKey(uuid)) return cachedColors.get(uuid);
+            Random random = new Random(uuid.getLeastSignificantBits() ^ (uuid.getMostSignificantBits() * 31));
+            int color = Color.HSBtoRGB(random.nextFloat(), (random.nextFloat() / 2) + 0.5f, 1f);
+            cachedColors.put(uuid, color);
+            return color;
+        }
 
         public static void addInformation(ItemStack stack, List<String> tooltip, boolean advanced) {
             UUID uuid = ((INetworkProvider) stack.getItem()).getPlayer(stack);

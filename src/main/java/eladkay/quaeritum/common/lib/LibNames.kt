@@ -48,4 +48,6 @@ object LibNames {
     val CRAFTER = "crafter"
     val SHIELD = "shield"
     val ESSENCE = "essence"
+    val SCROLL = "scroll"
+    val SEALED_SCROLL = "sealed_scroll"
 }

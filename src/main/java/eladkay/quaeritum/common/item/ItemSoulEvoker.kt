@@ -40,7 +40,7 @@ import java.awt.Color
  * @author WireSegal
  * Created at 5:18 PM on 11/5/16.
  */
-class ItemSoulEvoker() : ItemMod(LibNames.SOUL_EVOKER), IItemColorProvider {
+class ItemSoulEvoker : ItemMod(LibNames.SOUL_EVOKER), IItemColorProvider {
 
     companion object {
         val TAG_SLOT = "slot"
