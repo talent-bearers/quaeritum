@@ -3,15 +3,11 @@ package eladkay.quaeritum.common.rituals.diagrams
 
 import com.google.common.collect.Lists
 //import com.teamwizardry.librarianlib.client.book.gui.PageText
-import com.teamwizardry.librarianlib.client.util.TooltipHelper
-import eladkay.quaeritum.api.lib.LibBook
 import eladkay.quaeritum.api.rituals.IDiagram
 import eladkay.quaeritum.api.rituals.PositionedBlock
 import eladkay.quaeritum.api.rituals.PositionedBlockChalk
 import eladkay.quaeritum.common.block.ModBlocks
 import eladkay.quaeritum.common.block.flowers.BlockAnimusFlower
-import eladkay.quaeritum.common.networking.FancyParticlePacket
-import eladkay.quaeritum.common.networking.NetworkHelper
 import net.minecraft.entity.item.EntityItem
 import net.minecraft.init.Items
 import net.minecraft.item.EnumDyeColor
@@ -31,7 +27,7 @@ class ShardedSkiesTier2Diagram : IDiagram {
 
     override fun run(world: World, pos: BlockPos, te: TileEntity) {
         val item = EntityItem(world, pos.x.toDouble(), (pos.y + 2).toDouble(), pos.z.toDouble(), ItemStack(ModBlocks.flower, 1, BlockAnimusFlower.Variants.COMMON_ARCANE.ordinal))
-        world.spawnEntityInWorld(item)
+        world.spawnEntity(item)
         for (stack in IDiagram.Helper.entitiesAroundAltar(te, 4.0)) {
             val server = te.world as WorldServer
             server.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, stack.position.x + 0.5, stack.position.y + 1.0, stack.position.z + 0.5, 1, 0.1, 0.0, 0.1, 0.0)
@@ -55,7 +51,6 @@ class ShardedSkiesTier2Diagram : IDiagram {
         val flag = true
         for (stack in requiredItems)
             if (!IDiagram.Helper.isStackInList(stack, IDiagram.Helper.stacksAroundAltar(tile, 4.0))) return false
-        NetworkHelper.tellEveryoneAround(FancyParticlePacket(pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble(), 50), world.provider.dimension, pos.x, pos.y, pos.z, 16)
         /*for(EntityItem stack : Helper.entitiesAroundAltar(tile, 4)) {
             if (!Helper.isEntityItemInList(stack, getRequiredItems())) {
                 flag = false;

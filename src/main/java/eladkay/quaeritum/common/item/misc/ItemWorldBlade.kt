@@ -63,38 +63,38 @@ class ItemWorldBlade : ItemModSword(LibNames.WORLD_BLADE, LibMaterials.TEMPESTEE
             }
         }
 
-        pos = Vec3d(pos.xCoord, Math.max(pos.yCoord, entityLiving.posY), pos.zCoord)
+        pos = Vec3d(pos.x, Math.max(pos.y, entityLiving.posY), pos.z)
         val blockPos = BlockPos(pos)
 
-        if (entityLiving.worldObj.getBlockState(blockPos.up()).getCollisionBoundingBox(entityLiving.worldObj, blockPos.up()) == null) {
-            if (entityLiving.worldObj.isRemote)
+        if (entityLiving.world.getBlockState(blockPos.up()).getCollisionBoundingBox(entityLiving.world, blockPos.up()) == null) {
+            if (entityLiving.world.isRemote)
                 for (i in 0..99)
-                    entityLiving.worldObj.spawnParticle(EnumParticleTypes.PORTAL,
-                            entityLiving.posX + (entityLiving.worldObj.rand.nextDouble() - 0.5) * entityLiving.width.toDouble(),
-                            entityLiving.posY + entityLiving.worldObj.rand.nextDouble() * entityLiving.height.toDouble() - 0.25,
-                            entityLiving.posZ + (entityLiving.worldObj.rand.nextDouble() - 0.5) * entityLiving.width.toDouble(),
-                            (entityLiving.worldObj.rand.nextDouble() - 0.5) * 2.0, -entityLiving.worldObj.rand.nextDouble(),
-                            (entityLiving.worldObj.rand.nextDouble() - 0.5) * 2.0)
+                    entityLiving.world.spawnParticle(EnumParticleTypes.PORTAL,
+                            entityLiving.posX + (entityLiving.world.rand.nextDouble() - 0.5) * entityLiving.width.toDouble(),
+                            entityLiving.posY + entityLiving.world.rand.nextDouble() * entityLiving.height.toDouble() - 0.25,
+                            entityLiving.posZ + (entityLiving.world.rand.nextDouble() - 0.5) * entityLiving.width.toDouble(),
+                            (entityLiving.world.rand.nextDouble() - 0.5) * 2.0, -entityLiving.world.rand.nextDouble(),
+                            (entityLiving.world.rand.nextDouble() - 0.5) * 2.0)
 
-            entityLiving.setPosition(pos.xCoord, pos.yCoord, pos.zCoord)
+            entityLiving.setPosition(pos.x, pos.y, pos.z)
             entityLiving.fallDistance = 0f
 
-            if (entityLiving.worldObj.isRemote)
+            if (entityLiving.world.isRemote)
                 for (i in 0..99) {
                     if (!shouldUseElucentParticles)
-                        entityLiving.worldObj.spawnParticle(EnumParticleTypes.PORTAL,
-                                entityLiving.posX + (entityLiving.worldObj.rand.nextDouble() - 0.5) * entityLiving.width.toDouble(),
-                                entityLiving.posY + entityLiving.worldObj.rand.nextDouble() * entityLiving.height.toDouble() - 0.25,
-                                entityLiving.posZ + (entityLiving.worldObj.rand.nextDouble() - 0.5) * entityLiving.width.toDouble(),
-                                (entityLiving.worldObj.rand.nextDouble() - 0.5) * 2.0,
-                                -entityLiving.worldObj.rand.nextDouble(),
-                                (entityLiving.worldObj.rand.nextDouble() - 0.5) * 2.0)
+                        entityLiving.world.spawnParticle(EnumParticleTypes.PORTAL,
+                                entityLiving.posX + (entityLiving.world.rand.nextDouble() - 0.5) * entityLiving.width.toDouble(),
+                                entityLiving.posY + entityLiving.world.rand.nextDouble() * entityLiving.height.toDouble() - 0.25,
+                                entityLiving.posZ + (entityLiving.world.rand.nextDouble() - 0.5) * entityLiving.width.toDouble(),
+                                (entityLiving.world.rand.nextDouble() - 0.5) * 2.0,
+                                -entityLiving.world.rand.nextDouble(),
+                                (entityLiving.world.rand.nextDouble() - 0.5) * 2.0)
                     else
                         Quaeritum.proxy!!.spawnStafflikeParticles(
-                                entityLiving.worldObj, //world
-                                entityLiving.posX + (entityLiving.worldObj.rand.nextDouble() - 0.5) * entityLiving.width.toDouble(), //x
-                                entityLiving.posY + entityLiving.worldObj.rand.nextDouble() * entityLiving.height.toDouble() - 0.25, //y
-                                entityLiving.posZ + (entityLiving.worldObj.rand.nextDouble() - 0.5) * entityLiving.width.toDouble() //z
+                                entityLiving.world, //world
+                                entityLiving.posX + (entityLiving.world.rand.nextDouble() - 0.5) * entityLiving.width.toDouble(), //x
+                                entityLiving.posY + entityLiving.world.rand.nextDouble() * entityLiving.height.toDouble() - 0.25, //y
+                                entityLiving.posZ + (entityLiving.world.rand.nextDouble() - 0.5) * entityLiving.width.toDouble() //z
                         )
                 }
 
@@ -104,7 +104,7 @@ class ItemWorldBlade : ItemModSword(LibNames.WORLD_BLADE, LibMaterials.TEMPESTEE
             if (!hitEntity)
                 ItemNBTHelper.setInt(stack, TAG_TELEPORTED, QuaeritumMethodHandles.getSwingTicks(entityLiving))
 
-            if (entityLiving is EntityPlayer && entityLiving.worldObj.isRemote)
+            if (entityLiving is EntityPlayer && entityLiving.world.isRemote)
                 entityLiving.cooldownTracker.setCooldown(this, entityLiving.cooldownPeriod.toInt())
         }
 
@@ -115,8 +115,8 @@ class ItemWorldBlade : ItemModSword(LibNames.WORLD_BLADE, LibMaterials.TEMPESTEE
         val multimap = super.getAttributeModifiers(slot, stack)
 
         if (slot == EntityEquipmentSlot.MAINHAND) {
-            multimap.removeAll(SharedMonsterAttributes.ATTACK_SPEED.attributeUnlocalizedName)
-            multimap.put(SharedMonsterAttributes.ATTACK_SPEED.attributeUnlocalizedName, AttributeModifier(Item.ATTACK_SPEED_MODIFIER, "Weapon modifier", -2.4000000953674316, 0))
+            multimap.removeAll(SharedMonsterAttributes.ATTACK_SPEED.name)
+            multimap.put(SharedMonsterAttributes.ATTACK_SPEED.name, AttributeModifier(Item.ATTACK_SPEED_MODIFIER, "Weapon modifier", -2.4000000953674316, 0))
         }
 
         return multimap

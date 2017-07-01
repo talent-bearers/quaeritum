@@ -40,10 +40,6 @@ class FXMagicLine(worldIn: World, internal var initialX: Double, internal var in
         this.setParticleTexture(sprite)
     }
 
-    override fun isTransparent(): Boolean {
-        return true
-    }
-
     override fun getFXLayer(): Int {
         return 1
     }

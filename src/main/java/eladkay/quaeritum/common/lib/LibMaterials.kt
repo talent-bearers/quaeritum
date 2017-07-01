@@ -5,5 +5,5 @@ import net.minecraft.item.Item
 import net.minecraftforge.common.util.EnumHelper
 
 object LibMaterials {
-    val TEMPESTEEL: Item.ToolMaterial = EnumHelper.addToolMaterial("${LibMisc.MOD_ID}:mystic", 4, 0, 10f, 5f, 26)
+    val TEMPESTEEL: Item.ToolMaterial = EnumHelper.addToolMaterial("${LibMisc.MOD_ID}:mystic", 4, 0, 10f, 5f, 26)!!
 }

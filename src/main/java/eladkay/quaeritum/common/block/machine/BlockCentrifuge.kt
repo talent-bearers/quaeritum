@@ -49,8 +49,8 @@ class BlockCentrifuge : BlockModContainer(LibNames.CENTRIFUGE, Material.CLOTH) {
     override fun getMetaFromState(state: IBlockState)
             = state.getValue(FACING).horizontalIndex
 
-    override fun onBlockPlaced(worldIn: World?, pos: BlockPos?, facing: EnumFacing?, hitX: Float, hitY: Float, hitZ: Float, meta: Int, placer: EntityLivingBase): IBlockState
-            = defaultState.withProperty(BlockHorizontal.FACING, placer.horizontalFacing)
+    override fun getStateForPlacement(world: World?, pos: BlockPos?, facing: EnumFacing?, hitX: Float, hitY: Float, hitZ: Float, meta: Int, placer: EntityLivingBase, hand: EnumHand?): IBlockState
+         = defaultState.withProperty(BlockHorizontal.FACING, placer.horizontalFacing)
 
     override fun hasComparatorInputOverride(state: IBlockState) = true
     override fun getComparatorInputOverride(blockState: IBlockState, worldIn: World, pos: BlockPos): Int {
@@ -81,7 +81,7 @@ class BlockCentrifuge : BlockModContainer(LibNames.CENTRIFUGE, Material.CLOTH) {
             tile.markDirty()
         }
 
-        public override fun getStackLimit(slot: Int, stack: ItemStack?): Int {
+        public override fun getStackLimit(slot: Int, stack: ItemStack): Int {
             return super.getStackLimit(slot, stack)
         }
     }
@@ -103,10 +103,10 @@ class BlockCentrifuge : BlockModContainer(LibNames.CENTRIFUGE, Material.CLOTH) {
             val unfloored = ((0 until internalHandler.slots)
                     .flatMap {
                         val stack = internalHandler.getStackInSlot(it)
-                        if (stack == null) listOf()
+                        if (stack.isEmpty) listOf()
                         else listOf(IndexedValue(it, stack))
                     }.sumByDouble {
-                        it.value.stackSize / Math.min(internalHandler.getStackLimit(it.index, it.value), it.value.maxStackSize).toDouble()
+                        it.value.count / Math.min(internalHandler.getStackLimit(it.index, it.value), it.value.maxStackSize).toDouble()
                     } / internalHandler.slots.toFloat()) * 14.0
             val floored = Math.floor(unfloored).toInt()
 
@@ -134,9 +134,9 @@ class BlockCentrifuge : BlockModContainer(LibNames.CENTRIFUGE, Material.CLOTH) {
         @Save var totalSteam = 0
 
         override fun update() {
-            if (worldObj.isRemote) return
+            if (world.isRemote) return
 
-            val heated = worldObj.getBlockState(pos.down()).block == Blocks.FIRE
+            val heated = world.getBlockState(pos.down()).block == Blocks.FIRE
             val recipe = CentrifugeRecipes.getRecipe(inputs, heated)
             if (recipe != null) {
                 if (totalSteam >= recipe.steamRequired(inputs, heated)) {

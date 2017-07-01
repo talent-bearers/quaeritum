@@ -41,12 +41,13 @@ class ItemAttunedSoulstone : ItemMod(LibNames.ATTUNED_SOULSTONE), INetworkProvid
             setPlayer(stack, entityIn.uniqueID)
     }
 
-    override fun onItemRightClick(itemStackIn: ItemStack, worldIn: World?, playerIn: EntityPlayer?, hand: EnumHand?): ActionResult<ItemStack> {
-        if (playerIn!!.isSneaking) {
+    override fun onItemRightClick(worldIn: World?, playerIn: EntityPlayer?, hand: EnumHand?): ActionResult<ItemStack> {
+        val itemStackIn = playerIn!!.getHeldItem(hand)
+        if (playerIn.isSneaking) {
             setPlayer(itemStackIn, playerIn.uniqueID)
             worldIn!!.playSound(playerIn, playerIn.position, SoundEvents.ITEM_ARMOR_EQUIP_IRON, SoundCategory.PLAYERS, 1f, 1f)
             return ActionResult(EnumActionResult.SUCCESS, itemStackIn)
         }
-        return super.onItemRightClick(itemStackIn, worldIn, playerIn, hand)
+        return super.onItemRightClick(worldIn, playerIn, hand)
     }
 }

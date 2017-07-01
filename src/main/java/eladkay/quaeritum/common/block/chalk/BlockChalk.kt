@@ -43,7 +43,7 @@ class BlockChalk : BlockModColored(LibNames.CHALK_BLOCK, Material.CIRCUITS), IBl
         return WIRE_AABBS[getAABBIndex(state.getActualState(source, pos))]
     }
 
-    override fun getCollisionBoundingBox(blockState: IBlockState, worldIn: World, pos: BlockPos): AxisAlignedBB? {
+    override fun getCollisionBoundingBox(blockState: IBlockState, worldIn: IBlockAccess, pos: BlockPos): AxisAlignedBB? {
         return Block.NULL_AABB
     }
 
@@ -97,10 +97,6 @@ class BlockChalk : BlockModColored(LibNames.CHALK_BLOCK, Material.CIRCUITS), IBl
         return false
     }
 
-    override fun isFullyOpaque(state: IBlockState): Boolean {
-        return false
-    }
-
     @SideOnly(Side.CLIENT)
     override fun getBlockLayer(): BlockRenderLayer {
         return BlockRenderLayer.CUTOUT
@@ -127,19 +123,19 @@ class BlockChalk : BlockModColored(LibNames.CHALK_BLOCK, Material.CIRCUITS), IBl
         }
     }
 
-    override fun onBlockActivated(worldIn: World, pos: BlockPos, state: IBlockState, playerIn: EntityPlayer, hand: EnumHand, heldItem: ItemStack?, side: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
-        if (playerIn.inventory.getCurrentItem() != null && playerIn.inventory.getCurrentItem()!!.item === ModItems.chalk) {
-            worldIn.setBlockState(pos, getStateFromMeta(playerIn.inventory.getCurrentItem()!!.itemDamage))
-            return playerIn.inventory.getCurrentItem()!!.itemDamage != getMetaFromState(state)
-        }
-        if (playerIn.inventory.getCurrentItem() != null && playerIn.inventory.getCurrentItem()!!.item === ModItems.tempest) {
+    override fun onBlockActivated(worldIn: World, pos: BlockPos, state: IBlockState, playerIn: EntityPlayer, hand: EnumHand, side: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
+        val stack = playerIn.getHeldItem(hand)
+        if (stack.item === ModItems.chalk) {
+            worldIn.setBlockState(pos, ModBlocks.chalk.getStateFromMeta(stack.itemDamage))
+            return stack.itemDamage != getMetaFromState(state)
+        } else if (stack.item === ModItems.tempest) {
             worldIn.setBlockState(pos, ModBlocks.tempest.defaultState)
             return true
         }
         return false
     }
 
-    override fun neighborChanged(state: IBlockState, worldIn: World, pos: BlockPos, blockIn: Block) {
+    override fun neighborChanged(state: IBlockState, worldIn: World, pos: BlockPos, blockIn: Block, fromPos: BlockPos) {
         if (!worldIn.isRemote) {
             if (!this.canPlaceBlockAt(worldIn, pos)) {
                 worldIn.setBlockToAir(pos)

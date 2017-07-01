@@ -13,8 +13,8 @@ class EntityArrowFire : EntityArrow {
 
     }
 
-    constructor(worldObj: World, entityChaosborn: EntityChaosborn,
-                p_82196_1_: EntityLivingBase, f: Float, g: Float) : super(worldObj, entityChaosborn) {
+    constructor(world: World, entityChaosborn: EntityChaosborn,
+                p_82196_1_: EntityLivingBase, f: Float, g: Float) : super(world, entityChaosborn) {
     }
 
     override fun getArrowStack(): ItemStack {
@@ -25,7 +25,7 @@ class EntityArrowFire : EntityArrow {
 
         super.onEntityUpdate()
         if (this.isBurning) {
-            this.worldObj.setBlockState(BlockPos(this.posX, this.posY, this.posZ), Blocks.FIRE.defaultState)
+            this.world.setBlockState(BlockPos(this.posX, this.posY, this.posZ), Blocks.FIRE.defaultState)
         }
     }
 

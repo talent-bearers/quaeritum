@@ -1,6 +1,6 @@
 package eladkay.quaeritum.common.block.flowers
 
-import eladkay.quaeritum.common.block.base.BlockModFlower
+import com.teamwizardry.librarianlib.features.base.block.BlockModBush
 import eladkay.quaeritum.common.lib.LibNames
 import net.minecraft.block.material.Material
 import net.minecraft.block.properties.IProperty
@@ -17,7 +17,7 @@ import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 import java.util.*
 
-class BlockAnimusFlower : BlockModFlower(LibNames.FLOWER, Material.PLANTS, *BlockAnimusFlower.Variants.vars) {
+class BlockAnimusFlower : BlockModBush(LibNames.FLOWER, Material.PLANTS, *BlockAnimusFlower.Variants.vars) {
 
     init {
         defaultState = this.blockState.baseState.withProperty(FLOWER_TYPE, Variants.COMMON)

@@ -5,8 +5,6 @@ import eladkay.quaeritum.api.rituals.IDiagram
 import eladkay.quaeritum.api.rituals.IWork
 import eladkay.quaeritum.api.rituals.PositionedBlock
 import eladkay.quaeritum.api.rituals.PositionedBlockChalk
-import eladkay.quaeritum.common.networking.FancyParticlePacket
-import eladkay.quaeritum.common.networking.NetworkHelper
 import eladkay.quaeritum.common.rituals.diagrams.CircleOfTheFinalMomentDiagram
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.Blocks
@@ -25,9 +23,7 @@ class CircleOfTheFinalMomentWork : IWork {
         for (pos0 in BlockPos.getAllInBox(BlockPos(-4, 1, -4).add(pos), BlockPos(4, 8, 4).add(pos)))
             if (world.getTileEntity(pos0) != null && world.getTileEntity(pos0) is ITickable) {
                 for (i in 0..3) (world.getTileEntity(pos0) as ITickable).update()
-                NetworkHelper.tellEveryoneAround(FancyParticlePacket(pos0.x + 0.25, pos0.y - 0.5, pos0.z + 0.25, 5), world.provider.dimension, pos, 32)
             }
-        NetworkHelper.tellEveryoneAround(FancyParticlePacket(pos.x + 0.25, pos.y.toDouble(), pos.z + 0.25, 50), world.provider.dimension, pos, 32)
         return IDiagram.Helper.consumeAnimusForRitual(tile, true, 1, EnumAnimusTier.QUAERITUS)
         //ticksExisted < 1200;
     }

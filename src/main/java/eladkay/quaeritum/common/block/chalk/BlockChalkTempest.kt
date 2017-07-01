@@ -35,7 +35,7 @@ class BlockChalkTempest : BlockMod(LibNames.CHALK_BLOCK_TEMPEST, Material.CIRCUI
         return WIRE_AABBS[getAABBIndex(state!!.getActualState(source!!, pos!!))]
     }
 
-    override fun getCollisionBoundingBox(blockState: IBlockState, worldIn: World, pos: BlockPos): AxisAlignedBB? {
+    override fun getCollisionBoundingBox(blockState: IBlockState?, worldIn: IBlockAccess?, pos: BlockPos?): AxisAlignedBB? {
         return Block.NULL_AABB
     }
 
@@ -89,10 +89,6 @@ class BlockChalkTempest : BlockMod(LibNames.CHALK_BLOCK_TEMPEST, Material.CIRCUI
         return false
     }
 
-    override fun isFullyOpaque(state: IBlockState): Boolean {
-        return false
-    }
-
     @SideOnly(Side.CLIENT)
     override fun getBlockLayer(): BlockRenderLayer {
         return BlockRenderLayer.CUTOUT
@@ -119,10 +115,11 @@ class BlockChalkTempest : BlockMod(LibNames.CHALK_BLOCK_TEMPEST, Material.CIRCUI
         }
     }
 
-    override fun onBlockActivated(worldIn: World?, pos: BlockPos?, state: IBlockState?, playerIn: EntityPlayer?, hand: EnumHand?, heldItem: ItemStack?, side: EnumFacing?, hitX: Float, hitY: Float, hitZ: Float): Boolean {
-        if (playerIn!!.inventory.getCurrentItem() != null && playerIn.inventory.getCurrentItem()!!.item === ModItems.chalk) {
-            worldIn!!.setBlockState(pos!!, ModBlocks.chalk.getStateFromMeta(playerIn.inventory.getCurrentItem()!!.itemDamage))
-            return playerIn.inventory.getCurrentItem()!!.itemDamage != getMetaFromState(state)
+    override fun onBlockActivated(worldIn: World, pos: BlockPos?, state: IBlockState?, playerIn: EntityPlayer, hand: EnumHand?, side: EnumFacing?, hitX: Float, hitY: Float, hitZ: Float): Boolean {
+        val stack = playerIn.getHeldItem(hand)
+        if (stack.item === ModItems.chalk) {
+            worldIn.setBlockState(pos!!, ModBlocks.chalk.getStateFromMeta(stack.itemDamage))
+            return stack.itemDamage != getMetaFromState(state)
         }
         return false
     }
@@ -131,7 +128,7 @@ class BlockChalkTempest : BlockMod(LibNames.CHALK_BLOCK_TEMPEST, Material.CIRCUI
         return 0
     }
 
-    override fun neighborChanged(state: IBlockState?, worldIn: World?, pos: BlockPos?, blockIn: Block?) {
+    override fun neighborChanged(state: IBlockState?, worldIn: World?, pos: BlockPos?, blockIn: Block?, fromPos: BlockPos?) {
         if (!worldIn!!.isRemote) {
             if (!this.canPlaceBlockAt(worldIn, pos!!)) {
                 worldIn.setBlockToAir(pos)
@@ -151,7 +148,7 @@ class BlockChalkTempest : BlockMod(LibNames.CHALK_BLOCK_TEMPEST, Material.CIRCUI
         return null
     }
 
-    enum class EnumAttachPosition private constructor(private val nm: String) : IStringSerializable {
+    enum class EnumAttachPosition(private val nm: String) : IStringSerializable {
         up("up"),
         side("side"),
         none("none");

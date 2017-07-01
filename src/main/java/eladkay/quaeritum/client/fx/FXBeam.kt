@@ -33,7 +33,7 @@ class FXBeam(par1World: World, x: Double, y: Double, z: Double, red: Float, blue
 
         this.particleScale *= 2f
         this.particleMaxAge = (6.0 / (Math.random() * 0.8 + 0.6)).toInt()
-        this.isCollided = false
+        this.canCollide = false
         this.isExpired = false
     }
 }

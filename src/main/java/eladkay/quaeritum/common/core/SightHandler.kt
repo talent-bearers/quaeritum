@@ -36,7 +36,7 @@ object SightHandler {
     @SideOnly(Side.CLIENT)
     fun renderTick(e: TickEvent.RenderTickEvent) {
         sightOverride = false
-        val thePlayer = Minecraft.getMinecraft().thePlayer ?: return
+        val thePlayer = Minecraft.getMinecraft().player ?: return
         if (e.phase == TickEvent.Phase.START)
             sightOverride = hasTheSight(thePlayer)
     }

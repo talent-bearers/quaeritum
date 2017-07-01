@@ -28,7 +28,7 @@ class ItemPassionateSoulstone : ItemMod(LibNames.PASSIONATE_SOULSTONE), INetwork
         if (getPlayer(itemStack) == null) return null
         AnimusHelper.Network.addAnimus(getPlayer(itemStack), -4)
         val copiedStack = itemStack.copy()
-        copiedStack.stackSize = 1
+        copiedStack.count = 1
         return copiedStack
     }
 
@@ -57,13 +57,15 @@ class ItemPassionateSoulstone : ItemMod(LibNames.PASSIONATE_SOULSTONE), INetwork
             setPlayer(stack, entityIn.uniqueID)
     }
 
-    override fun onItemRightClick(itemStackIn: ItemStack, worldIn: World?, playerIn: EntityPlayer?, hand: EnumHand?): ActionResult<ItemStack> {
+    override fun onItemRightClick(worldIn: World?, playerIn: EntityPlayer?, hand: EnumHand?): ActionResult<ItemStack> {
+        val itemStackIn = playerIn!!.getHeldItem(hand)
+
         if (playerIn!!.isSneaking) {
             setPlayer(itemStackIn, playerIn.uniqueID)
             worldIn!!.playSound(playerIn, playerIn.position, SoundEvents.ITEM_ARMOR_EQUIP_IRON, SoundCategory.PLAYERS, 1f, 1f)
             return ActionResult(EnumActionResult.SUCCESS, itemStackIn)
         }
-        return super.onItemRightClick(itemStackIn, worldIn, playerIn, hand)
+        return super.onItemRightClick(worldIn, playerIn, hand)
     }
 
     override fun getBurnTime(fuel: ItemStack): Int {

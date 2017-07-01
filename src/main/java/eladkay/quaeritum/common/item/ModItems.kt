@@ -5,8 +5,6 @@ import eladkay.quaeritum.common.item.chalk.ItemChalk
 import eladkay.quaeritum.common.item.chalk.ItemChalkTempest
 import eladkay.quaeritum.common.item.misc.*
 import eladkay.quaeritum.common.item.soulstones.*
-import eladkay.quaeritum.common.item.spells.ItemRepulsionCirclet
-import eladkay.quaeritum.common.item.spells.ItemWindwalkerCharm
 
 object ModItems {
 
@@ -23,9 +21,6 @@ object ModItems {
     val picture: ItemPicture = ItemPicture()
     val book: ItemBook = ItemBook()
     val tempest: ItemChalkTempest = ItemChalkTempest()
-    val soulEvoker: ItemSoulEvoker = ItemSoulEvoker()
-    val repulsor: ItemRepulsionCirclet = ItemRepulsionCirclet()
-    val windwalker: ItemWindwalkerCharm = ItemWindwalkerCharm()
     val resource: ItemResource = ItemResource()
     val worldShield: ItemWorldShield = ItemWorldShield()
     val essence: ItemEssence = ItemEssence()

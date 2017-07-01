@@ -13,17 +13,17 @@ class TileEntityBlueprint : TileMod() {
     var currentDiagram: IDiagram? = null
 
     public override fun updateEntity() {
-        if (!worldObj.isRemote) {
+        if (!world.isRemote) {
             //LogHelper.logDebug(currentDiagram);
             if (currentDiagram != null)
                 if (stageTicks > 0) {
                     stage = RitualStage.PREP
                     stageTicks--
-                    if (!currentDiagram!!.onPrepUpdate(worldObj, pos, this, stageTicks))
+                    if (!currentDiagram!!.onPrepUpdate(world, pos, this, stageTicks))
                         currentDiagram = null
                 } else {
                     stage = RitualStage.CRAFTING
-                    currentDiagram!!.run(worldObj, pos, this)
+                    currentDiagram!!.run(world, pos, this)
                     currentDiagram = null
                 }
 
@@ -39,7 +39,7 @@ class TileEntityBlueprint : TileMod() {
             var bestDiagram: IDiagram? = null
             var highestChalks = -1
             for (ritual in RitualRegistry.getDiagramList()) {
-                val foundAll = ritual.hasRequiredItems(worldObj, pos, this)
+                val foundAll = ritual.hasRequiredItems(world, pos, this)
                 val requirementsMet = ritual.canRitualRun(this.world, pos, this)
                 val blocks = arrayListOf<PositionedBlock>()
                 ritual.buildChalks(blocks)
@@ -54,10 +54,10 @@ class TileEntityBlueprint : TileMod() {
         }
 
     private fun runRitual(ritual: IDiagram?) {
-        if (worldObj.isRemote || ritual == null) return
+        if (world.isRemote || ritual == null) return
         currentDiagram = ritual
         stage = RitualStage.PREP
-        stageTicks = ritual.getPrepTime(worldObj, pos, this)
+        stageTicks = ritual.getPrepTime(world, pos, this)
     }
 
     fun onBlockActivated(): Boolean {

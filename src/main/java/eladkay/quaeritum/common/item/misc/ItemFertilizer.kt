@@ -18,7 +18,8 @@ import net.minecraft.world.World
 
 class ItemFertilizer : ItemMod(LibNames.FERTILIZER) {
 
-    override fun onItemUse(stack: ItemStack, playerIn: EntityPlayer?, worldIn: World, pos: BlockPos, hand: EnumHand?, facing: EnumFacing?, hitX: Float, hitY: Float, hitZ: Float): EnumActionResult {
+    override fun onItemUse(playerIn: EntityPlayer?, worldIn: World, pos: BlockPos, hand: EnumHand?, facing: EnumFacing?, hitX: Float, hitY: Float, hitZ: Float): EnumActionResult {
+        val stack = playerIn!!.getHeldItem(hand)
         return if (applyBonemeal(stack, worldIn, pos)) EnumActionResult.SUCCESS else EnumActionResult.FAIL
     }
 
@@ -37,7 +38,7 @@ class ItemFertilizer : ItemMod(LibNames.FERTILIZER) {
                     worldIn.playBroadcastSound(2005, target, 0)
                     spawnBonemealParticles(worldIn, target, 0)
                 }
-                stack.stackSize--
+                stack.count--
             }
             return true
         }

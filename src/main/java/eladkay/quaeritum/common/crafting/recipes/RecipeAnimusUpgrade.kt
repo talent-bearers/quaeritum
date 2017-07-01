@@ -11,7 +11,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe
 
 class RecipeAnimusUpgrade(output: ItemStack, vararg inputs: Any) : ShapedOreRecipe(output, inputs) {
 
-    override fun getCraftingResult(var1: InventoryCrafting): ItemStack? {
+    override fun getCraftingResult(var1: InventoryCrafting): ItemStack {
         return output(output, var1)
     }
 

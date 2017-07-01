@@ -51,7 +51,7 @@ object RenderHelper {
             var var5 = 0
             var var6: Int
             var var7: Int
-            val fontRenderer = Minecraft.getMinecraft().fontRendererObj
+            val fontRenderer = Minecraft.getMinecraft().fontRenderer
             var6 = 0
             while (var6 < tooltipData.size) {
                 var7 = fontRenderer.getStringWidth(tooltipData[var6])
@@ -131,7 +131,7 @@ object RenderHelper {
     fun renderStar(color: Int, xScale: Float, yScale: Float, zScale: Float, seed: Long) {
         val tessellator = Tessellator.getInstance()
 
-        var ticks = (Minecraft.getMinecraft().theWorld.totalWorldTime % 200).toInt()
+        var ticks = (Minecraft.getMinecraft().world.totalWorldTime % 200).toInt()
         if (ticks >= 100)
             ticks = 200 - ticks - 1
 

@@ -11,6 +11,7 @@ import eladkay.quaeritum.common.lib.LibNames
 import eladkay.quaeritum.common.lib.arrayOfStrings
 import eladkay.quaeritum.common.lib.capitalizeFirst
 import net.minecraft.block.state.IBlockState
+import net.minecraft.entity.Entity
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.EnumDyeColor
 import net.minecraft.item.ItemBlock
@@ -28,6 +29,8 @@ class ItemChalk : ItemMod(LibNames.CHALK, *ItemChalk.COLORS), IItemColorProvider
         get() = { stack, tintIndex -> if (ItemNBTHelper.getBoolean(stack.copy(), LibNBT.FLAT, false) && stack.itemDamage < 16)
             ItemDye.DYE_COLORS[15 - stack.itemDamage] else 0xFFFFFF }
 
+    val block = ModBlocks.chalk
+
     init {
         addPropertyOverride(LibLocations.FLAT_CHALK) { stack, world, entityLivingBase -> if (ItemNBTHelper.getBoolean(stack.copy(), LibNBT.FLAT, false)) 1.0f else 0.0f }
         setMaxStackSize(1)
@@ -37,22 +40,24 @@ class ItemChalk : ItemMod(LibNames.CHALK, *ItemChalk.COLORS), IItemColorProvider
         TooltipHelper.addToTooltip(tooltip, getUnlocalizedName(stack) + ".desc")
     }
 
-    override fun onItemUse(stack: ItemStack?, player: EntityPlayer?, world: World?, pos: BlockPos?, hand: EnumHand?, side: EnumFacing?, hitX: Float, hitY: Float, hitZ: Float): EnumActionResult {
-        var blockPos = pos
-        val iblockstate = world!!.getBlockState(blockPos!!)
+    override fun onItemUse(player: EntityPlayer, worldIn: World, pos: BlockPos, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): EnumActionResult {
+        var pos = pos
+        val iblockstate = worldIn.getBlockState(pos)
         val block = iblockstate.block
 
-        if (!block.isReplaceable(world, blockPos)) {
-            blockPos = blockPos.offset(side!!)
+        if (!block.isReplaceable(worldIn, pos)) {
+            pos = pos.offset(facing)
         }
 
-        if (stack!!.stackSize != 0 && player!!.canPlayerEdit(blockPos!!, side!!, stack) && world.canBlockBePlaced(ModBlocks.chalk, blockPos, false, side, null, stack)) {
-            val i = stack.metadata
-            val iblockstate1 = ModBlocks.chalk.onBlockPlaced(world, blockPos, side, hitX, hitY, hitZ, i, player)
+        val itemstack = player.getHeldItem(hand)
 
-            if (placeBlockAt(stack, player, world, blockPos, side, hitX, hitY, hitZ, iblockstate1)) {
-                val soundtype = ModBlocks.chalk.soundType
-                world.playSound(player, blockPos, soundtype.placeSound, SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0f) / 2.0f, soundtype.getPitch() * 0.8f)
+        if (!itemstack.isEmpty && player.canPlayerEdit(pos, facing, itemstack) && worldIn.mayPlace(this.block, pos, false, facing, null as Entity?)) {
+            val i = this.getMetadata(itemstack.metadata)
+            val iblockstate1 = this.block.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, i, player, hand)
+
+            if (placeBlockAt(itemstack, player, worldIn, pos, facing, hitX, hitY, hitZ, iblockstate1)) {
+                val soundtype = worldIn.getBlockState(pos).block.getSoundType(worldIn.getBlockState(pos), worldIn, pos, player)
+                worldIn.playSound(player, pos, soundtype.placeSound, SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0f) / 2.0f, soundtype.getPitch() * 0.8f)
             }
 
             return EnumActionResult.SUCCESS

@@ -43,7 +43,7 @@ class AltarOfTheFallingStarDiagram : IDiagram {
 
         var player: UUID? = null
         for (item in entities) {
-            val stack = item.entityItem
+            val stack = item.item
             if (stack.item !is INetworkProvider || !(stack.item as INetworkProvider).isReceiver(stack))
                 continue
             player = (stack.item as INetworkProvider).getPlayer(stack)
@@ -52,7 +52,7 @@ class AltarOfTheFallingStarDiagram : IDiagram {
         if (player == null) return
 
         for (item in entities) {
-            val stack = item.entityItem
+            val stack = item.item
             if (stack.item !is ISoulstone) continue
             val ss = stack.item as ISoulstone
             AnimusHelper.Network.addAnimus(player, ss.getAnimusLevel(stack))
@@ -70,7 +70,7 @@ class AltarOfTheFallingStarDiagram : IDiagram {
     override fun canRitualRun(world: World?, pos: BlockPos, tile: TileEntity): Boolean {
         val entities = IDiagram.Helper.entitiesAroundAltar(tile, 4.0)
         for (entity in entities) {
-            val stack = entity.entityItem
+            val stack = entity.item
             if (stack.item is INetworkProvider && (stack.item as INetworkProvider).isReceiver(stack))
                 return true
         }

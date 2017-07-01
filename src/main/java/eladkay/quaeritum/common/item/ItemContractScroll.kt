@@ -5,17 +5,18 @@ import com.teamwizardry.librarianlib.common.base.item.IItemColorProvider
 import com.teamwizardry.librarianlib.common.base.item.ItemMod
 import com.teamwizardry.librarianlib.common.util.ItemNBTHelper
 import eladkay.quaeritum.api.animus.AnimusHelper
-import eladkay.quaeritum.api.contract.ContractEvent
 import eladkay.quaeritum.api.contract.ContractRegistry
 import eladkay.quaeritum.common.lib.LibNames
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
-import net.minecraft.util.*
+import net.minecraft.util.ActionResult
+import net.minecraft.util.EnumActionResult
+import net.minecraft.util.EnumFacing
+import net.minecraft.util.EnumHand
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.text.Style
 import net.minecraft.util.text.TextComponentString
 import net.minecraft.util.text.TextComponentTranslation
-import net.minecraft.util.text.TextFormatting
 import net.minecraft.world.World
 
 /**
@@ -30,8 +31,8 @@ class ItemContractScroll : ItemMod(LibNames.SCROLL, LibNames.SCROLL, LibNames.SE
         }
     }
 
-    override fun onItemUse(stack: ItemStack, playerIn: EntityPlayer, worldIn: World, pos: BlockPos, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): EnumActionResult {
-        return onItemRightClick(stack, worldIn, playerIn, hand).type
+    override fun onItemUse(playerIn: EntityPlayer, worldIn: World, pos: BlockPos, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): EnumActionResult {
+        return onItemRightClick(worldIn, playerIn, hand).type
     }
 
     override val itemColorFunction: ((ItemStack, Int) -> Int)?
@@ -49,7 +50,9 @@ class ItemContractScroll : ItemMod(LibNames.SCROLL, LibNames.SCROLL, LibNames.SE
      */
     val WORDS_OF_AGES = 0x2F0E38FE
 
-    override fun onItemRightClick(itemStackIn: ItemStack, worldIn: World, playerIn: EntityPlayer, hand: EnumHand): ActionResult<ItemStack> {
+    override fun onItemRightClick(worldIn: World, playerIn: EntityPlayer, hand: EnumHand): ActionResult<ItemStack> {
+        val itemStackIn = playerIn.getHeldItem(hand)
+
         if (!playerIn.isSneaking)
             return ActionResult(EnumActionResult.PASS, itemStackIn)
 

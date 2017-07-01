@@ -12,7 +12,6 @@ import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemBlock
-import net.minecraft.item.ItemStack
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
@@ -42,10 +41,6 @@ class BlockBlueprint(name: String) : BlockMod(name, Material.PISTON), /*IGuideLi
         return false
     }
 
-    override fun isFullyOpaque(state: IBlockState): Boolean {
-        return false
-    }
-
     override fun isFullBlock(state: IBlockState?): Boolean {
         return false
     }
@@ -54,11 +49,11 @@ class BlockBlueprint(name: String) : BlockMod(name, Material.PISTON), /*IGuideLi
         return false
     }
 
-    override fun isBlockSolid(worldIn: IBlockAccess, pos: BlockPos, side: EnumFacing?): Boolean {
-        return true
+    override fun isSideSolid(base_state: IBlockState?, world: IBlockAccess?, pos: BlockPos?, side: EnumFacing?): Boolean {
+        return super.isSideSolid(base_state, world, pos, side)
     }
 
-    override fun onBlockActivated(worldIn: World?, pos: BlockPos?, state: IBlockState?, playerIn: EntityPlayer?, hand: EnumHand?, heldItem: ItemStack?, side: EnumFacing?, hitX: Float, hitY: Float, hitZ: Float): Boolean {
+    override fun onBlockActivated(worldIn: World?, pos: BlockPos?, state: IBlockState?, playerIn: EntityPlayer?, hand: EnumHand?, side: EnumFacing?, hitX: Float, hitY: Float, hitZ: Float): Boolean {
         //Quaeritum.proxy.spawnStafflikeParticles(worldIn, pos.getX(), pos.getY() + 1, pos.getZ());
         val tile = worldIn!!.getTileEntity(pos!!)
         return tile is TileEntityBlueprint && tile.onBlockActivated()
@@ -71,7 +66,7 @@ class BlockBlueprint(name: String) : BlockMod(name, Material.PISTON), /*IGuideLi
         }
     }
 
-    override fun neighborChanged(state: IBlockState?, worldIn: World?, pos: BlockPos?, blockIn: Block?) {
+    override fun neighborChanged(state: IBlockState?, worldIn: World?, pos: BlockPos?, blockIn: Block?, fromPos: BlockPos?) {
         if (worldIn!!.isBlockPowered(pos!!)) {
             val tile = worldIn.getTileEntity(pos)
             if (tile is TileEntityBlueprint) tile.onBlockActivated()

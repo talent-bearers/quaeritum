@@ -59,8 +59,8 @@ abstract class CraftingDiagramBase : IDiagram {
             server.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, stack.position.x + 0.5, stack.position.y + 1.0, stack.position.z + 0.5, 1, 0.1, 0.0, 0.1, 0.0)
             stack.setDead()
         }
-        println(item.entityItem.item)
-        world.spawnEntityInWorld(item)
+        println(item.item.item)
+        world.spawnEntity(item)
     }
 
     override fun canRitualRun(world: World?, pos: BlockPos, tile: TileEntity): Boolean {

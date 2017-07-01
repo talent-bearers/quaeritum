@@ -67,7 +67,7 @@ object ChatHelper {
 
     fun sendChat(player: EntityPlayer, vararg lines: ITextComponent) {
         for (c in lines) {
-            player.addChatComponentMessage(c)
+            player.sendMessage(c)
         }
     }
 

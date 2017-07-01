@@ -13,10 +13,10 @@ class TileEntityFoundationStone : TileMod() {
     var currentWork: IWork? = null
 
     public override fun updateEntity() {
-        if (!worldObj.isRemote) {
+        if (!world.isRemote) {
             if (currentWork != null) {
                 stage = RitualStage.IN_PROGRESS
-                if (!currentWork!!.updateTick(worldObj, pos, this, ticksExisted)) currentWork = null
+                if (!currentWork!!.updateTick(world, pos, this, ticksExisted)) currentWork = null
                 ticksExisted++
             }
             if (currentWork == null) {
@@ -44,9 +44,9 @@ class TileEntityFoundationStone : TileMod() {
         }
 
     private fun runRitual(ritual: IWork?, player: EntityPlayer) {
-        if (worldObj.isRemote || ritual == null) return
+        if (world.isRemote || ritual == null) return
         currentWork = ritual
-        ritual.initialTick(worldObj, pos, this, player)
+        ritual.initialTick(world, pos, this, player)
         stage = RitualStage.IN_PROGRESS
     }
 

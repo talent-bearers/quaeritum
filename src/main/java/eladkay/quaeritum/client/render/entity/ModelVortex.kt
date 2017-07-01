@@ -56,10 +56,10 @@ class ModelVortex : ModelBase() {
 
     override fun setRotationAngles(f: Float, f1: Float, f2: Float, f3: Float, f4: Float, f5: Float, entity: Entity?) {
         super.setRotationAngles(f, f1, f2, f3, f4, f5, entity)
-        val world = entity!!.worldObj ?: return
+        val world = entity!!.world ?: return
 
         val ratio = 0.1f
-        val rot = (entity.worldObj.worldTime + f) * ratio
+        val rot = (entity.world.worldTime + f) * ratio
         shape1.rotateAngleX = rot
         shape2.rotateAngleZ = rot
         shape3.rotateAngleY = rot

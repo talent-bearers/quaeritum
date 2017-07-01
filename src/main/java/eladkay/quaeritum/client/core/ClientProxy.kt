@@ -1,13 +1,9 @@
 package eladkay.quaeritum.client.core
 
-import com.teamwizardry.librarianlib.LibrarianLib
 import eladkay.quaeritum.client.fx.FXMagicLine
 import eladkay.quaeritum.client.render.RemainingItemsRenderHandler
 import eladkay.quaeritum.client.render.entity.LayerSight
 import eladkay.quaeritum.client.render.entity.RenderChaosborn
-import eladkay.quaeritum.client.render.tesr.RitualHandlerSpecialRenderers
-import eladkay.quaeritum.common.block.tile.TileEntityBlueprint
-import eladkay.quaeritum.common.block.tile.TileEntityFoundationStone
 import eladkay.quaeritum.common.core.CommonProxy
 import eladkay.quaeritum.common.entity.EntityChaosborn
 import net.minecraft.client.Minecraft
@@ -17,8 +13,6 @@ import net.minecraft.item.ItemStack
 import net.minecraft.util.ResourceLocation
 import net.minecraft.world.World
 import net.minecraftforge.common.MinecraftForge
-import net.minecraftforge.fml.client.registry.ClientRegistry
-import net.minecraftforge.fml.client.registry.IRenderFactory
 import net.minecraftforge.fml.client.registry.RenderingRegistry
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
@@ -44,12 +38,8 @@ class ClientProxy : CommonProxy() {
 
         MinecraftForge.EVENT_BUS.register(ClientTickHandler())
 
-        RenderingRegistry.registerEntityRenderingHandler<EntityChaosborn>(EntityChaosborn::class.java, IRenderFactory<EntityChaosborn> { RenderChaosborn(it) })
+        RenderingRegistry.registerEntityRenderingHandler<EntityChaosborn>(EntityChaosborn::class.java, { RenderChaosborn(it) })
         Minecraft.getMinecraft().textureMapBlocks.registerSprite(ResourceLocation("quaeritum:entity/magicParticle"))
-        if (LibrarianLib.DEV_ENVIRONMENT) {
-            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBlueprint::class.java, RitualHandlerSpecialRenderers.BlueprintSpecialRenderer())
-            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFoundationStone::class.java, RitualHandlerSpecialRenderers.FoundationStoneSpecialRenderer())
-        }
     }
 
 

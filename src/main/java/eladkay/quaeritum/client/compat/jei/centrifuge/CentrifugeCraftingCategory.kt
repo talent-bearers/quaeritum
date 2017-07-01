@@ -6,7 +6,6 @@ import mezz.jei.api.gui.IDrawable
 import mezz.jei.api.gui.IRecipeLayout
 import mezz.jei.api.ingredients.IIngredients
 import mezz.jei.api.recipe.IRecipeCategory
-import mezz.jei.util.Ingredients
 import net.minecraft.client.Minecraft
 import net.minecraft.client.resources.I18n
 import net.minecraft.util.ResourceLocation
@@ -28,13 +27,11 @@ object CentrifugeCraftingCategory : IRecipeCategory<CentrifugeCraftingRecipeJEI>
         recipeLayout.itemStacks.set(ingredients)
     }
 
-    override fun drawAnimations(minecraft: Minecraft) = Unit // NO-OP
-
-    override fun setRecipe(recipeLayout: IRecipeLayout, recipeWrapper: CentrifugeCraftingRecipeJEI) {
-        val ingredients = Ingredients()
-        recipeWrapper.getIngredients(ingredients)
-        setRecipe(recipeLayout, recipeWrapper, ingredients)
+    override fun getTooltipStrings(mouseX: Int, mouseY: Int): List<String> {
+        return emptyList()
     }
+
+    override fun getModName() = LibMisc.MOD_ID
 
     override fun getIcon() = null
 

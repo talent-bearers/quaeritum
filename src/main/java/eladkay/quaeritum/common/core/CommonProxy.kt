@@ -4,11 +4,9 @@ import com.teamwizardry.librarianlib.common.network.PacketHandler
 import eladkay.quaeritum.api.animus.AnimusHelper
 import eladkay.quaeritum.client.core.ClientEventHandler
 import eladkay.quaeritum.common.block.ModBlocks
-import eladkay.quaeritum.common.compat.mt.CraftTweaker
 import eladkay.quaeritum.common.crafting.ModRecipes
 import eladkay.quaeritum.common.entity.ModEntities
 import eladkay.quaeritum.common.item.ModItems
-import eladkay.quaeritum.common.networking.NetworkHelper
 import eladkay.quaeritum.common.networking.RemainingItemRenderPacket
 import eladkay.quaeritum.common.potions.ModPotionTypes
 import eladkay.quaeritum.common.potions.PotionRooted
@@ -42,7 +40,6 @@ open class CommonProxy {
         ModRecipes.init()
         ClientEventHandler().init()
         AnimusHelper.Network.EventHandler()
-        NetworkHelper
         ModDiagrams.init()
         ModWorks.init()
         ChatHelper.PacketHandler
@@ -54,7 +51,7 @@ open class CommonProxy {
     }
 
     fun post(e: FMLPostInitializationEvent) {
-        CraftTweaker.init()
+
     }
 
     open fun spawnParticleMagixFX(world: World, x: Double, y: Double, z: Double, vx: Double, vy: Double, vz: Double, r: Double, g: Double, b: Double) {

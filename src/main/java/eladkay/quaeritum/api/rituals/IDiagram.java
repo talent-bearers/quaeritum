@@ -83,7 +83,7 @@ public interface IDiagram {
         public static boolean isEntityItemInList(EntityItem item, List<ItemStack> stacks) {
             MutableObject<Boolean> flag = new MutableObject<>(false);
             stacks.forEach((stack) -> {
-                if (itemEquals(item.getEntityItem(), stack)) flag.value = true;
+                if (itemEquals(item.getItem(), stack)) flag.value = true;
             });
             return flag.value;
         }
@@ -104,7 +104,7 @@ public interface IDiagram {
 
         public static List<ItemStack> stacksAroundAltar(TileEntity tile, double range) {
             return entitiesAroundAltar(tile, range).stream()
-                    .map(EntityItem::getEntityItem)
+                    .map(EntityItem::getItem)
                     .collect(Collectors.toList());
         }
 
@@ -132,14 +132,14 @@ public interface IDiagram {
         public static boolean takeAnimus(int amount, EnumAnimusTier rarity, TileEntity tile, double range, boolean drain) {
             EntityItem bestFit = null;
             for (EntityItem stack : entitiesAroundAltar(tile, range).stream().filter((stack1 ->
-                    stack1.getEntityItem().getItem() instanceof ISoulstone)).collect(Collectors.toList())) {
+                    stack1.getItem().getItem() instanceof ISoulstone)).collect(Collectors.toList())) {
                 if (bestFit == null) bestFit = stack;
-                else if (AnimusHelper.getTier(stack.getEntityItem()).ordinal() >= rarity.ordinal() && AnimusHelper.getAnimus(stack.getEntityItem()) >= amount)
+                else if (AnimusHelper.getTier(stack.getItem()).ordinal() >= rarity.ordinal() && AnimusHelper.getAnimus(stack.getItem()) >= amount)
                     bestFit = stack;
             }
-            if (bestFit != null && AnimusHelper.getTier(bestFit.getEntityItem()).ordinal() >= rarity.ordinal() && AnimusHelper.getAnimus(bestFit.getEntityItem()) >= amount) {
+            if (bestFit != null && AnimusHelper.getTier(bestFit.getItem()).ordinal() >= rarity.ordinal() && AnimusHelper.getAnimus(bestFit.getItem()) >= amount) {
                 if (drain)
-                    AnimusHelper.addAnimus(bestFit.getEntityItem(), -amount);
+                    AnimusHelper.addAnimus(bestFit.getItem(), -amount);
                 return true;
             }
             return false;

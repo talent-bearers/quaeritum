@@ -1,8 +1,10 @@
 package eladkay.quaeritum.common.core
 
 import com.teamwizardry.librarianlib.common.util.times
+import com.teamwizardry.librarianlib.common.util.vec
 import net.minecraft.entity.Entity
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.RayTraceResult
 import net.minecraft.util.math.Vec3d
 import net.minecraft.world.World
@@ -16,7 +18,7 @@ object RayHelper {
     @JvmOverloads fun raycast(e: Entity, len: Double, stopOnLiquid: Boolean = false): RayTraceResult? {
         val vec = e.positionVector.addVector(0.0, if (e is EntityPlayer) e.getEyeHeight().toDouble() else 0.0, 0.0)
         val look = e.lookVec ?: return null
-        return raycast(e.worldObj, vec, look, len, stopOnLiquid)
+        return raycast(e.world, vec, look, len, stopOnLiquid)
     }
 
     fun raycast(world: World, origin: Vec3d, ray: Vec3d, len: Double, stopOnLiquid: Boolean): RayTraceResult? {
@@ -39,10 +41,11 @@ object RayHelper {
             dist = pos.hitVec.distanceTo(positionVector)
 
         val lookVector = e.lookVec
-        val reachVector = positionVector.addVector(lookVector.xCoord * finalDistance, lookVector.yCoord * finalDistance, lookVector.zCoord * finalDistance)
+        val reachVector = positionVector.addVector(lookVector.x * finalDistance, lookVector.y * finalDistance, lookVector.z * finalDistance)
 
         var lookedEntity: Entity? = null
-        val entitiesInBoundingBox = e.worldObj.getEntitiesWithinAABBExcludingEntity(e, e.entityBoundingBox.addCoord(lookVector.xCoord * finalDistance, lookVector.yCoord * finalDistance, lookVector.zCoord * finalDistance).expand(1.0, 1.0, 1.0))
+        val vec = vec(lookVector.x * finalDistance, lookVector.y * finalDistance, lookVector.z * finalDistance)
+        val entitiesInBoundingBox = e.world.getEntitiesWithinAABBExcludingEntity(e, e.entityBoundingBox.union(AxisAlignedBB(vec, vec)).grow(1.0, 1.0, 1.0))
         var minDistance = dist
 
         for (entity in entitiesInBoundingBox) {
@@ -51,7 +54,7 @@ object RayHelper {
                 val hitbox = entity.entityBoundingBox.expand(collisionBorderSize.toDouble(), collisionBorderSize.toDouble(), collisionBorderSize.toDouble())
                 val interceptPosition = hitbox.calculateIntercept(positionVector, reachVector)
 
-                if (hitbox.isVecInside(positionVector)) {
+                if (hitbox.contains(positionVector)) {
                     if (0.0 < minDistance || minDistance == 0.0) {
                         lookedEntity = entity
                         minDistance = 0.0

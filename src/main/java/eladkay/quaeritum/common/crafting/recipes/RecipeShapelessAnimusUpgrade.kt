@@ -10,7 +10,7 @@ import net.minecraftforge.oredict.ShapelessOreRecipe
  */
 class RecipeShapelessAnimusUpgrade(output: ItemStack, vararg input: Any) : ShapelessOreRecipe(output, *input) {
 
-    override fun getCraftingResult(var1: InventoryCrafting): ItemStack? {
+    override fun getCraftingResult(var1: InventoryCrafting): ItemStack {
         return RecipeAnimusUpgrade.output(output, var1)
     }
 }

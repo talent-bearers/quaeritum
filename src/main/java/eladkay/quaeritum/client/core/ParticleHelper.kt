@@ -51,8 +51,8 @@ object ParticleHelper {
         val f = (destinationPosX - entityPosX).toFloat()
         val f1 = (destinationPosY - 1.0 - entityPosY).toFloat()
         val f2 = (destinationPosZ - entityPosZ).toFloat()
-        val f3 = MathHelper.sqrt_float(f * f + f2 * f2)
-        val f4 = MathHelper.sqrt_float(f * f + f1 * f1 + f2 * f2)
+        val f3 = MathHelper.sqrt(f * f + f2 * f2)
+        val f4 = MathHelper.sqrt(f * f + f1 * f1 + f2 * f2)
         GlStateManager.pushMatrix()
         GlStateManager.translate(x.toFloat(), y.toFloat() + 2.0f, z.toFloat())
         GlStateManager.rotate((-Math.atan2(f2.toDouble(), f.toDouble())).toFloat() * (180f / Math.PI.toFloat()) - 90.0f, 0.0f, 1.0f, 0.0f)
@@ -63,7 +63,7 @@ object ParticleHelper {
         GlStateManager.disableCull()
         GlStateManager.shadeModel(7425)
         val f5 = 0.0f - (entityTickExisted.toFloat() + partialTicks) * 0.01f
-        val f6 = MathHelper.sqrt_float(f * f + f1 * f1 + f2 * f2) / 32.0f - (entityTickExisted.toFloat() + partialTicks) * 0.01f
+        val f6 = MathHelper.sqrt(f * f + f1 * f1 + f2 * f2) / 32.0f - (entityTickExisted.toFloat() + partialTicks) * 0.01f
         vertexbuffer.begin(5, DefaultVertexFormats.POSITION_TEX_COLOR)
         val i = 8
 
@@ -93,42 +93,42 @@ object ParticleHelper {
             val var22 = 16.0
             if (var15 * var15 + var17 * var17 + var19 * var19 <= var22 * var22) {
                 if (particleName == "sphere") {
-                    entityfx = FXMagicLine(minecraft.theWorld, posX, posY, posZ, motX.toFloat().toDouble(), motY.toFloat().toDouble(), motZ.toFloat().toDouble(), r, g, b)
+                    entityfx = FXMagicLine(minecraft.world, posX, posY, posZ, motX.toFloat().toDouble(), motY.toFloat().toDouble(), motZ.toFloat().toDouble(), r, g, b)
                 }
                 if (particleName == "spell") {
-                    entityfx = ParticleSpell.Factory().getEntityFX(-1, minecraft.theWorld, posX, posY, posZ, motX, motY, motZ)
+                    entityfx = ParticleSpell.Factory().createParticle(-1, minecraft.world, posX, posY, posZ, motX, motY, motZ)
                 }
                 if (particleName == "happyVillager") {
-                    entityfx = ParticleSuspendedTown.HappyVillagerFactory().getEntityFX(-1, minecraft.theWorld, posX, posY, posZ, motX, motY, motZ)
+                    entityfx = ParticleSuspendedTown.HappyVillagerFactory().createParticle(-1, minecraft.world, posX, posY, posZ, motX, motY, motZ)
                     entityfx!!.setParticleTextureIndex(82)
                     entityfx.setRBGColorF(1.0f, 1.0f, 1.0f)
                 }
                 if (particleName == "magicCrit") {
-                    entityfx = ParticleCrit.MagicFactory().getEntityFX(-1, Minecraft.getMinecraft().theWorld, posX, posY, posZ, motX, motY, motZ)
+                    entityfx = ParticleCrit.MagicFactory().createParticle(-1, Minecraft.getMinecraft().world, posX, posY, posZ, motX, motY, motZ)
                     entityfx!!.setRBGColorF(entityfx.redColorF * 0.3f, entityfx.greenColorF * 0.8f, entityfx.blueColorF)
                     entityfx.nextTextureIndexX()
                 }
                 if (particleName == "enchantmenttable") {
-                    entityfx = ParticleEnchantmentTable.EnchantmentTable().getEntityFX(-1, Minecraft.getMinecraft().theWorld, posX, posY, posZ, motX, motY, motZ)
+                    entityfx = ParticleEnchantmentTable.EnchantmentTable().createParticle(-1, Minecraft.getMinecraft().world, posX, posY, posZ, motX, motY, motZ)
                     entityfx!!.nextTextureIndexX()
                 }
                 if (particleName == "crit") {
-                    entityfx = ParticleCrit.Factory().getEntityFX(-1, Minecraft.getMinecraft().theWorld, posX, posY, posZ, motX, motY, motZ)
+                    entityfx = ParticleCrit.Factory().createParticle(-1, Minecraft.getMinecraft().world, posX, posY, posZ, motX, motY, motZ)
                     if (r != 0.0 || g != 0.0 || b != 0.0) {
                         entityfx!!.setRBGColorF(r.toFloat(), g.toFloat(), b.toFloat())
                     }
                 }
                 if (particleName == "square") {
-                    entityfx = FXBeam(Minecraft.getMinecraft().theWorld, posX, posY, posZ, r.toFloat(), g.toFloat(), b.toFloat())
+                    entityfx = FXBeam(Minecraft.getMinecraft().world, posX, posY, posZ, r.toFloat(), g.toFloat(), b.toFloat())
                 }
                 if (particleName == "redBeamOfAwesome") {
-                    entityfx = FXBeam(Minecraft.getMinecraft().theWorld, posX, posY, posZ, 255f, 0f, 0f)
+                    entityfx = FXBeam(Minecraft.getMinecraft().world, posX, posY, posZ, 255f, 0f, 0f)
                 }
                 if (particleName == "squareLong") {
-                    entityfx = FXBeam(Minecraft.getMinecraft().theWorld, posX, posY, posZ, r.toFloat(), g.toFloat(), b.toFloat(), true)
+                    entityfx = FXBeam(Minecraft.getMinecraft().world, posX, posY, posZ, r.toFloat(), g.toFloat(), b.toFloat(), true)
                 }
 
-                Quaeritum.proxy!!.spawnParticle(entityfx ?: throw IllegalArgumentException(particleName), Minecraft.getMinecraft().theWorld)
+                Quaeritum.proxy!!.spawnParticle(entityfx ?: throw IllegalArgumentException(particleName), Minecraft.getMinecraft().world)
             }
         }
 

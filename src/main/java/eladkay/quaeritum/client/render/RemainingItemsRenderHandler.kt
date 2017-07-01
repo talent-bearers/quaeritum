@@ -92,7 +92,7 @@ object RemainingItemsRenderHandler {
                 text = customString!!
 
             val color = 0x00FFFFFF or ((alpha * 0xFF).toInt() shl 24)
-            mc.fontRendererObj.drawStringWithShadow(text, x + 20f, y + 6f, color)
+            mc.fontRenderer.drawStringWithShadow(text, x + 20f, y + 6f, color)
 
             GlStateManager.disableBlend()
             GlStateManager.enableAlpha()
@@ -123,7 +123,7 @@ object RemainingItemsRenderHandler {
         val count = (0..player.inventory.sizeInventory - 1)
                 .mapNotNull { player.inventory.getStackInSlot(it) }
                 .filter { pattern.matcher(it.unlocalizedName).find() }
-                .sumBy { it.stackSize }
+                .sumBy { it.count }
 
         Quaeritum.proxy.setRemainingItemDisplay(null, displayStack, null, count)
     }

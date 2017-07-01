@@ -58,14 +58,14 @@ class BlockCrafter : BlockModContainer(LibNames.CRAFTER, Material.WOOD) {
         }
     }
 
-    override fun neighborChanged(state: IBlockState, worldIn: World, pos: BlockPos, blockIn: Block) = updatePower(worldIn, pos, state)
+    override fun neighborChanged(state: IBlockState, worldIn: World, pos: BlockPos, blockIn: Block, fromPos: BlockPos) = updatePower(worldIn, pos, state)
     override fun onBlockAdded(worldIn: World, pos: BlockPos, state: IBlockState) = updatePower(worldIn, pos, state)
     override fun updateTick(worldIn: World, pos: BlockPos, state: IBlockState, rand: Random) = updatePower(worldIn, pos, state)
 
     @TileRegister("crafter")
     class TileCrafter : TileMod() {
         private val internalHandler = object : ItemStackHandler(10) {
-            override fun getStackLimit(slot: Int, stack: ItemStack?) = 1
+            override fun getStackLimit(slot: Int, stack: ItemStack) = 1
             override fun onContentsChanged(slot: Int) {
                 markDirty()
             }
@@ -80,7 +80,7 @@ class BlockCrafter : BlockModContainer(LibNames.CRAFTER, Material.WOOD) {
         val enabled = BooleanArray(9) { true }
 
         val inputs = object : RangedWrapper(handler, 0, 9) {
-            override fun insertItem(slot: Int, stack: ItemStack?, simulate: Boolean): ItemStack? {
+            override fun insertItem(slot: Int, stack: ItemStack, simulate: Boolean): ItemStack {
                 if ((slot + 0 < 9) || !enabled[slot]) return stack
                 return super.insertItem(slot, stack, simulate)
             }
@@ -111,7 +111,7 @@ class BlockCrafter : BlockModContainer(LibNames.CRAFTER, Material.WOOD) {
 
             val recipes = CraftingManager.getInstance().recipeList
             for (recipe in recipes)
-                if (recipe.matches(craft, worldObj)) {
+                if (recipe.matches(craft, world)) {
                     handler.setStackInSlot(9, recipe.getCraftingResult(craft))
 
                     for (i in 0..8) {
@@ -134,22 +134,22 @@ class BlockCrafter : BlockModContainer(LibNames.CRAFTER, Material.WOOD) {
             (0 until 9).forEach {
                 val stack = handler.getStackInSlot(it)
                 if (stack != null) eject(stack)
-                handler.setStackInSlot(it, null)
+                handler.setStackInSlot(it, ItemStack.EMPTY)
             }
         }
 
         fun canEject(): Boolean {
-            val stateBelow = worldObj.getBlockState(pos.down())
+            val stateBelow = world.getBlockState(pos.down())
             val blockBelow = stateBelow.block
-            return blockBelow.isAir(stateBelow, worldObj, pos.down()) || stateBelow.getCollisionBoundingBox(worldObj, pos.down()) == null
+            return blockBelow.isAir(stateBelow, world, pos.down()) || stateBelow.getCollisionBoundingBox(world, pos.down()) == null
         }
 
         fun eject(stack: ItemStack) {
-            val item = EntityItem(worldObj, pos.x + 0.5, pos.y - 0.5, pos.z + 0.5, stack)
+            val item = EntityItem(world, pos.x + 0.5, pos.y - 0.5, pos.z + 0.5, stack)
             item.motionX = 0.0
             item.motionY = 0.0
             item.motionZ = 0.0
-            worldObj.spawnEntityInWorld(item)
+            world.spawnEntity(item)
         }
 
         @Suppress("UNCHECKED_CAST")

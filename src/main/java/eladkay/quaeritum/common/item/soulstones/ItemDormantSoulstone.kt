@@ -18,13 +18,14 @@ class ItemDormantSoulstone : ItemMod(LibNames.DORMANT_SOULSTONE) {
         setMaxStackSize(1)
     }
 
-    override fun onItemRightClick(itemStackIn: ItemStack, worldIn: World?, playerIn: EntityPlayer?, hand: EnumHand?): ActionResult<ItemStack> {
-        if (playerIn!!.isSneaking) {
+    override fun onItemRightClick(worldIn: World?, playerIn: EntityPlayer?, hand: EnumHand?): ActionResult<ItemStack> {
+        val itemStackIn = playerIn!!.getHeldItem(hand)
+        if (playerIn.isSneaking) {
             worldIn!!.playSound(playerIn, playerIn.position, SoundEvents.ITEM_ARMOR_EQUIP_IRON, SoundCategory.PLAYERS, 1f, 1f)
             return ActionResult(EnumActionResult.SUCCESS, ItemStack(ModItems.attuned))
         }
 
-        return super.onItemRightClick(itemStackIn, worldIn, playerIn, hand)
+        return super.onItemRightClick(worldIn, playerIn, hand)
     }
 
     override fun getEntityLifespan(itemStack: ItemStack?, world: World?): Int {

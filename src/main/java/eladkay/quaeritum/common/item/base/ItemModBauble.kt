@@ -33,20 +33,21 @@ abstract class ItemModBauble(name: String, vararg variants: String) : ItemMod(na
         maxStackSize = 1
     }
 
-    override fun onItemRightClick(par1ItemStack: ItemStack, par2World: World, par3EntityPlayer: EntityPlayer, hand: EnumHand): ActionResult<ItemStack> {
+    override fun onItemRightClick(par2World: World, par3EntityPlayer: EntityPlayer, hand: EnumHand): ActionResult<ItemStack> {
+        val par1ItemStack = par3EntityPlayer.getHeldItem(hand)
         if (canEquip(par1ItemStack, par3EntityPlayer)) {
             val baubles = BaublesApi.getBaublesHandler(par3EntityPlayer) ?: return ActionResult(EnumActionResult.FAIL, par1ItemStack)
             for (i in 0..baubles.slots - 1) {
                 if (baubles.isItemValidForSlot(i, par1ItemStack, par3EntityPlayer)) {
                     val stackInSlot = baubles.getStackInSlot(i)
-                    if (stackInSlot == null || (stackInSlot.item as IBauble).canUnequip(stackInSlot, par3EntityPlayer)) {
+                    if (stackInSlot.isEmpty || (stackInSlot.item as IBauble).canUnequip(stackInSlot, par3EntityPlayer)) {
                         if (!par2World.isRemote) {
                             baubles.setStackInSlot(i, par1ItemStack.copy())
                             if (!par3EntityPlayer.capabilities.isCreativeMode)
                                 par3EntityPlayer.inventory.setInventorySlotContents(par3EntityPlayer.inventory.currentItem, null)
                         }
 
-                        if (stackInSlot != null) {
+                        if (stackInSlot.isEmpty) {
                             (stackInSlot.item as IBauble).onUnequipped(stackInSlot, par3EntityPlayer)
                             return ActionResult.newResult(EnumActionResult.SUCCESS, stackInSlot.copy())
                         }
@@ -65,8 +66,8 @@ abstract class ItemModBauble(name: String, vararg variants: String) : ItemMod(na
 
     override fun onEquipped(stack: ItemStack, player: EntityLivingBase?) {
         if (player != null) {
-            if (!player.worldObj.isRemote)
-                player.worldObj.playSound(null, player.posX, player.posY, player.posZ, QuaeritumSoundEvents.baubleEquip, SoundCategory.PLAYERS, 0.1F, 1.3F)
+            if (!player.world.isRemote)
+                player.world.playSound(null, player.posX, player.posY, player.posZ, QuaeritumSoundEvents.baubleEquip, SoundCategory.PLAYERS, 0.1F, 1.3F)
 
 
             onEquippedOrLoadedIntoWorld(stack, player)

@@ -8,6 +8,7 @@ import eladkay.quaeritum.client.compat.jei.centrifuge.CentrifugeCraftingRecipeJE
 import eladkay.quaeritum.common.block.ModBlocks
 import mezz.jei.api.*
 import mezz.jei.api.ingredients.IModIngredientRegistration
+import mezz.jei.api.recipe.IRecipeCategoryRegistration
 import net.minecraft.item.ItemStack
 
 @JEIPlugin
@@ -33,5 +34,9 @@ class JEICompat : IModPlugin {
     override fun onRuntimeAvailable(jeiRuntime: IJeiRuntime) = Unit //NO-OP
     override fun registerItemSubtypes(subtypeRegistry: ISubtypeRegistry) = Unit // NO-OP
     override fun registerIngredients(registry: IModIngredientRegistration) = Unit // NO-OP
+
+    override fun registerCategories(registry: IRecipeCategoryRegistration?) {
+        throw UnsupportedOperationException()
+    }
 }
 

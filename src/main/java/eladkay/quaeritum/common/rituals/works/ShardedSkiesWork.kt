@@ -23,7 +23,7 @@ class ShardedSkiesWork : IWork {
         if (ticksExisted > 600) return false
         if (!ModBlocks.flower.canBlockStay(world, pos.up().up(), world.getBlockState(pos.up().up())) || world.getBlockState(pos.up().up()).block !== Blocks.AIR || !IDiagram.Helper.takeAnimus(20, EnumAnimusTier.VERDIS, tile, 4.0, true)) return true
         /*EntityItem item = new EntityItem(world, pos.getX(), pos.getY() + 2, pos.getZ(), new ItemStack(ModBlocks.flower, 1, new Random().nextInt(BlockAnimusFlower.Variants.values().length)));
-        world.spawnEntityInWorld(item);*/
+        world.spawnEntity(item);*/
         val state = ModBlocks.flower.getStateFromMeta(Random().nextInt(BlockAnimusFlower.Variants.values().size))
         world.setBlockState(pos.up().up(), state)
         return true

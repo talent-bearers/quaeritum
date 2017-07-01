@@ -54,10 +54,7 @@ class EntityAIArrowAttack(par1IRangedAttackMob: IRangedAttackMob, par2: Double, 
         }
     }
 
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
-    override fun continueExecuting(): Boolean {
+    override fun shouldContinueExecuting(): Boolean {
         return this.shouldExecute() || !this.entityHost.navigator.noPath()
     }
 
@@ -86,7 +83,7 @@ class EntityAIArrowAttack(par1IRangedAttackMob: IRangedAttackMob, par2: Double, 
                 return
             }
 
-            f = MathHelper.sqrt_double(d0) / this.field_96562_i
+            f = MathHelper.sqrt(d0) / this.field_96562_i
             var f1 = f
 
             if (f < 0.1f) {
@@ -98,10 +95,10 @@ class EntityAIArrowAttack(par1IRangedAttackMob: IRangedAttackMob, par2: Double, 
             }
 
             this.rangedAttackEntityHost.attackEntityWithRangedAttack(this.attackTarget!!, f1)
-            this.rangedAttackTime = MathHelper.floor_float(f * (this.maxRangedAttackTime - this.field_96561_g) + this.field_96561_g)
+            this.rangedAttackTime = MathHelper.floor(f * (this.maxRangedAttackTime - this.field_96561_g) + this.field_96561_g)
         } else if (this.rangedAttackTime < 0) {
-            f = MathHelper.sqrt_double(d0) / this.field_96562_i
-            this.rangedAttackTime = MathHelper.floor_float(f * (this.maxRangedAttackTime - this.field_96561_g) + this.field_96561_g)
+            f = MathHelper.sqrt(d0) / this.field_96562_i
+            this.rangedAttackTime = MathHelper.floor(f * (this.maxRangedAttackTime - this.field_96561_g) + this.field_96561_g)
         }
     }
 }

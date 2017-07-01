@@ -29,17 +29,19 @@ class ItemHollower : ItemMod(LibNames.HOLLOWER) {
 
     override fun onBlockDestroyed(stack: ItemStack, worldIn: World?, state: IBlockState?, pos: BlockPos, entityLiving: EntityLivingBase?): Boolean {
         ItemNBTHelper.setLong(stack, LibNBT.CORNER1, pos.toLong())
-        if (entityLiving is EntityPlayer) entityLiving.addChatComponentMessage(TextComponentString(TextFormatting.GREEN + "First corner set to: " + pos))
+        if (entityLiving is EntityPlayer) entityLiving.sendMessage(TextComponentString(TextFormatting.GREEN + "First corner set to: " + pos))
         return false
     }
 
-    override fun onItemUse(stack: ItemStack, playerIn: EntityPlayer?, worldIn: World?, pos: BlockPos, hand: EnumHand?, facing: EnumFacing?, hitX: Float, hitY: Float, hitZ: Float): EnumActionResult {
+    override fun onItemUse(playerIn: EntityPlayer?, worldIn: World?, pos: BlockPos, hand: EnumHand?, facing: EnumFacing?, hitX: Float, hitY: Float, hitZ: Float): EnumActionResult {
+        val stack = playerIn!!.getHeldItem(hand)
         ItemNBTHelper.setLong(stack, LibNBT.CORNER2, pos.toLong())
-        playerIn!!.addChatComponentMessage(TextComponentString(TextFormatting.GREEN + "Second corner set to: " + pos))
+        playerIn!!.sendMessage(TextComponentString(TextFormatting.GREEN + "Second corner set to: " + pos))
         return EnumActionResult.PASS
     }
 
-    override fun onItemRightClick(stack: ItemStack, worldIn: World?, playerIn: EntityPlayer?, hand: EnumHand?): ActionResult<ItemStack> {
+    override fun onItemRightClick(worldIn: World?, playerIn: EntityPlayer?, hand: EnumHand?): ActionResult<ItemStack> {
+        val stack = playerIn!!.getHeldItem(hand)
         val pos1 = ItemNBTHelper.getLong(stack, LibNBT.CORNER1, -1)
         val pos2 = ItemNBTHelper.getLong(stack, LibNBT.CORNER2, -1)
         var flag = 0
@@ -55,7 +57,7 @@ class ItemHollower : ItemMod(LibNames.HOLLOWER) {
         }
         poses.forEach(Consumer<BlockPos> { worldIn!!.setBlockToAir(it) })
 
-        playerIn!!.addChatComponentMessage(TextComponentString(TextFormatting.GREEN + "Done! Blocks affected: " + flag))
+        playerIn!!.sendMessage(TextComponentString(TextFormatting.GREEN + "Done! Blocks affected: " + flag))
         return ActionResult.newResult(EnumActionResult.PASS, stack)
     }
 }

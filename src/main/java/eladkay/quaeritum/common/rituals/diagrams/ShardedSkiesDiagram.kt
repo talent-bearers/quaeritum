@@ -2,14 +2,10 @@ package eladkay.quaeritum.common.rituals.diagrams
 
 import com.google.common.collect.Lists
 //import com.teamwizardry.librarianlib.client.book.gui.PageText
-import com.teamwizardry.librarianlib.client.util.TooltipHelper
-import eladkay.quaeritum.api.lib.LibBook
 import eladkay.quaeritum.api.rituals.IDiagram
 import eladkay.quaeritum.api.rituals.PositionedBlock
 import eladkay.quaeritum.common.block.ModBlocks
 import eladkay.quaeritum.common.block.flowers.BlockAnimusFlower
-import eladkay.quaeritum.common.networking.FancyParticlePacket
-import eladkay.quaeritum.common.networking.NetworkHelper
 import net.minecraft.entity.item.EntityItem
 import net.minecraft.init.Blocks
 import net.minecraft.item.ItemStack
@@ -43,7 +39,7 @@ class ShardedSkiesDiagram : IDiagram {
             server.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, stack.position.x + 0.5, stack.position.y + 1.0, stack.position.z + 0.5, 1, 0.1, 0.0, 0.1, 0.0)
             stack.setDead()
         }
-        world.spawnEntityInWorld(item)
+        world.spawnEntity(item)
     }
 
     override fun onPrepUpdate(world: World, pos: BlockPos, tile: TileEntity, ticksRemaining: Int): Boolean {
@@ -51,10 +47,6 @@ class ShardedSkiesDiagram : IDiagram {
         var flag = false
         for (stack in IDiagram.Helper.entitiesAroundAltar(tile, 4.0))
             if (IDiagram.Helper.isEntityItemInList(stack, requiredItems)) {
-                try {
-                    NetworkHelper.tellEveryoneAround(FancyParticlePacket(pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble(), 50), world.provider.dimension, pos.x, pos.y, pos.z, 16)
-                } catch (server: NoClassDefFoundError) {
-                }
 
                 flag = true
             }

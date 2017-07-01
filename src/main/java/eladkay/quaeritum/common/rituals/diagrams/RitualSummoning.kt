@@ -10,8 +10,6 @@ import eladkay.quaeritum.common.block.ModBlocks
 import eladkay.quaeritum.common.block.flowers.BlockAnimusFlower
 import eladkay.quaeritum.common.entity.EntityChaosborn
 import eladkay.quaeritum.common.item.ModItems
-import eladkay.quaeritum.common.networking.LightningEffectPacket
-import eladkay.quaeritum.common.networking.NetworkHelper
 import net.minecraft.init.Items
 import net.minecraft.item.EnumDyeColor
 import net.minecraft.item.ItemStack
@@ -33,17 +31,16 @@ class RitualSummoning : IDiagram {
         val z = pos.z + 0.5
         var rarity = 0
         for (item in IDiagram.Helper.entitiesAroundAltar(te, 4.0)) {
-            val stack = item.entityItem
+            val stack = item.item
             if (stack.item !is ISoulstone) continue
             val ss = stack.item as ISoulstone
             rarity = Math.max(ss.getAnimusTier(stack).ordinal, rarity)
-            NetworkHelper.tellEveryoneAround(LightningEffectPacket(item.posX, item.posY, item.posZ), world.provider.dimension, pos.x, pos.y, pos.z, 4)
             item.setDead()
         }
         val chaosborn = EntityChaosborn(world, rarity, x, y, z)
 
         world.worldTime = 23000
-        world.spawnEntityInWorld(chaosborn)
+        world.spawnEntity(chaosborn)
     }
 
     private fun op(`in`: Double): Double {
@@ -55,7 +52,6 @@ class RitualSummoning : IDiagram {
     }
 
     override fun onPrepUpdate(world: World, pos: BlockPos, tile: TileEntity, ticksRemaining: Int): Boolean {
-        NetworkHelper.tellEveryoneAround(LightningEffectPacket(pos.x + op(Math.random() * 4), pos.y.toDouble(), pos.z + op(Math.random() * 4)), world.provider.dimension, pos.x, pos.y, pos.z, 4)
         for (stack in IDiagram.Helper.stacksAroundAltar(tile, 4.0))
             if (IDiagram.Helper.isStackInList(stack, requiredItems)) return true
         return false

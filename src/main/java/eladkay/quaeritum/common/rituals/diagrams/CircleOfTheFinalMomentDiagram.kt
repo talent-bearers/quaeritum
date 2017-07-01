@@ -6,8 +6,6 @@ package eladkay.quaeritum.common.rituals.diagrams
 import eladkay.quaeritum.api.rituals.IDiagram
 import eladkay.quaeritum.api.rituals.PositionedBlock
 import eladkay.quaeritum.api.rituals.PositionedBlockChalk
-import eladkay.quaeritum.common.networking.FancyParticlePacket
-import eladkay.quaeritum.common.networking.NetworkHelper
 import net.minecraft.item.EnumDyeColor
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.math.BlockPos
@@ -36,7 +34,6 @@ class CircleOfTheFinalMomentDiagram : IDiagram {
     }
 
     override fun onPrepUpdate(world: World, pos: BlockPos, tile: TileEntity, ticksRemaining: Int): Boolean {
-        NetworkHelper.tellEveryoneAround(FancyParticlePacket(pos.x + 0.25, pos.up().y.toDouble(), pos.z + 0.25, 50), world.provider.dimension, pos, 32)
         incrementAllWorldTimes(world, 20)
         return true
     }

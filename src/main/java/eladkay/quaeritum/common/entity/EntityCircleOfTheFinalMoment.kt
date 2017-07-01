@@ -20,8 +20,8 @@ class EntityCircleOfTheFinalMoment : Entity {
         println("ticks: " + ticksLeft)
         ticksLeft--
         if (ticksLeft <= 0) {
-            kill()
-            worldObj.removeEntity(this)
+            setDead()
+            world.removeEntity(this)
         }
     }
 

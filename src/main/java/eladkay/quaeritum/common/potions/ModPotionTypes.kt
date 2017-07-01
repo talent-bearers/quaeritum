@@ -21,12 +21,12 @@ object ModPotionTypes {
     val predicateGlowstone = potionPredicate(ItemStack(Items.GLOWSTONE_DUST))
 
     fun potionPredicate(stack: ItemStack): (ItemStack?) -> Boolean {
-        return { OreDictionary.itemMatches(stack, it, false) }
+        return { OreDictionary.itemMatches(stack, it!!, false) }
     }
 
     fun potionPredicate(input: String): (ItemStack?) -> Boolean {
         val ores = OreDictionary.getOres(input)
-        return { ores.any { ore -> OreDictionary.itemMatches(ore, it, false) } }
+        return { ores.any { ore -> OreDictionary.itemMatches(ore, it!!, false) } }
     }
 
     fun addCompletePotionRecipes(predicate: (ItemStack?) -> Boolean, fromType: PotionType, normalType: PotionType, longType: PotionType?, strongType: PotionType?) {

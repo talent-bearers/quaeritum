@@ -29,7 +29,7 @@ class ItemDebug : ItemMod(LibNames.DEBUG) {
         setMaxStackSize(1)
     }
 
-    override fun onItemRightClick(itemStackIn: ItemStack, worldIn: World?, playerIn: EntityPlayer, hand: EnumHand?): ActionResult<ItemStack> {
+    override fun onItemRightClick(worldIn: World?, playerIn: EntityPlayer, hand: EnumHand?): ActionResult<ItemStack> {
         if (!worldIn!!.isRemote)
         //this doesn't work if not inverted and it doesn't matter anyways because this debug item only exists in a dev environment
             if (GuiScreen.isShiftKeyDown()) {
@@ -42,7 +42,7 @@ class ItemDebug : ItemMod(LibNames.DEBUG) {
             } else
                 ChatHelper.sendNoSpam2(playerIn, "Current animus level for " + playerIn.name + " is: " + AnimusHelper.Network.getAnimus(playerIn) + " and current rarity is " + AnimusHelper.Network.getTier(playerIn))
 
-        return super.onItemRightClick(itemStackIn, worldIn, playerIn, hand)
+        return super.onItemRightClick(worldIn, playerIn, hand)
     }
 
     /*@Override
@@ -56,7 +56,7 @@ class ItemDebug : ItemMod(LibNames.DEBUG) {
             renderAABB(Tessellator.getInstance(), Tessellator.getInstance().getBuffer(), pos.getX() - 12, pos.getY() + 1, pos.getZ() - 12, pos.getX() + 12, pos.getY() + 25, pos.getZ() + 12, 255, 223, 127);
     }*/
 
-    override fun onItemUse(stack: ItemStack?, playerIn: EntityPlayer?, worldIn: World?, pos: BlockPos?, hand: EnumHand?, facing: EnumFacing?, hitX: Float, hitY: Float, hitZ: Float): EnumActionResult {
+    override fun onItemUse(playerIn: EntityPlayer?, worldIn: World?, pos: BlockPos?, hand: EnumHand?, facing: EnumFacing?, hitX: Float, hitY: Float, hitZ: Float): EnumActionResult {
         if (playerIn!!.isSneaking) {
             var out = ""
             var flag = false
@@ -79,9 +79,9 @@ class ItemDebug : ItemMod(LibNames.DEBUG) {
                     Quaeritum.proxy!!.copyText(out)
                 if (!worldIn.isRemote) {
                     if (out != "")
-                        playerIn.addChatComponentMessage(TextComponentString(TextFormatting.GREEN + "Copied Diagrammic information to clipboard"))
+                        playerIn.sendMessage(TextComponentString(TextFormatting.GREEN + "Copied Diagrammic information to clipboard"))
                     else
-                        playerIn.addChatComponentMessage(TextComponentString(TextFormatting.RED + "Output is empty!"))
+                        playerIn.sendMessage(TextComponentString(TextFormatting.RED + "Output is empty!"))
                 }
             } else if (state.block === ModBlocks.foundation) {
                 for (shift in BlockPos.getAllInBox(BlockPos(-12, 1, -12), BlockPos(12, 25, 12))) {
@@ -98,8 +98,8 @@ class ItemDebug : ItemMod(LibNames.DEBUG) {
                     } else if (bstate.block !== Blocks.AIR) {
                         if (flag) out += "\n"
                         flag = true
-                        if (bstate.block.registryName.resourceDomain == "minecraft")
-                            out += "chalks.add(new PositionedBlock(Blocks." + bstate.block.registryName.resourcePath.toUpperCase() + ".getDefaultState(), new BlockPos(" + shift.x + ", " + shift.y + ", " + shift.z + "), null)); // " + bstate
+                        if (bstate.block.registryName!!.resourceDomain == "minecraft")
+                            out += "chalks.add(new PositionedBlock(Blocks." + bstate.block.registryName!!.resourcePath.toUpperCase() + ".getDefaultState(), new BlockPos(" + shift.x + ", " + shift.y + ", " + shift.z + "), null)); // " + bstate
                         else
                             out += "chalks.add(new PositionedBlock(UNKNOWN, new BlockPos(" + shift.x + ", " + shift.y + ", " + shift.z + "), null); // " + bstate
                     }
@@ -108,13 +108,13 @@ class ItemDebug : ItemMod(LibNames.DEBUG) {
                     Quaeritum.proxy!!.copyText(out)
                 if (!worldIn.isRemote) {
                     if (out != "")
-                        playerIn.addChatComponentMessage(TextComponentString(TextFormatting.GREEN + "Copied Work information to clipboard"))
+                        playerIn.sendMessage(TextComponentString(TextFormatting.GREEN + "Copied Work information to clipboard"))
                     else
-                        playerIn.addChatComponentMessage(TextComponentString(TextFormatting.RED + "Output is empty!"))
+                        playerIn.sendMessage(TextComponentString(TextFormatting.RED + "Output is empty!"))
                 }
             }
         }
-        return super.onItemUse(stack, playerIn, worldIn, pos, hand, facing, hitX, hitY, hitZ)
+        return super.onItemUse(playerIn, worldIn, pos, hand, facing, hitX, hitY, hitZ)
     }
 
 }

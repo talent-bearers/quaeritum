@@ -14,10 +14,12 @@ import net.minecraft.item.ItemStack
 import net.minecraft.potion.Potion
 import net.minecraft.potion.PotionEffect
 import net.minecraft.util.DamageSource
+import net.minecraft.util.EnumActionResult
 import net.minecraft.util.EnumHand
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.Vec3d
 import net.minecraft.util.text.TextComponentString
 import net.minecraft.world.World
 
@@ -65,13 +67,13 @@ class EntityChaosborn : EntityMob {
 
     }
 
-    override fun processInteract(player: EntityPlayer?, hand: EnumHand?, stack: ItemStack?): Boolean {
-        player!!.addChatComponentMessage(TextComponentString("And his rarity is " + quality))
-        return true
+    override fun applyPlayerInteraction(player: EntityPlayer?, vec: Vec3d?, hand: EnumHand?): EnumActionResult {
+        player!!.sendMessage(TextComponentString("And his rarity is " + quality))
+        return EnumActionResult.SUCCESS
     }
 
     override fun isEntityInvulnerable(source: DamageSource): Boolean {
-        return source === DamageSource.onFire
+        return source === DamageSource.ON_FIRE
     }
 
     override fun isAIDisabled(): Boolean {
@@ -88,7 +90,7 @@ class EntityChaosborn : EntityMob {
     val playersAround: List<EntityPlayer>
         get() {
             val source = source
-            val l = worldObj.getEntitiesWithinAABB<EntityPlayer>(EntityPlayer::class.java, AxisAlignedBB(source.x + 0.5 - range, source.y + 0.5 - range, source.z + 0.5 - range, source.x.toDouble() + 0.5 + range.toDouble(), source.y.toDouble() + 0.5 + range.toDouble(), source.z.toDouble() + 0.5 + range.toDouble()))
+            val l = world.getEntitiesWithinAABB<EntityPlayer>(EntityPlayer::class.java, AxisAlignedBB(source.x + 0.5 - range, source.y + 0.5 - range, source.z + 0.5 - range, source.x.toDouble() + 0.5 + range.toDouble(), source.y.toDouble() + 0.5 + range.toDouble(), source.z.toDouble() + 0.5 + range.toDouble()))
             val ret = Lists.newArrayList<EntityPlayer>()
             ret.addAll(l.filter({ player -> !player.isCreative }))
             return ret
@@ -135,7 +137,7 @@ class EntityChaosborn : EntityMob {
     }
 
     override fun attackEntityAsMob(entityIn: Entity): Boolean {
-        if (entityIn.isEntityInvulnerable(DamageSource.onFire)) return false
+        if (entityIn.isEntityInvulnerable(DamageSource.ON_FIRE)) return false
         entityIn.setFire(10)
         if (entityIn is EntityPlayer) {
             entityIn.inventory.damageArmor(15f)
@@ -147,16 +149,16 @@ class EntityChaosborn : EntityMob {
     //  @Override
     fun attackEntityWithRangedAttack(p_82196_1_: EntityLivingBase,
                                      p_82196_2_: Float) {
-        val entityarrow = EntityArrowFire(this.worldObj, this, p_82196_1_, 1.6f, (14 - this.worldObj.difficulty.difficultyId * 4).toFloat())
+        val entityarrow = EntityArrowFire(this.world, this, p_82196_1_, 1.6f, (14 - this.world.difficulty.difficultyId * 4).toFloat())
         val i = 3 //Equivalent to a power 3 bow.
         val j = 1 //Equivalent to a punch 2 bow.
-        entityarrow.damage = (p_82196_2_ * 2.0f).toDouble() + this.rand.nextGaussian() * 0.25 + (this.worldObj.difficulty.difficultyId.toFloat() * 0.11f).toDouble()
+        entityarrow.damage = (p_82196_2_ * 2.0f).toDouble() + this.rand.nextGaussian() * 0.25 + (this.world.difficulty.difficultyId.toFloat() * 0.11f).toDouble()
         entityarrow.damage = entityarrow.damage + i.toDouble() * 0.5 + 0.5
         entityarrow.setKnockbackStrength(j)
         entityarrow.setFire(100)
 
         //  this.playSound("random.bow", 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-        this.worldObj.spawnEntityInWorld(entityarrow)
+        this.world.spawnEntity(entityarrow)
 
     }
 

@@ -7,6 +7,7 @@ import net.minecraft.block.Block
 import net.minecraft.inventory.InventoryCrafting
 import net.minecraft.item.ItemStack
 import net.minecraft.item.crafting.IRecipe
+import net.minecraft.util.NonNullList
 import net.minecraft.world.World
 import net.minecraftforge.common.ForgeHooks
 
@@ -46,7 +47,7 @@ class RecipeAwakenedSoulstone : IRecipe {
         return null
     }
 
-    override fun getRemainingItems(inventoryCrafting: InventoryCrafting): Array<ItemStack> {
+    override fun getRemainingItems(inventoryCrafting: InventoryCrafting): NonNullList<ItemStack> {
         return ForgeHooks.defaultRecipeGetRemainingItems(inventoryCrafting)
     }
 }
