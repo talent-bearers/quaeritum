@@ -40,6 +40,7 @@ object LibNames {
     val RESOURCE = "resource"
 
     val ROOTED = "rooted"
+    val IRONSKIN = "ironskin"
     val SOULGAZE = "soulgaze"
     val REPULSOR = "repulsor"
     val WINDWALKER = "windwalker"

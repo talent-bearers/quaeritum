@@ -4,9 +4,9 @@ import com.google.common.collect.Multimap
 import com.teamwizardry.librarianlib.features.base.item.ItemModSword
 import com.teamwizardry.librarianlib.features.helpers.ItemNBTHelper
 import com.teamwizardry.librarianlib.features.kotlin.times
+import com.teamwizardry.librarianlib.features.utilities.RaycastUtils
 import eladkay.quaeritum.common.Quaeritum
 import eladkay.quaeritum.common.core.QuaeritumMethodHandles
-import eladkay.quaeritum.common.core.RayHelper
 import eladkay.quaeritum.common.lib.LibMaterials
 import eladkay.quaeritum.common.lib.LibNames
 import net.minecraft.entity.Entity
@@ -43,12 +43,12 @@ class ItemWorldBlade : ItemModSword(LibNames.WORLD_BLADE, LibMaterials.TEMPESTEE
         var pos = Vec3d.ZERO
         var hitEntity = false
 
-        val hit = RayHelper.getEntityLookedAt(entityLiving, 8.0)
+        val hit = RaycastUtils.getEntityLookedAt(entityLiving, 8.0)
         if (hit != null) {
             pos = hit.positionVector
             hitEntity = true
         } else {
-            val result = RayHelper.raycast(entityLiving, 8.0)
+            val result = RaycastUtils.raycast(entityLiving, 8.0)
             if (result == null) {
                 pos = entityLiving.positionVector.add(entityLiving.lookVec * 8.0)
             } else {

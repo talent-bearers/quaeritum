@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlin_version = '1.0.3'
+    ext.kotlin_version = '1.1.1'
     repositories {
         jcenter()
         maven {
@@ -27,6 +27,13 @@ allprojects {
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
+
+compileKotlin {
+    kotlinOptions {
+        javaParameters = true
+        jvmTarget = 1.8
+    }
+}
 
 ext.configFile = file('build.properties')
 ext.config = parseConfig(configFile)

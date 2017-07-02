@@ -18,7 +18,8 @@ public enum EnumSpellElement {
     METAL(new Color(0x8E8E8E)),
     ENTROPY(new Color(0x7D0D0F)),
     FORM(new Color(0x3DD748)),
-    CONNECTION(new Color(0x19C3E5)),
+    FLOW(new Color(0x33F0E8)),
+    CONNECTION(new Color(0x07FF82)),
     SPIRIT(new Color(0xB4AE28)),
     AETHER(null),
     SOUL(new Color(0xCF42D3));

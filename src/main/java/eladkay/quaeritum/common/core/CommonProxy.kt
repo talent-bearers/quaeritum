@@ -9,6 +9,7 @@ import eladkay.quaeritum.common.entity.ModEntities
 import eladkay.quaeritum.common.item.ModItems
 import eladkay.quaeritum.common.networking.RemainingItemRenderPacket
 import eladkay.quaeritum.common.potions.ModPotionTypes
+import eladkay.quaeritum.common.potions.PotionIronskin
 import eladkay.quaeritum.common.potions.PotionRooted
 import eladkay.quaeritum.common.potions.PotionSoulgaze
 import eladkay.quaeritum.common.rituals.ModDiagrams
@@ -34,6 +35,7 @@ open class CommonProxy {
         ModItems
         PotionRooted
         PotionSoulgaze
+        PotionIronskin
         ModPotionTypes
         SightHandler
         ModEntities.init()
