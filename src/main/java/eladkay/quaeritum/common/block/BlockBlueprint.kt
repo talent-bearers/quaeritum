@@ -1,8 +1,8 @@
 package eladkay.quaeritum.common.block
 
-import com.teamwizardry.librarianlib.common.base.block.BlockMod
-import com.teamwizardry.librarianlib.common.base.block.ItemModBlock
-import com.teamwizardry.librarianlib.common.util.ItemNBTHelper
+import com.teamwizardry.librarianlib.features.base.block.BlockMod
+import com.teamwizardry.librarianlib.features.base.block.ItemModBlock
+import com.teamwizardry.librarianlib.features.helpers.ItemNBTHelper
 import eladkay.quaeritum.api.lib.LibNBT
 import eladkay.quaeritum.common.block.tile.TileEntityBlueprint
 import eladkay.quaeritum.common.lib.LibLocations

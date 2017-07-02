@@ -1,6 +1,6 @@
 package eladkay.quaeritum.common.core
 
-import com.teamwizardry.librarianlib.LibrarianLib
+import com.teamwizardry.librarianlib.core.LibrarianLib
 import eladkay.quaeritum.api.lib.LibMisc
 import org.apache.logging.log4j.Level
 import org.apache.logging.log4j.LogManager

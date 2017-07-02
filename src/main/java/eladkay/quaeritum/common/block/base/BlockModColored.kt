@@ -1,6 +1,6 @@
 package eladkay.quaeritum.common.block.base
 
-import com.teamwizardry.librarianlib.common.base.block.BlockMod
+import com.teamwizardry.librarianlib.features.base.block.BlockMod
 import eladkay.quaeritum.common.lib.arrayOfStrings
 import eladkay.quaeritum.common.lib.capitalizeFirst
 import net.minecraft.block.material.MapColor

@@ -1,7 +1,7 @@
 package eladkay.quaeritum.common.item
 
 import com.google.common.collect.Lists
-import com.teamwizardry.librarianlib.common.base.item.ItemMod
+import com.teamwizardry.librarianlib.features.base.item.ItemMod
 import eladkay.quaeritum.api.rituals.PositionedBlock
 import eladkay.quaeritum.api.rituals.PositionedBlockChalk
 import eladkay.quaeritum.common.block.ModBlocks

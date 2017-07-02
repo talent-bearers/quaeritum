@@ -1,7 +1,7 @@
 package eladkay.quaeritum.common.core
 
-import com.teamwizardry.librarianlib.common.util.times
-import com.teamwizardry.librarianlib.common.util.vec
+import com.teamwizardry.librarianlib.features.helpers.vec
+import com.teamwizardry.librarianlib.features.kotlin.times
 import net.minecraft.entity.Entity
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.util.math.AxisAlignedBB
@@ -16,7 +16,7 @@ import net.minecraft.world.World
 object RayHelper {
 
     @JvmOverloads fun raycast(e: Entity, len: Double, stopOnLiquid: Boolean = false): RayTraceResult? {
-        val vec = e.positionVector.addVector(0.0, if (e is EntityPlayer) e.getEyeHeight().toDouble() else 0.0, 0.0)
+        val vec = e.positionVector.addVector(0.0, (e as? EntityPlayer)?.getEyeHeight()?.toDouble() ?: 0.0, 0.0)
         val look = e.lookVec ?: return null
         return raycast(e.world, vec, look, len, stopOnLiquid)
     }

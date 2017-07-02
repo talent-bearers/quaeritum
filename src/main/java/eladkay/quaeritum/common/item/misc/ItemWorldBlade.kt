@@ -1,9 +1,9 @@
 package eladkay.quaeritum.common.item.misc
 
 import com.google.common.collect.Multimap
-import com.teamwizardry.librarianlib.common.base.item.ItemModSword
-import com.teamwizardry.librarianlib.common.util.ItemNBTHelper
-import com.teamwizardry.librarianlib.common.util.times
+import com.teamwizardry.librarianlib.features.base.item.ItemModSword
+import com.teamwizardry.librarianlib.features.helpers.ItemNBTHelper
+import com.teamwizardry.librarianlib.features.kotlin.times
 import eladkay.quaeritum.common.Quaeritum
 import eladkay.quaeritum.common.core.QuaeritumMethodHandles
 import eladkay.quaeritum.common.core.RayHelper

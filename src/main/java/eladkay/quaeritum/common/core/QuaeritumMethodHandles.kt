@@ -1,6 +1,6 @@
 package eladkay.quaeritum.common.core
 
-import com.teamwizardry.librarianlib.common.util.MethodHandleHelper
+import com.teamwizardry.librarianlib.features.methodhandles.MethodHandleHelper
 import eladkay.quaeritum.common.lib.LibObfuscation
 import net.minecraft.entity.EntityLivingBase
 

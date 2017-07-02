@@ -1,9 +1,9 @@
 package eladkay.quaeritum.common.item
 
 import com.google.common.collect.Lists
-import com.teamwizardry.librarianlib.common.base.item.ItemMod
-import com.teamwizardry.librarianlib.common.util.ItemNBTHelper
-import com.teamwizardry.librarianlib.common.util.plus
+import com.teamwizardry.librarianlib.features.base.item.ItemMod
+import com.teamwizardry.librarianlib.features.helpers.ItemNBTHelper
+import com.teamwizardry.librarianlib.features.kotlin.plus
 import eladkay.quaeritum.api.lib.LibNBT
 
 import eladkay.quaeritum.common.lib.LibNames

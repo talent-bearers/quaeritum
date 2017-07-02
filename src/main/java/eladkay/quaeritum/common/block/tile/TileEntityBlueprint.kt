@@ -1,18 +1,19 @@
 package eladkay.quaeritum.common.block.tile
 
+import com.teamwizardry.librarianlib.features.base.block.TileModTickable
 import eladkay.quaeritum.api.rituals.IDiagram
 import eladkay.quaeritum.api.rituals.PositionedBlock
 import eladkay.quaeritum.api.rituals.RitualRegistry
 import eladkay.quaeritum.common.core.PositionedBlockHelper
 import net.minecraft.nbt.NBTTagCompound
 
-class TileEntityBlueprint : TileMod() {
+class TileEntityBlueprint : TileModTickable() {
 
     var stage = RitualStage.IDLE
     var stageTicks = 0
     var currentDiagram: IDiagram? = null
 
-    public override fun updateEntity() {
+    public override fun tick() {
         if (!world.isRemote) {
             //LogHelper.logDebug(currentDiagram);
             if (currentDiagram != null)
@@ -66,7 +67,7 @@ class TileEntityBlueprint : TileMod() {
         return true
     }
 
-    override fun writeCustomNBT(compound: NBTTagCompound) {
+    override fun writeCustomNBT(compound: NBTTagCompound, sync: Boolean) {
         compound.setInteger("Stage", stage.ordinal)
         val diagramName = RitualRegistry.getDiagramName(currentDiagram)
         compound.setString("Diagram", diagramName ?: "")

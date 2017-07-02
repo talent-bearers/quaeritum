@@ -15,8 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
 
-import static com.teamwizardry.librarianlib.common.util.LibHelpersKt.getCurrentModId;
-import static sun.audio.AudioPlayer.player;
+import static com.teamwizardry.librarianlib.features.helpers.CommonUtilMethods.getCurrentModId;
 
 /**
  * @author WireSegal

@@ -1,6 +1,6 @@
 package eladkay.quaeritum.common.core
 
-import com.teamwizardry.librarianlib.client.util.TooltipHelper
+import com.teamwizardry.librarianlib.features.utilities.client.TooltipHelper
 import eladkay.quaeritum.api.lib.LibMisc
 import io.netty.buffer.ByteBuf
 import net.minecraft.client.Minecraft

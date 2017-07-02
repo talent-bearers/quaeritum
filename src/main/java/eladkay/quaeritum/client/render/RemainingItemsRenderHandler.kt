@@ -1,6 +1,6 @@
 package eladkay.quaeritum.client.render
 
-import com.teamwizardry.librarianlib.common.util.plus
+import com.teamwizardry.librarianlib.features.kotlin.plus
 import eladkay.quaeritum.common.Quaeritum
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.ScaledResolution

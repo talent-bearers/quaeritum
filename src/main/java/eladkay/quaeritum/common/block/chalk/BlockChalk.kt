@@ -1,7 +1,7 @@
 package eladkay.quaeritum.common.block.chalk
 
-import com.teamwizardry.librarianlib.common.base.block.EnumStringSerializable
-import com.teamwizardry.librarianlib.common.base.block.IBlockColorProvider
+import com.teamwizardry.librarianlib.features.base.block.EnumStringSerializable
+import com.teamwizardry.librarianlib.features.base.block.IBlockColorProvider
 import eladkay.quaeritum.common.block.ModBlocks
 import eladkay.quaeritum.common.block.base.BlockModColored
 import eladkay.quaeritum.common.item.ModItems

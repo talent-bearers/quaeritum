@@ -1,9 +1,8 @@
 package eladkay.quaeritum.api.animus;
 
-import com.teamwizardry.librarianlib.common.util.ItemNBTHelper;
+import com.teamwizardry.librarianlib.features.helpers.ItemNBTHelper;
 import eladkay.quaeritum.api.lib.LibNBT;
 import net.minecraft.item.ItemStack;
-
 import org.jetbrains.annotations.NotNull;
 
 public interface ISoulstone {

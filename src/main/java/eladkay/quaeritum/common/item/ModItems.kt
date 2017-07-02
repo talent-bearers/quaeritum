@@ -1,6 +1,6 @@
 package eladkay.quaeritum.common.item
 
-import com.teamwizardry.librarianlib.LibrarianLib
+import com.teamwizardry.librarianlib.core.LibrarianLib
 import eladkay.quaeritum.common.item.chalk.ItemChalk
 import eladkay.quaeritum.common.item.chalk.ItemChalkTempest
 import eladkay.quaeritum.common.item.misc.*
@@ -19,7 +19,6 @@ object ModItems {
     val riftmakerPart: ItemRiftmakerPart = ItemRiftmakerPart()
     val worldBlade: ItemWorldBlade = ItemWorldBlade()
     val picture: ItemPicture = ItemPicture()
-    val book: ItemBook = ItemBook()
     val tempest: ItemChalkTempest = ItemChalkTempest()
     val resource: ItemResource = ItemResource()
     val worldShield: ItemWorldShield = ItemWorldShield()

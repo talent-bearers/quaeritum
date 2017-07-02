@@ -1,7 +1,7 @@
 package eladkay.quaeritum.common.core
 
 import com.google.common.collect.Lists
-import com.teamwizardry.librarianlib.common.util.ItemNBTHelper
+import com.teamwizardry.librarianlib.features.helpers.ItemNBTHelper
 import eladkay.quaeritum.api.lib.LibNBT
 import eladkay.quaeritum.api.rituals.PositionedBlock
 import eladkay.quaeritum.common.block.ModBlocks

@@ -1,6 +1,6 @@
 package eladkay.quaeritum.common.item
 
-import com.teamwizardry.librarianlib.common.base.item.ItemMod
+import com.teamwizardry.librarianlib.features.base.item.ItemMod
 import eladkay.quaeritum.common.lib.LibNames
 import net.minecraft.item.ItemStack
 import net.minecraftforge.oredict.OreDictionary

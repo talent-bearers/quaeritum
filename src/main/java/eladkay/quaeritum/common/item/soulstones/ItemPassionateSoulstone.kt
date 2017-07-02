@@ -1,9 +1,8 @@
 package eladkay.quaeritum.common.item.soulstones
 
-import com.teamwizardry.librarianlib.common.base.item.ItemMod
+import com.teamwizardry.librarianlib.features.base.item.ItemMod
 import eladkay.quaeritum.api.animus.AnimusHelper
 import eladkay.quaeritum.api.animus.INetworkProvider
-
 import eladkay.quaeritum.common.lib.LibNames
 import net.minecraft.entity.Entity
 import net.minecraft.entity.player.EntityPlayer

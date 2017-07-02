@@ -1,6 +1,6 @@
 package eladkay.quaeritum.common.block
 
-import com.teamwizardry.librarianlib.common.base.block.BlockMod
+import com.teamwizardry.librarianlib.features.base.block.BlockMod
 import eladkay.quaeritum.api.lib.LibMisc
 import eladkay.quaeritum.api.rituals.PositionedBlockChalk
 import eladkay.quaeritum.common.block.chalk.BlockChalk

@@ -1,9 +1,8 @@
 package eladkay.quaeritum.common.item.misc
 
-import com.teamwizardry.librarianlib.common.base.item.ItemMod
+import com.teamwizardry.librarianlib.features.base.item.ItemMod
 import eladkay.quaeritum.common.block.ModBlocks
 import eladkay.quaeritum.common.block.flowers.BlockAnimusFlower
-
 import eladkay.quaeritum.common.lib.LibNames
 import net.minecraft.block.material.Material
 import net.minecraft.entity.player.EntityPlayer

@@ -1,6 +1,6 @@
 package eladkay.quaeritum.common.item
 
-import com.teamwizardry.librarianlib.common.base.item.ItemMod
+import com.teamwizardry.librarianlib.features.base.item.ItemMod
 import eladkay.quaeritum.api.animus.EnumAnimusTier
 import eladkay.quaeritum.api.animus.IAnimusResource
 import eladkay.quaeritum.common.lib.LibNames

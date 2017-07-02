@@ -1,9 +1,10 @@
 package eladkay.quaeritum.common.item
 
-import com.teamwizardry.librarianlib.LibrarianLib
-import com.teamwizardry.librarianlib.common.base.item.IItemColorProvider
-import com.teamwizardry.librarianlib.common.base.item.ItemMod
-import com.teamwizardry.librarianlib.common.util.ItemNBTHelper
+import com.teamwizardry.librarianlib.core.LibrarianLib
+import com.teamwizardry.librarianlib.features.base.item.IItemColorProvider
+import com.teamwizardry.librarianlib.features.base.item.ItemMod
+import com.teamwizardry.librarianlib.features.helpers.ItemNBTHelper
+import com.teamwizardry.librarianlib.features.kotlin.sendSpamlessMessage
 import eladkay.quaeritum.api.animus.AnimusHelper
 import eladkay.quaeritum.api.contract.ContractRegistry
 import eladkay.quaeritum.common.lib.LibNames
@@ -71,7 +72,7 @@ class ItemContractScroll : ItemMod(LibNames.SCROLL, LibNames.SCROLL, LibNames.SE
                 component.appendSibling(TextComponentTranslation(line).setStyle(Style().setBold(false)))
             }
 
-            LibrarianLib.PROXY.sendSpamlessMessage(playerIn, component, WORDS_OF_AGES)
+            playerIn.sendSpamlessMessage(component, WORDS_OF_AGES)
         }
 
         return ActionResult(EnumActionResult.SUCCESS, itemStackIn)

@@ -1,6 +1,6 @@
 package eladkay.quaeritum.common.block.chalk
 
-import com.teamwizardry.librarianlib.common.base.block.BlockMod
+import com.teamwizardry.librarianlib.features.base.block.BlockMod
 import eladkay.quaeritum.common.block.ModBlocks
 import eladkay.quaeritum.common.item.ModItems
 import eladkay.quaeritum.common.lib.LibNames

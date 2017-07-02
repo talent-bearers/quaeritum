@@ -2,9 +2,9 @@ package eladkay.quaeritum.common.item.base
 
 import baubles.api.BaublesApi
 import baubles.api.IBauble
-import com.teamwizardry.librarianlib.client.util.TooltipHelper
-import com.teamwizardry.librarianlib.common.base.item.ItemMod
-import com.teamwizardry.librarianlib.common.util.ItemNBTHelper
+import com.teamwizardry.librarianlib.features.base.item.ItemMod
+import com.teamwizardry.librarianlib.features.helpers.ItemNBTHelper
+import com.teamwizardry.librarianlib.features.utilities.client.TooltipHelper
 import eladkay.quaeritum.api.lib.LibMisc
 import eladkay.quaeritum.common.core.QuaeritumSoundEvents
 import net.minecraft.client.Minecraft

@@ -1,11 +1,11 @@
 package eladkay.quaeritum.common.block.machine
 
-import com.teamwizardry.librarianlib.common.base.block.BlockModContainer
-import com.teamwizardry.librarianlib.common.base.block.TileMod
-import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister
-import com.teamwizardry.librarianlib.common.util.saving.Save
-import com.teamwizardry.librarianlib.common.util.saving.SaveMethodGetter
-import com.teamwizardry.librarianlib.common.util.saving.SaveMethodSetter
+import com.teamwizardry.librarianlib.features.autoregister.TileRegister
+import com.teamwizardry.librarianlib.features.base.block.BlockModContainer
+import com.teamwizardry.librarianlib.features.base.block.TileMod
+import com.teamwizardry.librarianlib.features.saving.Save
+import com.teamwizardry.librarianlib.features.saving.SaveMethodGetter
+import com.teamwizardry.librarianlib.features.saving.SaveMethodSetter
 import eladkay.quaeritum.api.machines.CentrifugeRecipes
 import eladkay.quaeritum.common.core.QuaeritumSoundEvents
 import eladkay.quaeritum.common.lib.LibNames
@@ -140,7 +140,7 @@ class BlockCentrifuge : BlockModContainer(LibNames.CENTRIFUGE, Material.CLOTH) {
             val recipe = CentrifugeRecipes.getRecipe(inputs, heated)
             if (recipe != null) {
                 if (totalSteam >= recipe.steamRequired(inputs, heated)) {
-                    if (output.insertItem(0, recipe.getOutput(inputs, heated), false) == null) {
+                    if (output.insertItem(0, recipe.getOutput(inputs, heated), false).isEmpty) {
                         recipe.consumeInputs(inputs, heated)
                         totalSteam = 0
                     }

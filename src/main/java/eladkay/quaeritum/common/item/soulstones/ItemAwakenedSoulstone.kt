@@ -1,7 +1,7 @@
 package eladkay.quaeritum.common.item.soulstones
 
-import com.teamwizardry.librarianlib.common.base.item.ItemMod
-import com.teamwizardry.librarianlib.common.util.ItemNBTHelper
+import com.teamwizardry.librarianlib.features.base.item.ItemMod
+import com.teamwizardry.librarianlib.features.helpers.ItemNBTHelper
 import eladkay.quaeritum.api.animus.AnimusHelper
 import eladkay.quaeritum.api.animus.EnumAnimusTier
 import eladkay.quaeritum.api.animus.IAnimusResource
@@ -9,15 +9,15 @@ import eladkay.quaeritum.api.animus.ISoulstone
 import eladkay.quaeritum.api.lib.LibNBT
 import eladkay.quaeritum.client.core.ClientUtils
 import eladkay.quaeritum.common.item.ModItems
-
 import eladkay.quaeritum.common.lib.LibNames
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
+import net.minecraft.util.NonNullList
 import net.minecraft.world.World
 
-class ItemAwakenedSoulstone @JvmOverloads constructor(name: String = LibNames.AWAKENED_SOULSTONE) : ItemMod(name), ISoulstone, IAnimusResource {
+class ItemAwakenedSoulstone(name: String = LibNames.AWAKENED_SOULSTONE) : ItemMod(name), ISoulstone, IAnimusResource {
 
     init {
         setMaxStackSize(1)
@@ -42,7 +42,7 @@ class ItemAwakenedSoulstone @JvmOverloads constructor(name: String = LibNames.AW
         return 0
     }
 
-    override fun getSubItems(itemIn: Item, tab: CreativeTabs?, subItems: MutableList<ItemStack>) {
+    override fun getSubItems(itemIn: Item, tab: CreativeTabs?, subItems: NonNullList<ItemStack>) {
         subItems.add(ItemStack(itemIn))
         val stack2 = ItemStack(itemIn, 1)
         AnimusHelper.setAnimus(stack2, getMaxAnimus(stack2))

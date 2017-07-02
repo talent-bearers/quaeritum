@@ -1,6 +1,6 @@
 package eladkay.quaeritum.common.item.misc
 
-import com.teamwizardry.librarianlib.common.base.item.ItemMod
+import com.teamwizardry.librarianlib.features.base.item.ItemMod
 import eladkay.quaeritum.api.lib.LibMisc
 import eladkay.quaeritum.common.lib.LibNames
 import net.minecraft.block.BlockDispenser

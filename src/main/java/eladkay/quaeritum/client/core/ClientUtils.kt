@@ -1,7 +1,7 @@
 package eladkay.quaeritum.client.core
 
-import com.teamwizardry.librarianlib.LibrarianLib
-import com.teamwizardry.librarianlib.client.util.TooltipHelper
+import com.teamwizardry.librarianlib.core.LibrarianLib
+import com.teamwizardry.librarianlib.features.utilities.client.TooltipHelper
 import eladkay.quaeritum.api.animus.AnimusHelper
 import eladkay.quaeritum.common.block.flowers.BlockAnimusFlower
 import net.minecraft.item.ItemStack

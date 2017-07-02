@@ -1,5 +1,7 @@
 package eladkay.quaeritum.common.block.tile
 
+import com.teamwizardry.librarianlib.features.base.block.TileMod
+import com.teamwizardry.librarianlib.features.base.block.TileModTickable
 import eladkay.quaeritum.api.rituals.IWork
 import eladkay.quaeritum.api.rituals.PositionedBlock
 import eladkay.quaeritum.api.rituals.RitualRegistry
@@ -7,12 +9,12 @@ import eladkay.quaeritum.common.core.PositionedBlockHelper
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.nbt.NBTTagCompound
 
-class TileEntityFoundationStone : TileMod() {
+class TileEntityFoundationStone : TileModTickable() {
     var stage = RitualStage.IDLE
     var ticksExisted: Long = 0
     var currentWork: IWork? = null
 
-    public override fun updateEntity() {
+    public override fun tick() {
         if (!world.isRemote) {
             if (currentWork != null) {
                 stage = RitualStage.IN_PROGRESS
@@ -56,7 +58,7 @@ class TileEntityFoundationStone : TileMod() {
         return true
     }
 
-    override fun writeCustomNBT(compound: NBTTagCompound) {
+    override fun writeCustomNBT(compound: NBTTagCompound, sync: Boolean) {
         compound.setInteger("Stage", stage.ordinal)
         val workName = RitualRegistry.getWorkName(currentWork)
         compound.setString("Work", workName ?: "")

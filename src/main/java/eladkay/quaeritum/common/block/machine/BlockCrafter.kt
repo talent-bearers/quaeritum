@@ -1,11 +1,11 @@
 package eladkay.quaeritum.common.block.machine
 
-import com.teamwizardry.librarianlib.common.base.block.BlockModContainer
-import com.teamwizardry.librarianlib.common.base.block.TileMod
-import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister
-import com.teamwizardry.librarianlib.common.util.saving.Save
-import com.teamwizardry.librarianlib.common.util.saving.SaveMethodGetter
-import com.teamwizardry.librarianlib.common.util.saving.SaveMethodSetter
+import com.teamwizardry.librarianlib.features.autoregister.TileRegister
+import com.teamwizardry.librarianlib.features.base.block.BlockModContainer
+import com.teamwizardry.librarianlib.features.base.block.TileMod
+import com.teamwizardry.librarianlib.features.saving.Save
+import com.teamwizardry.librarianlib.features.saving.SaveMethodGetter
+import com.teamwizardry.librarianlib.features.saving.SaveMethodSetter
 import eladkay.quaeritum.common.lib.LibNames
 import net.minecraft.block.Block
 import net.minecraft.block.material.Material
@@ -26,12 +26,6 @@ import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.ItemStackHandler
 import net.minecraftforge.items.wrapper.RangedWrapper
 import java.util.*
-
-
-
-
-
-
 
 /**
  * @author WireSegal

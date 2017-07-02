@@ -1,6 +1,6 @@
 package eladkay.quaeritum.api.animus;
 
-import com.teamwizardry.librarianlib.client.util.TooltipHelper;
+import com.teamwizardry.librarianlib.features.utilities.client.TooltipHelper;
 import eladkay.quaeritum.api.lib.LibMisc;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,7 +12,6 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;

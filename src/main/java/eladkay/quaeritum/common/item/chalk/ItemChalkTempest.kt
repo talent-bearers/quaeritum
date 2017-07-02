@@ -1,8 +1,8 @@
 package eladkay.quaeritum.common.item.chalk
 
-import com.teamwizardry.librarianlib.client.util.TooltipHelper
-import com.teamwizardry.librarianlib.common.base.item.ItemMod
-import com.teamwizardry.librarianlib.common.util.ItemNBTHelper
+import com.teamwizardry.librarianlib.features.base.item.ItemMod
+import com.teamwizardry.librarianlib.features.helpers.ItemNBTHelper
+import com.teamwizardry.librarianlib.features.utilities.client.TooltipHelper
 import eladkay.quaeritum.api.lib.LibNBT
 import eladkay.quaeritum.common.block.ModBlocks
 

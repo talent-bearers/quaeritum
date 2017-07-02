@@ -1,6 +1,6 @@
 package eladkay.quaeritum.common.core
 
-import com.teamwizardry.librarianlib.common.network.PacketHandler
+import com.teamwizardry.librarianlib.features.network.PacketHandler
 import eladkay.quaeritum.api.animus.AnimusHelper
 import eladkay.quaeritum.client.core.ClientEventHandler
 import eladkay.quaeritum.common.block.ModBlocks
