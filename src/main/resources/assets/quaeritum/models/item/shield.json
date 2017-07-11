@@ -383,7 +383,7 @@
             "predicate": {
                 "blocking": 1
             },
-            "model": "quaeritum:item/shieldBlocking"
+            "model": "quaeritum:item/shield_blocking"
         }
     ]
 }

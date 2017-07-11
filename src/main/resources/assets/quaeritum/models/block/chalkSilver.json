@@ -1,7 +1,0 @@
-{
-    "parent": "block/carpet",
-    "textures": {
-        "particle": "quaeritum:blocks/chalkLightGray",
-        "wool": "quaeritum:blocks/chalkLightGray"
-    }
-}

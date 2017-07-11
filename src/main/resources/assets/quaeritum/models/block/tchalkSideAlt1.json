@@ -1,6 +1,0 @@
-{
-    "parent": "quaeritum:block/chalkSideAlt",
-    "textures": {
-        "line": "quaeritum:blocks/tempest1"
-    }
-}

@@ -64,18 +64,19 @@ public final class SpellParser {
         ArrayList<SpellInfo> spells = new ArrayList<>();
         ArrayList<EnumSpellElement> temp = new ArrayList<>();
         for (int i = input.length; i > 0; i--) {
+            temp.clear();
             temp.addAll(Arrays.asList(input).subList(0, i));
             for (IAlchemicalSpell spell : allSpells)
                 if (matches(spell.getPattern(), temp)) {
                     int trailing = 0;
-                    for (int j = i; i < input.length; i++)
+                    for (int j = i; j < input.length; j++)
                         if (input[j] == EnumSpellElement.AETHER) trailing++;
                         else break;
 
                     spells.add(new SpellInfo(spell, trailing));
                     return combineArrays(spells.toArray(new SpellInfo[0]), fromElements(
                             Arrays.asList(input)
-                                    .subList(i - 1 + trailing, input.length)
+                                    .subList(i + trailing, input.length)
                                     .toArray(new EnumSpellElement[0])));
                 }
         }

@@ -1,12 +1,14 @@
 package eladkay.quaeritum.common
 
 import eladkay.quaeritum.api.lib.LibMisc
+import eladkay.quaeritum.common.core.CommandCastSpell
 import eladkay.quaeritum.common.core.CommonProxy
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.SidedProxy
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent
 
 @Mod(modid = LibMisc.MOD_ID, name = LibMisc.NAME, version = LibMisc.VERSION, dependencies = LibMisc.DEPENDENCIES)
 class Quaeritum {
@@ -24,6 +26,11 @@ class Quaeritum {
     @Mod.EventHandler
     fun post(e: FMLPostInitializationEvent) {
         proxy.post(e)
+    }
+
+    @Mod.EventHandler
+    fun serverStart(e: FMLServerStartingEvent) {
+        e.registerServerCommand(CommandCastSpell)
     }
 
     companion object {

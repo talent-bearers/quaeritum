@@ -14,6 +14,7 @@ import eladkay.quaeritum.common.potions.PotionRooted
 import eladkay.quaeritum.common.potions.PotionSoulgaze
 import eladkay.quaeritum.common.rituals.ModDiagrams
 import eladkay.quaeritum.common.rituals.ModWorks
+import eladkay.quaeritum.common.spell.BasicSpells
 import net.minecraft.client.particle.Particle
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.player.EntityPlayerMP
@@ -37,6 +38,7 @@ open class CommonProxy {
         PotionSoulgaze
         PotionIronskin
         ModPotionTypes
+        BasicSpells
         SightHandler
         ModEntities.init()
         ModRecipes.init()

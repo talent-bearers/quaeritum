@@ -1,4 +1,4 @@
 {
-  "baubleEquip": { "sounds":["quaeritum:equipBauble"], "subtitle": "quaeritum.subtitle.equipBauble" },
+  "baubleEquip": { "sounds":["quaeritum:equip_bauble"], "subtitle": "quaeritum.subtitle.equipBauble" },
   "centrifuge": { "sounds":["quaeritum:centrifuge"], "subtitle": "quaeritum.subtitle.centrifuge" }
 }

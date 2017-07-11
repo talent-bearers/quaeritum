@@ -8,7 +8,7 @@
       "predicate": {
         "quaeritum:flat": 1
       },
-      "model": "quaeritum:item/solidFoundation"
+      "model": "quaeritum:item/solid_foundation"
     }
   ]
 }

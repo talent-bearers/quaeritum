@@ -1,0 +1,24 @@
+{
+	"__comment": "Designed by Wire Segal with Cubik Studio - https://cubik.studio",
+	"parent": "quaeritum:item/shield",
+	"display": {
+		"thirdperson_righthand": {
+			"rotation":  [ 0, -156, 49 ],
+			"translation":  [ 6.6695, 3.0484, -1.946 ]
+		},
+		"thirdperson_lefthand": {
+			"rotation":  [ 0, -156, 49 ],
+			"translation":  [ 6.6695, 3.0484, -1.946 ]
+		},
+		"firstperson_righthand": {
+			"rotation":  [ -83, -30, 0 ],
+			"translation":  [ -3.885, 6.8958, 0 ],
+			"scale":  [ 0.75, 0.75, 0.75 ]
+		},
+		"firstperson_lefthand": {
+			"rotation":  [ -83, -30, 0 ],
+			"translation":  [ -3.885, 6.8958, 0 ],
+			"scale":  [ 0.75, 0.75, 0.75 ]
+		}
+	}
+}

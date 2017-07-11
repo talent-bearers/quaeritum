@@ -1,0 +1,6 @@
+{
+    "parent": "quaeritum:block/chalk_side",
+    "textures": {
+        "line": "quaeritum:blocks/tempest0"
+    }
+}

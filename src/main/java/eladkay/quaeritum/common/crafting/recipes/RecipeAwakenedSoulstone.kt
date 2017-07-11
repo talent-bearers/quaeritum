@@ -43,8 +43,8 @@ class RecipeAwakenedSoulstone : IRecipe {
         return 10
     }
 
-    override fun getRecipeOutput(): ItemStack? {
-        return null
+    override fun getRecipeOutput(): ItemStack {
+        return ItemStack.EMPTY
     }
 
     override fun getRemainingItems(inventoryCrafting: InventoryCrafting): NonNullList<ItemStack> {

@@ -16,6 +16,8 @@ import net.minecraft.init.MobEffects
 import net.minecraft.potion.Potion
 import net.minecraft.potion.PotionEffect
 import net.minecraft.util.DamageSource
+import net.minecraft.util.math.Vec3d
+import net.minecraft.util.text.TextComponentString
 import net.minecraftforge.fml.relauncher.ReflectionHelper
 import java.util.*
 
@@ -27,9 +29,14 @@ import java.util.*
 object BasicSpells {
     private fun applyPotionBuff(potion: Potion, player: EntityLivingBase, trailing: Int, total: Int, amplifier: Boolean) {
         val potionEffect = player.removeActivePotionEffect(potion) ?: PotionEffect(potion)
-        player.addPotionEffect(PotionEffect(potion, Math.max(5 + trailing * 2 - total, 1) * if (amplifier) 10 else 20 + potionEffect.duration,
+        player.addPotionEffect(PotionEffect(potion, Math.max(5 + (trailing * 2) / total, 1) * (if (amplifier) 10 else 20) + potionEffect.duration,
                 if (amplifier) trailing / 2 else 0))
 
+    }
+
+    fun Vec3d.max(max: Number): Vec3d {
+        if (this.lengthSquared() < max.toDouble() * max.toDouble()) return this
+        return this.normalize().scale(max.toDouble())
     }
 
 
@@ -42,9 +49,9 @@ object BasicSpells {
             var newTarget: IMob
             do
                 newTarget = mobs[entity.world.rand.nextInt(mobs.size)]
-            while (newTarget === entity)
+            while (newTarget === entity && mobs.size != 1)
 
-            if (newTarget is EntityLiving) {
+            if (newTarget != entity && newTarget is EntityLiving) {
                 val entries = ArrayList(entity.tasks.taskEntries)
                 entries.addAll(ArrayList(entity.targetTasks.taskEntries))
 
@@ -82,17 +89,19 @@ object BasicSpells {
             if (total > 3) player.addPotionEffect(PotionEffect(MobEffects.SLOWNESS, 500, total - 2))
         }
 
-        registerSpell(arrayOf(FIRE)) { _, _, _ ->
+        registerSpell(arrayOf(FIRE)) { player, trailing, total ->
+            player.sendStatusMessage(TextComponentString("firebolt trailing: $trailing total: $total"), false)
             // todo: fire bolt
         }
 
         registerSpell(arrayOf(AIR)) { player, trailing, total ->
             val look = player.lookVec
-            val speedVec = look.scale(0.75 + trailing.toDouble() / total).addVector(player.motionX, player.motionY, player.motionZ)
+            val speedVec = look.scale(0.75 + trailing.toDouble() / total).max((trailing + 1) / total).addVector(player.motionX, player.motionY, player.motionZ)
 
             player.motionX = speedVec.x
             player.motionY = speedVec.y
             player.motionZ = speedVec.z
+            player.velocityChanged = true
 
             player.fallDistance = 0f
         }
@@ -102,8 +111,10 @@ object BasicSpells {
         }
 
         registerSpell(arrayOf(ENTROPY)) { player, trailing, total ->
-            RaycastUtils.getEntityLookedAt(player)
-                    ?.attackEntityFrom(DamageSource.causeIndirectMagicDamage(player, player), (2 + trailing.toFloat()) / total)
+            RaycastUtils.getEntityLookedAt(player)?.run {
+                hurtResistantTime = 0
+                attackEntityFrom(DamageSource.causeIndirectMagicDamage(player, player), (2 + trailing.toFloat() * 2) / total)
+            }
         }
 
         registerSpell(arrayOf(FORM)) { player, trailing, total ->
@@ -138,11 +149,13 @@ object BasicSpells {
                     .any { brainwashEntity(it, entities) }
         }
 
-        registerSpell(arrayOf(AETHER)) { _, _, _ ->
+        registerSpell(arrayOf(AETHER)) { player, trailing, total ->
+            player.sendStatusMessage(TextComponentString("aetherbolt trailing: $trailing total: $total"), false)
             // todo: raw power bolt, ignoring spell count
         }
 
-        registerSpell(arrayOf(SOUL)) { _, _, _ ->
+        registerSpell(arrayOf(SOUL)) { player, trailing, total ->
+            player.sendStatusMessage(TextComponentString("cogecho trailing: $trailing total: $total"), false)
             // todo: cognitive echoes that fight for you
         }
 

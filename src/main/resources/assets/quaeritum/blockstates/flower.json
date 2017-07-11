@@ -4,7 +4,7 @@
       "model": "quaeritum:common"
     },
     "type=common_arcane": {
-      "model": "quaeritum:commonArcane"
+      "model": "quaeritum:common_arcane"
     },
     "type=arcane": {
       "model": "quaeritum:arcane"

@@ -11,24 +11,27 @@ import java.awt.*;
  *         Created at 11:20 PM on 7/1/17.
  */
 public enum EnumSpellElement {
-    EARTH(new Color(0x794715)),
-    WATER(new Color(0x1A6BEF)),
-    FIRE(new Color(0xF98B16)),
-    AIR(new Color(0xEFED7F)),
-    METAL(new Color(0x8E8E8E)),
-    ENTROPY(new Color(0x7D0D0F)),
-    FORM(new Color(0x3DD748)),
-    FLOW(new Color(0x33F0E8)),
-    CONNECTION(new Color(0x07FF82)),
-    SPIRIT(new Color(0xB4AE28)),
-    AETHER(null),
-    SOUL(new Color(0xCF42D3));
+    EARTH(new Color(0x794715), 'V'),
+    WATER(new Color(0x1A6BEF), '~'),
+    FIRE(new Color(0xF98B16), '#'),
+    AIR(new Color(0xEFED7F), '^'),
+    METAL(new Color(0x8E8E8E), 'I'),
+    ENTROPY(new Color(0x7D0D0F), '*'),
+    FORM(new Color(0x3DD748), 'O'),
+    FLOW(new Color(0x33F0E8), '>'),
+    CONNECTION(new Color(0x07FF82), '|'),
+    SPIRIT(new Color(0xB4AE28), '@'),
+    AETHER(null, ';'),
+    SOUL(new Color(0xCF42D3), '\'');
 
     @Nullable
     private final Color color; // null is treated specially, as rainbow.
 
-    EnumSpellElement(@Nullable Color color) {
+    public final char representation;
+
+    EnumSpellElement(@Nullable Color color, char representation) {
         this.color = color;
+        this.representation = representation;
     }
 
     /**

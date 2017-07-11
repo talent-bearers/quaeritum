@@ -2,10 +2,12 @@ common=Common
 common_arcane=Rare
 arcane=Arcane
 
-misc.quaeritum.shiftForInfo=Hold &bSHIFT&7 for more info
+quaeritum.command.usage=/q-cast <elements>
+
+misc.quaeritum.shift_for_info=Hold &bSHIFT&7 for more info
 misc.quaeritum.baubletooltip=Press &b%s&7 to open the Baubles menu
-misc.quaeritum.animusBound=Tied to %s
-misc.quaeritum.notBound=Untied
+misc.quaeritum.animus_bound=Tied to %s
+misc.quaeritum.not_bound=Untied
 
 #Flow Manipulation for Dummies
 book.quaeritum.name=Secrets of the Soul
@@ -34,9 +36,9 @@ book.quaeritum.altarofthefallingstar_name=Altar of the Falling Star
 
 spell.quaeritum.repulse.name=Roar of Defiance
 spell.quaeritum.windwalk.name=Weight of Winds
-spell.quaeritum.windwalkRing.name=Flurry of Motion
+spell.quaeritum.windwalk_ring.name=Flurry of Motion
 
-misc.quaeritum.noSpell=No spell
+misc.quaeritum.no_spell=No spell
 
 tipped_arrow.effect.quaeritum_blindness_long=Arrow of Optic Disruption
 potion.effect.quaeritum_blindness_long=Potion of Optic Disruption
@@ -49,36 +51,36 @@ lingering_potion.effect.quaeritum_blindness=Lingering Potion of Optic Disruption
 
 item.quaeritum:repulsor.name=Circlet of Repulsion
 item.quaeritum:windwalker.name=Array of the Windwalker
-item.quaeritum:soulEvoker.name=Soul Evoker
+item.quaeritum:soul_evoker.name=Soul Evoker
 
-quaeritum.materialsRequired=Materials required:
-quaeritum.itemsRequired=§7Items required:
-quaeritum.chalksRequired=§7Chalks required:
+quaeritum.materials_required=Materials required:
+quaeritum.items_required=§7Items required:
+quaeritum.chalks_required=§7Chalks required:
 quaeritum.noblocks=§7None
 quaeritum.blocksrequired=§7Blocks required:
 quaeritum.diagramtooltip=§7This ritual is a §r§bDiagram§r§7
 quaeritum.nochalk=§7None
-itemGroup.quaeritum=Quaeritum
+item_group.quaeritum=Quaeritum
 
 tile.quaeritum:blueprint.name=Blueprint
-item.quaeritum:dormantSoulstone.name=Dormant Soulstone
-item.quaeritum:attunedSoulstone.name=Attuned Soulstone
-item.quaeritum:awakenedSoulstone.name=Awakened Soulstone
-item.quaeritum:oppressiveSoulstone.name=Oppressive Soulstone
-item.quaeritum:passionateSoulstone.name=Passionate Soulstone
-item.quaeritum:worldSoulstone.name=Stone of the Worldsoul
+item.quaeritum:dormant_soulstone.name=Dormant Soulstone
+item.quaeritum:attuned_soulstone.name=Attuned Soulstone
+item.quaeritum:awakened_soulstone.name=Awakened Soulstone
+item.quaeritum:oppressive_soulstone.name=Oppressive Soulstone
+item.quaeritum:passionate_soulstone.name=Passionate Soulstone
+item.quaeritum:world_soulstone.name=Stone of the Worldsoul
 item.quaeritum:transducer.name=Transducer
 
-tile.quaeritum:flowerCommon.name=Common Flower
-tile.quaeritum:flowerCommonArcane.name=Rare Flower
-tile.quaeritum:flowerArcane.name=Arcane Flower
+tile.quaeritum:flower_common.name=Common Flower
+tile.quaeritum:flower_common_arcane.name=Rare Flower
+tile.quaeritum:flower_arcane.name=Arcane Flower
 
 tile.quaeritum:crystal.name=Manifest Soul
-item.quaeritum:flowingWorldBlade.name=Blade of the Flowing World
+item.quaeritum:flowing_world_blade.name=Blade of the Flowing World
 item.quaeritum:shield.name=Shield of the Black Eternities
-item.quaeritum:riftFur.name=Riftmaker's Fur
-item.quaeritum:riftFang.name=Riftmaker's Fang
-item.quaeritum:riftClaw.name=Riftmaker's Claw
+item.quaeritum:rift_fur.name=Riftmaker's Fur
+item.quaeritum:rift_fang.name=Riftmaker's Fang
+item.quaeritum:rift_claw.name=Riftmaker's Claw
 
 item.quaeritum:debug.name=Debug Item
 item.quaeritum:hollower.name=Hollower
@@ -88,58 +90,58 @@ rituals.quaeritum.altarofthefallingstar=Altar of the Falling Star
 
 entity.quaeritum.chaosborn.name=Chaosborn
 
-misc.quaeritum.rushOfEnergy=A rush of energy flows through your soul!
+misc.quaeritum.rush_of_energy=A rush of energy flows through your soul!
 
 death.attack.shield=%s experienced kinetic energy
 
-item.quaeritum:chalkWhite.name=White Chalk
-item.quaeritum:chalkOrange.name=Orange Chalk
-item.quaeritum:chalkMagenta.name=Magenta Chalk
-item.quaeritum:chalkLightBlue.name=Light Blue Chalk
-item.quaeritum:chalkYellow.name=Yellow Chalk
-item.quaeritum:chalkLime.name=Lime Chalk
-item.quaeritum:chalkPink.name=Pink Chalk
-item.quaeritum:chalkGray.name=Gray Chalk
-item.quaeritum:chalkLightGray.name=Light Gray Chalk
-item.quaeritum:chalkCyan.name=Cyan Chalk
-item.quaeritum:chalkPurple.name=Purple Chalk
-item.quaeritum:chalkBlue.name=Blue Chalk
-item.quaeritum:chalkBrown.name=Brown Chalk
-item.quaeritum:chalkGreen.name=Green Chalk
-item.quaeritum:chalkRed.name=Red Chalk
-item.quaeritum:chalkBlack.name=Black Chalk
-item.quaeritum:tempestChalk.name=Tempest Chalk
+item.quaeritum:chalk_white.name=White Chalk
+item.quaeritum:chalk_orange.name=Orange Chalk
+item.quaeritum:chalk_magenta.name=Magenta Chalk
+item.quaeritum:chalk_light_blue.name=Light Blue Chalk
+item.quaeritum:chalk_yellow.name=Yellow Chalk
+item.quaeritum:chalk_lime.name=Lime Chalk
+item.quaeritum:chalk_pink.name=Pink Chalk
+item.quaeritum:chalk_gray.name=Gray Chalk
+item.quaeritum:chalk_light_gray.name=Light Gray Chalk
+item.quaeritum:chalk_cyan.name=Cyan Chalk
+item.quaeritum:chalk_purple.name=Purple Chalk
+item.quaeritum:chalk_blue.name=Blue Chalk
+item.quaeritum:chalk_brown.name=Brown Chalk
+item.quaeritum:chalk_green.name=Green Chalk
+item.quaeritum:chalk_red.name=Red Chalk
+item.quaeritum:chalk_black.name=Black Chalk
+item.quaeritum:tempest_chalk.name=Tempest Chalk
 
-item.quaeritum:chalkWhite.desc=The Soul, Purity, Completion
-item.quaeritum:chalkOrange.desc=The Nether, Heat, Flame
-item.quaeritum:chalkMagenta.desc=Transmutation, Change, Discovery
-item.quaeritum:chalkLightBlue.desc=Air, Weightlessness, Ascension
-item.quaeritum:chalkYellow.desc=Time, Eternity, Determination
-item.quaeritum:chalkLime.desc=Healing, Empowerment
-item.quaeritum:chalkPink.desc=The Spirit, Connection
-item.quaeritum:chalkGray.desc=Metal, Earth, Weight
-item.quaeritum:chalkLightGray.desc=Instinct, Primacy, Truth
-item.quaeritum:chalkCyan.desc=The Mind, Thought, Intelligence
-item.quaeritum:chalkPurple.desc=The End, Unnatural, Eldritch, Strange
-item.quaeritum:chalkBlue.desc=Water, Fluid, Emotion
-item.quaeritum:chalkBrown.desc=Death, Rot, Regrowth
-item.quaeritum:chalkGreen.desc=The Body, Strength, Growth
-item.quaeritum:chalkRed.desc=Focus, Force, Blood
-item.quaeritum:chalkBlack.desc=The Void
-item.quaeritum:tempestChalk.desc=The Æther, Chaos, Destruction, Power
+item.quaeritum:chalk_white.desc=The Soul, Purity, Completion
+item.quaeritum:chalk_orange.desc=The Nether, Heat, Flame
+item.quaeritum:chalk_magenta.desc=Transmutation, Change, Discovery
+item.quaeritum:chalk_light_blue.desc=Air, Weightlessness, Ascension
+item.quaeritum:chalk_yellow.desc=Time, Eternity, Determination
+item.quaeritum:chalk_lime.desc=Healing, Empowerment
+item.quaeritum:chalk_pink.desc=The Spirit, Connection
+item.quaeritum:chalk_gray.desc=Metal, Earth, Weight
+item.quaeritum:chalk_light_gray.desc=Instinct, Primacy, Truth
+item.quaeritum:chalk_cyan.desc=The Mind, Thought, Intelligence
+item.quaeritum:chalk_purple.desc=The End, Unnatural, Eldritch, Strange
+item.quaeritum:chalk_blue.desc=Water, Fluid, Emotion
+item.quaeritum:chalk_brown.desc=Death, Rot, Regrowth
+item.quaeritum:chalk_green.desc=The Body, Strength, Growth
+item.quaeritum:chalk_red.desc=Focus, Force, Blood
+item.quaeritum:chalk_black.desc=The Void
+item.quaeritum:tempest_chalk.desc=The Æther, Chaos, Destruction, Power
 
 item.quaeritum:fertilizer.name=Magical Fertilizer
-item.quaeritum:reagentAtlas.name=Atlas Reagent
+item.quaeritum:reagent_atlas.name=Atlas Reagent
 
 tile.quaeritum:foundation.name=Foundation Stone
 
 tile.quaeritum:centrifuge.name=Centrifuge
 jei.quaeritum.recipe.centrifuge=Centrifuge
 
-item.quaeritum:ruinedSlag.name=Ruined Slag
-item.quaeritum:victiumIngot.name=Victium Ingot
-item.quaeritum:victiumNugget.name=Victium Nugget
-item.quaeritum:arcaneEssence.name=Arcane Essence
+item.quaeritum:ruined_slag.name=Ruined Slag
+item.quaeritum:victium_ingot.name=Victium Ingot
+item.quaeritum:victium_nugget.name=Victium Nugget
+item.quaeritum:arcane_essence.name=Arcane Essence
 item.quaeritum:tempesteel.name=Tempesteel Ingot
 
 item.quaeritum:verdis.name=Arcane Essence
@@ -149,7 +151,7 @@ item.quaeritum:argentus.name=Philosopher's Dust
 item.quaeritum:atlas.name=Traveller's Heart
 item.quaeritum:quaeritus.name=Seeker's Soul
 
-quaeritum.subtitle.equipBauble=Bauble is equipped
+quaeritum.subtitle.equip_bauble=Bauble is equipped
 quaeritum.subtitle.centrifuge=Centrifuge spins
 
 quaeritum.oath.ea=Last Words of Ea
