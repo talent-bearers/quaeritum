@@ -2,6 +2,7 @@ package eladkay.quaeritum.client.core
 
 import eladkay.quaeritum.client.fx.FXMagicLine
 import eladkay.quaeritum.client.render.RemainingItemsRenderHandler
+import eladkay.quaeritum.client.render.RenderSymbol
 import eladkay.quaeritum.client.render.entity.LayerSight
 import eladkay.quaeritum.client.render.entity.RenderChaosborn
 import eladkay.quaeritum.common.core.CommonProxy
@@ -12,7 +13,6 @@ import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.util.ResourceLocation
 import net.minecraft.world.World
-import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.fml.client.registry.RenderingRegistry
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
@@ -22,6 +22,7 @@ import java.awt.datatransfer.StringSelection
 class ClientProxy : CommonProxy() {
     override fun pre(e: FMLPreInitializationEvent) {
         super.pre(e)
+        RenderSymbol
         RemainingItemsRenderHandler
     }
 
@@ -35,8 +36,6 @@ class ClientProxy : CommonProxy() {
 
         render = skinMap["slim"]
         render?.addLayer(LayerSight)
-
-        MinecraftForge.EVENT_BUS.register(ClientTickHandler())
 
         RenderingRegistry.registerEntityRenderingHandler<EntityChaosborn>(EntityChaosborn::class.java, { RenderChaosborn(it) })
         Minecraft.getMinecraft().textureMapBlocks.registerSprite(ResourceLocation("quaeritum:entity/magicParticle"))

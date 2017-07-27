@@ -40,7 +40,7 @@ class ItemWorldBlade : ItemModSword(LibNames.WORLD_BLADE, LibMaterials.TEMPESTEE
         if (entityLiving is EntityPlayer && entityLiving.cooldownTracker.hasCooldown(this))
             return false
 
-        var pos = Vec3d.ZERO
+        var pos: Vec3d
         var hitEntity = false
 
         val hit = RaycastUtils.getEntityLookedAt(entityLiving, 8.0)
@@ -58,7 +58,7 @@ class ItemWorldBlade : ItemModSword(LibNames.WORLD_BLADE, LibMaterials.TEMPESTEE
                         pos = result.entityHit.positionVector
                         hitEntity = true
                     }
-                    else -> {}
+                    else -> pos = entityLiving.positionVector.add(entityLiving.lookVec * 8.0)
                 }
             }
         }
