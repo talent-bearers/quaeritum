@@ -24,7 +24,7 @@ public final class RenderUtil {
             double outerX = cX + normX * outerRadius;
             double outerY = cY + normY * outerRadius;
             buffer.pos(outerX, outerY, 0).color(0, 0, 0, 0).endVertex();
-            buffer.pos(innerX, innerY, 0).color(r, g, b, 0.5f).endVertex();
+            buffer.pos(innerX, innerY, 0).color(r, g, b, 0.75f).endVertex();
         }
 
         for (int i = 0; i <= SEGMENTS_CIRCLE / 2; i++) {
@@ -35,7 +35,7 @@ public final class RenderUtil {
             double innerY = cY + normY * radius;
             double centralX = cX + normX * centralRadius;
             double centralY = cY + normY * centralRadius;
-            buffer.pos(innerX, innerY, 0).color(r, g, b, 0.5f).endVertex();
+            buffer.pos(innerX, innerY, 0).color(r, g, b, 0.75f).endVertex();
             buffer.pos(centralX, centralY, 0).color(0, 0, 0, 0).endVertex();
         }
     }
@@ -49,7 +49,7 @@ public final class RenderUtil {
             double outerX = x1 + normX * thickness;
             double outerY = y1 + normY * thickness;
             buffer.pos(outerX, outerY, 0).color(0, 0, 0, 0).endVertex();
-            buffer.pos(x1, y1, 0).color(r, g, b, 0.5f).endVertex();
+            buffer.pos(x1, y1, 0).color(r, g, b, 0.75f).endVertex();
         }
         for (int i = 0; i < SEGMENTS_CIRCLE; i++) {
             double angle = i * Math.PI / SEGMENTS_CIRCLE + atan - Math.PI / 2;
@@ -58,7 +58,7 @@ public final class RenderUtil {
             double outerX = x2 + normX * thickness;
             double outerY = y2 + normY * thickness;
             buffer.pos(outerX, outerY, 0).color(0, 0, 0, 0).endVertex();
-            buffer.pos(x2, y2, 0).color(r, g, b, 0.5f).endVertex();
+            buffer.pos(x2, y2, 0).color(r, g, b, 0.75f).endVertex();
         }
         double angle = atan + Math.PI / 2;
         float normX = MathHelper.cos((float)angle);
@@ -66,7 +66,7 @@ public final class RenderUtil {
         double outerX = x1 + normX * thickness;
         double outerY = y1 + normY * thickness;
         buffer.pos(outerX, outerY, 0).color(0, 0, 0, 0).endVertex();
-        buffer.pos(x1, y1, 0).color(r, g, b, 0.5f).endVertex();
+        buffer.pos(x1, y1, 0).color(r, g, b, 0.75f).endVertex();
     }
 
     public static void renderNGon(VertexBuffer buffer, double cX, double cY, float r, float g, float b, double radius, double thickness, int sides) {
@@ -86,7 +86,7 @@ public final class RenderUtil {
             double outerX = cX + normX * outerRadius;
             double outerY = cY + normY * outerRadius;
             buffer.pos(outerX, outerY, 0).color(0, 0, 0, 0).endVertex();
-            buffer.pos(innerX, innerY, 0).color(r, g, b, 0.5f).endVertex();
+            buffer.pos(innerX, innerY, 0).color(r, g, b, 0.75f).endVertex();
         }
 
         for (int i = sides; i >= 0; i--) {
