@@ -1,10 +1,7 @@
 package eladkay.quaeritum.api.spell;
 
 import com.teamwizardry.librarianlib.core.client.ClientTickHandler;
-import eladkay.quaeritum.api.spell.render.CircleSymbolInstruction;
-import eladkay.quaeritum.api.spell.render.ISymbolInstruction;
-import eladkay.quaeritum.api.spell.render.LineSymbolInstruction;
-import eladkay.quaeritum.api.spell.render.NGonSymbolInstruction;
+import eladkay.quaeritum.api.spell.render.*;
 import net.minecraft.util.math.MathHelper;
 
 import javax.annotation.Nullable;
@@ -20,14 +17,14 @@ import static eladkay.quaeritum.api.spell.render.LineSymbolInstruction.R2O2;
  */
 public enum EnumSpellElement {
     EARTH(new Color(0x794715), 'V', new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
-            new NGonSymbolInstruction(0.5f, 0.5f, 3, 0.4f, -Math.PI / 2),
+            new NGonSymbolInstruction(0.5f, 0.5f, 3, 0.4f, Math.PI / 2),
             new LineSymbolInstruction(R2O2, 1 - R2O2, 1 - R2O2, 1 - R2O2)),
     WATER(new Color(0x1A6BEF), '~', new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
-            new NGonSymbolInstruction(0.5f, 0.5f, 3, 0.4f, -Math.PI / 2)),
-    FIRE(new Color(0xF98B16), '#', new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
             new NGonSymbolInstruction(0.5f, 0.5f, 3, 0.4f, Math.PI / 2)),
+    FIRE(new Color(0xF98B16), '#', new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
+            new NGonSymbolInstruction(0.5f, 0.5f, 3, 0.4f, -Math.PI / 2)),
     AIR(new Color(0xEFED7F), '^', new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
-            new NGonSymbolInstruction(0.5f, 0.5f, 3, 0.4f, Math.PI / 2),
+            new NGonSymbolInstruction(0.5f, 0.5f, 3, 0.4f, -Math.PI / 2),
             new LineSymbolInstruction(R2O2, R2O2, 1 - R2O2, R2O2)),
     METAL(new Color(0x8E8E8E), 'I', new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
             new LineSymbolInstruction(R2O2, R2O2, 1 - R2O2, R2O2),
@@ -44,16 +41,24 @@ public enum EnumSpellElement {
     FLOW(new Color(0x33F0E8), '>', new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
             new LineSymbolInstruction(R2O2, R2O2, 1 - R2O2, R2O2),
             new CircleSymbolInstruction(0.5f, R2O2 + (1 - R2O2) / 4, (1 - R2O2) / 4),
-            new CircleSymbolInstruction(0.5f, R2O2 + (1 - R2O2) / 2, (1 - R2O2) / 4)),
-    CONNECTION(new Color(0x07FF82), '|', new CircleSymbolInstruction(0.5f, 0.5f, 0.5f)),
-    SPIRIT(new Color(0xB4AE28), '@', new CircleSymbolInstruction(0.5f, 0.5f, 0.5f)),
+            new CircleSymbolInstruction(0.5f, R2O2 + (1 - R2O2) * 3 / 4, (1 - R2O2) / 4)),
+    CONNECTION(new Color(0x07FF82), '|', new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
+            new HalfCircleSymbolInstruction(0.5f, 1 - R2O2, 1 - 2 * R2O2, 0),
+            new CircleSymbolInstruction(0.5f, 3 - 5 * R2O2, 1 - 2 * R2O2),
+            new LineSymbolInstruction(0.5f, 4 - 6 * R2O2, 0.5f, 0f),
+            new LineSymbolInstruction(0.25f, 2.5f - 3 * R2O2, 0.75f, 2.5f - 3 * R2O2)),
+    SPIRIT(new Color(0xB4AE28), '@', new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
+            new HalfCircleSymbolInstruction(0.5f, R2O2 / 2, 0.5f - R2O2, Math.PI),
+            new LineSymbolInstruction(0.5f, 0f, 0.5f, R2O2),
+            new LineSymbolInstruction(0.25f, R2O2 / 3f, 0.75f, R2O2 / 3f),
+            new LineSymbolInstruction(0.25f, R2O2 * 2f / 3f, 0.75f, R2O2 * 2f / 3f)),
     AETHER(null, ';', new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
             new NGonSymbolInstruction(0.5f, 0.5f, 3, 0.4f, Math.PI / 2),
             new NGonSymbolInstruction(0.5f, 0.5f, 3, 0.4f, -Math.PI / 2)),
     SOUL(new Color(0xCF42D3), '\'', new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
-            new NGonSymbolInstruction(0.5f, TRI_OFFSET, 3, TRI_OFFSET_PARAM, -Math.PI / 2),
-            new LineSymbolInstruction(0.5f, 0.5f, 0.5f, 1f),
-            new LineSymbolInstruction(0.25f, 0.75f, 0.75f, 0.75f));
+            new NGonSymbolInstruction(0.5f, TRI_OFFSET, 3, TRI_OFFSET_PARAM, Math.PI / 2),
+            new LineSymbolInstruction(0.5f, TRI_OFFSET + TRI_OFFSET_PARAM, 0.5f, 1f),
+            new LineSymbolInstruction(0.25f, 0.5f + (TRI_OFFSET + TRI_OFFSET_PARAM) / 2, 0.75f, 0.5f + (TRI_OFFSET + TRI_OFFSET_PARAM) / 2));
 
     @Nullable
     private final Color color; // null is treated specially, as rainbow.

@@ -9,6 +9,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
+import static eladkay.quaeritum.api.spell.render.LineSymbolInstruction.R2O2;
+
 /**
  * @author WireSegal
  *         Created at 8:47 PM on 7/26/17.
@@ -16,8 +18,12 @@ import org.lwjgl.opengl.GL11;
 public class HalfCircleSymbolInstruction implements ISymbolInstruction {
     public final float cX, cY, radius, angleOffset;
 
-    public static final float TRI_OFFSET_PARAM = (0.5f - LineSymbolInstruction.R2O2) / MathHelper.cos((float) Math.PI / 3);
-    public static final float TRI_OFFSET = MathHelper.sin((float) Math.PI / 3) * TRI_OFFSET_PARAM;
+    public static final float TRI_OFFSET_PARAM = (0.5f - R2O2) / MathHelper.cos((float) Math.PI / 6);
+    public static final float TRI_OFFSET = MathHelper.sin((float) Math.PI / 6) * TRI_OFFSET_PARAM + R2O2;
+
+    public HalfCircleSymbolInstruction(float cX, float cY, float radius, double angleOffset) {
+        this(cX, cY, radius, (float) angleOffset);
+    }
 
     public HalfCircleSymbolInstruction(float cX, float cY, float radius, float angleOffset) {
         this.cX = cX * 15;

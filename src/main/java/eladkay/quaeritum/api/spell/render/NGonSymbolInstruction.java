@@ -13,7 +13,8 @@ import org.lwjgl.opengl.GL11;
  *         Created at 8:47 PM on 7/26/17.
  */
 public class NGonSymbolInstruction implements ISymbolInstruction {
-    public final float cX, cY, radius, sides, angleOffset;
+    public final float cX, cY, radius, angleOffset;
+    public final int sides;
 
     public NGonSymbolInstruction(float cX, float cY, int sides, float size) {
         this(cX, cY, sides, size, 0f);

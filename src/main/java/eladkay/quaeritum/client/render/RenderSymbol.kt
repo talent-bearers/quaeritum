@@ -26,11 +26,8 @@ object RenderSymbol {
     fun onHUDRender(e: RenderGameOverlayEvent.Post) {
         if (e.type != RenderGameOverlayEvent.ElementType.ALL) return
 
-        val x = e.resolution.scaledWidth / 2
-        val y = e.resolution.scaledHeight * 3 / 4
-
         val symbolIdx = (ClientTickHandler.ticksInGame / 100) % EnumSpellElement.values().size
-        renderSymbol(x, y, EnumSpellElement.values()[symbolIdx])
+        renderSymbol(10, 10, EnumSpellElement.values()[symbolIdx])
     }
 
     fun renderSymbol(x: Int, y: Int, element: EnumSpellElement) {

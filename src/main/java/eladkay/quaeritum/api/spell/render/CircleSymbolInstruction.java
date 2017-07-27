@@ -31,7 +31,7 @@ public class CircleSymbolInstruction implements ISymbolInstruction {
         int g = (color & (0x00ff00)) >> 8;
         int b = (color & (0x0000ff));
         buffer.begin(GL11.GL_QUAD_STRIP, DefaultVertexFormats.POSITION_COLOR);
-        RenderUtil.renderCircle(buffer, cX + x - 0.5, cY + y - 0.5, r / 255f, g / 255f, b / 255f, radius * 15, 5);
+        RenderUtil.renderNGon(buffer, cX + x - 0.5, cY + y - 0.5, r / 255f, g / 255f, b / 255f, radius * 15, 5, RenderUtil.SEGMENTS_CIRCLE);
         tess.draw();
     }
 }
