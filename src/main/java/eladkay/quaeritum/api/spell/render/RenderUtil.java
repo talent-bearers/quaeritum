@@ -15,8 +15,11 @@ public final class RenderUtil {
         double outerRadius = radius + thickness;
         double centralRadius = radius - thickness / 2;
 
-        for (int i = 0; i <= SEGMENTS_CIRCLE / 2; i++) {
-            double angle = i * 2 * Math.PI / SEGMENTS_CIRCLE + angleOffset;
+        double xShift = MathHelper.cos((float)angleOffset) * radius;
+        double yShift = MathHelper.sin((float)angleOffset) * radius;
+
+        for (int i = 0; i < SEGMENTS_CIRCLE; i++) {
+            double angle = i * Math.PI / SEGMENTS_CIRCLE + angleOffset;
             float normX = MathHelper.cos((float)angle);
             float normY = MathHelper.sin((float)angle);
             double innerX = cX + normX * radius;
@@ -27,8 +30,19 @@ public final class RenderUtil {
             buffer.pos(innerX, innerY, 0).color(r, g, b, 0.75f).endVertex();
         }
 
-        for (int i = 0; i <= SEGMENTS_CIRCLE / 2; i++) {
-            double angle = i * 2 * Math.PI / SEGMENTS_CIRCLE + angleOffset;
+        for (int i = 0; i < SEGMENTS_CIRCLE; i++) {
+            double angle = i * Math.PI / SEGMENTS_CIRCLE + angleOffset + Math.PI;
+            float normX = MathHelper.cos((float)angle);
+            float normY = MathHelper.sin((float)angle);
+            double length = thickness / (2 - normX);
+            double outerX = -xShift + cX + normX * length;
+            double outerY = -yShift + cY + normY * length;
+            buffer.pos(outerX, outerY, 0).color(0, 0, 0, 0).endVertex();
+            buffer.pos(-xShift + cX, -yShift + cY, 0).color(r, g, b, 0.75f).endVertex();
+        }
+
+        for (int i = 0; i <= SEGMENTS_CIRCLE; i++) {
+            double angle = i * Math.PI / SEGMENTS_CIRCLE + angleOffset;
             float normX = MathHelper.cos((float)angle);
             float normY = MathHelper.sin((float)angle);
             double innerX = cX + normX * radius;
@@ -37,6 +51,17 @@ public final class RenderUtil {
             double centralY = cY + normY * centralRadius;
             buffer.pos(innerX, innerY, 0).color(r, g, b, 0.75f).endVertex();
             buffer.pos(centralX, centralY, 0).color(0, 0, 0, 0).endVertex();
+        }
+
+        for (int i = 0; i < SEGMENTS_CIRCLE; i++) {
+            double angle = i * Math.PI / SEGMENTS_CIRCLE + angleOffset - Math.PI;
+            float normX = MathHelper.cos((float)angle);
+            float normY = MathHelper.sin((float)angle);
+            double length = thickness / (2 + normX);
+            double outerX = xShift + cX + normX * length;
+            double outerY = yShift + cY + normY * length;
+            buffer.pos(outerX, outerY, 0).color(0, 0, 0, 0).endVertex();
+            buffer.pos(xShift + cX, yShift + cY, 0).color(r, g, b, 0.75f).endVertex();
         }
     }
 
