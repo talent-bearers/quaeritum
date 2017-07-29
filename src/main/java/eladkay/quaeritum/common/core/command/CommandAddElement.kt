@@ -1,7 +1,7 @@
-package eladkay.quaeritum.common.core
+package eladkay.quaeritum.common.core.command
 
+import eladkay.quaeritum.api.spell.ElementHandler
 import eladkay.quaeritum.api.spell.EnumSpellElement
-import eladkay.quaeritum.api.spell.SpellParser
 import net.minecraft.command.CommandBase
 import net.minecraft.command.CommandException
 import net.minecraft.command.ICommandSender
@@ -12,11 +12,11 @@ import java.util.*
 
 /**
  * @author WireSegal
- * Created at 8:12 PM on 7/10/17.
+ * Created at 10:24 PM on 7/28/17.
  */
-object CommandCastSpell : CommandBase() {
+object CommandAddElement : CommandBase() {
     override fun getName(): String {
-        return "q-cast"
+        return "q-add"
     }
 
     override fun execute(server: MinecraftServer, sender: ICommandSender, args: Array<out String>) {
@@ -26,7 +26,7 @@ object CommandCastSpell : CommandBase() {
 
         val elements = args.slice(1 until args.size).flatMap(this::breakString).toTypedArray()
 
-        SpellParser(elements).cast(player)
+        ElementHandler.addReagents(player, *elements)
     }
 
     fun breakString(input: String): List<EnumSpellElement> {
@@ -44,7 +44,7 @@ object CommandCastSpell : CommandBase() {
     }
 
     override fun getUsage(sender: ICommandSender): String {
-        return "quaeritum.command.usage"
+        return "quaeritum.add_command.usage"
     }
 
     override fun getTabCompletions(server: MinecraftServer, sender: ICommandSender, args: Array<out String>, targetPos: BlockPos?): List<String> {

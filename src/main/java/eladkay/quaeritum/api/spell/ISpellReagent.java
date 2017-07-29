@@ -11,6 +11,13 @@ import javax.annotation.Nonnull;
  */
 public interface ISpellReagent {
     /**
+     * Checks if the stack can be put into a Reagent Bag. Any reagent pouch item should make this false.
+     * @param stack The item stack being checked.
+     * @return Whether the stack can be added to a regagent bag.
+     */
+    boolean canAddToReagentBag(@Nonnull ItemStack stack);
+
+    /**
      * Checks how many Spell Charges are contained within a stack. This SHOULD take size into account.
      * @param stack The item stack being checked.
      * @param element The element to check for.
@@ -22,11 +29,12 @@ public interface ISpellReagent {
      * Consume a Spell Charge from a reagent. This is used for elemental spells.
      * @param stack The item stack being consumed from.
      * @param element The element to consume.
+     * @param charges The charges being consumed. Usually 1.
      * @return An action result containing the result stack, and:
      *  SUCCESS, if the charge was successfully taken
-     *  FAIL, if the reagent stack can hold that element but is empty somehow
+     *  FAIL, if the reagent stack can hold that element but doesn't hold enough
      *  PASS, if the reagent stack doesn't hold that element
      */
     @Nonnull
-    ActionResult<ItemStack> consumeCharge(@Nonnull ItemStack stack, @Nonnull EnumSpellElement element);
+    ActionResult<ItemStack> consumeCharge(@Nonnull ItemStack stack, @Nonnull EnumSpellElement element, int charges);
 }

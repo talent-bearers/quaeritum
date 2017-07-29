@@ -1,4 +1,4 @@
-package eladkay.quaeritum.api;
+package eladkay.quaeritum.api.misc;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.eventhandler.Event;

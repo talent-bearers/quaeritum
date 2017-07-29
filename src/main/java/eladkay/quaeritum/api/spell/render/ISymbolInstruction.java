@@ -10,5 +10,5 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public interface ISymbolInstruction {
     @SideOnly(Side.CLIENT)
-    void render(EnumSpellElement element, int x, int y);
+    void render(EnumSpellElement element, float x, float y);
 }

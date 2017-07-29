@@ -15,6 +15,7 @@ import eladkay.quaeritum.common.potions.PotionSoulgaze
 import eladkay.quaeritum.common.rituals.ModDiagrams
 import eladkay.quaeritum.common.rituals.ModWorks
 import eladkay.quaeritum.common.spell.BasicSpells
+import eladkay.quaeritum.common.spell.SpellEventHandler
 import net.minecraft.client.particle.Particle
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.player.EntityPlayerMP
@@ -31,6 +32,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
  */
 open class CommonProxy {
     open fun pre(e: FMLPreInitializationEvent) {
+        SpellEventHandler
         ModBlocks
         ModTab
         ModItems

@@ -99,7 +99,9 @@ object BasicSpells {
         registerSpell(arrayOf(AIR)) { player, trailing, total ->
             player.sendStatusMessage(TextComponentString("leap trailing: $trailing total: $total"), false) // debug
             val look = player.lookVec
-            val speedVec = look.scale(0.75 + trailing.toDouble() / total).max((trailing + 1) / total).addVector(player.motionX, player.motionY, player.motionZ)
+            val speedVec = look
+                    .scale(0.75 + (trailing.toDouble() / 2) / total)
+                    .addVector(player.motionX / total, player.motionY / total + look.y * (trailing.toDouble() / 2) / total, player.motionZ / total)
 
             player.motionX = speedVec.x
             player.motionY = speedVec.y

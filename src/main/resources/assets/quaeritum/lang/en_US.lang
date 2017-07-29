@@ -3,6 +3,7 @@ common_arcane=Rare
 arcane=Arcane
 
 quaeritum.command.usage=/q-cast <player> <elements>
+quaeritum.add_command.usage=/q-add <player> <elements>
 
 misc.quaeritum.shift_for_info=Hold &bSHIFT&7 for more info
 misc.quaeritum.baubletooltip=Press &b%s&7 to open the Baubles menu

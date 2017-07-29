@@ -26,7 +26,7 @@ public class LineSymbolInstruction implements ISymbolInstruction {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void render(EnumSpellElement element, int x, int y) {
+    public void render(EnumSpellElement element, float x, float y) {
         Tessellator tess = Tessellator.getInstance();
         VertexBuffer buffer = tess.getBuffer();
         int color = element.color();

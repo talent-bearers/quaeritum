@@ -1,6 +1,6 @@
 package eladkay.quaeritum.common.core
 
-import eladkay.quaeritum.api.SightEvent
+import eladkay.quaeritum.api.misc.SightEvent
 import eladkay.quaeritum.common.potions.PotionSoulgaze
 import net.minecraft.client.Minecraft
 import net.minecraft.entity.player.EntityPlayer

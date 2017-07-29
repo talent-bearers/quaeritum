@@ -24,6 +24,7 @@ object LibNames {
 
     val FERTILIZER = "fertilizer"
     val REAGENT = "reagent"
+    val REAGENT_BAG = "reagent_bag"
     val ATLAS = "atlas"
     val RIFTMAKER_PART = "riftmakerPart"
     val WORLD_BLADE = "flowingWorldBlade"
