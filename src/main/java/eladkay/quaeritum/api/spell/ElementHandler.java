@@ -36,17 +36,15 @@ public final class ElementHandler {
             ItemStack stack = inventory.getStackInSlot(slot);
             if (stack.getItem() instanceof ISpellReagent) {
                 ISpellReagent item = (ISpellReagent) stack.getItem();
-                if (item.canAddToReagentBag(stack)) {
-                    ActionResult<ItemStack> actionResult = item.consumeCharge(stack, element, 1);
-                    if (actionResult.getType() != PASS && result == PASS)
-                        result = actionResult.getType();
+                ActionResult<ItemStack> actionResult = item.consumeCharge(stack, element, 1);
+                if (actionResult.getType() != PASS && result == PASS)
+                    result = actionResult.getType();
 
-                    if (actionResult.getType() != PASS && take)
-                        inventory.setStackInSlot(slot, actionResult.getResult());
+                if (actionResult.getType() != PASS && take)
+                    inventory.setStackInSlot(slot, actionResult.getResult());
 
-                    if (actionResult.getType() == SUCCESS)
-                        break main;
-                }
+                if (actionResult.getType() == SUCCESS)
+                    break main;
             }
         }
 

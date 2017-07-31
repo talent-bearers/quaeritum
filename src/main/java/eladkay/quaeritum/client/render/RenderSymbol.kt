@@ -5,6 +5,7 @@ import com.teamwizardry.librarianlib.features.kotlin.safeCast
 import eladkay.quaeritum.api.spell.ElementHandler
 import eladkay.quaeritum.api.spell.EnumSpellElement
 import eladkay.quaeritum.api.spell.render.RenderUtil
+import eladkay.quaeritum.client.gui.GuiCodex
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.Tessellator
@@ -34,12 +35,16 @@ object RenderSymbol {
     fun onHUDRender(e: RenderGameOverlayEvent.Post) {
         if (e.type != RenderGameOverlayEvent.ElementType.ALL) return
 
+        val codex = Minecraft.getMinecraft().currentScreen is GuiCodex
+
         val elements = ElementHandler.getReagents(Minecraft.getMinecraft().player)
-        if (elements.tagCount() == 0) return
+        if (elements.tagCount() == 0 && !codex) return
 
         val cX = e.resolution.scaledWidth / 2.0
         val cY = e.resolution.scaledHeight / 2.0
-        val scale = e.resolution.scaleFactor * 15.0
+        var scale = e.resolution.scaleFactor * 15.0
+        if (codex)
+            scale *= 5
 
         val startingAngle = (e.partialTicks + ClientTickHandler.ticks) * Math.PI / 120
         val angleSep = 2 * Math.PI / (elements.tagCount() + 1)

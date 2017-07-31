@@ -1,0 +1,7 @@
+{
+	"parent": "item/generated",
+	"textures": {
+		"layer0": "quaeritum:items/codex_base",
+		"layer1": "quaeritum:items/codex_glow"
+	}
+}

@@ -1,0 +1,11 @@
+{
+    "spritesheet": {
+		"textureWidth": 256,
+		"textureHeight": 256,
+		"sprites": {
+			"background": [1, 1, 145, 179],
+			"active": [0, 182, 14, 22],
+			"inactive": [15, 182, 14, 22]
+		}
+	}
+}

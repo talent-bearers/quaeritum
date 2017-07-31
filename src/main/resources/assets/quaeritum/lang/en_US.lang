@@ -10,6 +10,8 @@ misc.quaeritum.baubletooltip=Press &b%s&7 to open the Baubles menu
 misc.quaeritum.animus_bound=Tied to %s
 misc.quaeritum.not_bound=Untied
 
+item.quaeritum:codex.name=Codex Alchemiae Primordii
+
 #Flow Manipulation for Dummies
 book.quaeritum.name=Secrets of the Soul
 book.quaeritum.author=Notes of the Lorist Writer of Chalk

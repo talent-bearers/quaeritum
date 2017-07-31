@@ -10,6 +10,7 @@ object LibNames {
     val OPPRESSIVE_SOULSTONE = "oppressiveSoulstone"
     val PASSIONATE_SOULSTONE = "passionateSoulstone"
     val STONE_OF_THE_WORLDSOUL = "worldSoulstone"
+    val CODEX = "codex"
 
     val DEBUG = "debug"
 

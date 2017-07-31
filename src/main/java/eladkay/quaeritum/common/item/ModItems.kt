@@ -24,6 +24,8 @@ object ModItems {
     val worldShield: ItemWorldShield = ItemWorldShield()
     val essence: ItemEssence = ItemEssence()
     val scroll: ItemContractScroll = ItemContractScroll()
+    val codex: ItemCodex = ItemCodex()
+    val reagentBag: ItemReagentBag = ItemReagentBag()
 
     lateinit var debug: ItemDebug
     lateinit var hollower: ItemHollower

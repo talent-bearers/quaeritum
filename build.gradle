@@ -53,6 +53,9 @@ minecraft {
 
     replaceIn 'LibMisc.java'
     replaceIn 'LibMisc.kt'
+
+    clientJvmArgs = ["-Dfml.coreMods.load=$corePlugin"]
+    serverJvmArgs = ["-Dfml.coreMods.load=$corePlugin"]
 }
 
 repositories {

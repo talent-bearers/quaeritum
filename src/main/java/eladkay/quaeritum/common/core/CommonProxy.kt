@@ -3,6 +3,8 @@ package eladkay.quaeritum.common.core
 import com.teamwizardry.librarianlib.features.network.PacketHandler
 import eladkay.quaeritum.api.animus.AnimusHelper
 import eladkay.quaeritum.client.core.ClientEventHandler
+import eladkay.quaeritum.client.gui.GUIHandler
+import eladkay.quaeritum.common.Quaeritum
 import eladkay.quaeritum.common.block.ModBlocks
 import eladkay.quaeritum.common.crafting.ModRecipes
 import eladkay.quaeritum.common.entity.ModEntities
@@ -25,6 +27,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import net.minecraftforge.fml.common.event.FMLInterModComms
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
+import net.minecraftforge.fml.common.network.NetworkRegistry
 
 /**
  * @author WireSegal
@@ -32,6 +35,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
  */
 open class CommonProxy {
     open fun pre(e: FMLPreInitializationEvent) {
+        NetworkRegistry.INSTANCE.registerGuiHandler(Quaeritum.instance, GUIHandler)
         SpellEventHandler
         ModBlocks
         ModTab
