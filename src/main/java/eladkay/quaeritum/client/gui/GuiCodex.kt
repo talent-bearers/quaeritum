@@ -24,8 +24,8 @@ import org.lwjgl.input.Mouse
  */
 class GuiCodex : GuiBase(X_SIZE, Y_SIZE) {
     companion object {
-        val X_SIZE = 145
-        val Y_SIZE = 179
+        val X_SIZE = 146
+        val Y_SIZE = 180
         val SPRITE_SHEET = Texture(ResourceLocation(LibMisc.MOD_ID, "textures/gui/codex_alchemiae.png"))
         private val background = SPRITE_SHEET.getSprite("background", X_SIZE, Y_SIZE)
         private val active = SPRITE_SHEET.getSprite("active", 14, 22)
