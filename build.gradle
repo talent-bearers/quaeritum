@@ -41,6 +41,7 @@ ext.config = parseConfig(configFile)
 version = "${config.version}.${config.build_number}"
 group = "eladkay.quaeritum"
 archivesBaseName = config.mod_name
+corePlugin = config.core_plugin
 
 minecraft {
     useDepAts = true

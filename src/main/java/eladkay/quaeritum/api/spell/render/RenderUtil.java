@@ -128,7 +128,7 @@ public final class RenderUtil {
     }
 
     private static float fastAtan2(float y, float x) {
-        if (x == 0) return 1.57079637f;
+        if (x == 0) return Math.copySign(1.57079637f, y);
         float ay = MathHelper.abs(y);
         float ax = MathHelper.abs(x);
         float a = Math.min(ax, ay) / Math.max(ax, ay);
