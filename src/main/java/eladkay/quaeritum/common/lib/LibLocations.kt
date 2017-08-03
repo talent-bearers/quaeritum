@@ -10,4 +10,5 @@ object LibLocations {
     val MAGICLINEFX = ResourceLocation(LibMisc.MOD_ID, "entity/magicParticle")
     val MULTIBLOCK = ResourceLocation(LibMisc.MOD_ID, "textures/gui/multiblockOverlay.png")
     val FLAT_CHALK = ResourceLocation(LibMisc.MOD_ID, "flat")
+    val SPARKLE_BLURRED = ResourceLocation(LibMisc.MOD_ID, "textures/particles/sparkle_blurred.png")
 }

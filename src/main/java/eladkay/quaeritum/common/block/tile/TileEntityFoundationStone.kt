@@ -1,6 +1,5 @@
 package eladkay.quaeritum.common.block.tile
 
-import com.teamwizardry.librarianlib.features.base.block.TileMod
 import com.teamwizardry.librarianlib.features.base.block.TileModTickable
 import eladkay.quaeritum.api.rituals.IWork
 import eladkay.quaeritum.api.rituals.PositionedBlock
@@ -14,7 +13,7 @@ class TileEntityFoundationStone : TileModTickable() {
     var ticksExisted: Long = 0
     var currentWork: IWork? = null
 
-    public override fun tick() {
+    override fun tick() {
         if (!world.isRemote) {
             if (currentWork != null) {
                 stage = RitualStage.IN_PROGRESS

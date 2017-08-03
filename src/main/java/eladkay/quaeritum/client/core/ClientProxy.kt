@@ -1,5 +1,6 @@
 package eladkay.quaeritum.client.core
 
+import eladkay.quaeritum.api.util.RandUtil
 import eladkay.quaeritum.client.fx.FXMagicLine
 import eladkay.quaeritum.client.render.RemainingItemsRenderHandler
 import eladkay.quaeritum.client.render.RenderSymbol
@@ -12,6 +13,7 @@ import net.minecraft.client.particle.Particle
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.util.ResourceLocation
+import net.minecraft.util.math.Vec3d
 import net.minecraft.world.World
 import net.minecraftforge.fml.client.registry.RenderingRegistry
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
@@ -24,6 +26,8 @@ class ClientProxy : CommonProxy() {
         super.pre(e)
         RenderSymbol
         RemainingItemsRenderHandler
+        LightningRenderer.INSTANCE
+        RiftRenderer(Vec3d(0.0, 20.0, 0.0), RandUtil.nextLong(0, 10000))
     }
 
     override fun init(e: FMLInitializationEvent) {
