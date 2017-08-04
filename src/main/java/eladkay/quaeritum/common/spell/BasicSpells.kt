@@ -76,8 +76,10 @@ object BasicSpells {
         ReflectionHelper.setPrivateValue(EntityAINearestAttackableTarget::class.java, aiEntry, Predicates.equalTo(target), *LibObfuscation.TARGET_ENTITY_SELECTOR)
     }
 
+    // Basic spells are those with only a single symbol.
+
     init {
-        GreaterSpells
+        ComplexSpells
 
         registerSpell(arrayOf(EARTH)) { player, trailing, total ->
             player.sendStatusMessage(TextComponentString("resist trailing: $trailing total: $total"), false) // debug
