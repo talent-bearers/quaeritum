@@ -102,6 +102,11 @@ public final class SpellParser {
     }
 
     @Nonnull
+    public SpellInfo[] getSpells() {
+        return spells;
+    }
+
+    @Nonnull
     public EnumSpellElement[] getSymbols() {
         return symbols;
     }

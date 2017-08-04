@@ -27,7 +27,7 @@ import java.util.*
  * Created at 12:19 PM on 7/2/17.
  */
 object BasicSpells {
-    private fun applyPotionBuff(potion: Potion, player: EntityLivingBase, trailing: Int, total: Int, amplifier: Boolean) {
+    fun applyPotionBuff(potion: Potion, player: EntityLivingBase, trailing: Int, total: Int, amplifier: Boolean) {
         val potionEffect = player.removeActivePotionEffect(potion) ?: PotionEffect(potion)
         player.addPotionEffect(PotionEffect(potion, Math.max(5 + (trailing * 2) / total, 1) * (if (amplifier) 10 else 20) + potionEffect.duration,
                 if (amplifier) trailing / 2 else 0))
@@ -76,7 +76,11 @@ object BasicSpells {
         ReflectionHelper.setPrivateValue(EntityAINearestAttackableTarget::class.java, aiEntry, Predicates.equalTo(target), *LibObfuscation.TARGET_ENTITY_SELECTOR)
     }
 
+    // Basic spells are those with only a single symbol.
+
     init {
+        ComplexSpells
+
         registerSpell(arrayOf(EARTH)) { player, trailing, total ->
             player.sendStatusMessage(TextComponentString("resist trailing: $trailing total: $total"), false) // debug
             applyPotionBuff(MobEffects.RESISTANCE, player, trailing, total, true)

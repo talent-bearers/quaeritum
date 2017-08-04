@@ -78,6 +78,15 @@ public final class ElementHandler {
         InternalHandler.getInternalHandler().syncAnimusData(player);
     }
 
+    public static void setReagents(@NotNull EntityPlayer player, @NotNull EnumSpellElement... element) {
+        NBTTagCompound persistent = persistentCompound(player);
+        persistent.removeTag("quaeritum.reagents");
+        NBTTagList list = getReagents(player);
+        for (int i = 0; i < element.length && i < 8; i++)
+            list.appendTag(new NBTTagByte((byte) element[i].ordinal()));
+        InternalHandler.getInternalHandler().syncAnimusData(player);
+    }
+
     @NotNull
     private static EnumActionResult addReagent(@NotNull EntityPlayer player, @NotNull EnumSpellElement element) {
         NBTTagList list = getReagents(player);
@@ -95,8 +104,7 @@ public final class ElementHandler {
         EnumActionResult[] arr = new EnumActionResult[element.length];
         for (int i = 0; i < element.length; i++)
             arr[i] = addReagent(player, element[i]);
-        if (!player.world.isRemote)
-            InternalHandler.getInternalHandler().syncAnimusData(player);
+        InternalHandler.getInternalHandler().syncAnimusData(player);
         return arr;
     }
 }
