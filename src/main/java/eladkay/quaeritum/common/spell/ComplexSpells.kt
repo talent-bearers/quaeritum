@@ -70,7 +70,7 @@ object ComplexSpells {
 
         SpellParser.registerSpell(arrayOf(EARTH, WATER)) { player, trailing, total ->
             player.sendStatusMessage(TextComponentString("bonemeal trailing: $trailing total: $total"), false) // debug
-            val block = RaycastUtils.raycast(player, (player as EntityPlayerMP).interactionManager.blockReachDistance, false)
+            val block = RaycastUtils.raycast(player, (player as EntityPlayerMP).interactionManager.blockReachDistance + 3, false)
             if (block != null && block.typeOfHit == RayTraceResult.Type.BLOCK) {
                 val pos = block.blockPos
                 for (i in 0..2 * trailing / total)
