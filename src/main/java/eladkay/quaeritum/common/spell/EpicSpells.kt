@@ -73,7 +73,7 @@ object EpicSpells {
                 if (evoker.item is ItemEvoker) {
                     val evocation = ItemEvoker.getEvocationFromStack(evoker)
                     val parser = SpellParser(evocation)
-                    if (parser.spells.any { it.spell != this })
+                    if (parser.spells.none { it.spell == this })
                         player.world.getEntitiesWithinAABB(EntityPlayer::class.java, player.entityBoundingBox.grow(25.0)) {
                             it != null && it != player && it.getDistanceSqToEntity(player) < 625.0
                         }.forEach {
