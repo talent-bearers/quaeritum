@@ -24,7 +24,12 @@ object GreaterSpells {
 
         SpellParser.registerSpell(arrayOf(SPIRIT, CONNECTION, SOUL)) { player, trailing, total ->
             player.sendStatusMessage(TextComponentString("trade position trailing: $trailing total: $total"), false) // debug
-            // todo
+            // todo (trade positions back if used within a few minutes)
+        }
+
+        SpellParser.registerSpell(arrayOf(SOUL, FORM, AIR)) { player, trailing, total ->
+            player.sendStatusMessage(TextComponentString("fogbind trailing: $trailing total: $total"), false) // debug
+            // todo create fake block that duplicates block you were looking at
         }
 
         SpellParser.registerSpell(arrayOf(EARTH, FORM, METAL, WATER)) { player, trailing, total ->
@@ -39,7 +44,7 @@ object GreaterSpells {
 
         SpellParser.registerSpell(arrayOf(FIRE, WATER, EARTH, AIR)) { player, trailing, total ->
             player.sendStatusMessage(TextComponentString("gatecrash trailing: $trailing total: $total"), false) // debug
-            // todo
+            // todo giant ball of destructive energy
         }
 
         SpellParser.registerSpell(arrayOf(SPIRIT, SOUL, WATER, EARTH)) { player, trailing, total ->

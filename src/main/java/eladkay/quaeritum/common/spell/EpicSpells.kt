@@ -21,7 +21,7 @@ object EpicSpells {
     init {
         SpellParser.registerSpell(arrayOf(FIRE, WATER, AETHER, SOUL, EARTH, AIR)) { player, trailing, total ->
             player.sendStatusMessage(TextComponentString("Unbind Thine Soul trailing: $trailing total: $total"), false) // debug
-            // todo
+            // todo infuse self with void energy
         }
 
         SpellParser.registerSpell(arrayOf(CONNECTION, FIRE, SPIRIT, SOUL, WATER, EARTH)) { player, trailing, total ->
@@ -41,6 +41,16 @@ object EpicSpells {
             player.addPotionEffect(PotionEffect(PotionRooted, 500))
             player.addPotionEffect(PotionEffect(MobEffects.WEAKNESS, 500, 3))
             player.addPotionEffect(PotionEffect(MobEffects.HUNGER, 500, 3))
+        }
+
+        SpellParser.registerSpell(arrayOf(AIR, AETHER, FORM, FLOW, ENTROPY)) { player, trailing, total ->
+            player.sendStatusMessage(TextComponentString("Release The Heavens trailing: $trailing total: $total"), false) // debug
+            // todo tornado
+        }
+
+        SpellParser.registerSpell(arrayOf(EARTH, SPIRIT, ENTROPY, FIRE, FLOW)) { player, trailing, total ->
+            player.sendStatusMessage(TextComponentString("Walk The Path trailing: $trailing total: $total"), false) // debug
+            // todo blocks fall away before you, you can walk through mountains to make a tunnel
         }
     }
 

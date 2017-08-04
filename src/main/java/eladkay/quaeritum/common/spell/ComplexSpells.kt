@@ -81,17 +81,17 @@ object ComplexSpells {
 
         SpellParser.registerSpell(arrayOf(EARTH, FORM)) { player, trailing, total ->
             player.sendStatusMessage(TextComponentString("wall of earth trailing: $trailing total: $total"), false) // debug
-            // todo
+            // todo wall of earth
         }
 
         SpellParser.registerSpell(arrayOf(METAL, FORM)) { player, trailing, total ->
             player.sendStatusMessage(TextComponentString("wall of iron trailing: $trailing total: $total"), false) // debug
-            // todo
+            // todo wall of iron bars
         }
 
         SpellParser.registerSpell(arrayOf(EARTH, FLOW)) { player, trailing, total ->
             player.sendStatusMessage(TextComponentString("drill trailing: $trailing total: $total"), false) // debug
-            // todo
+            // todo drill into earth
         }
 
         SpellParser.registerSpell(arrayOf(SOUL, SPIRIT)) { player, trailing, total ->
@@ -107,7 +107,7 @@ object ComplexSpells {
 
         SpellParser.registerSpell(arrayOf(WATER, FORM)) { player, trailing, total ->
             player.sendStatusMessage(TextComponentString("ice shock trailing: $trailing total: $total"), false) // debug
-            // todo
+            // todo frost projectiles like firebolt
         }
     }
 }
