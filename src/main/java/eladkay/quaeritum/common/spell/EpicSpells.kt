@@ -61,7 +61,7 @@ object EpicSpells {
             // todo vampirism buff, aoe life drain
         }
 
-        val pattern = arrayOf(CONNECTION, AETHER, SPIRIT, FIRE, AIR, WATER)
+        val pattern = arrayOf(CONNECTION, AETHER, SPIRIT, FIRE, AIR, WATER, SOUL, FLOW)
         SpellParser.registerSpell(object : IAlchemicalSpell {
             override fun getPattern() = pattern
 
