@@ -2,6 +2,7 @@ package eladkay.quaeritum.api.spell;
 
 import com.teamwizardry.librarianlib.core.client.ClientTickHandler;
 import eladkay.quaeritum.api.spell.render.CircleSymbolInstruction;
+import eladkay.quaeritum.api.spell.render.HalfCircleSymbolInstruction;
 import eladkay.quaeritum.api.spell.render.ISymbolCarrier;
 import eladkay.quaeritum.api.spell.render.ISymbolInstruction;
 import net.minecraft.util.math.MathHelper;
@@ -9,13 +10,19 @@ import net.minecraft.util.math.MathHelper;
 import javax.annotation.Nullable;
 import java.awt.*;
 
+import static eladkay.quaeritum.api.spell.render.LineSymbolInstruction.R2O2;
+
 /**
  * @author WireSegal
  *         Created at 11:20 PM on 7/1/17.
  */
 public enum EnumLegend implements ISymbolCarrier {
     // The Riftmaker (Wire / Ea, Archmage of The Rift (Æther))
-    RIFTMAKER(new Color(0xD592DB), new CircleSymbolInstruction(0.5f, 0.5f, 0.5f)), // todo
+    RIFTMAKER(new Color(0xD592DB), new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
+            new HalfCircleSymbolInstruction(R2O2, R2O2, R2O2 * 5 / 4, Math.PI * 7 / 4),
+            new HalfCircleSymbolInstruction(1 - R2O2, R2O2, R2O2 * 5 / 4, Math.PI * 1 / 4),
+            new HalfCircleSymbolInstruction(R2O2, 1 - R2O2, R2O2 * 5 / 4, Math.PI * 5 / 4),
+            new HalfCircleSymbolInstruction(1 - R2O2, 1 - R2O2, R2O2 * 5 / 4, Math.PI * 3 / 4)),
     // The Lorist (Wire)
     LORIST(new Color(0xD592DB), new CircleSymbolInstruction(0.5f, 0.5f, 0.5f)),
     // Ancient of Discovery (Elad)
