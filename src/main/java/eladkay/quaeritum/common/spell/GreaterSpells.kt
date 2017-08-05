@@ -49,10 +49,10 @@ object GreaterSpells {
 
         SpellParser.registerSpell(arrayOf(SPIRIT, SOUL, WATER, EARTH)) { player, trailing, total ->
             player.sendStatusMessage(TextComponentString("true healing trailing: $trailing total: $total"), false) // debug
-            player.heal(trailing * 4f + 2f)
+            player.heal(trailing * 8f + 4f)
             val entity = RaycastUtils.getEntityLookedAt(player)
             if (entity != null && entity is EntityLivingBase)
-                entity.heal(trailing * 4f + 2f)
+                entity.heal(trailing * 8f + 4f)
         }
     }
 }
