@@ -4,8 +4,10 @@ import com.teamwizardry.librarianlib.features.network.PacketHandler
 import eladkay.quaeritum.api.internal.InternalHandler
 import eladkay.quaeritum.api.spell.ElementHandler
 import eladkay.quaeritum.api.spell.SpellParser
+import eladkay.quaeritum.common.item.ItemEvoker
 import eladkay.quaeritum.common.networking.LeftClickMessage
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.util.EnumActionResult
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.event.entity.EntityJoinWorldEvent
 import net.minecraftforge.event.entity.player.PlayerInteractEvent
@@ -33,10 +35,24 @@ object SpellEventHandler {
     }
 
     fun leftClickServer(player: EntityPlayer) {
-        if (player.isSneaking) {
-            SpellParser(ElementHandler.getReagentsTyped(player)).cast(player)
+        var reagents = ElementHandler.getReagentsTyped(player)
+        var clear = true
+
+        val stack = player.heldItemMainhand
+        if (stack.item is ItemEvoker) {
+            val evocation = ItemEvoker.getEvocationFromStack(stack)
+            if (reagents.isEmpty() && ElementHandler.probeReagents(player, *evocation) == EnumActionResult.SUCCESS) {
+                reagents = evocation
+                clear = false
+            }
+        }
+
+        if (player.isSneaking || player.heldItemMainhand.item is ItemEvoker) {
+
+            SpellParser(reagents).cast(player)
             // todo fwoosh
-            ElementHandler.clearReagents(player)
+            if (clear)
+                ElementHandler.clearReagents(player)
         }
     }
 }

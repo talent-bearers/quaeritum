@@ -111,7 +111,7 @@ public final class ElementHandler {
         byte[] list = getReagents(player);
         if (list.length >= 8) return PASS;
         EnumActionResult result = takeReagent(player, element, take);
-        if (result == SUCCESS) {
+        if (result == SUCCESS && take) {
             byte[] array = Arrays.copyOf(list, list.length + 1);
             array[list.length] = (byte) element.ordinal();
             setReagents(player, array);
@@ -121,9 +121,17 @@ public final class ElementHandler {
     }
 
     @NotNull
-    public static EnumActionResult addReagents(@NotNull EntityPlayer player, @NotNull EnumSpellElement... element) {
+    public static EnumActionResult probeReagents(@NotNull EntityPlayer player, @NotNull EnumSpellElement... element) {
+        if (element.length == 0) return PASS;
         for (EnumSpellElement anElement : element)
             if (addReagent(player, anElement, false) != SUCCESS) return FAIL;
+        return SUCCESS;
+    }
+
+    @NotNull
+    public static EnumActionResult addReagents(@NotNull EntityPlayer player, @NotNull EnumSpellElement... element) {
+        EnumActionResult result = probeReagents(player, element);
+        if (result != SUCCESS) return result;
         for (EnumSpellElement anElement : element)
             addReagent(player, anElement, true);
         InternalHandler.getInternalHandler().syncAnimusData(player);

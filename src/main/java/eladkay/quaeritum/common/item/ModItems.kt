@@ -26,6 +26,7 @@ object ModItems {
     val scroll: ItemContractScroll = ItemContractScroll()
     val codex: ItemCodex = ItemCodex()
     val reagentBag: ItemReagentBag = ItemReagentBag()
+    val evoker: ItemEvoker = ItemEvoker()
 
     lateinit var debug: ItemDebug
     lateinit var hollower: ItemHollower
