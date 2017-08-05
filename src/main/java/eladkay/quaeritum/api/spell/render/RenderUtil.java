@@ -33,8 +33,9 @@ public final class RenderUtil {
         for (int i = 0; i < SEGMENTS_CIRCLE; i++) {
             double angle = i * Math.PI / SEGMENTS_CIRCLE + angleOffset + Math.PI;
             float normX = MathHelper.cos((float)angle);
+            float normXOffset = MathHelper.cos((float)(angle - angleOffset));
             float normY = MathHelper.sin((float)angle);
-            double length = thickness / (2 - normX);
+            double length = thickness / (2 + normXOffset);
             double outerX = -xShift + cX + normX * length;
             double outerY = -yShift + cY + normY * length;
             buffer.pos(outerX, outerY, 0).color(0, 0, 0, 0).endVertex();
@@ -56,8 +57,9 @@ public final class RenderUtil {
         for (int i = 0; i < SEGMENTS_CIRCLE; i++) {
             double angle = i * Math.PI / SEGMENTS_CIRCLE + angleOffset - Math.PI;
             float normX = MathHelper.cos((float)angle);
+            float normXOffset = MathHelper.cos((float)(angle - angleOffset));
             float normY = MathHelper.sin((float)angle);
-            double length = thickness / (2 + normX);
+            double length = thickness / (2 - normXOffset);
             double outerX = xShift + cX + normX * length;
             double outerY = yShift + cY + normY * length;
             buffer.pos(outerX, outerY, 0).color(0, 0, 0, 0).endVertex();
