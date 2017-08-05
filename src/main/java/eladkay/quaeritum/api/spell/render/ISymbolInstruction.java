@@ -1,6 +1,5 @@
 package eladkay.quaeritum.api.spell.render;
 
-import eladkay.quaeritum.api.spell.EnumSpellElement;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -10,5 +9,5 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public interface ISymbolInstruction {
     @SideOnly(Side.CLIENT)
-    void render(EnumSpellElement element, float x, float y);
+    void render(ISymbolCarrier element, float x, float y);
 }

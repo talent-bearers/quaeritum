@@ -1,6 +1,7 @@
 package eladkay.quaeritum.client.render
 
 import eladkay.quaeritum.api.spell.EnumSpellElement
+import eladkay.quaeritum.api.spell.render.ISymbolCarrier
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
@@ -14,7 +15,7 @@ import org.lwjgl.opengl.GL11
 @SideOnly(Side.CLIENT)
 object RenderSymbol {
 
-    fun renderSymbol(x: Float, y: Float, element: EnumSpellElement) {
+    fun renderSymbol(x: Float, y: Float, element: ISymbolCarrier) {
         val symbols = element.symbolInstructions
         GlStateManager.color(1f, 1f, 1f, 1f)
         GlStateManager.enableBlend()

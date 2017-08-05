@@ -15,7 +15,7 @@ import static eladkay.quaeritum.api.spell.render.LineSymbolInstruction.R2O2;
  * @author WireSegal
  *         Created at 11:20 PM on 7/1/17.
  */
-public enum EnumSpellElement {
+public enum EnumSpellElement implements ISymbolCarrier {
     EARTH(new Color(0x794715), 'V', new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
             new NGonSymbolInstruction(0.5f, 0.5f, 3, 0.4f, Math.PI / 2),
             new LineSymbolInstruction(R2O2, 1 - R2O2, 1 - R2O2, 1 - R2O2)),
@@ -73,10 +73,7 @@ public enum EnumSpellElement {
         this.symbolInstructions = symbolInstructions;
     }
 
-    /**
-     * Get the color of a spell element.
-     * @return A color value from 0 to 0xffffff.
-     */
+    @Override
     public int color() {
         if (color == null)
             return Color.HSBtoRGB((ClientTickHandler.getTicksInGame() * 2L % 360L) / 360.0F, 0.8F, 1.0F);
@@ -91,5 +88,11 @@ public enum EnumSpellElement {
         int newB = Math.max(Math.min(b + add, 255), 0);
         return (newR << 16) | (newG << 8) | newB;
     }
+
+    @Override
+    public ISymbolInstruction[] getSymbolInstructions() {
+        return symbolInstructions;
+    }
+
 
 }
