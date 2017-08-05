@@ -3,17 +3,18 @@ package eladkay.quaeritum.api.spell;
 import eladkay.quaeritum.api.internal.InternalHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagByte;
+import net.minecraft.nbt.NBTTagByteArray;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.List;
 
+import static net.minecraft.util.EnumActionResult.FAIL;
 import static net.minecraft.util.EnumActionResult.PASS;
 import static net.minecraft.util.EnumActionResult.SUCCESS;
 
@@ -60,16 +61,33 @@ public final class ElementHandler {
     }
 
     @NotNull
-    public static NBTTagList getReagents(@NotNull EntityPlayer player) {
+    public static byte[] getReagents(@NotNull EntityPlayer player) {
         NBTTagCompound persistent = persistentCompound(player);
-        if (!persistent.hasKey("quaeritum.reagents", Constants.NBT.TAG_LIST))
-            persistent.setTag("quaeritum.reagents", new NBTTagList());
-        else {
-            NBTTagList list = persistent.getTagList("quaeritum.reagents", Constants.NBT.TAG_BYTE);
-            if (list.hasNoTags() || list.getTagType() != Constants.NBT.TAG_BYTE)
-                persistent.setTag("quaeritum.reagents", new NBTTagList());
-        }
-        return persistent.getTagList("quaeritum.reagents", Constants.NBT.TAG_BYTE);
+        if (!persistent.hasKey("quaeritum.reagents", Constants.NBT.TAG_BYTE_ARRAY))
+            persistent.setTag("quaeritum.reagents", new NBTTagByteArray(new byte[0]));
+        return persistent.getByteArray("quaeritum.reagents");
+    }
+
+    @NotNull
+    public static EnumSpellElement[] getReagentsTyped(@NotNull EntityPlayer player) {
+        byte[] elements = getReagents(player);
+        return fromBytes(elements);
+    }
+
+    @NotNull
+    public static EnumSpellElement[] fromBytes(@NotNull byte[] bytes) {
+        EnumSpellElement[] ret = new EnumSpellElement[bytes.length];
+        for (int i = 0; i < bytes.length; i++)
+            ret[i] = EnumSpellElement.values()[bytes[i] % EnumSpellElement.values().length];
+        return ret;
+    }
+
+    @NotNull
+    public static byte[] fromElements(@NotNull EnumSpellElement[] elements) {
+        byte[] ret = new byte[elements.length];
+        for (int i = 0; i < elements.length; i++)
+            ret[i] = (byte) elements[i].ordinal();
+        return ret;
     }
 
     public static void clearReagents(@NotNull EntityPlayer player) {
@@ -79,32 +97,36 @@ public final class ElementHandler {
     }
 
     public static void setReagents(@NotNull EntityPlayer player, @NotNull EnumSpellElement... element) {
-        NBTTagCompound persistent = persistentCompound(player);
-        persistent.removeTag("quaeritum.reagents");
-        NBTTagList list = getReagents(player);
-        for (int i = 0; i < element.length && i < 8; i++)
-            list.appendTag(new NBTTagByte((byte) element[i].ordinal()));
+        setReagents(player, fromElements(element));
         InternalHandler.getInternalHandler().syncAnimusData(player);
     }
 
+    public static void setReagents(@NotNull EntityPlayer player, @NotNull byte[] elements) {
+        NBTTagCompound persistent = persistentCompound(player);
+        persistent.setByteArray("quaeritum.reagents", elements);
+    }
+
     @NotNull
-    private static EnumActionResult addReagent(@NotNull EntityPlayer player, @NotNull EnumSpellElement element) {
-        NBTTagList list = getReagents(player);
-        if (list.tagCount() >= 8) return PASS;
-        EnumActionResult result = takeReagent(player, element);
+    private static EnumActionResult addReagent(@NotNull EntityPlayer player, @NotNull EnumSpellElement element, boolean take) {
+        byte[] list = getReagents(player);
+        if (list.length >= 8) return PASS;
+        EnumActionResult result = takeReagent(player, element, take);
         if (result == SUCCESS) {
-            list.appendTag(new NBTTagByte((byte) element.ordinal()));
+            byte[] array = Arrays.copyOf(list, list.length + 1);
+            array[list.length] = (byte) element.ordinal();
+            setReagents(player, array);
             return SUCCESS;
         }
         return result;
     }
 
     @NotNull
-    public static EnumActionResult[] addReagents(@NotNull EntityPlayer player, @NotNull EnumSpellElement... element) {
-        EnumActionResult[] arr = new EnumActionResult[element.length];
-        for (int i = 0; i < element.length; i++)
-            arr[i] = addReagent(player, element[i]);
+    public static EnumActionResult addReagents(@NotNull EntityPlayer player, @NotNull EnumSpellElement... element) {
+        for (EnumSpellElement anElement : element)
+            if (addReagent(player, anElement, false) != SUCCESS) return FAIL;
+        for (EnumSpellElement anElement : element)
+            addReagent(player, anElement, true);
         InternalHandler.getInternalHandler().syncAnimusData(player);
-        return arr;
+        return SUCCESS;
     }
 }

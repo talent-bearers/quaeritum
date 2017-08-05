@@ -1,7 +1,6 @@
 package eladkay.quaeritum.client.render
 
 import com.teamwizardry.librarianlib.core.client.ClientTickHandler
-import com.teamwizardry.librarianlib.features.kotlin.safeCast
 import eladkay.quaeritum.api.spell.ElementHandler
 import eladkay.quaeritum.api.spell.EnumSpellElement
 import eladkay.quaeritum.api.spell.render.RenderUtil
@@ -10,7 +9,6 @@ import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.Tessellator
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats
-import net.minecraft.nbt.NBTPrimitive
 import net.minecraft.util.math.MathHelper
 import net.minecraftforge.client.event.RenderGameOverlayEvent
 import net.minecraftforge.common.MinecraftForge
@@ -37,8 +35,8 @@ object RenderSymbol {
 
         val codex = Minecraft.getMinecraft().currentScreen is GuiCodex
 
-        val elements = ElementHandler.getReagents(Minecraft.getMinecraft().player)
-        if (elements.tagCount() == 0 && !codex) return
+        val elements = ElementHandler.getReagentsTyped(Minecraft.getMinecraft().player)
+        if (elements.isEmpty() && !codex) return
 
         val cX = e.resolution.scaledWidth / 2.0
         val cY = e.resolution.scaledHeight / 2.0
@@ -47,7 +45,7 @@ object RenderSymbol {
             scale *= 5
 
         val startingAngle = (e.partialTicks + ClientTickHandler.ticks) * Math.PI / 120
-        val angleSep = 2 * Math.PI / (elements.tagCount() + 1)
+        val angleSep = 2 * Math.PI / (elements.size + 1)
 
 
         GlStateManager.color(1f, 1f, 1f, 1f)
@@ -67,9 +65,8 @@ object RenderSymbol {
         GlStateManager.enableTexture2D()
         GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA)
 
-        for (idx in 0 until elements.tagCount()) {
-            val el = elements.get(idx)
-            val element = EnumSpellElement.values()[el.safeCast(NBTPrimitive::class.java).int % EnumSpellElement.values().size]
+        for (idx in elements.indices) {
+            val element = elements[idx]
             val angle = startingAngle + (idx + 1) * angleSep
             val x = cX + scale * MathHelper.cos(angle.toFloat()) - 7.5
             val y = cY + scale * MathHelper.sin(angle.toFloat()) - 7.5
