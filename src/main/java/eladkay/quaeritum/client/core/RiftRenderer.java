@@ -172,7 +172,7 @@ public class RiftRenderer {
 		GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
 		GlStateManager.color(1f, 1f, 1f, 1f);
         GlStateManager.shadeModel(GL11.GL_FLAT);
-        GlStateManager.enableTexture2D();
+		GlStateManager.disableTexture2D();
 
 		Color color = new Color(0x96A500B7, true);
 
@@ -243,6 +243,7 @@ public class RiftRenderer {
 		GL14.glBlendEquation(GL_FUNC_ADD);
 		GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 
+		GlStateManager.enableTexture2D();
 		GlStateManager.popMatrix();
 	}
 }
