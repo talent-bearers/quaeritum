@@ -65,7 +65,12 @@ public enum EnumLegend implements ISymbolCarrier {
             new LineSymbolInstruction(1 - CIRCLE_EDGE, 0.75f, 0.5f, 0.75f),
             new LineSymbolInstruction(0.5f, 0.75f, 0.75f, CIRCLE_EDGE)),
     // Ancient of the Archive (CobrasBane)
-    ARCHIVE(new Color(0), new CircleSymbolInstruction(0.5f, 0.5f, 0.5f)),
+    ARCHIVE(new Color(0xB1163B), new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
+            new CircleSymbolInstruction(0.35f, 0.35f, 0.25f),
+            new CircleSymbolInstruction(0.75f, 0.25f, 0.1f),
+            new CircleSymbolInstruction(0.8f, 0.55f, 0.1f),
+            new CircleSymbolInstruction(0.25f, 0.75f, 0.1f),
+            new CircleSymbolInstruction(0.55f, 0.8f, 0.1f)),
     // Ancient of Elsewhere (Tristaric)
     ELSEWHERE(new Color(0xFF004C), new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
             new NGonSymbolInstruction(0.5f, 0.5f, 4, 0.5f),
