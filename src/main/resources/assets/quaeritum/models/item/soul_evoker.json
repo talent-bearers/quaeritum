@@ -65,6 +65,7 @@
 		},
 		{
 			"__comment": "Glowstone",
+			"shade": false,
 			"from": [ 7, 11.5, 8 ],
 			"to": [ 9, 13, 10 ],
 			"faces": {
@@ -165,6 +166,7 @@
 		},
 		{
 			"__comment": "Cube14",
+			"shade": false,
 			"from": [ 7.5, 7, 4.5 ],
 			"to": [ 8.5, 8, 6.5 ],
 			"faces": {
@@ -207,24 +209,5 @@
 			"rotation":  [ -90, 0, 0 ],
 			"scale":  [ 1.25, 1.25, 1.25 ]
 		}
-	},
-	"overrides": [{
-		"predicate": { "quaeritum:evocation": 6 },
-		"model": "quaeritum:item/soul_evoker6"
-	}, {
-		"predicate": { "quaeritum:evocation": 5 },
-		"model": "quaeritum:item/soul_evoker5"
-	}, {
-		"predicate": { "quaeritum:evocation": 4 },
-		"model": "quaeritum:item/soul_evoker4"
-	}, {
-		"predicate": { "quaeritum:evocation": 3 },
-		"model": "quaeritum:item/soul_evoker3"
-	}, {
-		"predicate": { "quaeritum:evocation": 2 },
-		"model": "quaeritum:item/soul_evoker2"
-	}, {
-		"predicate": { "quaeritum:evocation": 1 },
-		"model": "quaeritum:item/soul_evoker1"
-	}]
+	}
 }

@@ -139,7 +139,7 @@ public final class RenderUtil {
         buffer.pos(innerX, innerY, 0).color(r, g, b, 0.75f).endVertex();
     }
 
-    private static float fastAtan2(float y, float x) {
+    public static float fastAtan2(float y, float x) {
         if (x == 0) return Math.copySign(1.57079637f, y);
         float ay = MathHelper.abs(y);
         float ax = MathHelper.abs(x);

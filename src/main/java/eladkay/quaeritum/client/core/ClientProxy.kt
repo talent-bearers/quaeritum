@@ -1,6 +1,5 @@
 package eladkay.quaeritum.client.core
 
-import com.teamwizardry.librarianlib.core.client.ClientTickHandler
 import com.teamwizardry.librarianlib.core.client.RenderHookHandler
 import eladkay.quaeritum.api.spell.render.RenderUtil
 import eladkay.quaeritum.api.util.RandUtil
@@ -51,7 +50,7 @@ class ClientProxy : CommonProxy() {
                 val cY = 0
                 val scale = 35
 
-                val startingAngle = (ClientTickHandler.partialTicks + ClientTickHandler.ticks) * Math.PI / 120
+                val startingAngle = Math.PI / 2
                 val angleSep = 2 * Math.PI / (elements.size + 1)
 
                 GlStateManager.pushMatrix()

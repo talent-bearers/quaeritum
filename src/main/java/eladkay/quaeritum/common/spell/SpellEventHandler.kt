@@ -25,7 +25,7 @@ object SpellEventHandler {
 
     @SubscribeEvent
     fun tick(evt: TickEvent.ClientTickEvent) {
-        if (evt.phase != TickEvent.Phase.START) return
+        if (evt.phase != TickEvent.Phase.END) return
         lastTickCanceled = canceled
         canceled = false
     }
