@@ -14,6 +14,7 @@ import static eladkay.quaeritum.api.spell.render.LineSymbolInstruction.R2O2;
  * @author WireSegal
  *         Created at 11:20 PM on 7/1/17.
  */
+@SuppressWarnings("SpellCheckingInspection")
 public enum EnumLegend implements ISymbolCarrier {
     // The Riftmaker (Wire / Ea, Archmage of The Rift (Æther))
     RIFTMAKER(new Color(0xD592DB), new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
@@ -43,7 +44,7 @@ public enum EnumLegend implements ISymbolCarrier {
             new LineSymbolInstruction(0.5f, 1f, 0.5f, 0.75f),
             new LineSymbolInstruction(0.5f, 0.75f, 0.25f, 0.5f),
             new LineSymbolInstruction(0.5f, 0.75f, 0.75f, 0.5f)),
-    // Ancient of Mysteries (Azanor, Archmage of The Unknowable (Water))
+    // Ancient of Mysteries (Azanor, Archmage of The Unspeakable (Water))
     MYSTERIES(new Color(0xB10078), new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
             new HalfCircleSymbolInstruction(0.5f, 1 - R2O2, 0.5f - R2O2, Math.PI),
             new HalfCircleSymbolInstruction(0.5f, R2O2, 0.5f - R2O2, 0)),
@@ -75,7 +76,20 @@ public enum EnumLegend implements ISymbolCarrier {
     ELSEWHERE(new Color(0xFF004C), new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
             new NGonSymbolInstruction(0.5f, 0.5f, 4, 0.5f),
             new LineSymbolInstruction(0.5f, 0f, 0.5f, 1f),
-            new LineSymbolInstruction(0f, 0.5f, 1f, 0.5f));
+            new LineSymbolInstruction(0f, 0.5f, 1f, 0.5f)),
+    // Ancient of Disdain (wayoftime)
+    DISDAIN(new Color(0xFF3F0C), new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
+            new CircleSymbolInstruction(0.5f, 0.75f, 0.25f),
+            new LineSymbolInstruction(0.5f, 0f, 0.5f, 0.5f)),
+    // Ancient of Declaration (machinespray)
+    DECLARATION(new Color(0xFF00FF), new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
+            new LineSymbolInstruction(0.25f, 1 - CIRCLE_EDGE, 0f, 0.5f),
+            new LineSymbolInstruction(0.25f, 1 - CIRCLE_EDGE, 0.5f, 0.5f),
+            new LineSymbolInstruction(0.75f, 1 - CIRCLE_EDGE, 1f, 0.5f),
+            new LineSymbolInstruction(0.75f, 1 - CIRCLE_EDGE, 0.5f, 0.5f),
+            new LineSymbolInstruction(1f, 0.5f, 0.5f, 1f),
+            new LineSymbolInstruction(0f, 0.5f, 0.5f, 1f),
+            new LineSymbolInstruction(0.5f, 0.5f, 0.5f, 1f));
 
     @Nullable
     private final Color color; // null is treated specially, as rainbow.
