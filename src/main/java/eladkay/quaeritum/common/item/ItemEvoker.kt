@@ -31,6 +31,10 @@ class ItemEvoker : ItemMod(LibNames.SOUL_EVOKER) {
         // todo render hook
     }
 
+    init {
+        setMaxStackSize(1)
+    }
+
     override fun onItemRightClick(worldIn: World, playerIn: EntityPlayer, handIn: EnumHand): ActionResult<ItemStack> {
         val stack = playerIn.getHeldItem(handIn)
         if (worldIn.isRemote) return ActionResult(EnumActionResult.SUCCESS, stack)
