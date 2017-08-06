@@ -3,10 +3,14 @@ package eladkay.quaeritum.client.core;
 import com.teamwizardry.librarianlib.core.client.ClientTickHandler;
 import eladkay.quaeritum.api.spell.ElementHandler;
 import eladkay.quaeritum.api.spell.EnumSpellElement;
+import eladkay.quaeritum.api.spell.render.RenderUtil;
 import eladkay.quaeritum.client.gui.GuiCodex;
 import eladkay.quaeritum.client.render.RenderSymbol;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -37,6 +41,11 @@ public class HudSymbolRenderer {
 
 	private boolean wasPreviouslyGui = false;
 
+	private boolean sepShouldRender = false;
+	private boolean sepShouldTick = false;
+	private int sepTick = 0;
+	private double sepScale = 0;
+
 	private HudSymbolRenderer() {
 		MinecraftForge.EVENT_BUS.register(this);
 	}
@@ -66,6 +75,13 @@ public class HudSymbolRenderer {
 
 		EnumSpellElement[] elements = ElementHandler.getReagentsTyped(Minecraft.getMinecraft().player);
 
+		boolean isGui = Minecraft.getMinecraft().currentScreen instanceof GuiCodex;
+		double cX = event.getResolution().getScaledWidth() / 2.0;
+		double cY = event.getResolution().getScaledHeight() / 2.0;
+		double scaleMin = event.getResolution().getScaleFactor() * 15;
+		double scaleMax = scaleMin * 5;
+		double time = 30;
+
 		if (elements.length > symbols.length) {
 			for (int i = symbols.length; i < elements.length; i++) {
 				symbolsTick[i] = 0;
@@ -79,9 +95,13 @@ public class HudSymbolRenderer {
 		}
 		symbols = elements;
 
-		if (symbols.length <= 0) return;
-
-		boolean isGui = Minecraft.getMinecraft().currentScreen instanceof GuiCodex;
+		if (symbols.length <= 0) {
+			sepShouldRender = false;
+			sepShouldTick = false;
+			sepTick = 0;
+			sepScale = 0;
+			return;
+		} else sepShouldRender = true;
 
 		if (wasPreviouslyGui != isGui) {
 			wasPreviouslyGui = isGui;
@@ -89,17 +109,12 @@ public class HudSymbolRenderer {
 				symbolsTick[i] = 0;
 				symbolsShouldTick[i] = false;
 			}
+			sepShouldTick = true;
+			sepTick = 0;
 		}
 
-		double time = 30;
-
-		double cX = event.getResolution().getScaledWidth() / 2.0;
-		double cY = event.getResolution().getScaledHeight() / 2.0;
-		double scaleMin = event.getResolution().getScaleFactor() * 15;
-		double scaleMax = scaleMin * 5;
-
 		double startingAngle = (event.getPartialTicks() + ClientTickHandler.getTicks()) * Math.PI / 120;
-		double angleSep = 2.0 * Math.PI / symbols.length + 2;
+		double angleSep = 2.0 * Math.PI / (symbols.length + 1);
 		if (currentAngle == -1) {
 			prevAngle = currentAngle = angleSep;
 			angleTick = time;
@@ -113,6 +128,7 @@ public class HudSymbolRenderer {
 			currentAngle = currentAngle + (angleTick / time) * (angleSep - currentAngle);
 		} else {
 			angleShouldTick = false;
+			prevAngle = angleSep;
 		}
 
 		GlStateManager.pushMatrix();
@@ -129,6 +145,45 @@ public class HudSymbolRenderer {
 			}
 		}
 
+		// SEPARATOR //
+		{
+			if (!sepShouldRender) return;
+
+			if (sepShouldTick) sepTick++;
+
+			double scale = sepScale;
+
+			if (sepTick < time) {
+
+				if (!sepShouldTick) {
+					sepShouldTick = true;
+				}
+
+				if (wasPreviouslyGui) {
+					scale = sepScale = Math.abs(1 - (MathHelper.sqrt(1 - Math.pow(1 - (sepTick / time), 2))) * (isGui ? scaleMax : scaleMin) + event.getPartialTicks());
+				} else {
+					scale = sepScale = Math.abs(-scaleMin + -(1 - (MathHelper.sqrt(1 - Math.pow(1 - (sepTick / time), 2)))) * (isGui ? scaleMax : scaleMin) + event.getPartialTicks());
+				}
+			} else if (sepShouldTick) {
+				sepShouldTick = false;
+			}
+
+			GlStateManager.color(1f, 1f, 1f, 1f);
+			GlStateManager.enableBlend();
+			GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
+			GlStateManager.shadeModel(GL11.GL_SMOOTH);
+			GlStateManager.disableTexture2D();
+			Tessellator tess = Tessellator.getInstance();
+			VertexBuffer buffer = tess.getBuffer();
+			buffer.begin(GL11.GL_QUAD_STRIP, DefaultVertexFormats.POSITION_COLOR);
+			RenderUtil.renderNGon(buffer,
+					cX + MathHelper.cos((float) startingAngle) * scale - 0.5,
+					cY + MathHelper.sin((float) startingAngle) * scale - 0.5,
+					1f, 1f, 1f, 7.5, 5.0, RenderUtil.SEGMENTS_CIRCLE);
+			tess.draw();
+		}
+		// SEPARATOR //
+
 		for (int i = 0; i < symbols.length; i++) {
 			EnumSpellElement element = symbols[i];
 			if (element == null) continue;
@@ -142,9 +197,9 @@ public class HudSymbolRenderer {
 				}
 
 				if (wasPreviouslyGui) {
-					scale = symbolsScale[i] = 1 - (MathHelper.sqrt(1 - Math.pow(1 - (symbolsTick[i] / time), 2))) * (isGui ? scaleMax : scaleMin) + event.getPartialTicks();
+					scale = symbolsScale[i] = Math.abs(1 - (MathHelper.sqrt(1 - Math.pow(1 - (symbolsTick[i] / time), 2))) * (isGui ? scaleMax : scaleMin) + event.getPartialTicks());
 				} else {
-					scale = symbolsScale[i] = -scaleMin + -(1 - (MathHelper.sqrt(1 - Math.pow(1 - (symbolsTick[i] / time), 2)))) * (isGui ? scaleMax : scaleMin) + event.getPartialTicks();
+					scale = symbolsScale[i] = Math.abs(-scaleMin + -(1 - (MathHelper.sqrt(1 - Math.pow(1 - (symbolsTick[i] / time), 2)))) * (isGui ? scaleMax : scaleMin) + event.getPartialTicks());
 				}
 			} else if (symbolsShouldTick[i]) {
 				symbolsShouldTick[i] = false;
