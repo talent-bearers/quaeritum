@@ -7,6 +7,7 @@ import net.minecraft.util.math.MathHelper;
 import javax.annotation.Nullable;
 import java.awt.*;
 
+import static eladkay.quaeritum.api.spell.render.CircleSymbolInstruction.RADIUS_MOD;
 import static eladkay.quaeritum.api.spell.render.LineSymbolInstruction.CIRCLE_EDGE;
 import static eladkay.quaeritum.api.spell.render.LineSymbolInstruction.R2O2;
 
@@ -38,7 +39,12 @@ public enum EnumLegend implements ISymbolCarrier {
             new LineSymbolInstruction(R2O2, 1 - R2O2, 0.3f, 0.5f),
             new LineSymbolInstruction(1 - R2O2, 1 - R2O2, 0.5f, 0.7f)),
     // Ancient of Doorways (Saad)
-    DOORWAYS(new Color(0xB12E29), new CircleSymbolInstruction(0.5f, 0.5f, 0.5f)), // todo
+    DOORWAYS(new Color(0xB12E29), new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
+            new CircleSymbolInstruction(0.5f, 0.75f, 0.25f),
+            new LineSymbolInstruction(0.5f - RADIUS_MOD, 0.75f - RADIUS_MOD, 1 - CIRCLE_EDGE, 0.25f),
+            new LineSymbolInstruction(0.5f + RADIUS_MOD, 0.75f - RADIUS_MOD, CIRCLE_EDGE, 0.25f),
+            new LineSymbolInstruction(0.5f - RADIUS_MOD, 0.75f + RADIUS_MOD, 1 - CIRCLE_EDGE, 0.25f),
+            new LineSymbolInstruction(0.5f + RADIUS_MOD, 0.75f + RADIUS_MOD, CIRCLE_EDGE, 0.25f)),
     // Ancient of Growth (Vazkii, Archmage of Growth (Fire))
     GROWTH(new Color(0xEFFF65), new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
             new LineSymbolInstruction(0.5f, 1f, 0.5f, 0.75f),
@@ -89,7 +95,11 @@ public enum EnumLegend implements ISymbolCarrier {
             new LineSymbolInstruction(0.75f, 1 - CIRCLE_EDGE, 0.5f, 0.5f),
             new LineSymbolInstruction(1f, 0.5f, 0.5f, 1f),
             new LineSymbolInstruction(0f, 0.5f, 0.5f, 1f),
-            new LineSymbolInstruction(0.5f, 0.5f, 0.5f, 1f));
+            new LineSymbolInstruction(0.5f, 0.5f, 0.5f, 1f)),
+    // Ancient of Wonder (HellfirePVP)
+    WONDER(new Color(0x27E1EC), new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
+            new LineSymbolInstruction(R2O2, 1 - R2O2, 0.5f, 0f),
+            new LineSymbolInstruction(1 - R2O2, 1 - R2O2, 0.5f, 0f));
 
     @Nullable
     private final Color color; // null is treated specially, as rainbow.

@@ -14,6 +14,8 @@ import org.lwjgl.opengl.GL11;
 public class CircleSymbolInstruction implements ISymbolInstruction {
     public final float cX, cY, radius;
 
+    public static final float RADIUS_MOD = 0.25f / (float) Math.sqrt(2);
+
     public CircleSymbolInstruction(float cX, float cY, float radius) {
         this.cX = cX * 15;
         this.cY = cY * 15;

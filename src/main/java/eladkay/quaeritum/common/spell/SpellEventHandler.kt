@@ -12,6 +12,7 @@ import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.event.entity.EntityJoinWorldEvent
 import net.minecraftforge.event.entity.player.PlayerInteractEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
+import net.minecraftforge.fml.common.gameevent.TickEvent
 
 /**
  * @author WireSegal
@@ -20,6 +21,27 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 object SpellEventHandler {
     init {
         MinecraftForge.EVENT_BUS.register(this)
+    }
+
+    @SubscribeEvent
+    fun tick(evt: TickEvent.ClientTickEvent) {
+        if (evt.phase != TickEvent.Phase.START) return
+        lastTickCanceled = canceled
+        canceled = false
+    }
+
+    var lastTickCanceled = false
+    var canceled = false
+
+    @SubscribeEvent
+    fun leftClick(evt: PlayerInteractEvent.LeftClickBlock) {
+        if (evt.entityPlayer.heldItemMainhand.item is ItemEvoker) {
+            evt.isCanceled = true
+            canceled = true
+        }
+
+        if (!lastTickCanceled)
+            PacketHandler.NETWORK.sendToServer(LeftClickMessage())
     }
 
     @SubscribeEvent
