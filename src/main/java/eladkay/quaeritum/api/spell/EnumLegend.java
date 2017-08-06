@@ -18,7 +18,7 @@ import static eladkay.quaeritum.api.spell.render.LineSymbolInstruction.R2O2;
  */
 @SuppressWarnings("SpellCheckingInspection")
 public enum EnumLegend implements ISymbolCarrier {
-    // The Riftmaker (Wire / Ea, Archmage of The Rift (Æther))
+    // The Riftmaker (Wire / Ea, Ancient of Secrets Kept, Archmage of The Rift (Æther))
     RIFTMAKER(new Color(0xD592DB), new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
             new HalfCircleSymbolInstruction(R2O2, R2O2, R2O2 * 5 / 4, Math.PI * 7 / 4),
             new HalfCircleSymbolInstruction(1 - R2O2, R2O2, R2O2 * 5 / 4, Math.PI * 1 / 4),
@@ -30,7 +30,7 @@ public enum EnumLegend implements ISymbolCarrier {
     BINDER(new Color(0xDB8B29), new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
             new NGonSymbolInstruction(0.5f, 0.5f, 4, 0.5f),
             new NGonSymbolInstruction(0.5f, 0.5f, 4, 0.5f, Math.PI / 4)),
-    // Ancient of Discovery (Elad)
+    // Ancient of Discovery (Elad (before the Blink, Escapee))
     DISCOVERY(new Color(0x1BA50A), new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
             new NGonSymbolInstruction(0.5f, 0.5f, 8, 0.5f),
             new NGonSymbolInstruction(0.5f, 0.5f, 4, 0.5f, Math.PI / 4),
@@ -42,7 +42,7 @@ public enum EnumLegend implements ISymbolCarrier {
             new LineSymbolInstruction(1 - R2O2, R2O2, 0.7f, 0.5f),
             new LineSymbolInstruction(R2O2, 1 - R2O2, 0.3f, 0.5f),
             new LineSymbolInstruction(1 - R2O2, 1 - R2O2, 0.5f, 0.7f)),
-    // Ancient of Doorways (Saad)
+    // Ancient of Doorways (Saad (before the Blink, Mithion))
     DOORWAYS(new Color(0xB12E29), new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
             new CircleSymbolInstruction(0.5f, 0.75f, 0.25f),
             new LineSymbolInstruction(0.5f - RADIUS_MOD, 0.75f - RADIUS_MOD, 1 - CIRCLE_EDGE, 0.25f),
@@ -58,14 +58,14 @@ public enum EnumLegend implements ISymbolCarrier {
     MYSTERIES(new Color(0xB10078), new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
             new HalfCircleSymbolInstruction(0.5f, 1 - R2O2, 0.5f - R2O2, Math.PI),
             new HalfCircleSymbolInstruction(0.5f, R2O2, 0.5f - R2O2, 0)),
-    // Ancient of Twisted Ways (Elucent, Archmage of Dark Paths (Earth))
+    // Ancient of Twisted Ways (Elucent (before the Blink, Emoniph), Archmage of Dark Paths (Earth))
     TWISTED(new Color(0x4EFF93), new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
             new LineSymbolInstruction(0.5f, 0.5f, 0.5f, 0.25f),
             new LineSymbolInstruction(0.5f, 0.25f, 0.25f, 0.5f),
             new LineSymbolInstruction(0.25f, 0.5f, 0.5f, 0.75f),
             new LineSymbolInstruction(0.5f, 0.75f, 0.85f, 0.4f),
             new LineSymbolInstruction(0.85f, 0.4f, 0.5f, 0f)),
-    // Ancient of Ingenuity (King Lemming, Archmage of Insight (Air))
+    // Ancient of Ingenuity (King Lemming (before the Blink, AlexIIL), Archmage of Insight (Air))
     INGENUITY(new Color(0x0A85B1), new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
             new CircleSymbolInstruction(0.5f, 0.5f, 0.25f),
             new CircleSymbolInstruction(0.5f, 0.5f, 0.125f)),
