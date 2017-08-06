@@ -9,6 +9,7 @@ import java.awt.*;
 
 import static eladkay.quaeritum.api.spell.render.CircleSymbolInstruction.RADIUS_MOD;
 import static eladkay.quaeritum.api.spell.render.LineSymbolInstruction.CIRCLE_EDGE;
+import static eladkay.quaeritum.api.spell.render.LineSymbolInstruction.CIRCLE_EDGE_2;
 import static eladkay.quaeritum.api.spell.render.LineSymbolInstruction.R2O2;
 
 /**
@@ -25,12 +26,15 @@ public enum EnumLegend implements ISymbolCarrier {
             new HalfCircleSymbolInstruction(1 - R2O2, 1 - R2O2, R2O2 * 5 / 4, Math.PI * 3 / 4)),
     // The Lorist (Wire)
     LORIST(new Color(0xD592DB), new CircleSymbolInstruction(0.5f, 0.5f, 0.5f)),
-    // Kalimatai (Luna)
+    // Kalimatai, She Who Binds (Luna)
     BINDER(new Color(0xDB8B29), new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
             new NGonSymbolInstruction(0.5f, 0.5f, 4, 0.5f),
             new NGonSymbolInstruction(0.5f, 0.5f, 4, 0.5f, Math.PI / 4)),
     // Ancient of Discovery (Elad)
-    DISCOVERY(new Color(0x1BA50A), new CircleSymbolInstruction(0.5f, 0.5f, 0.5f)), // todo
+    DISCOVERY(new Color(0x1BA50A), new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
+            new NGonSymbolInstruction(0.5f, 0.5f, 8, 0.5f),
+            new NGonSymbolInstruction(0.5f, 0.5f, 4, 0.5f, Math.PI / 4),
+            new CircleSymbolInstruction(0.5f, 0.5f, 0.25f)),
     // Ancient of Truth (Escapee)
     TRUTH(new Color(0xC515FF), new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
             new CircleSymbolInstruction(0.5f, 0.5f, 0.2f),
@@ -67,10 +71,10 @@ public enum EnumLegend implements ISymbolCarrier {
             new CircleSymbolInstruction(0.5f, 0.5f, 0.125f)),
     // Ancient of Shattered Flows (Thecodewarrior)
     SHATTERED(new Color(0x33FF41), new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
-            new LineSymbolInstruction(0.25f, 1 - CIRCLE_EDGE, 0.5f, 0.25f),
-            new LineSymbolInstruction(0.5f, 0.25f, CIRCLE_EDGE, 0.25f),
-            new LineSymbolInstruction(1 - CIRCLE_EDGE, 0.75f, 0.5f, 0.75f),
-            new LineSymbolInstruction(0.5f, 0.75f, 0.75f, CIRCLE_EDGE)),
+            new LineSymbolInstruction(0.25f, 1 - CIRCLE_EDGE, 0.5f, 0.375f),
+            new LineSymbolInstruction(0.5f, 0.375f, CIRCLE_EDGE_2, 0.375f),
+            new LineSymbolInstruction(1 - CIRCLE_EDGE_2, 0.625f, 0.5f, 0.625f),
+            new LineSymbolInstruction(0.5f, 0.625f, 0.75f, CIRCLE_EDGE)),
     // Ancient of the Archive (CobrasBane)
     ARCHIVE(new Color(0xB1163B), new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
             new CircleSymbolInstruction(0.35f, 0.35f, 0.25f),
