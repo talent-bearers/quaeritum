@@ -127,6 +127,16 @@ public final class RenderUtil {
             buffer.pos(centralX, centralY, 0).color(0, 0, 0, 0).endVertex();
             buffer.pos(innerX, innerY, 0).color(r, g, b, 0.5f).endVertex();
         }
+
+        float normX = MathHelper.cos((float)angleOffset);
+        float normY = MathHelper.sin((float)angleOffset);
+        double innerX = cX + normX * radius;
+        double innerY = cY + normY * radius;
+        double outerX = cX + normX * outerRadius;
+        double outerY = cY + normY * outerRadius;
+
+        buffer.pos(outerX, outerY, 0).color(0, 0, 0, 0).endVertex();
+        buffer.pos(innerX, innerY, 0).color(r, g, b, 0.75f).endVertex();
     }
 
     private static float fastAtan2(float y, float x) {

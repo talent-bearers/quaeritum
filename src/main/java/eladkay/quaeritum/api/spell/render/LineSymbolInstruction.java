@@ -15,6 +15,7 @@ public class LineSymbolInstruction implements ISymbolInstruction {
     public final float x1, y1, x2, y2;
 
     public static final float R2O2 = 1 / (float) Math.sqrt(2) - 0.5f;
+    public static final float CIRCLE_EDGE = (float) Math.sqrt(3) / 4 + 0.5f;
 
     public LineSymbolInstruction(float x1, float y1, float x2, float y2) {
         this.x1 = x1 * 15;
