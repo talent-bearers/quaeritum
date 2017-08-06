@@ -41,8 +41,7 @@ public class HudSymbolRenderer {
 
 	private boolean wasPreviouslyGui = false;
 
-	private boolean sepShouldRender = false;
-	private boolean sepShouldTick = false;
+	private boolean sepShouldTick = true;
 	private int sepTick = 0;
 	private double sepScale = 0;
 
@@ -95,14 +94,6 @@ public class HudSymbolRenderer {
 		}
 		symbols = elements;
 
-		if (symbols.length <= 0) {
-			sepShouldRender = false;
-			sepShouldTick = false;
-			sepTick = 0;
-			sepScale = 0;
-			return;
-		} else sepShouldRender = true;
-
 		if (wasPreviouslyGui != isGui) {
 			wasPreviouslyGui = isGui;
 			for (int i = 0; i < symbols.length; i++) {
@@ -131,13 +122,6 @@ public class HudSymbolRenderer {
 			prevAngle = angleSep;
 		}
 
-		GlStateManager.pushMatrix();
-
-		GlStateManager.color(1f, 1f, 1f, 1f);
-		GlStateManager.enableBlend();
-		GlStateManager.shadeModel(GL11.GL_FLAT);
-		GlStateManager.enableTexture2D();
-		GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 
 		for (int i = 0; i < symbolsShouldTick.length; i++) {
 			if (symbolsShouldTick[i]) {
@@ -147,8 +131,7 @@ public class HudSymbolRenderer {
 
 		// SEPARATOR //
 		{
-			if (!sepShouldRender) return;
-
+			if (!isGui && symbols.length <= 0) return;
 			if (sepShouldTick) sepTick++;
 
 			double scale = sepScale;
@@ -184,33 +167,40 @@ public class HudSymbolRenderer {
 		}
 		// SEPARATOR //
 
-		for (int i = 0; i < symbols.length; i++) {
-			EnumSpellElement element = symbols[i];
-			if (element == null) continue;
+		GlStateManager.color(1f, 1f, 1f, 1f);
+		GlStateManager.enableBlend();
+		GlStateManager.shadeModel(GL11.GL_FLAT);
+		GlStateManager.enableTexture2D();
+		GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 
-			double scale = symbolsScale[i];
+		if (symbols.length > 0)
+			for (int i = 0; i < symbols.length; i++) {
+				EnumSpellElement element = symbols[i];
+				if (element == null) continue;
 
-			if (symbolsTick[i] < time) {
+				double scale = symbolsScale[i];
 
-				if (!symbolsShouldTick[i]) {
-					symbolsShouldTick[i] = true;
+				if (symbolsTick[i] < time) {
+
+					if (!symbolsShouldTick[i]) {
+						symbolsShouldTick[i] = true;
+					}
+
+					if (wasPreviouslyGui) {
+						scale = symbolsScale[i] = Math.abs(1 - (MathHelper.sqrt(1 - Math.pow(1 - (symbolsTick[i] / time), 2))) * (isGui ? scaleMax : scaleMin) + event.getPartialTicks());
+					} else {
+						scale = symbolsScale[i] = Math.abs(-scaleMin + -(1 - (MathHelper.sqrt(1 - Math.pow(1 - (symbolsTick[i] / time), 2)))) * (isGui ? scaleMax : scaleMin) + event.getPartialTicks());
+					}
+				} else if (symbolsShouldTick[i]) {
+					symbolsShouldTick[i] = false;
 				}
 
-				if (wasPreviouslyGui) {
-					scale = symbolsScale[i] = Math.abs(1 - (MathHelper.sqrt(1 - Math.pow(1 - (symbolsTick[i] / time), 2))) * (isGui ? scaleMax : scaleMin) + event.getPartialTicks());
-				} else {
-					scale = symbolsScale[i] = Math.abs(-scaleMin + -(1 - (MathHelper.sqrt(1 - Math.pow(1 - (symbolsTick[i] / time), 2)))) * (isGui ? scaleMax : scaleMin) + event.getPartialTicks());
-				}
-			} else if (symbolsShouldTick[i]) {
-				symbolsShouldTick[i] = false;
+				double angle = startingAngle + (i + 1) * currentAngle;
+				double x = cX + scale * MathHelper.cos((float) angle) - 7.5;
+				double y = cY + scale * MathHelper.sin((float) angle) - 7.5;
+				RenderSymbol.INSTANCE.renderSymbol((float) x, (float) y, element);
 			}
 
-			double angle = startingAngle + (i + 1) * currentAngle;
-			double x = cX + scale * MathHelper.cos((float) angle) - 7.5;
-			double y = cY + scale * MathHelper.sin((float) angle) - 7.5;
-			RenderSymbol.INSTANCE.renderSymbol((float) x, (float) y, element);
-		}
-
-		GlStateManager.popMatrix();
+		//GlStateManager.popMatrix();
 	}
 }
