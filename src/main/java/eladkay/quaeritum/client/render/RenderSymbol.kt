@@ -1,6 +1,6 @@
 package eladkay.quaeritum.client.render
 
-import eladkay.quaeritum.api.spell.EnumSpellElement
+import eladkay.quaeritum.api.spell.render.ISymbolCarrier
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
