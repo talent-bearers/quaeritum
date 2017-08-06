@@ -22,7 +22,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 import static org.lwjgl.opengl.GL14.GL_FUNC_ADD;
-import static org.lwjgl.opengl.GL14.GL_FUNC_REVERSE_SUBTRACT;
+import static org.lwjgl.opengl.GL14.GL_FUNC_SUBTRACT;
 
 /**
  * Created by LordSaad.
@@ -169,9 +169,12 @@ public class RiftRenderer {
 		GlStateManager.disableCull();
 		GlStateManager.enableAlpha();
 		GlStateManager.enableBlend();
+		GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
+		GlStateManager.color(1f, 1f, 1f, 1f);
+        GlStateManager.shadeModel(GL11.GL_FLAT);
+        GlStateManager.enableTexture2D();
 
-		Color color = new Color(0x965aff48, true);
-		Color gradColor = new Color(0xe80bc6);
+		Color color = new Color(0x96A500B7, true);
 
 		GlStateManager.rotate(Minecraft.getMinecraft().player.rotationYaw, 0, -1, 0);
 
@@ -181,7 +184,7 @@ public class RiftRenderer {
 		// RIFT
 
 		GlStateManager.depthMask(true);
-		GL14.glBlendEquation(GL_FUNC_REVERSE_SUBTRACT);
+		GL14.glBlendEquation(GL_FUNC_SUBTRACT);
 
 		vb.begin(GL11.GL_TRIANGLE_STRIP, DefaultVertexFormats.POSITION_COLOR);
 		for (int i = 0; i < points1.size(); i += (flip1 ? 1 : 0)) {
@@ -238,6 +241,7 @@ public class RiftRenderer {
 		tessellator.draw();
 
 		GL14.glBlendEquation(GL_FUNC_ADD);
+		GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 
 		GlStateManager.popMatrix();
 	}

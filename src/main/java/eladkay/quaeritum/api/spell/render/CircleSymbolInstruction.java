@@ -1,6 +1,5 @@
 package eladkay.quaeritum.api.spell.render;
 
-import eladkay.quaeritum.api.spell.EnumSpellElement;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -15,6 +14,8 @@ import org.lwjgl.opengl.GL11;
 public class CircleSymbolInstruction implements ISymbolInstruction {
     public final float cX, cY, radius;
 
+    public static final float RADIUS_MOD = 0.25f / (float) Math.sqrt(2);
+
     public CircleSymbolInstruction(float cX, float cY, float radius) {
         this.cX = cX * 15;
         this.cY = cY * 15;
@@ -23,7 +24,7 @@ public class CircleSymbolInstruction implements ISymbolInstruction {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void render(EnumSpellElement element, float x, float y) {
+    public void render(ISymbolCarrier element, float x, float y) {
         Tessellator tess = Tessellator.getInstance();
         VertexBuffer buffer = tess.getBuffer();
         int color = element.color();

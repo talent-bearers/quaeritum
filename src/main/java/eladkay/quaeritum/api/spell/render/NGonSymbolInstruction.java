@@ -1,6 +1,5 @@
 package eladkay.quaeritum.api.spell.render;
 
-import eladkay.quaeritum.api.spell.EnumSpellElement;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -34,7 +33,7 @@ public class NGonSymbolInstruction implements ISymbolInstruction {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void render(EnumSpellElement element, float x, float y) {
+    public void render(ISymbolCarrier element, float x, float y) {
         Tessellator tess = Tessellator.getInstance();
         VertexBuffer buffer = tess.getBuffer();
         int color = element.color();

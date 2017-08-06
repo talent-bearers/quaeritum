@@ -1,23 +1,33 @@
 package eladkay.quaeritum.client.core
 
+import com.teamwizardry.librarianlib.core.client.ClientTickHandler
+import com.teamwizardry.librarianlib.core.client.RenderHookHandler
+import eladkay.quaeritum.api.spell.render.RenderUtil
 import eladkay.quaeritum.api.util.RandUtil
 import eladkay.quaeritum.client.fx.FXMagicLine
 import eladkay.quaeritum.client.render.RemainingItemsRenderHandler
 import eladkay.quaeritum.client.render.RenderSymbol
+import eladkay.quaeritum.client.render.RenderSymbol.renderSymbol
 import eladkay.quaeritum.client.render.entity.LayerSight
 import eladkay.quaeritum.client.render.entity.RenderChaosborn
 import eladkay.quaeritum.common.core.CommonProxy
 import eladkay.quaeritum.common.entity.EntityChaosborn
+import eladkay.quaeritum.common.item.ItemEvoker
 import net.minecraft.client.Minecraft
 import net.minecraft.client.particle.Particle
+import net.minecraft.client.renderer.GlStateManager
+import net.minecraft.client.renderer.Tessellator
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.util.ResourceLocation
+import net.minecraft.util.math.MathHelper
 import net.minecraft.util.math.Vec3d
 import net.minecraft.world.World
 import net.minecraftforge.fml.client.registry.RenderingRegistry
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
+import org.lwjgl.opengl.GL11
 import java.awt.Toolkit
 import java.awt.datatransfer.StringSelection
 
@@ -29,6 +39,54 @@ class ClientProxy : CommonProxy() {
         RemainingItemsRenderHandler
         LightningRenderer.INSTANCE
         RiftRenderer(Vec3d(0.0, 20.0, 0.0), RandUtil.nextLong(0, 10000))
+
+        RenderHookHandler.registerItemHook { stack, _ ->
+            if (stack.item is ItemEvoker) {
+
+                GlStateManager.depthMask(false)
+
+                val elements = ItemEvoker.getEvocationFromStack(stack)
+
+                val cX = 0
+                val cY = 0
+                val scale = 35
+
+                val startingAngle = (ClientTickHandler.partialTicks + ClientTickHandler.ticks) * Math.PI / 120
+                val angleSep = 2 * Math.PI / (elements.size + 1)
+
+                GlStateManager.pushMatrix()
+                GlStateManager.translate(0.5f, 0.785f, 0.35f)
+                GlStateManager.scale(0.0025f, 0.0025f, 0.0025f)
+                GlStateManager.rotate(90f, 1f, 0f, 0f)
+                GlStateManager.color(1f, 1f, 1f, 1f)
+                GlStateManager.enableBlend()
+                GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE)
+                GlStateManager.shadeModel(GL11.GL_SMOOTH)
+                GlStateManager.disableTexture2D()
+                val tess = Tessellator.getInstance()
+                val buffer = tess.buffer
+                buffer.begin(GL11.GL_QUAD_STRIP, DefaultVertexFormats.POSITION_COLOR)
+                RenderUtil.renderNGon(buffer,
+                        cX + MathHelper.cos(startingAngle.toFloat()) * scale - 0.5,
+                        cY + MathHelper.sin(startingAngle.toFloat()) * scale - 0.5,
+                        1f, 1f, 1f, 7.5, 5.0, RenderUtil.SEGMENTS_CIRCLE)
+                tess.draw()
+                GlStateManager.shadeModel(GL11.GL_FLAT)
+                GlStateManager.enableTexture2D()
+                GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA)
+
+                for (idx in elements.indices) {
+                    val element = elements[idx]
+                    val angle = startingAngle + (idx + 1) * angleSep
+                    val x = cX + scale * MathHelper.cos(angle.toFloat()) - 7.5
+                    val y = cY + scale * MathHelper.sin(angle.toFloat()) - 7.5
+                    renderSymbol(x.toFloat() , y.toFloat(), element)
+                }
+                GlStateManager.popMatrix()
+
+                GlStateManager.depthMask(true)
+            }
+        }
     }
 
     override fun init(e: FMLInitializationEvent) {

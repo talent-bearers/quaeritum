@@ -1,6 +1,5 @@
 package eladkay.quaeritum.api.spell.render;
 
-import eladkay.quaeritum.api.spell.EnumSpellElement;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -16,6 +15,8 @@ public class LineSymbolInstruction implements ISymbolInstruction {
     public final float x1, y1, x2, y2;
 
     public static final float R2O2 = 1 / (float) Math.sqrt(2) - 0.5f;
+    public static final float CIRCLE_EDGE = (float) Math.sqrt(3) / 4 + 0.5f;
+    public static final float CIRCLE_EDGE_2 = (float) Math.sqrt(15) / 8 + 0.5f;
 
     public LineSymbolInstruction(float x1, float y1, float x2, float y2) {
         this.x1 = x1 * 15;
@@ -26,7 +27,7 @@ public class LineSymbolInstruction implements ISymbolInstruction {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void render(EnumSpellElement element, float x, float y) {
+    public void render(ISymbolCarrier element, float x, float y) {
         Tessellator tess = Tessellator.getInstance();
         VertexBuffer buffer = tess.getBuffer();
         int color = element.color();
