@@ -27,8 +27,6 @@ class ItemEvoker : ItemMod(LibNames.SOUL_EVOKER) {
             if (stack.item !is ItemEvoker) return
             ItemNBTHelper.setIntArray(stack, "elements", ElementHandler.fromElements(elements))
         }
-
-        // todo render hook
     }
 
     init {
