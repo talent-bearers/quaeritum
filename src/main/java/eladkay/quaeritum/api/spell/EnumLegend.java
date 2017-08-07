@@ -49,23 +49,23 @@ public enum EnumLegend implements ISymbolCarrier {
             new LineSymbolInstruction(0.5f + RADIUS_MOD, 0.75f - RADIUS_MOD, CIRCLE_EDGE, 0.25f),
             new LineSymbolInstruction(0.5f - RADIUS_MOD, 0.75f + RADIUS_MOD, 1 - CIRCLE_EDGE, 0.25f),
             new LineSymbolInstruction(0.5f + RADIUS_MOD, 0.75f + RADIUS_MOD, CIRCLE_EDGE, 0.25f)),
-    // Ancient of Growth (Vazkii, Archmage of Growth (Fire))
+    // Ancient of Growth (Vazkii, Archmage of Growth (Earth))
     GROWTH(new Color(0xEFFF65), new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
             new LineSymbolInstruction(0.5f, 1f, 0.5f, 0.75f),
             new LineSymbolInstruction(0.5f, 0.75f, 0.25f, 0.5f),
             new LineSymbolInstruction(0.5f, 0.75f, 0.75f, 0.5f)),
-    // Ancient of Mysteries (Azanor, Archmage of The Unspeakable (Water))
+    // Ancient of Mysteries (Azanor, Archmage of The Unspeakable (Air))
     MYSTERIES(new Color(0xB10078), new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
             new HalfCircleSymbolInstruction(0.5f, 1 - R2O2, 0.5f - R2O2, Math.PI),
             new HalfCircleSymbolInstruction(0.5f, R2O2, 0.5f - R2O2, 0)),
-    // Ancient of Twisted Ways (Elucent (before the Blink, Emoniph), Archmage of Dark Paths (Earth))
+    // Ancient of Twisted Ways (Elucent (before the Blink, Emoniph), Archmage of Dark Paths (Water))
     TWISTED(new Color(0x4EFF93), new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
             new LineSymbolInstruction(0.5f, 0.5f, 0.5f, 0.25f),
             new LineSymbolInstruction(0.5f, 0.25f, 0.25f, 0.5f),
             new LineSymbolInstruction(0.25f, 0.5f, 0.5f, 0.75f),
             new LineSymbolInstruction(0.5f, 0.75f, 0.85f, 0.4f),
             new LineSymbolInstruction(0.85f, 0.4f, 0.5f, 0f)),
-    // Ancient of Ingenuity (King Lemming (before the Blink, AlexIIL), Archmage of Insight (Air))
+    // Ancient of Ingenuity (King Lemming (before the Blink, AlexIIL), Archmage of Insight (Fire))
     INGENUITY(new Color(0x0A85B1), new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
             new CircleSymbolInstruction(0.5f, 0.5f, 0.25f),
             new CircleSymbolInstruction(0.5f, 0.5f, 0.125f)),

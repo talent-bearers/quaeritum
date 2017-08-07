@@ -161,7 +161,7 @@ public class RiftRenderer {
 		EntityPlayer player = Minecraft.getMinecraft().player;
 
         if (!SightHandler.INSTANCE.hasTheSight(player)) return;
-        
+
         GlStateManager.pushMatrix();
 
 		double interpPosX = player.lastTickPosX + (player.posX - player.lastTickPosX) * event.getPartialTicks();
