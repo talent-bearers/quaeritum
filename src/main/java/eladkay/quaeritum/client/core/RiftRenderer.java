@@ -2,6 +2,7 @@ package eladkay.quaeritum.client.core;
 
 import com.teamwizardry.librarianlib.core.client.ClientTickHandler;
 import eladkay.quaeritum.api.util.RandUtilSeed;
+import eladkay.quaeritum.common.core.SightHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -157,8 +158,11 @@ public class RiftRenderer {
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public void render(RenderWorldLastEvent event) {
-		GlStateManager.pushMatrix();
 		EntityPlayer player = Minecraft.getMinecraft().player;
+
+        if (!SightHandler.INSTANCE.hasTheSight(player)) return;
+        
+        GlStateManager.pushMatrix();
 
 		double interpPosX = player.lastTickPosX + (player.posX - player.lastTickPosX) * event.getPartialTicks();
 		double interpPosY = player.lastTickPosY + (player.posY - player.lastTickPosY) * event.getPartialTicks();
