@@ -183,8 +183,8 @@ public class RiftRenderer {
 
 		// RIFT
 
-		GlStateManager.depthMask(true);
 		GL14.glBlendEquation(GL_FUNC_SUBTRACT);
+        GlStateManager.depthMask(false);
 
 		vb.begin(GL11.GL_TRIANGLE_STRIP, DefaultVertexFormats.POSITION_COLOR);
 		for (int i = 0; i < points1.size(); i += (flip1 ? 1 : 0)) {
@@ -243,6 +243,7 @@ public class RiftRenderer {
 		GL14.glBlendEquation(GL_FUNC_ADD);
 		GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 
+        GlStateManager.depthMask(true);
 		GlStateManager.enableTexture2D();
 		GlStateManager.popMatrix();
 	}
