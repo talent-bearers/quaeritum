@@ -38,7 +38,7 @@ abstract class EntityBaseProjectile(worldIn: World) : Entity(worldIn), IProjecti
         setPosition(x, y, z)
     }
 
-    constructor(worldIn: World, shooter: EntityLivingBase) : this(worldIn, shooter.posX, shooter.posY + shooter.eyeHeight.toDouble() - 0.10000000149011612, shooter.posZ) {
+    constructor(worldIn: World, shooter: EntityLivingBase) : this(worldIn, shooter.posX, shooter.posY + shooter.eyeHeight.toDouble() - 0.1, shooter.posZ) {
         shootingEntity = shooter
     }
 
