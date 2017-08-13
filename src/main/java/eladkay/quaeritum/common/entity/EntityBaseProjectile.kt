@@ -30,7 +30,7 @@ import net.minecraftforge.common.util.Constants
 @Suppress("LeakingThis")
 abstract class EntityBaseProjectile(worldIn: World) : Entity(worldIn), IProjectile {
     var shootingEntity: Entity? = null
-    var knockback = 0.0
+    var knockback = 1.0
 
     var damage: Float
         get() = dataManager.get(DAMAGE)
