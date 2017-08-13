@@ -9,6 +9,8 @@ import net.minecraft.entity.monster.EntityEnderman
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.SoundEvents
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.network.datasync.DataSerializers
+import net.minecraft.network.datasync.EntityDataManager
 import net.minecraft.util.DamageSource
 import net.minecraft.util.EntitySelectors
 import net.minecraft.util.EnumFacing
@@ -28,11 +30,13 @@ import net.minecraftforge.common.util.Constants
 @Suppress("LeakingThis")
 abstract class EntityBaseProjectile(worldIn: World) : Entity(worldIn), IProjectile {
     var shootingEntity: Entity? = null
-    var damage = 0.0
     var knockback = 0.0
 
+    var damage: Float
+        get() = dataManager.get(DAMAGE)
+        set(value) = dataManager.set(DAMAGE, value)
+
     init {
-        damage = 2.0
         setSize(0.5f, 0.5f)
     }
 
@@ -45,7 +49,7 @@ abstract class EntityBaseProjectile(worldIn: World) : Entity(worldIn), IProjecti
     }
 
     override fun entityInit() {
-        // NO-OP
+        dataManager.register(DAMAGE, 2f)
     }
 
     fun setAim(shooter: Entity, pitch: Float, yaw: Float, velocity: Float, inaccuracy: Float) {
@@ -232,13 +236,13 @@ abstract class EntityBaseProjectile(worldIn: World) : Entity(worldIn), IProjecti
     }
 
     public override fun writeEntityToNBT(compound: NBTTagCompound) {
-        compound.setDouble("damage", damage)
+        compound.setFloat("damage", damage)
         compound.setDouble("knockback", knockback)
     }
 
     public override fun readEntityFromNBT(compound: NBTTagCompound) {
-        if (compound.hasKey("damage", Constants.NBT.TAG_ANY_NUMERIC)) damage = compound.getDouble("damage")
-        if (compound.hasKey("knockback", Constants.NBT.TAG_ANY_NUMERIC)) damage = compound.getDouble("knockback")
+        if (compound.hasKey("damage", Constants.NBT.TAG_ANY_NUMERIC)) damage = compound.getFloat("damage")
+        if (compound.hasKey("knockback", Constants.NBT.TAG_ANY_NUMERIC)) knockback = compound.getDouble("knockback")
     }
 
     override fun canTriggerWalking() = false
@@ -248,6 +252,9 @@ abstract class EntityBaseProjectile(worldIn: World) : Entity(worldIn), IProjecti
     override fun getEyeHeight() = 0.0f
 
     companion object {
+        @JvmField
+        val DAMAGE = EntityDataManager.createKey(EntityBaseProjectile::class.java, DataSerializers.FLOAT)
+
         private val ARROW_TARGETS = Predicates.and(EntitySelectors.NOT_SPECTATING, EntitySelectors.IS_ALIVE, Predicate<Entity> { it!!.canBeCollidedWith() })
     }
 }
