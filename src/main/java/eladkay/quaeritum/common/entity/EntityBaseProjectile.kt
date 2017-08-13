@@ -11,7 +11,9 @@ import net.minecraft.init.SoundEvents
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.DamageSource
 import net.minecraft.util.EntitySelectors
+import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumParticleTypes
+import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.MathHelper
 import net.minecraft.util.math.RayTraceResult
 import net.minecraft.util.math.Vec3d
@@ -40,6 +42,10 @@ abstract class EntityBaseProjectile(worldIn: World) : Entity(worldIn), IProjecti
 
     constructor(worldIn: World, shooter: EntityLivingBase) : this(worldIn, shooter.posX, shooter.posY + shooter.eyeHeight.toDouble() - 0.1, shooter.posZ) {
         shootingEntity = shooter
+    }
+
+    override fun entityInit() {
+        // NO-OP
     }
 
     fun setAim(shooter: Entity, pitch: Float, yaw: Float, velocity: Float, inaccuracy: Float) {
@@ -148,7 +154,7 @@ abstract class EntityBaseProjectile(worldIn: World) : Entity(worldIn), IProjecti
         motionY *= motionModifier.toDouble()
         motionZ *= motionModifier.toDouble()
 
-        if (!hasNoGravity()) motionY -= 0.05
+        if (!hasNoGravity()) motionY -= gravity()
 
         setPosition(posX, posY, posZ)
         doBlockCollisions()
@@ -156,13 +162,15 @@ abstract class EntityBaseProjectile(worldIn: World) : Entity(worldIn), IProjecti
 
     abstract fun getDefaultDamageSource(): DamageSource
     abstract fun getShotDamageSource(shooter: Entity): DamageSource
-    abstract fun onImpact(trace: RayTraceResult): DamageSource
+    abstract fun onImpactEntity(entity: Entity)
+    abstract fun onImpactBlock(hitVec: Vec3d, side: EnumFacing, position: BlockPos)
+    open fun gravity() = 0.05
 
     protected fun onHit(trace: RayTraceResult) {
-        onImpact(trace)
         val entity = trace.entityHit
 
         if (entity != null) {
+
             val magnitude = MathHelper.sqrt(motionX * motionX + motionY * motionY + motionZ * motionZ)
             val damage = MathHelper.ceil(magnitude.toDouble() * damage)
 
@@ -183,47 +191,42 @@ abstract class EntityBaseProjectile(worldIn: World) : Entity(worldIn), IProjecti
                         if (f1 > 0.0f)
                             entity.addVelocity(motionX * knockback * 0.6 / f1.toDouble(), 0.1, motionZ * knockback * 0.6 / f1.toDouble())
                     }
-
-                    arrowHit(entity)
                 }
+
+                if (!world.isRemote)
+                    onImpactEntity(entity)
 
                 playSound(SoundEvents.ENTITY_ARROW_HIT, 1.0f, 1.2f / (rand.nextFloat() * 0.2f + 0.9f))
 
-                if (entity !is EntityEnderman)
+                if (entity !is EntityEnderman && !world.isRemote)
                     setDead()
-            } else {
-                motionX *= -0.1
-                motionY *= -0.1
-                motionZ *= -0.1
-                rotationYaw += 180.0f
-                prevRotationYaw += 180.0f
-            }
-        } else
+            } else if (!world.isRemote)
+                setDead()
+        } else if (!world.isRemote) {
+            onImpactBlock(trace.hitVec, trace.sideHit, trace.blockPos)
             setDead()
+        }
 
     }
 
-    protected open fun arrowHit(living: EntityLivingBase) {}
-
     protected fun findEntityOnPath(start: Vec3d, end: Vec3d): Entity? {
+        val predicate = Predicates.and(ARROW_TARGETS, Predicate {
+            it != shootingEntity
+        })
         var entity: Entity? = null
-        val list = world.getEntitiesInAABBexcluding(this, entityBoundingBox.expand(motionX, motionY, motionZ).grow(1.0), ARROW_TARGETS)
+        val list = world.getEntitiesInAABBexcluding(this, entityBoundingBox.expand(motionX, motionY, motionZ).grow(1.0), predicate)
         var maxDistance = 0.0
 
-        for (i in list.indices) {
-            val entity1 = list[i]
+        for (onPath in list) {
+            val boundingBox = onPath.entityBoundingBox.grow(0.3)
+            val trace = boundingBox.calculateIntercept(start, end)
 
-            if (entity1 !== shootingEntity) {
-                val boundingBox = entity1.entityBoundingBox.grow(0.3)
-                val trace = boundingBox.calculateIntercept(start, end)
+            if (trace != null) {
+                val d1 = start.squareDistanceTo(trace.hitVec)
 
-                if (trace != null) {
-                    val d1 = start.squareDistanceTo(trace.hitVec)
-
-                    if (d1 < maxDistance || maxDistance == 0.0) {
-                        entity = entity1
-                        maxDistance = d1
-                    }
+                if (d1 < maxDistance || maxDistance == 0.0) {
+                    entity = onPath
+                    maxDistance = d1
                 }
             }
         }

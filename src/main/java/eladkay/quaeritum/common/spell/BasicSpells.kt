@@ -4,6 +4,7 @@ import com.google.common.base.Predicates
 import com.teamwizardry.librarianlib.features.utilities.RaycastUtils
 import eladkay.quaeritum.api.spell.EnumSpellElement.*
 import eladkay.quaeritum.api.spell.SpellParser.registerSpell
+import eladkay.quaeritum.common.entity.EntityFirebolt
 import eladkay.quaeritum.common.lib.LibObfuscation
 import eladkay.quaeritum.common.potions.PotionIronskin
 import net.minecraft.entity.Entity
@@ -97,7 +98,9 @@ object BasicSpells {
 
         registerSpell(arrayOf(FIRE)) { player, trailing, total ->
             player.sendStatusMessage(TextComponentString("firebolt trailing: $trailing total: $total"), false) // debug
-            // todo: fire bolt
+            val firebolt = EntityFirebolt(player.world, player)
+            firebolt.setAim(player, player.rotationPitch, player.rotationYaw, 3.0f, 1.0f) // todo inaccuracy and velocity depend on trailing total, as well as damage
+            player.world.spawnEntity(firebolt)
         }
 
         registerSpell(arrayOf(AIR)) { player, trailing, total ->

@@ -12,16 +12,17 @@ object ModEntities {
     fun init() {
         registerModEntityWithEgg(EntityChaosborn::class.java, LibNames.CHAOSBORN, 15451, 45615)
         registerModEntity(EntityCircleOfTheFinalMoment::class.java, LibNames.CIRCLE)
+        registerModEntity(EntityFirebolt::class.java, "firebolt", 1, true)
     }
 
-    fun registerModEntityWithEgg(parEntityClass: Class<out Entity>, parEntityName: String, parEggColor: Int, parEggSpotsColor: Int) {
+    fun registerModEntityWithEgg(parEntityClass: Class<out Entity>, parEntityName: String, parEggColor: Int, parEggSpotsColor: Int, updateFrequency: Int = 3, sendsVelocity: Boolean = false) {
         EntityRegistry.registerModEntity(ResourceLocation("quaeritum:" + parEntityName), parEntityClass, parEntityName, ++id,
-                Quaeritum.instance, 80, 3, false)
+                Quaeritum.instance, 80, updateFrequency, sendsVelocity)
         EntityRegistry.registerEgg(ResourceLocation("quaeritum:" + parEntityName), parEggColor, parEggSpotsColor)
     }
 
-    fun registerModEntity(parEntityClass: Class<out Entity>, parEntityName: String) {
+    fun registerModEntity(parEntityClass: Class<out Entity>, parEntityName: String, updateFrequency: Int = 3, sendsVelocity: Boolean = false) {
         EntityRegistry.registerModEntity(ResourceLocation("quaeritum:" + parEntityName), parEntityClass, parEntityName, ++id,
-                Quaeritum.instance, 80, 3, false)
+                Quaeritum.instance, 80, updateFrequency, sendsVelocity)
     }
 }
