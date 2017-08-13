@@ -162,8 +162,9 @@ abstract class EntityBaseProjectile(worldIn: World) : Entity(worldIn), IProjecti
 
     abstract fun getDefaultDamageSource(): DamageSource
     abstract fun getShotDamageSource(shooter: Entity): DamageSource
-    abstract fun onImpactEntity(entity: Entity)
-    abstract fun onImpactBlock(hitVec: Vec3d, side: EnumFacing, position: BlockPos)
+    open fun onImpactEntity(entity: Entity, successful: Boolean) = (entity as? EntityEnderman)?.setDead() ?: Unit
+    open fun onImpactBlock(hitVec: Vec3d, side: EnumFacing, position: BlockPos) = setDead()
+
     open fun gravity() = 0.05
 
     protected fun onHit(trace: RayTraceResult) {
@@ -193,19 +194,15 @@ abstract class EntityBaseProjectile(worldIn: World) : Entity(worldIn), IProjecti
                     }
                 }
 
-                if (!world.isRemote)
-                    onImpactEntity(entity)
-
                 playSound(SoundEvents.ENTITY_ARROW_HIT, 1.0f, 1.2f / (rand.nextFloat() * 0.2f + 0.9f))
 
-                if (entity !is EntityEnderman && !world.isRemote)
-                    setDead()
+                if (!world.isRemote)
+                    onImpactEntity(entity, true)
+
             } else if (!world.isRemote)
-                setDead()
-        } else if (!world.isRemote) {
+                onImpactEntity(entity, false)
+        } else if (!world.isRemote)
             onImpactBlock(trace.hitVec, trace.sideHit, trace.blockPos)
-            setDead()
-        }
 
     }
 

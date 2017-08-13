@@ -3,9 +3,6 @@ package eladkay.quaeritum.common.entity
 import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.util.DamageSource
-import net.minecraft.util.EnumFacing
-import net.minecraft.util.math.BlockPos
-import net.minecraft.util.math.Vec3d
 import net.minecraft.world.World
 
 /**
@@ -25,11 +22,8 @@ class EntityFirebolt : EntityBaseProjectile {
         return DamageSource.IN_FIRE // todo
     }
 
-    override fun onImpactEntity(entity: Entity) {
+    override fun onImpactEntity(entity: Entity, successful: Boolean) {
+        super.onImpactEntity(entity, successful)
         entity.setFire(1000)
-    }
-
-    override fun onImpactBlock(hitVec: Vec3d, side: EnumFacing, position: BlockPos) {
-        // NO-OP
     }
 }

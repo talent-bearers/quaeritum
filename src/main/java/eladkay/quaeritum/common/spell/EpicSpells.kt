@@ -76,7 +76,7 @@ object EpicSpells {
                     if (parser.spells.any { it.spell == this })
                         evoker = player.heldItemOffhand
                 }
-                
+
                 if (evoker.item is ItemEvoker) {
                     val evocation = ItemEvoker.getEvocationFromStack(evoker)
                     val parser = SpellParser(evocation)

@@ -19,12 +19,12 @@ object GreaterSpells {
 
         SpellParser.registerSpell(arrayOf(AIR, ENTROPY, EARTH)) { player, trailing, total ->
             player.sendStatusMessage(TextComponentString("sparkbolt trailing: $trailing total: $total"), false) // debug
-            // todo
+            // todo spark effect
         }
 
         SpellParser.registerSpell(arrayOf(SPIRIT, CONNECTION, SOUL)) { player, trailing, total ->
             player.sendStatusMessage(TextComponentString("trade position trailing: $trailing total: $total"), false) // debug
-            // todo (trade positions back if used within a few minutes)
+            // todo trade positions (trade positions back if used within a few minutes)
         }
 
         SpellParser.registerSpell(arrayOf(SOUL, FORM, AIR)) { player, trailing, total ->
