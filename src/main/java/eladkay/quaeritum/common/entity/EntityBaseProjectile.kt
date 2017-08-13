@@ -7,7 +7,6 @@ import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.IProjectile
 import net.minecraft.entity.monster.EntityEnderman
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.init.SoundEvents
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.datasync.DataSerializers
 import net.minecraft.network.datasync.EntityDataManager
@@ -166,7 +165,7 @@ abstract class EntityBaseProjectile(worldIn: World) : Entity(worldIn), IProjecti
 
     abstract fun getDefaultDamageSource(): DamageSource
     abstract fun getShotDamageSource(shooter: Entity): DamageSource
-    open fun onImpactEntity(entity: Entity, successful: Boolean) = (entity as? EntityEnderman)?.setDead() ?: Unit
+    open fun onImpactEntity(entity: Entity, successful: Boolean) { if (entity is EntityEnderman) setDead() }
     open fun onImpactBlock(hitVec: Vec3d, side: EnumFacing, position: BlockPos) = setDead()
 
     open fun gravity() = 0.05
@@ -197,8 +196,6 @@ abstract class EntityBaseProjectile(worldIn: World) : Entity(worldIn), IProjecti
                             entity.addVelocity(motionX * knockback * 0.6 / f1.toDouble(), 0.1, motionZ * knockback * 0.6 / f1.toDouble())
                     }
                 }
-
-                playSound(SoundEvents.ENTITY_ARROW_HIT, 1.0f, 1.2f / (rand.nextFloat() * 0.2f + 0.9f))
 
                 if (!world.isRemote)
                     onImpactEntity(entity, true)

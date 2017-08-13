@@ -12,7 +12,8 @@ object ModEntities {
     fun init() {
         registerModEntityWithEgg(EntityChaosborn::class.java, LibNames.CHAOSBORN, 15451, 45615)
         registerModEntity(EntityCircleOfTheFinalMoment::class.java, LibNames.CIRCLE)
-        registerModEntity(EntityFirebolt::class.java, "firebolt", 1, true)
+        registerModEntity(EntityFirebolt::class.java, "firebolt", 3, true)
+        registerModEntity(EntityFrostshock::class.java, "frostshock", 3, true)
     }
 
     fun registerModEntityWithEgg(parEntityClass: Class<out Entity>, parEntityName: String, parEggColor: Int, parEggSpotsColor: Int, updateFrequency: Int = 3, sendsVelocity: Boolean = false) {
