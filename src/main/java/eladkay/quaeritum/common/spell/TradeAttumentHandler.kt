@@ -31,9 +31,10 @@ object TradeAttumentHandler {
     fun makeTrade(player: EntityPlayer, time: Int = 3600) {
         var previousTrade = true
         var entity = getTrade(player, time)
+        val raycast = RaycastUtils.getEntityLookedAt(player)
         trades.remove(player)
-        if (entity == null) {
-            entity = RaycastUtils.getEntityLookedAt(player)
+        if (entity == null || entity == raycast) {
+            entity = raycast
             previousTrade = false
         }
         if (entity == null) return
@@ -54,18 +55,18 @@ object TradeAttumentHandler {
         val otherPitch = other.rotationPitch
         val otherFallDistance = other.fallDistance
 
-        other.setVelocityAndUpdate(player.motionX, player.motionY, player.motionZ)
         other.fallDistance = player.fallDistance
         if (other is EntityPlayerMP)
             other.connection.setPlayerLocation(player.posX, player.posY, player.posZ, player.rotationYaw, player.rotationPitch)
         else
             other.setPositionAndRotation(player.posX, player.posY, player.posZ, player.rotationYaw, player.rotationPitch)
+        other.setVelocityAndUpdate(player.motionX, player.motionY, player.motionZ)
 
-        player.setVelocityAndUpdate(otherMotionX, otherMotionY, otherMotionZ)
         player.fallDistance = otherFallDistance
         if (player is EntityPlayerMP)
             player.connection.setPlayerLocation(otherX, otherY, otherZ, otherYaw, otherPitch)
         else
             player.setPositionAndRotation(otherX, otherY, otherZ, otherYaw, otherPitch)
+        player.setVelocityAndUpdate(otherMotionX, otherMotionY, otherMotionZ)
     }
 }
