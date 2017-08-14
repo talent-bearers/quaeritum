@@ -1,8 +1,12 @@
 package eladkay.quaeritum.common.entity
 
+import com.teamwizardry.librarianlib.test.chunkdata.ChunkDataEntryPoint.item
+import net.minecraft.block.BlockFalling
 import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityLivingBase
+import net.minecraft.entity.item.EntityItem
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumActionResult
 import net.minecraft.util.EnumFacing
@@ -26,7 +30,17 @@ class EntityDrill : EntityBaseProjectile {
                     state.block.getPlayerRelativeBlockHardness(state, shooter, world, position) <= 0 ||
                     MinecraftForge.EVENT_BUS.post(BlockEvent.BreakEvent(world, position, state, shooter)))
                 EnumActionResult.FAIL
-            else if (!state.block.isReplaceable(world, position)){
+            else if (!state.block.isReplaceable(world, position)) {
+                if (world.isAirBlock(position.down()) &&
+                            BlockFalling.canFallThrough(world.getBlockState(position.down()))) {
+                    val stack = ItemStack(state.block, 1, state.block.damageDropped(state))
+                    if (!stack.isEmpty) {
+                        val item = EntityItem(world, position.x + 0.5, position.y.toDouble(), position.x + 0.5, stack)
+                        item.setDefaultPickupDelay()
+                        world.spawnEntity(item)
+                    }
+                    return EnumActionResult.SUCCESS
+                }
                 world.spawnEntity(EntityDroppingBlock(world, position.x + 0.5, position.y.toDouble(), position.z + 0.5, state).withDrop(shouldDrop))
                 world.setBlockToAir(position)
                 EnumActionResult.SUCCESS
