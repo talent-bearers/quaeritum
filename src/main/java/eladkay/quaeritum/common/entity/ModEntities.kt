@@ -1,9 +1,11 @@
 package eladkay.quaeritum.common.entity
 
+import eladkay.quaeritum.client.render.entity.RenderFirebolt
 import eladkay.quaeritum.common.Quaeritum
 import eladkay.quaeritum.common.lib.LibNames
 import net.minecraft.entity.Entity
 import net.minecraft.util.ResourceLocation
+import net.minecraftforge.fml.client.registry.RenderingRegistry
 import net.minecraftforge.fml.common.registry.EntityRegistry
 
 object ModEntities {
@@ -27,5 +29,9 @@ object ModEntities {
     fun registerModEntity(parEntityClass: Class<out Entity>, parEntityName: String, updateFrequency: Int = 3, sendsVelocity: Boolean = false) {
         EntityRegistry.registerModEntity(ResourceLocation("quaeritum:" + parEntityName), parEntityClass, parEntityName, ++id,
                 Quaeritum.instance, 80, updateFrequency, sendsVelocity)
+    }
+
+    fun initClient() {
+        RenderingRegistry.registerEntityRenderingHandler(EntityFirebolt::class.java) { manager -> RenderFirebolt(manager) }
     }
 }

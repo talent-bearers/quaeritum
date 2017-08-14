@@ -15,6 +15,7 @@ import eladkay.quaeritum.client.render.entity.RenderFalling
 import eladkay.quaeritum.common.core.CommonProxy
 import eladkay.quaeritum.common.entity.EntityChaosborn
 import eladkay.quaeritum.common.entity.EntityDroppingBlock
+import eladkay.quaeritum.common.entity.ModEntities
 import eladkay.quaeritum.common.item.ItemEvoker
 import net.minecraft.client.Minecraft
 import net.minecraft.client.particle.Particle
@@ -42,6 +43,7 @@ class ClientProxy : CommonProxy() {
         RemainingItemsRenderHandler
         LightningRenderer.INSTANCE
         RiftRenderer(Vec3d(0.0, 20.0, 0.0), RandUtil.nextLong(0, 10000))
+        ModEntities.initClient()
 
         RenderingRegistry.registerEntityRenderingHandler(EntityChaosborn::class.java, { RenderChaosborn(it) })
         RenderingRegistry.registerEntityRenderingHandler(EntityDroppingBlock::class.java, { RenderFalling(it) })
