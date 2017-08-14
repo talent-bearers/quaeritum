@@ -5,7 +5,9 @@ import eladkay.quaeritum.api.spell.EnumSpellElement.*
 import eladkay.quaeritum.api.spell.IAlchemicalSpell
 import eladkay.quaeritum.api.spell.SpellParser
 import eladkay.quaeritum.common.item.ItemEvoker
+import eladkay.quaeritum.common.potions.PotionPathwalker
 import eladkay.quaeritum.common.potions.PotionRooted
+import eladkay.quaeritum.common.potions.PotionVampirism
 import eladkay.quaeritum.common.spell.BasicSpells.applyPotionBuff
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.MobEffects
@@ -53,12 +55,12 @@ object EpicSpells {
 
         SpellParser.registerSpell(arrayOf(EARTH, SPIRIT, ENTROPY, FIRE, FLOW)) { player, trailing, total ->
             player.sendStatusMessage(TextComponentString("Walk The Path trailing: $trailing total: $total"), false) // debug
-            // todo blocks fall away before you, you can walk through mountains to make a tunnel
+            applyPotionBuff(PotionPathwalker, player, trailing + 4, 1, false)
         }
 
         SpellParser.registerSpell(arrayOf(CONNECTION, SPIRIT, ENTROPY, METAL, WATER)) { player, trailing, total ->
             player.sendStatusMessage(TextComponentString("Steal Their Strength trailing: $trailing total: $total"), false) // debug
-            // todo vampirism buff, aoe life drain
+            applyPotionBuff(PotionVampirism, player, trailing + 4, 1, false)
         }
 
         val pattern = arrayOf(CONNECTION, AETHER, SPIRIT, FIRE, AIR, WATER, SOUL, FLOW)

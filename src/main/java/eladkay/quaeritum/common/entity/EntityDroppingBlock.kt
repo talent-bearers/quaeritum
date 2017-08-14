@@ -1,5 +1,6 @@
 package eladkay.quaeritum.common.entity
 
+import com.google.common.base.Optional
 import net.minecraft.block.Block
 import net.minecraft.block.BlockFalling
 import net.minecraft.block.material.Material
@@ -18,8 +19,6 @@ import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 
 class EntityDroppingBlock : Entity {
-    var block: IBlockState = Blocks.AIR.defaultState
-        private set
     var fallTime: Int = 0
     var shouldDropItem = true
     var tileEntityData: NBTTagCompound? = null
@@ -40,9 +39,23 @@ class EntityDroppingBlock : Entity {
         this.origin = BlockPos(this)
     }
 
+    fun withDrop(boolean: Boolean): EntityDroppingBlock {
+        shouldDropItem = boolean
+        return this
+    }
+
     var origin: BlockPos
         get() = this.dataManager.get(ORIGIN)
         set(value) = this.dataManager.set(ORIGIN, value)
+
+    var block: IBlockState
+        get() {
+            val optional = this.dataManager.get(STATE)
+            if (optional.isPresent)
+                return optional.get()
+            return Blocks.AIR.defaultState
+        }
+        set(value) = dataManager.set(STATE, Optional.of(value))
 
     /**
      * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
@@ -54,6 +67,7 @@ class EntityDroppingBlock : Entity {
 
     override fun entityInit() {
         this.dataManager.register(ORIGIN, BlockPos.ORIGIN)
+        this.dataManager.register(STATE, Optional.absent())
     }
 
     /**
@@ -177,5 +191,6 @@ class EntityDroppingBlock : Entity {
 
     companion object {
         private val ORIGIN = EntityDataManager.createKey(EntityDroppingBlock::class.java, DataSerializers.BLOCK_POS)
+        private val STATE = EntityDataManager.createKey(EntityDroppingBlock::class.java, DataSerializers.OPTIONAL_BLOCK_STATE)
     }
 }

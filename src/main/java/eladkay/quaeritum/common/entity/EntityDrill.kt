@@ -4,6 +4,7 @@ import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.util.EnumActionResult
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Vec3d
@@ -16,6 +17,24 @@ import net.minecraftforge.event.world.BlockEvent
  * Created at 8:38 PM on 8/12/17.
  */
 class EntityDrill : EntityBaseProjectile {
+
+    companion object {
+        fun dropBlock(shooter: Entity?, world: World, position: BlockPos, shouldDrop: Boolean = true): EnumActionResult {
+            val state = world.getBlockState(position)
+            return if (shooter !is EntityPlayer ||
+                    !world.isBlockLoaded(position) || !world.isBlockModifiable(shooter, position) ||
+                    state.block.getPlayerRelativeBlockHardness(state, shooter, world, position) <= 0 ||
+                    MinecraftForge.EVENT_BUS.post(BlockEvent.BreakEvent(world, position, state, shooter)))
+                EnumActionResult.FAIL
+            else if (!state.block.isReplaceable(world, position)){
+                world.spawnEntity(EntityDroppingBlock(world, position.x + 0.5, position.y.toDouble(), position.z + 0.5, state).withDrop(shouldDrop))
+                world.setBlockToAir(position)
+                EnumActionResult.SUCCESS
+            } else
+                EnumActionResult.PASS
+        }
+    }
+
     constructor(worldIn: World) : super(worldIn)
     constructor(worldIn: World, x: Double, y: Double, z: Double) : super(worldIn, x, y, z)
     constructor(worldIn: World, shooter: EntityLivingBase) : super(worldIn, shooter)
@@ -35,22 +54,24 @@ class EntityDrill : EntityBaseProjectile {
             val posMin = BlockPos(entityBoundingBox.minX, entityBoundingBox.minY, entityBoundingBox.minZ)
             val posMax = BlockPos(entityBoundingBox.maxX, entityBoundingBox.maxY, entityBoundingBox.maxZ)
             for (block in BlockPos.getAllInBoxMutable(posMin, posMax))
-                onImpactBlock(Vec3d(block), EnumFacing.UP, block)
+                if (blocksLeft == 0) {
+                    setDead()
+                    break
+                } else when (dropBlock(shootingEntity, world, position)) {
+                    EnumActionResult.SUCCESS -> blocksLeft--
+                    EnumActionResult.FAIL -> setDead()
+                    else -> {} // NO-OP
+                }
         }
     }
 
     override fun onImpactBlock(hitVec: Vec3d, side: EnumFacing, position: BlockPos) {
-        val shooter = shootingEntity
-        val state = world.getBlockState(position)
-        if (shooter !is EntityPlayer || blocksLeft == 0 ||
-                !world.isBlockLoaded(position) || !world.isBlockModifiable(shooter, position) ||
-                state.block.getPlayerRelativeBlockHardness(state, shooter, world, position) <= 0 ||
-                MinecraftForge.EVENT_BUS.post(BlockEvent.BreakEvent(world, position, state, shooter)))
-            super.onImpactBlock(hitVec, side, position)
-        else if (!state.block.isReplaceable(world, position)){
-            world.spawnEntity(EntityDroppingBlock(world, position.x + 0.5, position.y.toDouble(), position.z + 0.5, state))
-            world.setBlockToAir(position)
-            blocksLeft--
+        if (blocksLeft == 0) setDead()
+        else
+            when (dropBlock(shootingEntity, world, position)) {
+            EnumActionResult.SUCCESS -> blocksLeft--
+            EnumActionResult.FAIL -> setDead()
+            else -> {} // NO-OP
         }
     }
 

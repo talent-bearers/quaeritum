@@ -1,4 +1,4 @@
-package eladkay.quaeritum.common.potions;
+package eladkay.quaeritum.common.potions
 
 import com.teamwizardry.librarianlib.features.base.PotionMod
 import eladkay.quaeritum.common.lib.LibNames

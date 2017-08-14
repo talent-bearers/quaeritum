@@ -10,10 +10,7 @@ import eladkay.quaeritum.common.crafting.ModRecipes
 import eladkay.quaeritum.common.entity.ModEntities
 import eladkay.quaeritum.common.item.ModItems
 import eladkay.quaeritum.common.networking.RemainingItemRenderPacket
-import eladkay.quaeritum.common.potions.ModPotionTypes
-import eladkay.quaeritum.common.potions.PotionIronskin
-import eladkay.quaeritum.common.potions.PotionRooted
-import eladkay.quaeritum.common.potions.PotionSoulgaze
+import eladkay.quaeritum.common.potions.*
 import eladkay.quaeritum.common.rituals.ModDiagrams
 import eladkay.quaeritum.common.rituals.ModWorks
 import eladkay.quaeritum.common.spell.BasicSpells
@@ -40,9 +37,7 @@ open class CommonProxy {
         ModBlocks
         ModTab
         ModItems
-        PotionRooted
-        PotionSoulgaze
-        PotionIronskin
+        PotionRooted; PotionSoulgaze; PotionIronskin; PotionPathwalker; PotionVampirism
         ModPotionTypes
         BasicSpells
         SightHandler

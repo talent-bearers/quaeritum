@@ -43,6 +43,9 @@ class ClientProxy : CommonProxy() {
         LightningRenderer.INSTANCE
         RiftRenderer(Vec3d(0.0, 20.0, 0.0), RandUtil.nextLong(0, 10000))
 
+        RenderingRegistry.registerEntityRenderingHandler(EntityChaosborn::class.java, { RenderChaosborn(it) })
+        RenderingRegistry.registerEntityRenderingHandler(EntityDroppingBlock::class.java, { RenderFalling(it) })
+
         registerItemHook { stack, _ ->
             if (stack.item is ItemEvoker) {
                 withLighting(false) {
@@ -105,9 +108,6 @@ class ClientProxy : CommonProxy() {
 
         render = skinMap["slim"]
         render?.addLayer(LayerSight)
-
-        RenderingRegistry.registerEntityRenderingHandler(EntityChaosborn::class.java, { RenderChaosborn(it) })
-        RenderingRegistry.registerEntityRenderingHandler(EntityDroppingBlock::class.java, { RenderFalling(it) })
 
         Minecraft.getMinecraft().textureMapBlocks.registerSprite(ResourceLocation("quaeritum:entity/magicParticle"))
     }

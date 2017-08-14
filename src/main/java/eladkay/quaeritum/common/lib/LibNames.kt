@@ -44,6 +44,8 @@ object LibNames {
     val ROOTED = "rooted"
     val IRONSKIN = "ironskin"
     val SOULGAZE = "soulgaze"
+    val VAMPIRISM = "vampirism"
+    val PATHWALKER = "pathwalker"
     val REPULSOR = "repulsor"
     val WINDWALKER = "windwalker"
     val HIVE_CIRCLET = "hive_circlet"
