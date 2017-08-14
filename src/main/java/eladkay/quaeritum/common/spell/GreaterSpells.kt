@@ -4,6 +4,8 @@ import com.teamwizardry.librarianlib.features.utilities.RaycastUtils
 import eladkay.quaeritum.api.spell.EnumSpellElement.*
 import eladkay.quaeritum.api.spell.SpellParser
 import net.minecraft.entity.EntityLivingBase
+import net.minecraft.entity.effect.EntityLightningBolt
+import net.minecraft.util.math.RayTraceResult
 import net.minecraft.util.text.TextComponentString
 
 /**
@@ -19,7 +21,9 @@ object GreaterSpells {
 
         SpellParser.registerSpell(arrayOf(AIR, ENTROPY, EARTH)) { player, trailing, total ->
             player.sendStatusMessage(TextComponentString("sparkbolt trailing: $trailing total: $total"), false) // debug
-            // todo spark effect
+            val block = RaycastUtils.raycast(player, 32.0)
+            if (block != null && block.typeOfHit != RayTraceResult.Type.MISS)
+                player.world.addWeatherEffect(EntityLightningBolt(player.world, block.hitVec.x, block.hitVec.y, block.hitVec.z, false))
         }
 
         SpellParser.registerSpell(arrayOf(SPIRIT, CONNECTION, SOUL)) { player, trailing, total ->
