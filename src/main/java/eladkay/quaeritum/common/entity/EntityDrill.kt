@@ -30,6 +30,7 @@ class EntityDrill : EntityBaseProjectile {
                     MinecraftForge.EVENT_BUS.post(BlockEvent.BreakEvent(world, position, state, shooter)))
                 EnumActionResult.FAIL
             else if (!state.block.isReplaceable(world, position)) {
+                world.setBlockToAir(position)
                 if (!BlockFalling.canFallThrough(world.getBlockState(position.down()))) {
                     val stack = ItemStack(state.block, 1, state.block.damageDropped(state))
                     if (!stack.isEmpty) {
@@ -40,7 +41,6 @@ class EntityDrill : EntityBaseProjectile {
                     return EnumActionResult.SUCCESS
                 }
                 world.spawnEntity(EntityDroppingBlock(world, position.x + 0.5, position.y.toDouble(), position.z + 0.5, state).withDrop(shouldDrop))
-                world.setBlockToAir(position)
                 EnumActionResult.SUCCESS
             } else
                 EnumActionResult.PASS
