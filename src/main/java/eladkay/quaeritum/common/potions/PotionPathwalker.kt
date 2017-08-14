@@ -17,7 +17,7 @@ object PotionPathwalker : PotionMod(LibNames.PATHWALKER, false, 0x50CE23) {
     override fun performEffect(entity: EntityLivingBase, amplifier: Int) {
         if (!entity.world.isRemote)
             BlockPos.getAllInBox(entity.position.add(-4, 0, -4), entity.position.add(4, 5, 4))
-                    .filter { entity.getDistanceSqToCenter(it) <= 16.0 }
+                    .filter { it.distanceSq(entity.position) <= 16.0 }
                     .forEach { EntityDrill.dropBlock(entity, entity.world, it, false) }
     }
 }
