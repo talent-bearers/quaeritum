@@ -1,6 +1,5 @@
 package eladkay.quaeritum.common.entity
 
-import com.teamwizardry.librarianlib.test.chunkdata.ChunkDataEntryPoint.item
 import net.minecraft.block.BlockFalling
 import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityLivingBase
@@ -31,8 +30,7 @@ class EntityDrill : EntityBaseProjectile {
                     MinecraftForge.EVENT_BUS.post(BlockEvent.BreakEvent(world, position, state, shooter)))
                 EnumActionResult.FAIL
             else if (!state.block.isReplaceable(world, position)) {
-                if (world.isAirBlock(position.down()) &&
-                            BlockFalling.canFallThrough(world.getBlockState(position.down()))) {
+                if (!BlockFalling.canFallThrough(world.getBlockState(position.down()))) {
                     val stack = ItemStack(state.block, 1, state.block.damageDropped(state))
                     if (!stack.isEmpty) {
                         val item = EntityItem(world, position.x + 0.5, position.y.toDouble(), position.x + 0.5, stack)
