@@ -3,6 +3,7 @@ package eladkay.quaeritum.common.spell
 import com.teamwizardry.librarianlib.features.utilities.RaycastUtils
 import eladkay.quaeritum.api.spell.EnumSpellElement.*
 import eladkay.quaeritum.api.spell.SpellParser
+import eladkay.quaeritum.common.entity.EntityDrill
 import eladkay.quaeritum.common.entity.EntityFrostshock
 import eladkay.quaeritum.common.potions.PotionIronskin
 import eladkay.quaeritum.common.potions.PotionRooted
@@ -92,7 +93,17 @@ object ComplexSpells {
 
         SpellParser.registerSpell(arrayOf(EARTH, FLOW)) { player, trailing, total ->
             player.sendStatusMessage(TextComponentString("drill trailing: $trailing total: $total"), false) // debug
-            // todo drill into earth
+            val drill = EntityDrill(player.world, player)
+            val shiftTotal = Math.max(1, total - 1)
+            val velocity = Math.min(2f, 3f * shiftTotal / (trailing + 1))
+            val inaccuracy = Math.max(shiftTotal - trailing.toFloat(), 0f)
+            val blocksBreakable = 10 + 10 * trailing / shiftTotal
+            drill.damage = 0f
+            drill.gravity = velocity * 0.0125f
+            drill.knockback = 0.0f
+            drill.blocksLeft = blocksBreakable
+            drill.setAim(player, player.rotationPitch, player.rotationYaw, Math.min(velocity, 2f), inaccuracy)
+            player.world.spawnEntity(drill)
         }
 
         SpellParser.registerSpell(arrayOf(SOUL, SPIRIT)) { player, trailing, total ->

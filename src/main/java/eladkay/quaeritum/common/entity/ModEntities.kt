@@ -14,6 +14,8 @@ object ModEntities {
         registerModEntity(EntityCircleOfTheFinalMoment::class.java, LibNames.CIRCLE)
         registerModEntity(EntityFirebolt::class.java, "firebolt", 3, true)
         registerModEntity(EntityFrostshock::class.java, "frostshock", 3, true)
+        registerModEntity(EntityDroppingBlock::class.java, "dropping", 3, true)
+        registerModEntity(EntityDrill::class.java, "drill", 3, true)
     }
 
     fun registerModEntityWithEgg(parEntityClass: Class<out Entity>, parEntityName: String, parEggColor: Int, parEggSpotsColor: Int, updateFrequency: Int = 3, sendsVelocity: Boolean = false) {

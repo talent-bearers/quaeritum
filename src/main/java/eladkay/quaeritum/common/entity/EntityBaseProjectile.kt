@@ -169,8 +169,8 @@ abstract class EntityBaseProjectile(worldIn: World) : Entity(worldIn), IProjecti
         doBlockCollisions()
     }
 
-    abstract fun getDefaultDamageSource(): DamageSource
-    abstract fun getShotDamageSource(shooter: Entity): DamageSource
+    abstract fun getDefaultDamageSource(): DamageSource?
+    abstract fun getShotDamageSource(shooter: Entity): DamageSource?
     open fun onImpactEntity(entity: Entity, successful: Boolean) { if (entity is EntityEnderman) setDead() }
     open fun onImpactBlock(hitVec: Vec3d, side: EnumFacing, position: BlockPos) = setDead()
 
@@ -191,21 +191,21 @@ abstract class EntityBaseProjectile(worldIn: World) : Entity(worldIn), IProjecti
             if (isBurning && entity !is EntityEnderman)
                 entity.setFire(5)
 
-            if (entity.attackEntityFrom(source, damage.toFloat())) {
-                if (entity is EntityLivingBase) {
-
-                    if (knockback > 0) {
-                        val f1 = MathHelper.sqrt(motionX * motionX + motionZ * motionZ)
-                        if (f1 > 0.0f)
-                            entity.addVelocity(motionX * knockback * 0.6 / f1.toDouble(), 0.1, motionZ * knockback * 0.6 / f1.toDouble())
+            if (source == null) onImpactEntity(entity, true)
+            else {
+                if (entity.attackEntityFrom(source, damage.toFloat())) {
+                    if (entity is EntityLivingBase && knockback > 0) {
+                        val horizontalMagnitude = MathHelper.sqrt(motionX * motionX + motionZ * motionZ)
+                        if (horizontalMagnitude > 0.0f)
+                            entity.addVelocity(motionX * knockback * 0.6 / horizontalMagnitude.toDouble(), 0.1, motionZ * knockback * 0.6 / horizontalMagnitude.toDouble())
                     }
-                }
 
-                if (!world.isRemote)
-                    onImpactEntity(entity, true)
+                    if (!world.isRemote)
+                        onImpactEntity(entity, true)
 
-            } else if (!world.isRemote)
-                onImpactEntity(entity, false)
+                } else if (!world.isRemote)
+                    onImpactEntity(entity, false)
+            }
         } else if (!world.isRemote)
             onImpactBlock(trace.hitVec, trace.sideHit, trace.blockPos)
 

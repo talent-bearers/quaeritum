@@ -77,14 +77,12 @@ class ItemEvoker : ItemMod(LibNames.SOUL_EVOKER), IItemColorProvider {
                     return ActionResult(EnumActionResult.SUCCESS, stack)
                 }
 
-            if (ElementHandler.addReagents(playerIn, *evocation) != EnumActionResult.SUCCESS)
-                if (playerIn.isSneaking) {
-                    setStackEvocation(stack, arrayOf())
-                    ElementHandler.setReagents(playerIn, *evocation)
-                } else {
-                    // todo breaking sound
-                    return ActionResult(EnumActionResult.SUCCESS, stack)
-                }
+            if (playerIn.isSneaking && playerReagents.isEmpty()) {
+                setStackEvocation(stack, arrayOf())
+                ElementHandler.setReagents(playerIn, *evocation)
+            } else if (ElementHandler.addReagents(playerIn, *evocation) != EnumActionResult.SUCCESS)
+                // todo breaking sound
+                return ActionResult(EnumActionResult.SUCCESS, stack)
         }
         return ActionResult(EnumActionResult.SUCCESS, stack)
     }
