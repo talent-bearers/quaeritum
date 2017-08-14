@@ -22,13 +22,19 @@ object GreaterSpells {
         SpellParser.registerSpell(arrayOf(AIR, ENTROPY, EARTH)) { player, trailing, total ->
             player.sendStatusMessage(TextComponentString("sparkbolt trailing: $trailing total: $total"), false) // debug
             val block = RaycastUtils.raycast(player, 32.0)
-            if (block != null && block.typeOfHit != RayTraceResult.Type.MISS)
-                player.world.addWeatherEffect(EntityLightningBolt(player.world, block.hitVec.x, block.hitVec.y, block.hitVec.z, false))
+            if (block != null)
+                if (block.typeOfHit == RayTraceResult.Type.MISS)
+                    player.world.addWeatherEffect(EntityLightningBolt(player.world,
+                            player.posX + player.lookVec.x * 32,
+                            player.posY + player.lookVec.y * 32,
+                            player.posZ + player.lookVec.z * 32, false))
+                else
+                    player.world.addWeatherEffect(EntityLightningBolt(player.world, block.hitVec.x, block.hitVec.y, block.hitVec.z, false))
         }
 
         SpellParser.registerSpell(arrayOf(SPIRIT, CONNECTION, SOUL)) { player, trailing, total ->
             player.sendStatusMessage(TextComponentString("trade position trailing: $trailing total: $total"), false) // debug
-            // todo trade positions (trade positions back if used within a few minutes)
+            TradeAttumentHandler.makeTrade(player, time = 3700 - total * 100 + trailing * 200)
         }
 
         SpellParser.registerSpell(arrayOf(SOUL, FORM, AIR)) { player, trailing, total ->
