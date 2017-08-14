@@ -8,6 +8,7 @@ import net.minecraft.entity.IProjectile
 import net.minecraft.entity.monster.EntityEnderman
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.network.datasync.DataParameter
 import net.minecraft.network.datasync.DataSerializers
 import net.minecraft.network.datasync.EntityDataManager
 import net.minecraft.util.DamageSource
@@ -29,7 +30,11 @@ import net.minecraftforge.common.util.Constants
 @Suppress("LeakingThis")
 abstract class EntityBaseProjectile(worldIn: World) : Entity(worldIn), IProjectile {
     var shootingEntity: Entity? = null
-    var knockback = 1.0
+    var knockback = 1f
+
+    var gravity: Float
+        get() = dataManager.get(GRAVITY)
+        set(value) = dataManager.set(GRAVITY, value)
 
     var damage: Float
         get() = dataManager.get(DAMAGE)
@@ -49,6 +54,7 @@ abstract class EntityBaseProjectile(worldIn: World) : Entity(worldIn), IProjecti
 
     override fun entityInit() {
         dataManager.register(DAMAGE, 2f)
+        dataManager.register(GRAVITY, 0.05f)
     }
 
     fun setAim(shooter: Entity, pitch: Float, yaw: Float, velocity: Float, inaccuracy: Float) {
@@ -157,7 +163,7 @@ abstract class EntityBaseProjectile(worldIn: World) : Entity(worldIn), IProjecti
         motionY *= motionModifier.toDouble()
         motionZ *= motionModifier.toDouble()
 
-        if (!hasNoGravity()) motionY -= gravity()
+        if (!hasNoGravity()) motionY -= gravity
 
         setPosition(posX, posY, posZ)
         doBlockCollisions()
@@ -167,8 +173,6 @@ abstract class EntityBaseProjectile(worldIn: World) : Entity(worldIn), IProjecti
     abstract fun getShotDamageSource(shooter: Entity): DamageSource
     open fun onImpactEntity(entity: Entity, successful: Boolean) { if (entity is EntityEnderman) setDead() }
     open fun onImpactBlock(hitVec: Vec3d, side: EnumFacing, position: BlockPos) = setDead()
-
-    open fun gravity() = 0.05
 
     protected fun onHit(trace: RayTraceResult) {
         val entity = trace.entityHit
@@ -234,12 +238,14 @@ abstract class EntityBaseProjectile(worldIn: World) : Entity(worldIn), IProjecti
 
     public override fun writeEntityToNBT(compound: NBTTagCompound) {
         compound.setFloat("damage", damage)
-        compound.setDouble("knockback", knockback)
+        compound.setFloat("knockback", knockback)
+        compound.setFloat("gravity", gravity)
     }
 
     public override fun readEntityFromNBT(compound: NBTTagCompound) {
         if (compound.hasKey("damage", Constants.NBT.TAG_ANY_NUMERIC)) damage = compound.getFloat("damage")
-        if (compound.hasKey("knockback", Constants.NBT.TAG_ANY_NUMERIC)) knockback = compound.getDouble("knockback")
+        if (compound.hasKey("knockback", Constants.NBT.TAG_ANY_NUMERIC)) knockback = compound.getFloat("knockback")
+        if (compound.hasKey("gravity", Constants.NBT.TAG_ANY_NUMERIC)) gravity = compound.getFloat("knockback")
     }
 
     override fun canTriggerWalking() = false
@@ -250,7 +256,9 @@ abstract class EntityBaseProjectile(worldIn: World) : Entity(worldIn), IProjecti
 
     companion object {
         @JvmField
-        val DAMAGE = EntityDataManager.createKey(EntityBaseProjectile::class.java, DataSerializers.FLOAT)
+        val DAMAGE: DataParameter<Float> = EntityDataManager.createKey(EntityBaseProjectile::class.java, DataSerializers.FLOAT)
+        @JvmField
+        val GRAVITY: DataParameter<Float> = EntityDataManager.createKey(EntityBaseProjectile::class.java, DataSerializers.FLOAT)
 
         private val ARROW_TARGETS = Predicates.and(EntitySelectors.NOT_SPECTATING, EntitySelectors.IS_ALIVE, Predicate<Entity> { it!!.canBeCollidedWith() })
     }

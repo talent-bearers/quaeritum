@@ -96,8 +96,9 @@ entity.quaeritum.chaosborn.name=Chaosborn
 misc.quaeritum.rush_of_energy=A rush of energy flows through your soul!
 
 death.attack.quaeritum.shield=%s experienced kinetic energy
+death.attack.quaeritum.shield.player=%s experienced %s's kinetic energy
 death.attack.quaeritum.frost=%s was pierced by frost
-death.attack.quaeritum.frost.player=%s was pierced by frost from %s
+death.attack.quaeritum.frost.player=%s was pierced by %s's frost
 
 item.quaeritum:chalk_white.name=White Chalk
 item.quaeritum:chalk_orange.name=Orange Chalk

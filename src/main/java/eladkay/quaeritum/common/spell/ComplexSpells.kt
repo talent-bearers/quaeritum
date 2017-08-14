@@ -3,6 +3,7 @@ package eladkay.quaeritum.common.spell
 import com.teamwizardry.librarianlib.features.utilities.RaycastUtils
 import eladkay.quaeritum.api.spell.EnumSpellElement.*
 import eladkay.quaeritum.api.spell.SpellParser
+import eladkay.quaeritum.common.entity.EntityFrostshock
 import eladkay.quaeritum.common.potions.PotionIronskin
 import eladkay.quaeritum.common.potions.PotionRooted
 import net.minecraft.entity.EntityLivingBase
@@ -107,7 +108,16 @@ object ComplexSpells {
 
         SpellParser.registerSpell(arrayOf(WATER, FORM)) { player, trailing, total ->
             player.sendStatusMessage(TextComponentString("ice shock trailing: $trailing total: $total"), false) // debug
-            // todo frost projectiles like firebolt
+            val frostshock = EntityFrostshock(player.world, player)
+            val shiftTotal = Math.max(1, total - 1)
+            val velocity = Math.min(2f, 3f * shiftTotal / (trailing + 1))
+            val inaccuracy = Math.max(shiftTotal - trailing.toFloat(), 0f)
+            val damage = 3.5f + 3.5f * trailing / shiftTotal
+            frostshock.damage = damage
+            frostshock.gravity = velocity * 0.0125f
+            frostshock.knockback = 0.0f
+            frostshock.setAim(player, player.rotationPitch, player.rotationYaw, Math.min(velocity, 2f), inaccuracy)
+            player.world.spawnEntity(frostshock)
         }
     }
 }

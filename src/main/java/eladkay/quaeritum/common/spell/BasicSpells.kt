@@ -99,7 +99,12 @@ object BasicSpells {
         registerSpell(arrayOf(FIRE)) { player, trailing, total ->
             player.sendStatusMessage(TextComponentString("firebolt trailing: $trailing total: $total"), false) // debug
             val firebolt = EntityFirebolt(player.world, player)
-            firebolt.setAim(player, player.rotationPitch, player.rotationYaw, 3.0f, 1.0f) // todo inaccuracy and velocity depend on trailing total, as well as damage
+            val damage = 3f + 3f * trailing / total
+            val inaccuracy = Math.max(total - trailing.toFloat(), 0f)
+            val velocity = Math.min(2f, 3f * total / (trailing + 1))
+            firebolt.damage = damage
+            firebolt.gravity = velocity * 0.0125f
+            firebolt.setAim(player, player.rotationPitch, player.rotationYaw, velocity, inaccuracy)
             player.world.spawnEntity(firebolt)
         }
 
