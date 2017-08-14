@@ -5,8 +5,10 @@ import com.teamwizardry.librarianlib.features.base.item.ItemMod
 import com.teamwizardry.librarianlib.features.helpers.ItemNBTHelper
 import eladkay.quaeritum.api.spell.ElementHandler
 import eladkay.quaeritum.api.spell.EnumSpellElement
+import eladkay.quaeritum.api.spell.SpellParser
 import eladkay.quaeritum.api.spell.render.RenderUtil
 import eladkay.quaeritum.common.lib.LibNames
+import net.minecraft.entity.Entity
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.util.ActionResult
@@ -60,6 +62,27 @@ class ItemEvoker : ItemMod(LibNames.SOUL_EVOKER), IItemColorProvider {
                 }
             } else -1
         }
+
+    override fun onLeftClickEntity(stack: ItemStack, player: EntityPlayer, entity: Entity): Boolean {
+        var reagents = ElementHandler.getReagentsTyped(player)
+        var clear = true
+
+        val evocation = ItemEvoker.getEvocationFromStack(stack)
+        if (reagents.isEmpty() && ElementHandler.probeReagents(player, *evocation) == EnumActionResult.SUCCESS) {
+            reagents = evocation
+            clear = false
+        }
+
+        if (player.isSneaking || player.heldItemMainhand.item is ItemEvoker) {
+
+            SpellParser(reagents).cast(player)
+            // todo fwoosh
+            if (clear)
+                ElementHandler.clearReagents(player)
+        }
+
+        return true
+    }
 
     override fun onItemRightClick(worldIn: World, playerIn: EntityPlayer, handIn: EnumHand): ActionResult<ItemStack> {
         val stack = playerIn.getHeldItem(handIn)
