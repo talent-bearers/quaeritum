@@ -119,12 +119,12 @@ class EntityDroppingBlock : Entity {
 
                         if (block is BlockFalling) block.onBroken(this.world, selfPos)
 
-                        if (this.shouldDropItem && this.world.gameRules.getBoolean("doEntityDrops"))
+                        if (this.shouldDropItem && this.world.gameRules.getBoolean("doTileDrops"))
                             this.entityDropItem(ItemStack(block, 1, block.damageDropped(this.block)), 0.0f)
                     }
 
                 } else if (this.fallTime > 100 && (selfPos.y < 1 || selfPos.y > 256) || this.fallTime > 600) {
-                    if (this.shouldDropItem && this.world.gameRules.getBoolean("doEntityDrops"))
+                    if (this.shouldDropItem && this.world.gameRules.getBoolean("doTileDrops"))
                         this.entityDropItem(ItemStack(block, 1, block.damageDropped(this.block)), 0.0f)
 
                     this.setDead()

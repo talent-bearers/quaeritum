@@ -32,15 +32,16 @@ class EntityDrill : EntityBaseProjectile {
             else if (!state.block.isReplaceable(world, position)) {
                 world.setBlockToAir(position)
                 if (!BlockFalling.canFallThrough(world.getBlockState(position.down()))) {
-                    val stack = ItemStack(state.block, 1, state.block.damageDropped(state))
-                    if (!stack.isEmpty) {
-                        val item = EntityItem(world, position.x + 0.5, position.y.toDouble(), position.x + 0.5, stack)
-                        item.setDefaultPickupDelay()
-                        world.spawnEntity(item)
+                    if (shouldDrop && world.gameRules.getBoolean("doTileDrops")) {
+                        val stack = ItemStack(state.block, 1, state.block.damageDropped(state))
+                        if (!stack.isEmpty) {
+                            val item = EntityItem(world, position.x + 0.5, position.y.toDouble(), position.z + 0.5, stack)
+                            item.setDefaultPickupDelay()
+                            world.spawnEntity(item)
+                        }
                     }
-                    return EnumActionResult.SUCCESS
-                }
-                world.spawnEntity(EntityDroppingBlock(world, position.x + 0.5, position.y.toDouble(), position.z + 0.5, state).withDrop(shouldDrop))
+                } else
+                    world.spawnEntity(EntityDroppingBlock(world, position.x + 0.5, position.y.toDouble(), position.z + 0.5, state).withDrop(shouldDrop))
                 EnumActionResult.SUCCESS
             } else
                 EnumActionResult.PASS
@@ -81,10 +82,10 @@ class EntityDrill : EntityBaseProjectile {
         if (blocksLeft == 0) setDead()
         else
             when (dropBlock(shootingEntity, world, position)) {
-            EnumActionResult.SUCCESS -> blocksLeft--
-            EnumActionResult.FAIL -> setDead()
-            else -> {} // NO-OP
-        }
+                EnumActionResult.SUCCESS -> blocksLeft--
+                EnumActionResult.FAIL -> setDead()
+                else -> {} // NO-OP
+            }
     }
 
     override fun writeEntityToNBT(compound: NBTTagCompound) {
