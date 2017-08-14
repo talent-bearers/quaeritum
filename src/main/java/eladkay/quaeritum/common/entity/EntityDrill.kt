@@ -50,9 +50,6 @@ class EntityDrill : EntityBaseProjectile {
         else if (!state.block.isReplaceable(world, position)){
             world.spawnEntity(EntityDroppingBlock(world, position.x + 0.5, position.y.toDouble(), position.z + 0.5, state))
             world.setBlockToAir(position)
-            motionX *= 0.75
-            motionY *= 0.75
-            motionZ *= 0.75
             blocksLeft--
         }
     }

@@ -1,7 +1,6 @@
 package eladkay.quaeritum.client.core
 
 import com.teamwizardry.librarianlib.core.client.RenderHookHandler.registerItemHook
-import com.teamwizardry.librarianlib.features.utilities.client.GlUtils
 import com.teamwizardry.librarianlib.features.utilities.client.GlUtils.useLightmap
 import com.teamwizardry.librarianlib.features.utilities.client.GlUtils.withLighting
 import eladkay.quaeritum.api.spell.render.RenderUtil
@@ -12,8 +11,10 @@ import eladkay.quaeritum.client.render.RenderSymbol
 import eladkay.quaeritum.client.render.RenderSymbol.renderSymbol
 import eladkay.quaeritum.client.render.entity.LayerSight
 import eladkay.quaeritum.client.render.entity.RenderChaosborn
+import eladkay.quaeritum.client.render.entity.RenderFalling
 import eladkay.quaeritum.common.core.CommonProxy
 import eladkay.quaeritum.common.entity.EntityChaosborn
+import eladkay.quaeritum.common.entity.EntityDroppingBlock
 import eladkay.quaeritum.common.item.ItemEvoker
 import net.minecraft.client.Minecraft
 import net.minecraft.client.particle.Particle
@@ -105,7 +106,9 @@ class ClientProxy : CommonProxy() {
         render = skinMap["slim"]
         render?.addLayer(LayerSight)
 
-        RenderingRegistry.registerEntityRenderingHandler<EntityChaosborn>(EntityChaosborn::class.java, { RenderChaosborn(it) })
+        RenderingRegistry.registerEntityRenderingHandler(EntityChaosborn::class.java, { RenderChaosborn(it) })
+        RenderingRegistry.registerEntityRenderingHandler(EntityDroppingBlock::class.java, { RenderFalling(it) })
+
         Minecraft.getMinecraft().textureMapBlocks.registerSprite(ResourceLocation("quaeritum:entity/magicParticle"))
     }
 
