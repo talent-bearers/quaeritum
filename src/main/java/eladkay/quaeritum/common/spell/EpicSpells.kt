@@ -8,7 +8,7 @@ import eladkay.quaeritum.common.item.ItemEvoker
 import eladkay.quaeritum.common.potions.PotionPathwalker
 import eladkay.quaeritum.common.potions.PotionRooted
 import eladkay.quaeritum.common.potions.PotionVampirism
-import eladkay.quaeritum.common.spell.BasicSpells.applyPotionBuff
+import eladkay.quaeritum.common.spell.GreaterSpells.applyShiftedBuff
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.MobEffects
 import net.minecraft.potion.PotionEffect
@@ -35,10 +35,10 @@ object EpicSpells {
                 it != null && it != player && it.getDistanceSqToEntity(player) < 625.0
             }.forEach {
                 it.heal(trailing * 5f + 5f)
-                applyPotionBuff(MobEffects.SPEED, player, trailing + 4, 1, true)
-                applyPotionBuff(MobEffects.JUMP_BOOST, player, trailing + 4, 1, true)
-                applyPotionBuff(MobEffects.STRENGTH, player, trailing + 4, 1, true)
-                applyPotionBuff(MobEffects.RESISTANCE, player, trailing + 4, 1, true)
+                applyShiftedBuff(MobEffects.SPEED, player, trailing + 4, 1, true)
+                applyShiftedBuff(MobEffects.JUMP_BOOST, player, trailing + 4, 1, true)
+                applyShiftedBuff(MobEffects.STRENGTH, player, trailing + 4, 1, true)
+                applyShiftedBuff(MobEffects.RESISTANCE, player, trailing + 4, 1, true)
             }
 
             player.addPotionEffect(PotionEffect(MobEffects.WITHER, 500, 3))
@@ -55,12 +55,12 @@ object EpicSpells {
 
         SpellParser.registerSpell(arrayOf(EARTH, SPIRIT, ENTROPY, FIRE, FLOW)) { player, trailing, total ->
             player.sendStatusMessage(TextComponentString("Walk The Path trailing: $trailing total: $total"), false) // debug
-            applyPotionBuff(PotionPathwalker, player, trailing + 4, 1, false)
+            applyShiftedBuff(PotionPathwalker, player, trailing + 4, 1, false)
         }
 
         SpellParser.registerSpell(arrayOf(CONNECTION, SPIRIT, ENTROPY, METAL, WATER)) { player, trailing, total ->
             player.sendStatusMessage(TextComponentString("Steal Their Strength trailing: $trailing total: $total"), false) // debug
-            applyPotionBuff(PotionVampirism, player, trailing + 4, 1, false)
+            applyShiftedBuff(PotionVampirism, player, trailing + 4, 1, false)
         }
 
         val pattern = arrayOf(CONNECTION, AETHER, SPIRIT, FIRE, AIR, WATER, SOUL, FLOW)

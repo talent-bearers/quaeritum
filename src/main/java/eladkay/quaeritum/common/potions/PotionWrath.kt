@@ -1,23 +1,17 @@
 package eladkay.quaeritum.common.potions
 
 import com.teamwizardry.librarianlib.features.base.PotionMod
-import eladkay.quaeritum.common.entity.EntityDrill
 import eladkay.quaeritum.common.lib.LibNames
-import net.minecraft.entity.EntityLivingBase
-import net.minecraft.util.math.BlockPos
+import net.minecraft.entity.SharedMonsterAttributes
 
 /**
  * @author WireSegal
  * Created at 2:47 PM on 4/15/16.
  */
-object PotionWrath : PotionMod(LibNames.WRATH, false, 0x50CE23) {
+object PotionWrath : PotionMod(LibNames.WRATH, false, 0xD32323) {
 
-    override fun isReady(duration: Int, amplifier: Int) = true
-
-    override fun performEffect(entity: EntityLivingBase, amplifier: Int) {
-        if (!entity.world.isRemote)
-            BlockPos.getAllInBox(entity.position.add(-4, 0, -4), entity.position.add(4, 5, 4))
-                    .filter { it.distanceSq(entity.position) <= 16.0 }
-                    .forEach { EntityDrill.dropBlock(entity, entity.world, it, false) }
+    init {
+        registerPotionAttributeModifier(SharedMonsterAttributes.MOVEMENT_SPEED, "359E48AE-2C73-4457-A6F6-46D5fC13A733", 0.4, 2)
+        registerPotionAttributeModifier(SharedMonsterAttributes.ATTACK_DAMAGE, "029CCB40-9C9A-4D42-BF82-F0E5113BDFAE", 3.0, 0)
     }
 }

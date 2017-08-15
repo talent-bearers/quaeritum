@@ -3,8 +3,12 @@ package eladkay.quaeritum.common.spell
 import com.teamwizardry.librarianlib.features.utilities.RaycastUtils
 import eladkay.quaeritum.api.spell.EnumSpellElement.*
 import eladkay.quaeritum.api.spell.SpellParser
+import eladkay.quaeritum.common.potions.PotionEmbodiment
+import eladkay.quaeritum.common.potions.PotionWrath
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.effect.EntityLightningBolt
+import net.minecraft.potion.Potion
+import net.minecraft.potion.PotionEffect
 import net.minecraft.util.math.RayTraceResult
 import net.minecraft.util.text.TextComponentString
 
@@ -15,6 +19,12 @@ import net.minecraft.util.text.TextComponentString
 object GreaterSpells {
 
     // Greater spells are those with three, or four symbols. They don't cost anything extra to have multiples.
+
+    fun applyShiftedBuff(potion: Potion, player: EntityLivingBase, trailing: Int, total: Int, amplifier: Boolean) {
+        val potionEffect = player.removeActivePotionEffect(potion) ?: PotionEffect(potion)
+        player.addPotionEffect(PotionEffect(potion, Math.max(5 + (trailing * 5) / total, 1) * (if (amplifier) 20 else 25) + potionEffect.duration,
+                if (amplifier) trailing / 2 else 0))
+    }
 
     init {
         EpicSpells
@@ -44,12 +54,12 @@ object GreaterSpells {
 
         SpellParser.registerSpell(arrayOf(EARTH, FORM, METAL, WATER)) { player, trailing, total ->
             player.sendStatusMessage(TextComponentString("embody protection trailing: $trailing total: $total"), false) // debug
-            // todo
+            applyShiftedBuff(PotionEmbodiment, player, trailing + 3, 1, true)
         }
 
         SpellParser.registerSpell(arrayOf(EARTH, FORM, METAL, FIRE)) { player, trailing, total ->
             player.sendStatusMessage(TextComponentString("embody weaponry trailing: $trailing total: $total"), false) // debug
-            // todo
+            applyShiftedBuff(PotionWrath, player, trailing + 3, 1, true)
         }
 
         SpellParser.registerSpell(arrayOf(FIRE, WATER, EARTH, AIR)) { player, trailing, total ->
