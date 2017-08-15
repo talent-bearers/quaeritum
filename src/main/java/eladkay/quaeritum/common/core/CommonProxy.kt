@@ -37,7 +37,7 @@ open class CommonProxy {
         ModBlocks
         ModTab
         ModItems
-        PotionRooted; PotionSoulgaze; PotionIronskin; PotionPathwalker; PotionVampirism
+        PotionRooted; PotionSoulgaze; PotionIronskin; PotionPathwalker; PotionVampirism; PotionEmbodiment; PotionWrath
         ModPotionTypes
         BasicSpells
         SightHandler
@@ -55,7 +55,7 @@ open class CommonProxy {
 
     }
 
-    fun post(e: FMLPostInitializationEvent) {
+    open fun post(e: FMLPostInitializationEvent) {
 
     }
 

@@ -43,12 +43,12 @@ object GreaterSpells {
         }
 
         SpellParser.registerSpell(arrayOf(EARTH, FORM, METAL, WATER)) { player, trailing, total ->
-            player.sendStatusMessage(TextComponentString("embody shield trailing: $trailing total: $total"), false) // debug
+            player.sendStatusMessage(TextComponentString("embody protection trailing: $trailing total: $total"), false) // debug
             // todo
         }
 
         SpellParser.registerSpell(arrayOf(EARTH, FORM, METAL, FIRE)) { player, trailing, total ->
-            player.sendStatusMessage(TextComponentString("embody weapon trailing: $trailing total: $total"), false) // debug
+            player.sendStatusMessage(TextComponentString("embody weaponry trailing: $trailing total: $total"), false) // debug
             // todo
         }
 

@@ -9,6 +9,7 @@ import eladkay.quaeritum.client.fx.FXMagicLine
 import eladkay.quaeritum.client.render.RemainingItemsRenderHandler
 import eladkay.quaeritum.client.render.RenderSymbol
 import eladkay.quaeritum.client.render.RenderSymbol.renderSymbol
+import eladkay.quaeritum.client.render.entity.LayerEmbodiment
 import eladkay.quaeritum.client.render.entity.LayerSight
 import eladkay.quaeritum.client.render.entity.RenderChaosborn
 import eladkay.quaeritum.client.render.entity.RenderFalling
@@ -107,9 +108,11 @@ class ClientProxy : CommonProxy() {
 
         var render = skinMap["default"]
         render?.addLayer(LayerSight)
+        render?.addLayer(LayerEmbodiment(render))
 
         render = skinMap["slim"]
         render?.addLayer(LayerSight)
+        render?.addLayer(LayerEmbodiment(render))
 
         Minecraft.getMinecraft().textureMapBlocks.registerSprite(ResourceLocation("quaeritum:entity/magicParticle"))
     }

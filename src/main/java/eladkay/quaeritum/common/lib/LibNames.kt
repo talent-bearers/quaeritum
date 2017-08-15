@@ -55,4 +55,6 @@ object LibNames {
     val ESSENCE = "essence"
     val SCROLL = "scroll"
     val SEALED_SCROLL = "sealed_scroll"
+    val EMBODIMENT = "embodiment"
+    val WRATH = "wrath"
 }
