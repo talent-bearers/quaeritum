@@ -24,11 +24,6 @@ object EpicSpells {
     // They are extremely powerful, and have names worded as commands (Unbind Thine Soul, Save Them All)
 
     init {
-        SpellParser.registerSpell(arrayOf(FIRE, WATER, AETHER, SOUL, EARTH, AIR)) { player, trailing, total ->
-            player.sendStatusMessage(TextComponentString("Unbind Thine Soul trailing: $trailing total: $total"), false) // debug
-            // todo infuse self with void energy
-        }
-
         SpellParser.registerSpell(arrayOf(CONNECTION, FIRE, SPIRIT, SOUL, WATER, EARTH)) { player, trailing, total ->
             player.sendStatusMessage(TextComponentString("Save Them All trailing: $trailing total: $total"), false) // debug
             player.world.getEntitiesWithinAABB(EntityPlayer::class.java, player.entityBoundingBox.grow(25.0)) {
@@ -61,6 +56,11 @@ object EpicSpells {
         SpellParser.registerSpell(arrayOf(CONNECTION, SPIRIT, ENTROPY, METAL, WATER)) { player, trailing, total ->
             player.sendStatusMessage(TextComponentString("Steal Their Strength trailing: $trailing total: $total"), false) // debug
             applyShiftedBuff(PotionVampirism, player, trailing + 4, 1, false)
+        }
+
+        SpellParser.registerSpell(arrayOf(FIRE, WATER, SOUL, AETHER, AETHER, SOUL, EARTH, AIR)) { player, trailing, total ->
+            player.sendStatusMessage(TextComponentString("Unbind Thine Soul trailing: $trailing total: $total"), false) // debug
+            // todo infuse self with void energy
         }
 
         val pattern = arrayOf(CONNECTION, AETHER, SPIRIT, FIRE, AIR, WATER, SOUL, FLOW)
