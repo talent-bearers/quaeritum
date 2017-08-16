@@ -3,6 +3,7 @@ package eladkay.quaeritum.common.spell
 import com.google.common.base.Predicates
 import com.teamwizardry.librarianlib.features.utilities.RaycastUtils
 import eladkay.quaeritum.api.spell.EnumSpellElement.*
+import eladkay.quaeritum.api.spell.EnumSpellType.*
 import eladkay.quaeritum.api.spell.SpellParser.registerSpell
 import eladkay.quaeritum.common.entity.EntityFirebolt
 import eladkay.quaeritum.common.lib.LibObfuscation
@@ -82,13 +83,11 @@ object BasicSpells {
     init {
         ComplexSpells
 
-        registerSpell(arrayOf(EARTH)) { player, trailing, total ->
-            player.sendStatusMessage(TextComponentString("resist trailing: $trailing total: $total"), false) // debug
+        registerSpell(arrayOf(EARTH), ALTERATION, "resist") { player, trailing, total ->
             applyPotionBuff(MobEffects.RESISTANCE, player, trailing, total, true)
         }
 
-        registerSpell(arrayOf(WATER)) { player, trailing, total ->
-            player.sendStatusMessage(TextComponentString("heal trailing: $trailing total: $total"), false) // debug
+        registerSpell(arrayOf(WATER), RESTORATION, "heal") { player, trailing, total ->
             if (player.foodStats.foodLevel > 0) {
                 player.heal(trailing * 3f + 2f)
                 player.addPotionEffect(PotionEffect(MobEffects.HUNGER, total * 20, total * 2))
@@ -96,8 +95,7 @@ object BasicSpells {
             if (total > 3) player.addPotionEffect(PotionEffect(MobEffects.SLOWNESS, 500, total - 2))
         }
 
-        registerSpell(arrayOf(FIRE)) { player, trailing, total ->
-            player.sendStatusMessage(TextComponentString("firebolt trailing: $trailing total: $total"), false) // debug
+        registerSpell(arrayOf(FIRE), EVOCATION, "firebolt") { player, trailing, total ->
             val firebolt = EntityFirebolt(player.world, player)
             val damage = 3f + 3f * trailing / total
             val inaccuracy = Math.max(total - trailing.toFloat(), 0f)
@@ -108,8 +106,7 @@ object BasicSpells {
             player.world.spawnEntity(firebolt)
         }
 
-        registerSpell(arrayOf(AIR)) { player, trailing, total ->
-            player.sendStatusMessage(TextComponentString("leap trailing: $trailing total: $total"), false) // debug
+        registerSpell(arrayOf(AIR), EVOCATION, "leap") { player, trailing, total ->
             val look = player.lookVec
             val speedVec = look
                     .scale(0.75 + (trailing.toDouble() / 2) / total)
@@ -123,32 +120,27 @@ object BasicSpells {
             player.fallDistance = 0f
         }
 
-        registerSpell(arrayOf(METAL)) { player, trailing, total ->
-            player.sendStatusMessage(TextComponentString("ironskin trailing: $trailing total: $total"), false) // debug
+        registerSpell(arrayOf(METAL), ALTERATION, "ironskin") { player, trailing, total ->
             applyPotionBuff(PotionIronskin, player, trailing, total, false)
         }
 
-        registerSpell(arrayOf(ENTROPY)) { player, trailing, total ->
-            player.sendStatusMessage(TextComponentString("strike trailing: $trailing total: $total"), false) // debug
+        registerSpell(arrayOf(ENTROPY), EVOCATION, "strike") { player, trailing, total ->
             RaycastUtils.getEntityLookedAt(player)?.run {
                 hurtResistantTime = 0
                 attackEntityFrom(DamageSource.causeIndirectMagicDamage(player, player), (2 + trailing.toFloat() * 2) / total)
             }
         }
 
-        registerSpell(arrayOf(FORM)) { player, trailing, total ->
-            player.sendStatusMessage(TextComponentString("dissipate trailing: $trailing total: $total"), false) // debug
+        registerSpell(arrayOf(FORM), ALTERATION, "dissipate") { player, trailing, total ->
             applyPotionBuff(MobEffects.INVISIBILITY, player, trailing, total, false)
         }
 
-        registerSpell(arrayOf(FLOW)) { player, trailing, total ->
-            player.sendStatusMessage(TextComponentString("flow trailing: $trailing total: $total"), false) // debug
+        registerSpell(arrayOf(FLOW), ALTERATION, "flow") { player, trailing, total ->
             applyPotionBuff(MobEffects.JUMP_BOOST, player, trailing, total, true)
             applyPotionBuff(MobEffects.SPEED, player, trailing, total, true)
         }
 
-        registerSpell(arrayOf(CONNECTION)) { player, trailing, total ->
-            player.sendStatusMessage(TextComponentString("equalize trailing: $trailing total: $total"), false) // debug
+        registerSpell(arrayOf(CONNECTION), ALTERATION, "equalize") { player, trailing, total ->
             val entity = RaycastUtils.getEntityLookedAt(player)
             if (entity != null && entity is EntityLivingBase) {
                 val health = entity.health
@@ -160,8 +152,7 @@ object BasicSpells {
             }
         }
 
-        registerSpell(arrayOf(SPIRIT)) { player, trailing, total ->
-            player.sendStatusMessage(TextComponentString("dominate trailing: $trailing total: $total"), false) // debug
+        registerSpell(arrayOf(SPIRIT), ALTERATION, "dominate") { player, trailing, total ->
             val range = 3 + (trailing.toDouble() + 1) / total
             @Suppress("UNCHECKED_CAST")
             val entities = player.world.getEntitiesWithinAABB(Entity::class.java, player.entityBoundingBox.grow(range)) {
@@ -172,13 +163,11 @@ object BasicSpells {
                     .any { brainwashEntity(it, entities) }
         }
 
-        registerSpell(arrayOf(AETHER)) { player, trailing, total ->
-            player.sendStatusMessage(TextComponentString("aetherbolt trailing: $trailing total: $total"), false) // debug
+        registerSpell(arrayOf(AETHER), INCARNATION, "aetherbolt") { player, trailing, total ->
             // todo: raw power bolt, ignoring spell count
         }
 
-        registerSpell(arrayOf(SOUL)) { player, trailing, total ->
-            player.sendStatusMessage(TextComponentString("cogecho trailing: $trailing total: $total"), false) // debug
+        registerSpell(arrayOf(SOUL), INCARNATION, "cognitive_shadow") { player, trailing, total ->
             // todo: cognitive echoes that fight for you
         }
 

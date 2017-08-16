@@ -7,15 +7,14 @@ import com.teamwizardry.librarianlib.features.gui.components.ComponentVoid
 import com.teamwizardry.librarianlib.features.network.PacketHandler
 import com.teamwizardry.librarianlib.features.sprite.Texture
 import eladkay.quaeritum.api.lib.LibMisc
+import eladkay.quaeritum.api.spell.ElementHandler
 import eladkay.quaeritum.api.spell.EnumSpellElement
+import eladkay.quaeritum.api.spell.SpellParser
 import eladkay.quaeritum.client.render.RenderSymbol
 import eladkay.quaeritum.common.networking.ElementAddPacket
-import net.minecraft.client.settings.KeyBinding
+import net.minecraft.client.Minecraft
+import net.minecraft.client.gui.ScaledResolution
 import net.minecraft.util.ResourceLocation
-import org.lwjgl.input.Keyboard
-import org.lwjgl.input.Mouse
-
-
 
 
 /**
@@ -78,27 +77,13 @@ class GuiCodex : GuiBase(X_SIZE, Y_SIZE) {
         mainComponents.add(componentSymbol)
     }
 
-    override fun updateScreen() {
-        super.updateScreen()
-
-        for (k in setOf(
-                mc.gameSettings.keyBindForward,
-                mc.gameSettings.keyBindLeft,
-                mc.gameSettings.keyBindBack,
-                mc.gameSettings.keyBindRight,
-                mc.gameSettings.keyBindSneak,
-                mc.gameSettings.keyBindSprint,
-                mc.gameSettings.keyBindJump))
-            KeyBinding.setKeyBindState(k.keyCode, isKeyDown(k))
-    }
-
-    fun isKeyDown(keybind: KeyBinding): Boolean {
-        val key = keybind.keyCode
-        if (key < 0) {
-            val button = 100 + key
-            return Mouse.isButtonDown(button)
-        }
-        return Keyboard.isKeyDown(key)
+    override fun drawScreen(mouseX: Int, mouseY: Int, partialTicks: Float) {
+        super.drawScreen(mouseX, mouseY, partialTicks)
+        val parser = SpellParser(ElementHandler.getReagentsTyped(Minecraft.getMinecraft().player))
+        val lines = parser.spells.map { SpellParser.localized(it).formattedText }
+        val resolution = ScaledResolution(Minecraft.getMinecraft())
+        val shift = Math.max(resolution.scaledWidth / 16, resolution.scaledHeight / 16) - 18
+        drawHoveringText(lines, shift, resolution.scaledHeight - shift - 9 * lines.size)
     }
 
     override fun doesGuiPauseGame(): Boolean {

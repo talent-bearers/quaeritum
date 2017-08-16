@@ -3,6 +3,7 @@ package eladkay.quaeritum.common.item
 import com.teamwizardry.librarianlib.features.base.item.IItemColorProvider
 import com.teamwizardry.librarianlib.features.base.item.ItemMod
 import com.teamwizardry.librarianlib.features.helpers.ItemNBTHelper
+import com.teamwizardry.librarianlib.features.utilities.client.TooltipHelper
 import eladkay.quaeritum.api.spell.ElementHandler
 import eladkay.quaeritum.api.spell.EnumSpellElement
 import eladkay.quaeritum.api.spell.SpellParser
@@ -15,6 +16,8 @@ import net.minecraft.util.ActionResult
 import net.minecraft.util.EnumActionResult
 import net.minecraft.util.EnumHand
 import net.minecraft.util.math.MathHelper
+import net.minecraft.util.text.Style
+import net.minecraft.util.text.TextFormatting
 import net.minecraft.world.World
 import java.awt.Color
 
@@ -82,6 +85,13 @@ class ItemEvoker : ItemMod(LibNames.SOUL_EVOKER), IItemColorProvider {
         }
 
         return true
+    }
+
+    override fun addInformation(stack: ItemStack, playerIn: EntityPlayer, tooltip: MutableList<String>, advanced: Boolean) {
+        TooltipHelper.tooltipIfShift(tooltip) {
+            val parser = SpellParser(getEvocationFromStack(stack))
+            parser.spells.mapTo(tooltip) { SpellParser.localized(it).setStyle(Style().setColor(TextFormatting.GRAY)).formattedText }
+        }
     }
 
     override fun onItemRightClick(worldIn: World, playerIn: EntityPlayer, handIn: EnumHand): ActionResult<ItemStack> {

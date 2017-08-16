@@ -52,8 +52,6 @@ potion.effect.quaeritum_blindness=Potion of Optic Disruption
 splash_potion.effect.quaeritum_blindness=Splash Potion of Optic Disruption
 lingering_potion.effect.quaeritum_blindness=Lingering Potion of Optic Disruption
 
-item.quaeritum:repulsor.name=Circlet of Repulsion
-item.quaeritum:windwalker.name=Array of the Windwalker
 item.quaeritum:soul_evoker.name=Soul Evoker
 
 quaeritum.materials_required=Materials required:
@@ -88,6 +86,78 @@ item.quaeritum:rift_claw.name=Riftmaker's Claw
 item.quaeritum:debug.name=Debug Item
 item.quaeritum:hollower.name=Hollower
 item.quaeritum:devplacer.name=DevPlacer
+
+quaeritum.potion.rooted=Rooted
+quaeritum.potion.ironskin=Ironskin
+quaeritum.potion.soulgaze=Soulgaze
+quaeritum.potion.vampirism=Soul Siphon
+quaeritum.potion.embodiment=Ironheart
+quaeritum.potion.wrath=Firesoul
+
+quaeritum.spell.1.tier=%s
+quaeritum.spell.2.tier=Complex %s
+quaeritum.spell.3.tier=Greater %s
+quaeritum.spell.4.tier=Greater %s
+quaeritum.spell.5.tier=Epic %s
+quaeritum.spell.6.tier=Epic %s
+quaeritum.spell.7.tier=Epic %s
+quaeritum.spell.8.tier=Epic %s
+
+quaeritum.spell.0.aether=%s
+quaeritum.spell.1.aether=Enhanced %s
+quaeritum.spell.2.aether=Enhanced %s
+quaeritum.spell.3.aether=Resonant %s
+quaeritum.spell.4.aether=Resonant %s
+quaeritum.spell.5.aether=Harmonic %s
+quaeritum.spell.6.aether=Harmonic %s
+quaeritum.spell.7.aether=Ultimatum %s
+
+quaeritum.spell.evocation.type=Evocation: %s
+quaeritum.spell.incarnation.type=Incarnation: %s
+quaeritum.spell.alteration.type=Alteration: %s
+quaeritum.spell.restoration.type=Restoration: %s
+
+quaeritum.spell.resist.name=Harden
+quaeritum.spell.heal.name=Vitality
+quaeritum.spell.firebolt.name=Firebolt
+quaeritum.spell.leap.name=Rush of Motion
+quaeritum.spell.ironskin.name=Ironhide
+quaeritum.spell.strike.name=Swift Strike
+quaeritum.spell.dissipate.name=Ghostform
+quaeritum.spell.flow.name=Invigorate
+quaeritum.spell.equalize.name=Equalize Life
+quaeritum.spell.dominate.name=Domination
+quaeritum.spell.aetherbolt.name=Ætherbolt
+quaeritum.spell.cognitive_shadow.name=Cognitive Shadows
+
+quaeritum.spell.resist_other.name=Harden Other
+quaeritum.spell.heal_other.name=Grant Vitality
+quaeritum.spell.ironskin_other.name=Ironhide
+quaeritum.spell.dissipate_other.name=Grant Ghostform
+quaeritum.spell.flow_other.name=Invigorate Other
+quaeritum.spell.bonemeal.name=Growth
+quaeritum.spell.earth_wall.name=Wall of Dirt
+quaeritum.spell.iron_wall.name=Wall of Iron
+quaeritum.spell.drill.name=Earthparter
+quaeritum.spell.fear.name=Strike Fear
+quaeritum.spell.ice_shock.name=Frostshock
+
+quaeritum.spell.sparkbolt.name=Lightning
+quaeritum.spell.trade.name=Swap Location
+quaeritum.spell.fogbind.name=Bind Fog
+quaeritum.spell.protection.name=Embody Protection
+quaeritum.spell.weaponry.name=Embody Weaponry
+quaeritum.spell.gatecrash.name=Gatecrash
+quaeritum.spell.true_heal.name=True Healing
+
+quaeritum.spell.save_them_all.name=Save Them All
+quaeritum.spell.release_the_heavens.name=Release The Heavens
+quaeritum.spell.walk_the_path.name=Walk The Path
+quaeritum.spell.steal_their_strength.name=Steal Their Strength
+quaeritum.spell.unbind_thine_soul.name=Unbind Thine Soul
+quaeritum.spell.give_them_hope.name=Give Them Hope
+
+
 
 rituals.quaeritum.altarofthefallingstar=Altar of the Falling Star
 

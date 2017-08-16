@@ -46,6 +46,9 @@ object LibNames {
     val SOULGAZE = "soulgaze"
     val VAMPIRISM = "vampirism"
     val PATHWALKER = "pathwalker"
+    val EMBODIMENT = "embodiment"
+    val WRATH = "wrath"
+
     val REPULSOR = "repulsor"
     val WINDWALKER = "windwalker"
     val HIVE_CIRCLET = "hive_circlet"
@@ -55,6 +58,4 @@ object LibNames {
     val ESSENCE = "essence"
     val SCROLL = "scroll"
     val SEALED_SCROLL = "sealed_scroll"
-    val EMBODIMENT = "embodiment"
-    val WRATH = "wrath"
 }

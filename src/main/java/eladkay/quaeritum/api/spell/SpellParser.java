@@ -2,6 +2,8 @@ package eladkay.quaeritum.api.spell;
 
 import eladkay.quaeritum.api.spell.BaseAlchemicalSpell.SpellRunnable;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentTranslation;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -24,18 +26,33 @@ public final class SpellParser {
     /**
      * Register your spell to be parsable.
      * @param spell The spell you're registering.
+     * @return The registered spell.
      */
-    public static void registerSpell(@Nonnull IAlchemicalSpell spell) {
+    @Nonnull
+    public static IAlchemicalSpell registerSpell(@Nonnull IAlchemicalSpell spell) {
         allSpells.add(spell);
+        return spell;
     }
 
     /**
      * Register your spell to be parsable, using the base behavior.
      * @param pattern The spell pattern.
      * @param runnable A callback for what to do when the spell is cast.
+     * @return The registered spell.
      */
-    public static void registerSpell(@Nonnull EnumSpellElement[] pattern, @Nonnull SpellRunnable runnable) {
-        allSpells.add(new BaseAlchemicalSpell(pattern, runnable));
+    @Nonnull
+    public static IAlchemicalSpell registerSpell(@Nonnull EnumSpellElement[] pattern, @Nonnull EnumSpellType type, @Nonnull String localizationKey, @Nonnull SpellRunnable runnable) {
+        return registerSpell(new BaseAlchemicalSpell(pattern, type, localizationKey, runnable));
+    }
+
+    private static final String PREFIX = "quaeritum.spell.";
+
+    @Nonnull
+    public static ITextComponent localized(@Nonnull SpellInfo spellInfo) {
+        return new TextComponentTranslation(PREFIX + spellInfo.getSpell().getPattern().length + ".tier",
+                new TextComponentTranslation(PREFIX + spellInfo.getTrailingAether() + ".aether",
+                        new TextComponentTranslation(PREFIX + spellInfo.getSpell().getTypeOfSpell() + ".type",
+                                new TextComponentTranslation(PREFIX + spellInfo.getSpell().getLocalizationKey() + ".name"))));
     }
 
     private static <T> boolean matches(@Nonnull T[] arr, @Nonnull List<T> list) {

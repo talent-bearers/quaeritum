@@ -19,10 +19,16 @@ public class BaseAlchemicalSpell implements IAlchemicalSpell {
     private final EnumSpellElement[] pattern;
     @Nonnull
     private final SpellRunnable onCast;
+    @Nonnull
+    private final EnumSpellType type;
+    @Nonnull
+    private final String locKey;
 
-    public BaseAlchemicalSpell(@Nonnull EnumSpellElement[] pattern, @Nonnull SpellRunnable onCast) {
+    public BaseAlchemicalSpell(@Nonnull EnumSpellElement[] pattern, @Nonnull EnumSpellType type, @Nonnull String locKey, @Nonnull SpellRunnable onCast) {
         this.pattern = pattern;
         this.onCast = onCast;
+        this.type = type;
+        this.locKey = locKey;
     }
 
     @Nonnull
@@ -34,5 +40,17 @@ public class BaseAlchemicalSpell implements IAlchemicalSpell {
     @Override
     public void performEffect(@Nonnull EntityPlayer player, int trailingAether, int totalSpells) {
         onCast.cast(player, trailingAether, totalSpells);
+    }
+
+    @Nonnull
+    @Override
+    public EnumSpellType getTypeOfSpell() {
+        return type;
+    }
+
+    @Nonnull
+    @Override
+    public String getLocalizationKey() {
+        return locKey;
     }
 }

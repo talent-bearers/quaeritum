@@ -26,4 +26,20 @@ public interface IAlchemicalSpell {
      * @param totalSpells The number of spells contained within the symbol set. This should lower potency.
      */
     void performEffect(@Nonnull EntityPlayer player, int trailingAether, int totalSpells);
+
+    /**
+     * Gets the type of the spell, for use in display elements.
+     * See {@link EnumSpellType} for descriptions of the elements.
+     * @return The type of the spell.
+     */
+    @Nonnull
+    EnumSpellType getTypeOfSpell();
+
+    /**
+     * Gets the simple name of the spell, for localization.
+     * quaeritum.spell.`localization key`.name is the translated key.
+     * @return The last part of a spell
+     */
+    @Nonnull
+    String getLocalizationKey();
 }

@@ -2,6 +2,7 @@ package eladkay.quaeritum.common.spell
 
 import com.teamwizardry.librarianlib.features.utilities.RaycastUtils
 import eladkay.quaeritum.api.spell.EnumSpellElement.*
+import eladkay.quaeritum.api.spell.EnumSpellType.*
 import eladkay.quaeritum.api.spell.SpellParser
 import eladkay.quaeritum.common.entity.EntityDrill
 import eladkay.quaeritum.common.entity.EntityFrostshock
@@ -35,13 +36,11 @@ object ComplexSpells {
     init {
         GreaterSpells
 
-        SpellParser.registerSpell(arrayOf(EARTH, CONNECTION)) { player, trailing, total ->
-            player.sendStatusMessage(TextComponentString("resist other trailing: $trailing total: $total"), false) // debug
+        SpellParser.registerSpell(arrayOf(EARTH, CONNECTION), ALTERATION, "resist_other") { player, trailing, total ->
             applyBuffToOther(MobEffects.RESISTANCE, player, trailing, total, true)
         }
 
-        SpellParser.registerSpell(arrayOf(WATER, CONNECTION)) { player, trailing, total ->
-            player.sendStatusMessage(TextComponentString("heal other trailing: $trailing total: $total"), false) // debug
+        SpellParser.registerSpell(arrayOf(WATER, CONNECTION), RESTORATION, "heal_other") { player, trailing, total ->
             val entity = RaycastUtils.getEntityLookedAt(player)
             if (entity != null && entity is EntityLivingBase) {
                 if (entity is EntityPlayer) {
@@ -54,24 +53,20 @@ object ComplexSpells {
             }
         }
 
-        SpellParser.registerSpell(arrayOf(METAL, CONNECTION)) { player, trailing, total ->
-            player.sendStatusMessage(TextComponentString("ironskin other trailing: $trailing total: $total"), false) // debug
+        SpellParser.registerSpell(arrayOf(METAL, CONNECTION), ALTERATION, "ironskin_other") { player, trailing, total ->
             applyBuffToOther(PotionIronskin, player, trailing, total / 2, false)
         }
 
-        SpellParser.registerSpell(arrayOf(FORM, CONNECTION)) { player, trailing, total ->
-            player.sendStatusMessage(TextComponentString("dissipate other trailing: $trailing total: $total"), false) // debug
+        SpellParser.registerSpell(arrayOf(FORM, CONNECTION), ALTERATION, "dissipate_other") { player, trailing, total ->
             applyBuffToOther(MobEffects.INVISIBILITY, player, trailing, total / 2, false)
         }
 
-        SpellParser.registerSpell(arrayOf(FLOW, CONNECTION)) { player, trailing, total ->
-            player.sendStatusMessage(TextComponentString("flow other trailing: $trailing total: $total"), false) // debug
+        SpellParser.registerSpell(arrayOf(FLOW, CONNECTION), ALTERATION, "flow_other") { player, trailing, total ->
             applyBuffToOther(MobEffects.JUMP_BOOST, player, trailing, total / 2, true)
             applyBuffToOther(MobEffects.SPEED, player, trailing, total / 2, true)
         }
 
-        SpellParser.registerSpell(arrayOf(EARTH, WATER)) { player, trailing, total ->
-            player.sendStatusMessage(TextComponentString("bonemeal trailing: $trailing total: $total"), false) // debug
+        SpellParser.registerSpell(arrayOf(EARTH, WATER), RESTORATION, "bonemeal") { player, trailing, total ->
             val block = RaycastUtils.raycast(player, (player as EntityPlayerMP).interactionManager.blockReachDistance + 3, false)
             if (block != null && block.typeOfHit == RayTraceResult.Type.BLOCK) {
                 val pos = block.blockPos
@@ -81,18 +76,15 @@ object ComplexSpells {
             }
         }
 
-        SpellParser.registerSpell(arrayOf(EARTH, FORM)) { player, trailing, total ->
-            player.sendStatusMessage(TextComponentString("wall of earth trailing: $trailing total: $total"), false) // debug
+        SpellParser.registerSpell(arrayOf(EARTH, FORM), EVOCATION, "earth_wall") { player, trailing, total ->
             // todo wall of earth
         }
 
-        SpellParser.registerSpell(arrayOf(METAL, FORM)) { player, trailing, total ->
-            player.sendStatusMessage(TextComponentString("wall of iron trailing: $trailing total: $total"), false) // debug
+        SpellParser.registerSpell(arrayOf(METAL, FORM), EVOCATION, "iron_wall") { player, trailing, total ->
             // todo wall of iron bars
         }
 
-        SpellParser.registerSpell(arrayOf(EARTH, FLOW)) { player, trailing, total ->
-            player.sendStatusMessage(TextComponentString("drill trailing: $trailing total: $total"), false) // debug
+        SpellParser.registerSpell(arrayOf(EARTH, FLOW), EVOCATION, "drill") { player, trailing, total ->
             val drill = EntityDrill(player.world, player)
             val shiftTotal = Math.max(1, total - 1)
             val velocity = Math.min(2f, 3f * shiftTotal / (trailing + 1))
@@ -106,8 +98,7 @@ object ComplexSpells {
             player.world.spawnEntity(drill)
         }
 
-        SpellParser.registerSpell(arrayOf(SOUL, SPIRIT)) { player, trailing, total ->
-            player.sendStatusMessage(TextComponentString("strike fear trailing: $trailing total: $total"), false) // debug
+        SpellParser.registerSpell(arrayOf(SOUL, SPIRIT), ALTERATION, "fear") { player, trailing, total ->
             var i = Math.max(2 + trailing - total / 2, 1)
             player.world.getEntitiesInAABBexcluding(player, player.entityBoundingBox.grow(5.0)) {
                 it != null && it !is EntityPlayer && it.getDistanceSqToEntity(player) < 25.0
@@ -117,8 +108,7 @@ object ComplexSpells {
             }
         }
 
-        SpellParser.registerSpell(arrayOf(WATER, FORM)) { player, trailing, total ->
-            player.sendStatusMessage(TextComponentString("ice shock trailing: $trailing total: $total"), false) // debug
+        SpellParser.registerSpell(arrayOf(WATER, FORM), EVOCATION, "ice_shock") { player, trailing, total ->
             val frostshock = EntityFrostshock(player.world, player)
             val shiftTotal = Math.max(1, total - 1)
             val velocity = Math.min(2f, 3f * shiftTotal / (trailing + 1))
