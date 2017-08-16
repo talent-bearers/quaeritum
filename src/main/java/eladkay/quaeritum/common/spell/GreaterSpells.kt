@@ -23,7 +23,7 @@ object GreaterSpells {
     fun applyShiftedBuff(potion: Potion, player: EntityLivingBase, trailing: Int, total: Int, amplifier: Boolean) {
         val potionEffect = player.removeActivePotionEffect(potion) ?: PotionEffect(potion)
         player.addPotionEffect(PotionEffect(potion, Math.max(5 + (trailing * 5) / total, 1) * (if (amplifier) 20 else 25) + potionEffect.duration,
-                if (amplifier) trailing / 2 else 0))
+                if (amplifier) trailing / 2 else 0, true, true))
     }
 
     init {

@@ -19,7 +19,6 @@ import net.minecraft.potion.Potion
 import net.minecraft.potion.PotionEffect
 import net.minecraft.util.DamageSource
 import net.minecraft.util.math.Vec3d
-import net.minecraft.util.text.TextComponentString
 import net.minecraftforge.fml.relauncher.ReflectionHelper
 import java.util.*
 
@@ -32,7 +31,7 @@ object BasicSpells {
     fun applyPotionBuff(potion: Potion, player: EntityLivingBase, trailing: Int, total: Int, amplifier: Boolean) {
         val potionEffect = player.removeActivePotionEffect(potion) ?: PotionEffect(potion)
         player.addPotionEffect(PotionEffect(potion, Math.max(5 + (trailing * 2) / total, 1) * (if (amplifier) 10 else 20) + potionEffect.duration,
-                if (amplifier) trailing / 2 else 0))
+                if (amplifier) trailing / 2 else 0, true, true))
 
     }
 
