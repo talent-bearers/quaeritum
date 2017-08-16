@@ -88,8 +88,8 @@ class ItemEvoker : ItemMod(LibNames.SOUL_EVOKER), IItemColorProvider {
     }
 
     override fun addInformation(stack: ItemStack, playerIn: EntityPlayer, tooltip: MutableList<String>, advanced: Boolean) {
-        TooltipHelper.tooltipIfShift(tooltip) {
-            val parser = SpellParser(getEvocationFromStack(stack))
+        val parser = SpellParser(getEvocationFromStack(stack))
+        if (parser.spells.isNotEmpty()) TooltipHelper.tooltipIfShift(tooltip) {
             parser.spells.mapTo(tooltip) { SpellParser.localized(it).setStyle(Style().setColor(TextFormatting.GRAY)).formattedText }
         }
     }
