@@ -51,16 +51,18 @@ class ItemEvoker : ItemMod(LibNames.SOUL_EVOKER), IItemColorProvider {
                 if (elements.isEmpty()) -1 else {
                     var xBucket = 0f
                     var yBucket = 0f
+                    var size = 0
                     for (element in elements) {
-                        val c = element.color()
-                        val r = c and 0xff0000 shr 16
-                        val g = c and 0x00ff00 shr 8
-                        val b = c and 0x0000ff
+                        val c = element.color ?: continue
+                        size++
+                        val r = c.red
+                        val g = c.green
+                        val b = c.blue
                         val h = Color.RGBtoHSB(r, g, b, hsb)[0]
                         xBucket += MathHelper.cos(h * 2 * Math.PI.toFloat())
                         yBucket += MathHelper.sin(h * 2 * Math.PI.toFloat())
                     }
-                    val angle = RenderUtil.fastAtan2(yBucket / elements.size, xBucket / elements.size) / (2 * Math.PI.toFloat())
+                    val angle = RenderUtil.fastAtan2(yBucket / size, xBucket / size) / (2 * Math.PI.toFloat())
                     Color.HSBtoRGB(angle, elements.size / 8f, 1f)
                 }
             } else -1

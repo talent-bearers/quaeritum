@@ -61,7 +61,7 @@ public enum EnumSpellElement implements ISymbolCarrier {
             new LineSymbolInstruction(0.25f, 0.5f + (TRI_OFFSET + TRI_OFFSET_PARAM) / 2, 0.75f, 0.5f + (TRI_OFFSET + TRI_OFFSET_PARAM) / 2));
 
     @Nullable
-    private final Color color; // null is treated specially, as rainbow.
+    public final Color color; // null is treated specially, as rainbow.
 
     public final char representation;
 
