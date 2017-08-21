@@ -1,5 +1,6 @@
 package eladkay.quaeritum.api.internal;
 
+import eladkay.quaeritum.api.lib.LibMisc;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
 import org.jetbrains.annotations.NotNull;
@@ -21,7 +22,7 @@ public final class InternalHandler {
 
     public static void setInternalHandler(@NotNull IInternalHandler newHandler) {
         ModContainer container = Loader.instance().activeModContainer();
-        if (container == null || !Objects.equals(container.getModId(), "quaeritum")) return;
+        if (container == null || !Objects.equals(container.getModId(), LibMisc.MOD_ID)) return;
         handler = newHandler;
     }
 }
