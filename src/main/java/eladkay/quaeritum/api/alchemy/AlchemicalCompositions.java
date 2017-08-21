@@ -45,7 +45,7 @@ public final class AlchemicalCompositions {
     }
 
     @NotNull
-    public static IAlchemicalComposition registerRecipe(@NotNull Fluid liquid, @NotNull ItemStack dust, @NotNull ItemStack composite) {
-        return registerRecipe(new BaseAlchemicalComposition(liquid, dust, composite));
+    public static BaseAlchemicalComposition registerRecipe(@NotNull Fluid liquid, @NotNull ItemStack dust, @NotNull ItemStack composite) {
+        return (BaseAlchemicalComposition) registerRecipe(new BaseAlchemicalComposition(liquid, dust, composite));
     }
 }

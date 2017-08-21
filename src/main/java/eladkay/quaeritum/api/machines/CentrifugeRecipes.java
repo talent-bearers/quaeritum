@@ -36,7 +36,7 @@ public final class CentrifugeRecipes {
     }
 
     @NotNull
-    public static ICentrifugeRecipe registerRecipe(@NotNull Object inputOne, @Nullable Object inputTwo, @NotNull ItemStack output) {
-        return registerRecipe(new BaseCentrifugeRecipe(inputOne, inputTwo, output));
+    public static BaseCentrifugeRecipe registerRecipe(@NotNull Object inputOne, @Nullable Object inputTwo, @NotNull ItemStack output) {
+        return (BaseCentrifugeRecipe) registerRecipe(new BaseCentrifugeRecipe(inputOne, inputTwo, output));
     }
 }
