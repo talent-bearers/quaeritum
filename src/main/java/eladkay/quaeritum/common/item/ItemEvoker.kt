@@ -1,24 +1,33 @@
 package eladkay.quaeritum.common.item
 
+import com.teamwizardry.librarianlib.core.LibrarianLib
 import com.teamwizardry.librarianlib.features.base.item.IItemColorProvider
 import com.teamwizardry.librarianlib.features.base.item.ItemMod
 import com.teamwizardry.librarianlib.features.helpers.ItemNBTHelper
+import com.teamwizardry.librarianlib.features.kotlin.isNotEmpty
 import com.teamwizardry.librarianlib.features.utilities.client.TooltipHelper
 import eladkay.quaeritum.api.spell.ElementHandler
 import eladkay.quaeritum.api.spell.EnumSpellElement
 import eladkay.quaeritum.api.spell.SpellParser
 import eladkay.quaeritum.api.spell.render.RenderUtil
 import eladkay.quaeritum.common.lib.LibNames
+import net.minecraft.client.gui.GuiScreen
 import net.minecraft.entity.Entity
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.inventory.InventoryCrafting
 import net.minecraft.item.ItemStack
+import net.minecraft.item.crafting.IRecipe
 import net.minecraft.util.ActionResult
 import net.minecraft.util.EnumActionResult
 import net.minecraft.util.EnumHand
+import net.minecraft.util.NonNullList
 import net.minecraft.util.math.MathHelper
 import net.minecraft.util.text.Style
 import net.minecraft.util.text.TextFormatting
 import net.minecraft.world.World
+import net.minecraftforge.common.MinecraftForge
+import net.minecraftforge.event.entity.player.ItemTooltipEvent
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import java.awt.Color
 
 /**
@@ -27,14 +36,40 @@ import java.awt.Color
  */
 class ItemEvoker : ItemMod(LibNames.SOUL_EVOKER), IItemColorProvider {
     companion object {
+        fun hasEvocation(stack: ItemStack): Boolean {
+            return getEvocationFromStack(stack).isNotEmpty()
+        }
+
         fun getEvocationFromStack(stack: ItemStack): Array<EnumSpellElement> {
-            if (stack.item !is ItemEvoker) return arrayOf()
-            return ElementHandler.fromBytes(ItemNBTHelper.getByteArray(stack, "elements")?: byteArrayOf())
+            if (stack.maxStackSize != 1) return arrayOf()
+            if (!ItemNBTHelper.getNBT(stack, false).hasKey("quaeritum_elements")) return arrayOf()
+            return ElementHandler.fromBytes(ItemNBTHelper.getByteArray(stack, "quaeritum_elements")?: byteArrayOf())
         }
 
         fun setStackEvocation(stack: ItemStack, elements: Array<EnumSpellElement>) {
-            if (stack.item !is ItemEvoker) return
-            ItemNBTHelper.setIntArray(stack, "elements", ElementHandler.fromElements(elements))
+            if (stack.maxStackSize != 1) return
+            if (elements.isEmpty())
+                ItemNBTHelper.removeEntry(stack, "quaeritum_elements")
+            else
+                ItemNBTHelper.setIntArray(stack, "quaeritum_elements", ElementHandler.fromElements(elements))
+        }
+
+        init {
+            MinecraftForge.EVENT_BUS.register(this)
+        }
+
+        @SubscribeEvent
+        fun onTooltip(e: ItemTooltipEvent) {
+            if (hasEvocation(e.itemStack) && e.itemStack.item !is ItemEvoker) {
+                val parser = SpellParser(getEvocationFromStack(e.itemStack))
+                if (parser.spells.isNotEmpty()) {
+                    if (GuiScreen.isShiftKeyDown())
+                        for (i in parser.spells.reversed())
+                            e.toolTip.add(1, SpellParser.localized(i).setStyle(Style().setColor(TextFormatting.GRAY)).formattedText)
+                    else
+                        e.toolTip.add(1, TooltipHelper.local("${LibrarianLib.MODID}.shiftinfo").replace("&".toRegex(), "§"))
+                }
+            }
         }
     }
 
@@ -120,5 +155,75 @@ class ItemEvoker : ItemMod(LibNames.SOUL_EVOKER), IItemColorProvider {
                 return ActionResult(EnumActionResult.SUCCESS, stack)
         }
         return ActionResult(EnumActionResult.SUCCESS, stack)
+    }
+}
+
+object EvocationRecipe : IRecipe {
+    override fun getRemainingItems(inv: InventoryCrafting): NonNullList<ItemStack> {
+        val ret = NonNullList.withSize(inv.sizeInventory, ItemStack.EMPTY)
+        for (i in ret.indices) {
+            val stack = inv.getStackInSlot(i)
+            if (ItemEvoker.hasEvocation(stack))
+                ret[i] = stack.copy().apply {
+                    count = 1
+                    ItemEvoker.setStackEvocation(this, arrayOf())
+                }
+        }
+        return ret
+    }
+
+    override fun getCraftingResult(inv: InventoryCrafting): ItemStack {
+        var item = ItemStack.EMPTY
+        var evoker = ItemStack.EMPTY
+
+        for (i in 0 until inv.sizeInventory) {
+            val stack = inv.getStackInSlot(i)
+            if (stack.isNotEmpty) {
+                if (ItemEvoker.hasEvocation(stack) || stack.item is ItemEvoker) {
+                    if (evoker.isNotEmpty)
+                        return ItemStack.EMPTY
+                    evoker = stack
+                    continue
+                }
+
+                if (stack.item is ItemEvoker || item.isNotEmpty)
+                    return ItemStack.EMPTY
+                item = stack
+            }
+        }
+
+        if (item.isEmpty || evoker.isEmpty)
+            return ItemStack.EMPTY
+
+        val itemCopy = item.copy()
+        ItemEvoker.setStackEvocation(itemCopy, ItemEvoker.getEvocationFromStack(evoker))
+        return itemCopy
+    }
+
+    override fun getRecipeOutput(): ItemStack = ItemStack.EMPTY
+
+    override fun getRecipeSize() = 10
+
+    override fun matches(inv: InventoryCrafting, worldIn: World?): Boolean {
+        var item = ItemStack.EMPTY
+        var evoker = ItemStack.EMPTY
+
+        for (i in 0 until inv.sizeInventory) {
+            val stack = inv.getStackInSlot(i)
+            if (stack.isNotEmpty) {
+                if (ItemEvoker.hasEvocation(stack) || stack.item is ItemEvoker) {
+                    if (evoker.isNotEmpty)
+                        return false
+                    evoker = stack
+                    continue
+                }
+
+                if (stack.item is ItemEvoker || item.isNotEmpty)
+                    return false
+                item = stack
+            }
+        }
+
+        return item.isNotEmpty && evoker.isNotEmpty
     }
 }

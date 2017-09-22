@@ -1,5 +1,6 @@
 package eladkay.quaeritum.client.core
 
+import com.teamwizardry.librarianlib.core.client.ClientTickHandler
 import com.teamwizardry.librarianlib.core.client.RenderHookHandler.registerItemHook
 import com.teamwizardry.librarianlib.features.utilities.client.GlUtils.useLightmap
 import com.teamwizardry.librarianlib.features.utilities.client.GlUtils.withLighting
@@ -8,7 +9,6 @@ import eladkay.quaeritum.api.util.RandUtil
 import eladkay.quaeritum.client.fx.FXMagicLine
 import eladkay.quaeritum.client.render.RemainingItemsRenderHandler
 import eladkay.quaeritum.client.render.RenderSymbol
-import eladkay.quaeritum.client.render.RenderSymbol.renderSymbol
 import eladkay.quaeritum.client.render.entity.LayerEmbodiment
 import eladkay.quaeritum.client.render.entity.LayerSight
 import eladkay.quaeritum.client.render.entity.RenderChaosborn
@@ -50,7 +50,7 @@ class ClientProxy : CommonProxy() {
         RenderingRegistry.registerEntityRenderingHandler(EntityDroppingBlock::class.java, { RenderFalling(it) })
 
         registerItemHook { stack, _ ->
-            if (stack.item is ItemEvoker) {
+            if (ItemEvoker.hasEvocation(stack)) {
                 withLighting(false) {
                     useLightmap(0xf000f0) {
                         GlStateManager.depthMask(false)
@@ -59,15 +59,26 @@ class ClientProxy : CommonProxy() {
 
                         val cX = 0
                         val cY = 0
-                        val scale = 35
+                        var scale = 35
 
-                        val startingAngle = Math.PI / 2
+                        var startingAngle = Math.PI / 2
                         val angleSep = 2 * Math.PI / (elements.size + 1)
 
                         GlStateManager.pushMatrix()
                         GlStateManager.translate(0.5f, 0.785f, 0.35f)
+                        if (stack.item !is ItemEvoker) {
+                            GlStateManager.translate(0f, -0.125f, 0.15f)
+                            GlStateManager.scale(2f, 2f, 2f)
+                            GlStateManager.rotate(-45f, 0f, 0f, 1f)
+                            scale = 70
+                            startingAngle = (ClientTickHandler.partialTicks + ClientTickHandler.ticks) * Math.PI / 120
+                        }
+
+                        GlStateManager.disableCull()
                         GlStateManager.scale(0.0025f, 0.0025f, 0.0025f)
                         GlStateManager.rotate(90f, 1f, 0f, 0f)
+                        if (stack.item !is ItemEvoker)
+                            GlStateManager.rotate(90f, 0f, 0f, 1f)
                         GlStateManager.color(1f, 1f, 1f, 1f)
                         GlStateManager.enableBlend()
                         GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE)
@@ -90,9 +101,10 @@ class ClientProxy : CommonProxy() {
                             val angle = startingAngle + (idx + 1) * angleSep
                             val x = cX + scale * MathHelper.cos(angle.toFloat()) - 7.5
                             val y = cY + scale * MathHelper.sin(angle.toFloat()) - 7.5
-                            renderSymbol(x.toFloat(), y.toFloat(), element)
+                            RenderSymbol.renderSymbol(x.toFloat(), y.toFloat(), element)
                         }
                         GlStateManager.popMatrix()
+                        GlStateManager.enableCull()
 
                         GlStateManager.depthMask(true)
                     }
@@ -100,6 +112,8 @@ class ClientProxy : CommonProxy() {
             }
         }
     }
+
+
 
     override fun init(e: FMLInitializationEvent) {
         super.init(e)

@@ -65,7 +65,7 @@ object EpicSpells {
             player, _, _ ->
 
             var evoker = player.heldItemMainhand
-            if (evoker.item !is ItemEvoker)
+            if (!ItemEvoker.hasEvocation(evoker))
                 evoker = player.heldItemOffhand
             else {
                 val evocation = ItemEvoker.getEvocationFromStack(evoker)

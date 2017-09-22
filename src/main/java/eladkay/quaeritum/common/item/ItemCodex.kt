@@ -20,6 +20,10 @@ import net.minecraftforge.fml.relauncher.SideOnly
  * Created at 6:04 PM on 7/31/17.
  */
 class ItemCodex : ItemMod(LibNames.CODEX), IGlowingItem {
+    init {
+        setMaxStackSize(1)
+    }
+
     override fun onItemRightClick(worldIn: World, playerIn: EntityPlayer, handIn: EnumHand): ActionResult<ItemStack> {
         val stack = playerIn.getHeldItem(handIn)
         playerIn.openGui(Quaeritum.instance, GUI_CODEX, worldIn, 0, 0, 0)

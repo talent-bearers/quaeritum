@@ -35,7 +35,7 @@ object SpellEventHandler {
 
     @SubscribeEvent
     fun leftClick(evt: PlayerInteractEvent.LeftClickBlock) {
-        if (evt.entityPlayer.heldItemMainhand.item is ItemEvoker) {
+        if (ItemEvoker.hasEvocation(evt.entityPlayer.heldItemMainhand)) {
             evt.isCanceled = true
             canceled = true
         }
@@ -61,7 +61,7 @@ object SpellEventHandler {
         var clear = true
 
         val stack = player.heldItemMainhand
-        if (stack.item is ItemEvoker) {
+        if (ItemEvoker.hasEvocation(stack)) {
             val evocation = ItemEvoker.getEvocationFromStack(stack)
             if (reagents.isEmpty() && ElementHandler.probeReagents(player, *evocation) == EnumActionResult.SUCCESS) {
                 reagents = evocation
@@ -69,7 +69,7 @@ object SpellEventHandler {
             }
         }
 
-        if (player.isSneaking || player.heldItemMainhand.item is ItemEvoker) {
+        if (player.isSneaking || ItemEvoker.hasEvocation(stack)) {
 
             SpellParser(reagents).cast(player)
             // todo fwoosh

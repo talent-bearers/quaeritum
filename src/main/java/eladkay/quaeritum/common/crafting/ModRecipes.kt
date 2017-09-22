@@ -5,6 +5,7 @@ import eladkay.quaeritum.api.lib.LibMisc
 import eladkay.quaeritum.api.machines.CentrifugeRecipes
 import eladkay.quaeritum.common.block.ModBlocks
 import eladkay.quaeritum.common.crafting.recipes.RecipeAwakenedSoulstone
+import eladkay.quaeritum.common.item.EvocationRecipe
 import eladkay.quaeritum.common.item.ItemEssence
 import eladkay.quaeritum.common.item.ItemResource.Resources
 import eladkay.quaeritum.common.item.ModItems
@@ -26,8 +27,11 @@ object ModRecipes {
 
     fun init() {
         RecipeSorter.register(LibMisc.MOD_ID + ":awakened", RecipeAwakenedSoulstone::class.java, RecipeSorter.Category.SHAPELESS, "")
+        RecipeSorter.register(LibMisc.MOD_ID + ":evoker", EvocationRecipe::class.java, RecipeSorter.Category.SHAPELESS, "")
+
 
         CraftingManager.getInstance().addRecipe(RecipeAwakenedSoulstone())
+        CraftingManager.getInstance().addRecipe(EvocationRecipe)
         addShapelessOreDictRecipe(ItemStack(ModBlocks.crystal), ItemStack(ModBlocks.flower), ItemStack(Blocks.GOLD_BLOCK))
         addShapelessOreDictRecipe(ItemStack(ModBlocks.blueprint), "dyeBlue", ItemStack(Items.PAPER), ItemStack(Blocks.STONE_SLAB))
         addShapelessOreDictRecipe(ItemStack(ModItems.fertilizer, 2), "dyePink", ItemStack(Items.DYE, 1, 15), ItemStack(ModItems.altas))
