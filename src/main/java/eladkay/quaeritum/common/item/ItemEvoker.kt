@@ -52,6 +52,10 @@ class ItemEvoker : ItemMod(LibNames.SOUL_EVOKER), IItemColorProvider {
                 ItemNBTHelper.removeEntry(stack, "quaeritum_elements")
             else
                 ItemNBTHelper.setIntArray(stack, "quaeritum_elements", ElementHandler.fromElements(elements))
+
+            val tag = stack.tagCompound
+            if (tag != null && tag.hasNoTags())
+                stack.tagCompound = null
         }
 
         init {
@@ -179,14 +183,14 @@ object EvocationRecipe : IRecipe {
         for (i in 0 until inv.sizeInventory) {
             val stack = inv.getStackInSlot(i)
             if (stack.isNotEmpty) {
-                if (ItemEvoker.hasEvocation(stack) || stack.item is ItemEvoker) {
+                if (ItemEvoker.hasEvocation(stack)) {
                     if (evoker.isNotEmpty)
                         return ItemStack.EMPTY
                     evoker = stack
                     continue
                 }
 
-                if (stack.item is ItemEvoker || item.isNotEmpty)
+                if (item.isNotEmpty)
                     return ItemStack.EMPTY
                 item = stack
             }
@@ -211,14 +215,14 @@ object EvocationRecipe : IRecipe {
         for (i in 0 until inv.sizeInventory) {
             val stack = inv.getStackInSlot(i)
             if (stack.isNotEmpty) {
-                if (ItemEvoker.hasEvocation(stack) || stack.item is ItemEvoker) {
+                if (ItemEvoker.hasEvocation(stack)) {
                     if (evoker.isNotEmpty)
                         return false
                     evoker = stack
                     continue
                 }
 
-                if (stack.item is ItemEvoker || item.isNotEmpty)
+                if (item.isNotEmpty)
                     return false
                 item = stack
             }
