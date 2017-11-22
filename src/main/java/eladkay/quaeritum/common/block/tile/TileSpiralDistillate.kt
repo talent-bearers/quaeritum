@@ -4,7 +4,6 @@ import com.teamwizardry.librarianlib.features.autoregister.TileRegister
 import com.teamwizardry.librarianlib.features.base.block.tile.TileModTickable
 import com.teamwizardry.librarianlib.features.base.block.tile.module.ModuleFluid
 import com.teamwizardry.librarianlib.features.base.block.tile.module.ModuleInventory
-import com.teamwizardry.librarianlib.features.kotlin.isNotEmpty
 import com.teamwizardry.librarianlib.features.saving.Module
 import com.teamwizardry.librarianlib.features.saving.NoSync
 import com.teamwizardry.librarianlib.features.saving.Save
@@ -41,19 +40,20 @@ class TileSpiralDistillate : TileModTickable() {
         val recipe = AlchemicalCompositions.getRecipe(item) ?: return -processTime
         if (processTime % 20 == 1)
             world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.x + 0.5, pos.y + 0.5, pos.z + 0.5, 0.0, 0.0, 0.0)
-        if (processTime == 500) {
+        if (processTime >= 500) {
             val stack = recipe.getDustStack(item)
             val fluid = recipe.getLiquidStack(item)
             shouldInsert = true
-            val didOutputItem = outputItem.handler.insertItem(0, stack, true).isNotEmpty
+            val didOutputItem = outputItem.handler.insertItem(0, stack, true).isEmpty
             val didOutputFluid = outputLiquid.handler.fill(fluid, false) >= outputLiquid.handler.fluidAmount
             if (didOutputItem && didOutputFluid) {
                 inputItem.handler.getStackInSlot(0).shrink(1)
                 outputItem.handler.insertItem(0, stack, false)
                 outputLiquid.handler.fill(fluid, true)
+                shouldInsert = false
+                return -processTime
             }
             shouldInsert = false
-            return -processTime
         }
         return 1
 
