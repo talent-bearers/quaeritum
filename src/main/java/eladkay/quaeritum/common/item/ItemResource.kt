@@ -1,5 +1,6 @@
 package eladkay.quaeritum.common.item
 
+import com.teamwizardry.librarianlib.core.common.OreDictionaryRegistrar
 import com.teamwizardry.librarianlib.features.base.item.ItemMod
 import eladkay.quaeritum.common.lib.LibNames
 import net.minecraft.item.ItemStack
@@ -26,6 +27,6 @@ class ItemResource : ItemMod(LibNames.RESOURCE, *Resources.NAMES) {
 
     init {
         for (variant in Resources.values())
-            OreDictionary.registerOre(variant.oreName, ItemStack(this, 1, variant.ordinal))
+            OreDictionaryRegistrar.registerOre(variant.oreName, ItemStack(this, 1, variant.ordinal))
     }
 }

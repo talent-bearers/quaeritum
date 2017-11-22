@@ -12,6 +12,7 @@ import eladkay.quaeritum.api.spell.SpellParser
 import eladkay.quaeritum.api.spell.render.RenderUtil
 import eladkay.quaeritum.common.lib.LibNames
 import net.minecraft.client.gui.GuiScreen
+import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.entity.Entity
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.inventory.InventoryCrafting
@@ -28,6 +29,9 @@ import net.minecraft.world.World
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.event.entity.player.ItemTooltipEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
+import net.minecraftforge.registries.IForgeRegistryEntry
 import java.awt.Color
 
 /**
@@ -128,7 +132,8 @@ class ItemEvoker : ItemMod(LibNames.SOUL_EVOKER), IItemColorProvider {
         return true
     }
 
-    override fun addInformation(stack: ItemStack, playerIn: EntityPlayer, tooltip: MutableList<String>, advanced: Boolean) {
+    @SideOnly(Side.CLIENT)
+    override fun addInformation(stack: ItemStack, world: World?, tooltip: MutableList<String>, advanced: ITooltipFlag) {
         val parser = SpellParser(getEvocationFromStack(stack))
         if (parser.spells.isNotEmpty()) TooltipHelper.tooltipIfShift(tooltip) {
             parser.spells.mapTo(tooltip) { SpellParser.localized(it).setStyle(Style().setColor(TextFormatting.GRAY)).formattedText }
@@ -162,7 +167,7 @@ class ItemEvoker : ItemMod(LibNames.SOUL_EVOKER), IItemColorProvider {
     }
 }
 
-object EvocationRecipe : IRecipe {
+object EvocationRecipe : IForgeRegistryEntry.Impl<IRecipe>(), IRecipe {
     override fun getRemainingItems(inv: InventoryCrafting): NonNullList<ItemStack> {
         val ret = NonNullList.withSize(inv.sizeInventory, ItemStack.EMPTY)
         for (i in ret.indices) {
@@ -206,7 +211,13 @@ object EvocationRecipe : IRecipe {
 
     override fun getRecipeOutput(): ItemStack = ItemStack.EMPTY
 
-    override fun getRecipeSize() = 10
+    override fun canFit(width: Int, height: Int): Boolean {
+        return true
+    }
+
+    override fun isHidden(): Boolean {
+        return true
+    }
 
     override fun matches(inv: InventoryCrafting, worldIn: World?): Boolean {
         var item = ItemStack.EMPTY

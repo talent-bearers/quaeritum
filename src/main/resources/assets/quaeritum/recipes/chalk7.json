@@ -1,0 +1,16 @@
+{
+	"type": "forge:ore_shapeless",
+	"ingredients": [
+		{
+			"item": "minecraft:clay_ball"
+		},
+		{
+			"type": "forge:ore_dict",
+			"ore": "dyeGray"
+		}
+	],
+	"result": {
+		"item": "quaeritum:chalk",
+		"data": 7
+	}
+}

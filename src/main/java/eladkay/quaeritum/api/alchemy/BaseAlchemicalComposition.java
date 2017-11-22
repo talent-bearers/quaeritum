@@ -44,7 +44,7 @@ public class BaseAlchemicalComposition implements IAlchemicalComposition {
 
     @Override
     public boolean isCompositable(@NotNull FluidStack fluid, @NotNull ItemStack dust) {
-        return fluid.getFluid() == this.fluid && OreDictionary.itemMatches(this.dust, composite, false);
+        return fluid.getFluid() == this.fluid && OreDictionary.itemMatches(this.dust, dust, false);
     }
 
     @Override

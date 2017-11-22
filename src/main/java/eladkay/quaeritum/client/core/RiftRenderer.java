@@ -6,7 +6,7 @@ import eladkay.quaeritum.common.core.SightHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.MathHelper;
@@ -151,7 +151,7 @@ public class RiftRenderer {
 		}
 	}
 
-	private static VertexBuffer pos(VertexBuffer vb, Vec3d pos) {
+	private static BufferBuilder pos(BufferBuilder vb, Vec3d pos) {
 		return vb.pos(pos.x, pos.y, pos.z);
 	}
 
@@ -183,7 +183,7 @@ public class RiftRenderer {
 		GlStateManager.rotate(Minecraft.getMinecraft().player.rotationYaw, 0, -1, 0);
 
 		Tessellator tessellator = Tessellator.getInstance();
-		VertexBuffer vb = tessellator.getBuffer();
+		BufferBuilder vb = tessellator.getBuffer();
 
 		// RIFT
 

@@ -4,6 +4,7 @@ import com.teamwizardry.librarianlib.features.base.item.ItemMod
 import eladkay.quaeritum.api.animus.AnimusHelper
 import eladkay.quaeritum.api.animus.INetworkProvider
 import eladkay.quaeritum.common.lib.LibNames
+import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.entity.Entity
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.SoundEvents
@@ -15,6 +16,8 @@ import net.minecraft.util.SoundCategory
 import net.minecraft.world.World
 import net.minecraftforge.fml.common.IFuelHandler
 import net.minecraftforge.fml.common.registry.GameRegistry
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
 
 class ItemPassionateSoulstone : ItemMod(LibNames.PASSIONATE_SOULSTONE), INetworkProvider, IFuelHandler {
 
@@ -31,8 +34,9 @@ class ItemPassionateSoulstone : ItemMod(LibNames.PASSIONATE_SOULSTONE), INetwork
         return copiedStack
     }
 
-    override fun addInformation(stack: ItemStack?, playerIn: EntityPlayer?, tooltip: List<String>?, advanced: Boolean) {
-        AnimusHelper.Network.addInformation(stack, tooltip, advanced)
+    @SideOnly(Side.CLIENT)
+    override fun addInformation(stack: ItemStack, world: World?, tooltip: MutableList<String>, advanced: ITooltipFlag) {
+        AnimusHelper.Network.addInformation(stack, tooltip, advanced.isAdvanced)
     }
 
     override fun hasContainerItem(itemStack: ItemStack?): Boolean {

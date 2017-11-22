@@ -11,6 +11,7 @@ import eladkay.quaeritum.common.lib.LibNames
 import eladkay.quaeritum.common.lib.arrayOfStrings
 import eladkay.quaeritum.common.lib.capitalizeFirst
 import net.minecraft.block.state.IBlockState
+import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.entity.Entity
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.EnumDyeColor
@@ -23,10 +24,12 @@ import net.minecraft.util.EnumHand
 import net.minecraft.util.SoundCategory
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
 
 class ItemChalk : ItemMod(LibNames.CHALK, *ItemChalk.COLORS), IItemColorProvider {
     override val itemColorFunction: ((ItemStack, Int) -> Int)?
-        get() = { stack, tintIndex -> if (ItemNBTHelper.getBoolean(stack.copy(), LibNBT.FLAT, false) && stack.itemDamage < 16)
+        get() = { stack, _ -> if (ItemNBTHelper.getBoolean(stack.copy(), LibNBT.FLAT, false) && stack.itemDamage < 16)
             ItemDye.DYE_COLORS[15 - stack.itemDamage] else 0xFFFFFF }
 
     val block = ModBlocks.chalk
@@ -36,7 +39,8 @@ class ItemChalk : ItemMod(LibNames.CHALK, *ItemChalk.COLORS), IItemColorProvider
         setMaxStackSize(1)
     }
 
-    override fun addInformation(stack: ItemStack, playerIn: EntityPlayer?, tooltip: MutableList<String>, advanced: Boolean) {
+    @SideOnly(Side.CLIENT)
+    override fun addInformation(stack: ItemStack, world: World?, tooltip: MutableList<String>, advanced: ITooltipFlag) {
         TooltipHelper.addToTooltip(tooltip, getUnlocalizedName(stack) + ".desc")
     }
 

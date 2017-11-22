@@ -10,12 +10,13 @@ import eladkay.quaeritum.api.lib.LibNBT
 import eladkay.quaeritum.client.core.ClientUtils
 import eladkay.quaeritum.common.item.ModItems
 import eladkay.quaeritum.common.lib.LibNames
+import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.creativetab.CreativeTabs
-import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.util.NonNullList
 import net.minecraft.world.World
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
 
 class ItemAwakenedSoulstone(name: String = LibNames.AWAKENED_SOULSTONE) : ItemMod(name), ISoulstone, IAnimusResource {
 
@@ -42,19 +43,22 @@ class ItemAwakenedSoulstone(name: String = LibNames.AWAKENED_SOULSTONE) : ItemMo
         return 0
     }
 
-    override fun getSubItems(itemIn: Item, tab: CreativeTabs?, subItems: NonNullList<ItemStack>) {
-        subItems.add(ItemStack(itemIn))
-        val stack2 = ItemStack(itemIn, 1)
-        AnimusHelper.setAnimus(stack2, getMaxAnimus(stack2))
-        subItems.add(stack2)
+    override fun getSubItems(tab: CreativeTabs?, subItems: NonNullList<ItemStack>) {
+        if (isInCreativeTab(tab)) {
+            subItems.add(ItemStack(this))
+            val stack2 = ItemStack(this)
+            AnimusHelper.setAnimus(stack2, getMaxAnimus(stack2))
+            subItems.add(stack2)
+        }
     }
 
     override fun getMaxDamage(stack: ItemStack): Int {
         return getAnimusLevel(stack)
     }
 
-    override fun addInformation(itemStack: ItemStack, player: EntityPlayer?, list: MutableList<String>, par4: Boolean) {
-        ClientUtils.addInformation(itemStack, list, par4)
+    @SideOnly(Side.CLIENT)
+    override fun addInformation(stack: ItemStack, world: World?, tooltip: MutableList<String>, advanced: ITooltipFlag) {
+        ClientUtils.addInformation(stack, tooltip, advanced.isAdvanced)
     }
 
     override fun getEntityLifespan(itemStack: ItemStack?, world: World?): Int {

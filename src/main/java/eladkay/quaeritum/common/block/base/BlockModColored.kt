@@ -10,6 +10,8 @@ import net.minecraft.block.state.BlockStateContainer
 import net.minecraft.block.state.IBlockState
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.item.EnumDyeColor
+import net.minecraft.util.math.BlockPos
+import net.minecraft.world.IBlockAccess
 
 open class BlockModColored(name: String, materialIn: Material) : BlockMod(name, materialIn, *BlockModColored.generateVariants(name)) {
 
@@ -18,12 +20,12 @@ open class BlockModColored(name: String, materialIn: Material) : BlockMod(name, 
         this.setCreativeTab(CreativeTabs.BUILDING_BLOCKS)
     }
 
-    override fun damageDropped(state: IBlockState?): Int {
-        return state!!.getValue(COLOR).metadata
+    override fun damageDropped(state: IBlockState): Int {
+        return state.getValue(COLOR).metadata
     }
 
-    override fun getMapColor(state: IBlockState?): MapColor {
-        return state!!.getValue(COLOR).mapColor
+    override fun getMapColor(state: IBlockState, worldIn: IBlockAccess?, pos: BlockPos?): MapColor {
+        return MapColor.getBlockColor(state.getValue(COLOR))
     }
 
     override fun getStateFromMeta(meta: Int): IBlockState {

@@ -1,5 +1,6 @@
 package eladkay.quaeritum.common.item
 
+import com.teamwizardry.librarianlib.core.common.OreDictionaryRegistrar
 import com.teamwizardry.librarianlib.features.base.item.ItemMod
 import eladkay.quaeritum.api.animus.EnumAnimusTier
 import eladkay.quaeritum.api.animus.IAnimusResource
@@ -9,7 +10,6 @@ import eladkay.quaeritum.common.lib.LibNames
 import net.minecraft.item.ItemStack
 import net.minecraft.util.ActionResult
 import net.minecraft.util.EnumActionResult
-import net.minecraftforge.oredict.OreDictionary
 
 /**
  * @author WireSegal
@@ -25,7 +25,7 @@ class ItemEssence : ItemMod(LibNames.ESSENCE, *NAMES), IAnimusResource, ISpellRe
 
     init {
         for (variant in EnumAnimusTier.values())
-            OreDictionary.registerOre(variant.oreName, ItemStack(this, 1, variant.ordinal))
+            OreDictionaryRegistrar.registerOre(variant.oreName, ItemStack(this, 1, variant.ordinal))
     }
 
     override fun getAnimus(stack: ItemStack)

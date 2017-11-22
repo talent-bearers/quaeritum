@@ -47,7 +47,6 @@ open class CommonProxy {
         AnimusHelper.Network.EventHandler()
         ModDiagrams.init()
         ModWorks.init()
-        ChatHelper.PacketHandler
         FMLInterModComms.sendMessage("Waila", "register", "eladkay.quaeritum.common.compat.waila.Waila.onWailaCall")
     }
 

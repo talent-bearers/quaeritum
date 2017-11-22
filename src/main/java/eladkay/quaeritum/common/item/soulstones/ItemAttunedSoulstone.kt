@@ -4,6 +4,7 @@ import com.teamwizardry.librarianlib.features.base.item.ItemMod
 import eladkay.quaeritum.api.animus.AnimusHelper
 import eladkay.quaeritum.api.animus.INetworkProvider
 import eladkay.quaeritum.common.lib.LibNames
+import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.entity.Entity
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.SoundEvents
@@ -13,6 +14,8 @@ import net.minecraft.util.EnumActionResult
 import net.minecraft.util.EnumHand
 import net.minecraft.util.SoundCategory
 import net.minecraft.world.World
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
 
 class ItemAttunedSoulstone : ItemMod(LibNames.ATTUNED_SOULSTONE), INetworkProvider {
     init {
@@ -27,8 +30,9 @@ class ItemAttunedSoulstone : ItemMod(LibNames.ATTUNED_SOULSTONE), INetworkProvid
         return true
     }
 
-    override fun addInformation(stack: ItemStack?, playerIn: EntityPlayer?, tooltip: List<String>?, advanced: Boolean) {
-        AnimusHelper.Network.addInformation(stack, tooltip, advanced)
+    @SideOnly(Side.CLIENT)
+    override fun addInformation(stack: ItemStack, world: World?, tooltip: MutableList<String>, advanced: ITooltipFlag) {
+        AnimusHelper.Network.addInformation(stack, tooltip, advanced.isAdvanced)
     }
 
     override fun getEntityLifespan(itemStack: ItemStack?, world: World?): Int {

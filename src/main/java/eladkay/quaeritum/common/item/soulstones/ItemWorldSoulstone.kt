@@ -7,10 +7,12 @@ import eladkay.quaeritum.api.animus.ISoulstone
 import eladkay.quaeritum.api.lib.LibNBT
 import eladkay.quaeritum.client.core.ClientUtils
 import eladkay.quaeritum.common.lib.LibNames
+import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.entity.Entity
-import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.world.World
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
 
 class ItemWorldSoulstone : ItemMod(LibNames.STONE_OF_THE_WORLDSOUL), ISoulstone {
 
@@ -23,8 +25,9 @@ class ItemWorldSoulstone : ItemMod(LibNames.STONE_OF_THE_WORLDSOUL), ISoulstone 
             AnimusHelper.addAnimus(stack, 1)
     }
 
-    override fun addInformation(itemStack: ItemStack, player: EntityPlayer?, list: MutableList<String>, par4: Boolean) {
-        ClientUtils.addInformation(itemStack, list, par4)
+    @SideOnly(Side.CLIENT)
+    override fun addInformation(stack: ItemStack, world: World?, tooltip: MutableList<String>, advanced: ITooltipFlag) {
+        ClientUtils.addInformation(stack, tooltip, advanced.isAdvanced)
     }
 
     override fun getEntityLifespan(itemStack: ItemStack?, world: World?): Int {

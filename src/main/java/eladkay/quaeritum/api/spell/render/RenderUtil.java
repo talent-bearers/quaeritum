@@ -1,6 +1,6 @@
 package eladkay.quaeritum.api.spell.render;
 
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.util.math.MathHelper;
 
 /**
@@ -11,7 +11,7 @@ public final class RenderUtil {
 
     public static final int SEGMENTS_CIRCLE = 36;
 
-    public static void renderHalfCircle(VertexBuffer buffer, double cX, double cY, float r, float g, float b, double radius, double thickness, double angleOffset) {
+    public static void renderHalfCircle(BufferBuilder buffer, double cX, double cY, float r, float g, float b, double radius, double thickness, double angleOffset) {
         double outerRadius = radius + thickness;
         double centralRadius = radius - thickness / 2;
 
@@ -67,7 +67,7 @@ public final class RenderUtil {
         }
     }
 
-    public static void renderLine(VertexBuffer buffer, double x1, double y1, double x2, double y2, float r, float g, float b, double thickness) {
+    public static void renderLine(BufferBuilder buffer, double x1, double y1, double x2, double y2, float r, float g, float b, double thickness) {
         float atan = fastAtan2((float) (y2 - y1), (float) (x2 - x1));
         for (int i = 0; i < SEGMENTS_CIRCLE; i++) {
             double angle = i * Math.PI / SEGMENTS_CIRCLE + atan + Math.PI / 2;
@@ -96,11 +96,11 @@ public final class RenderUtil {
         buffer.pos(x1, y1, 0).color(r, g, b, 0.75f).endVertex();
     }
 
-    public static void renderNGon(VertexBuffer buffer, double cX, double cY, float r, float g, float b, double radius, double thickness, int sides) {
+    public static void renderNGon(BufferBuilder buffer, double cX, double cY, float r, float g, float b, double radius, double thickness, int sides) {
         renderNGon(buffer, cX, cY, r, g, b, radius, thickness, sides, 0);
     }
 
-    public static void renderNGon(VertexBuffer buffer, double cX, double cY, float r, float g, float b, double radius, double thickness, int sides, double angleOffset) {
+    public static void renderNGon(BufferBuilder buffer, double cX, double cY, float r, float g, float b, double radius, double thickness, int sides, double angleOffset) {
         double outerRadius = radius + thickness;
         double centralRadius = radius - thickness / 2;
 

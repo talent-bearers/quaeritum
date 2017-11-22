@@ -1,8 +1,9 @@
 package eladkay.quaeritum.common.block.machine
 
 import com.teamwizardry.librarianlib.features.autoregister.TileRegister
-import com.teamwizardry.librarianlib.features.base.block.BlockModContainer
-import com.teamwizardry.librarianlib.features.base.block.TileMod
+import com.teamwizardry.librarianlib.features.base.block.tile.BlockModContainer
+import com.teamwizardry.librarianlib.features.base.block.tile.TileMod
+import com.teamwizardry.librarianlib.features.kotlin.isNotEmpty
 import com.teamwizardry.librarianlib.features.saving.Save
 import com.teamwizardry.librarianlib.features.saving.SaveMethodGetter
 import com.teamwizardry.librarianlib.features.saving.SaveMethodSetter
@@ -97,37 +98,36 @@ class BlockCrafter : BlockModContainer(LibNames.CRAFTER, Material.WOOD) {
             for (i in 0..8) {
                 val stack = handler.getStackInSlot(i)
 
-                if (stack == null || !enabled[i])
+                if (stack.isEmpty || !enabled[i])
                     continue
 
                 craft.setInventorySlotContents(i, stack.copy())
             }
 
-            val recipes = CraftingManager.getInstance().recipeList
-            for (recipe in recipes)
-                if (recipe.matches(craft, world)) {
-                    handler.setStackInSlot(9, recipe.getCraftingResult(craft))
+            val recipes = CraftingManager.findMatchingRecipe(craft, world)
+            if (recipes != null) {
+                handler.setStackInSlot(9, recipes.getCraftingResult(craft))
 
-                    for (i in 0..8) {
-                        val stack = handler.getStackInSlot(i) ?: continue
+                for (i in 0..8) {
+                    val stack = handler.getStackInSlot(i)
 
-                        val container = stack.item.getContainerItem(stack)
-                        handler.setStackInSlot(i, container)
-                    }
-                    return true
+                    val container = stack.item.getContainerItem(stack)
+                    handler.setStackInSlot(i, container)
                 }
+                return true
+            }
 
             return false
         }
 
         fun isFull(): Boolean {
-            return (0 until 9).none { enabled[it] && handler.getStackInSlot(it) == null }
+            return (0 until 9).none { enabled[it] && handler.getStackInSlot(it).isEmpty }
         }
 
         private fun ejectAll() {
             (0 until 9).forEach {
                 val stack = handler.getStackInSlot(it)
-                if (stack != null) eject(stack)
+                if (stack.isNotEmpty) eject(stack)
                 handler.setStackInSlot(it, ItemStack.EMPTY)
             }
         }

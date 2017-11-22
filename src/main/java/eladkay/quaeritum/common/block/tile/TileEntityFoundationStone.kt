@@ -1,6 +1,6 @@
 package eladkay.quaeritum.common.block.tile
 
-import com.teamwizardry.librarianlib.features.base.block.TileModTickable
+import com.teamwizardry.librarianlib.features.base.block.tile.TileModTickable
 import eladkay.quaeritum.api.rituals.IWork
 import eladkay.quaeritum.api.rituals.PositionedBlock
 import eladkay.quaeritum.api.rituals.RitualRegistry

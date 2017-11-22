@@ -1,9 +1,9 @@
 package eladkay.quaeritum.common.core
 
+import com.teamwizardry.librarianlib.core.common.RegistrationHandler
 import eladkay.quaeritum.api.lib.LibMisc
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.SoundEvent
-import net.minecraftforge.fml.common.registry.GameRegistry
 
 /**
  * @author WireSegal
@@ -16,10 +16,10 @@ object QuaeritumSoundEvents {
     init {
         var loc = ResourceLocation(LibMisc.MOD_ID, "baubleEquip")
         baubleEquip = SoundEvent(loc)
-        GameRegistry.register(baubleEquip, loc)
+        RegistrationHandler.register(baubleEquip, loc)
 
         loc = ResourceLocation(LibMisc.MOD_ID, "centrifuge")
         centrifuge = SoundEvent(loc)
-        GameRegistry.register(centrifuge, loc)
+        RegistrationHandler.register(centrifuge, loc)
     }
 }

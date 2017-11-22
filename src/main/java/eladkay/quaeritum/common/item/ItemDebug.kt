@@ -2,12 +2,12 @@ package eladkay.quaeritum.common.item
 
 import com.teamwizardry.librarianlib.features.base.item.ItemMod
 import com.teamwizardry.librarianlib.features.kotlin.plus
+import com.teamwizardry.librarianlib.features.kotlin.sendSpamlessMessage
 import eladkay.quaeritum.api.animus.AnimusHelper
 import eladkay.quaeritum.api.animus.EnumAnimusTier
 import eladkay.quaeritum.common.Quaeritum
 import eladkay.quaeritum.common.block.ModBlocks
 import eladkay.quaeritum.common.block.base.BlockModColored
-import eladkay.quaeritum.common.core.ChatHelper
 
 import eladkay.quaeritum.common.lib.LibNames
 import net.minecraft.client.gui.GuiScreen
@@ -35,12 +35,12 @@ class ItemDebug : ItemMod(LibNames.DEBUG) {
             if (GuiScreen.isShiftKeyDown()) {
                 AnimusHelper.Network.addAnimus(playerIn, 50)
                 AnimusHelper.Network.addTier(playerIn, EnumAnimusTier.QUAERITUS)
-                ChatHelper.sendNoSpam2(playerIn, "Added 50, current animus level for " + playerIn.name + " is: " + AnimusHelper.Network.getAnimus(playerIn))
+                playerIn.sendSpamlessMessage("Added 50, current animus level for " + playerIn.name + " is: " + AnimusHelper.Network.getAnimus(playerIn), 10005)
             } else if (GuiScreen.isCtrlKeyDown()) {
                 AnimusHelper.Network.addAnimus(playerIn, -50)
-                ChatHelper.sendNoSpam2(playerIn, "Took 50, current animus level for " + playerIn.name + " is: " + AnimusHelper.Network.getAnimus(playerIn))
+                playerIn.sendSpamlessMessage("Took 50, current animus level for " + playerIn.name + " is: " + AnimusHelper.Network.getAnimus(playerIn), 10005)
             } else
-                ChatHelper.sendNoSpam2(playerIn, "Current animus level for " + playerIn.name + " is: " + AnimusHelper.Network.getAnimus(playerIn) + " and current rarity is " + AnimusHelper.Network.getTier(playerIn))
+                playerIn.sendSpamlessMessage("Current animus level for " + playerIn.name + " is: " + AnimusHelper.Network.getAnimus(playerIn) + " and current rarity is " + AnimusHelper.Network.getTier(playerIn), 10005)
 
         return super.onItemRightClick(worldIn, playerIn, hand)
     }

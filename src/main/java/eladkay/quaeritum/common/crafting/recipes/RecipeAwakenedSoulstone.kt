@@ -10,8 +10,9 @@ import net.minecraft.item.crafting.IRecipe
 import net.minecraft.util.NonNullList
 import net.minecraft.world.World
 import net.minecraftforge.common.ForgeHooks
+import net.minecraftforge.registries.IForgeRegistryEntry
 
-class RecipeAwakenedSoulstone : IRecipe {
+class RecipeAwakenedSoulstone : IForgeRegistryEntry.Impl<IRecipe>(), IRecipe {
     override fun matches(inventoryCrafting: InventoryCrafting, world: World): Boolean {
         var foundSoulstone = false
         var foundResource = false
@@ -39,12 +40,16 @@ class RecipeAwakenedSoulstone : IRecipe {
         return ItemAwakenedSoulstone.withAnimus(animus, rarity)
     }
 
-    override fun getRecipeSize(): Int {
-        return 10
+    override fun canFit(width: Int, height: Int): Boolean {
+        return true
     }
 
     override fun getRecipeOutput(): ItemStack {
         return ItemStack.EMPTY
+    }
+
+    override fun isHidden(): Boolean {
+        return true
     }
 
     override fun getRemainingItems(inventoryCrafting: InventoryCrafting): NonNullList<ItemStack> {

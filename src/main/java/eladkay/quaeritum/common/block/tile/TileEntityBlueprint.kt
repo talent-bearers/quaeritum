@@ -1,6 +1,6 @@
 package eladkay.quaeritum.common.block.tile
 
-import com.teamwizardry.librarianlib.features.base.block.TileModTickable
+import com.teamwizardry.librarianlib.features.base.block.tile.TileModTickable
 import eladkay.quaeritum.api.rituals.IDiagram
 import eladkay.quaeritum.api.rituals.PositionedBlock
 import eladkay.quaeritum.api.rituals.RitualRegistry
@@ -13,7 +13,7 @@ class TileEntityBlueprint : TileModTickable() {
     var stageTicks = 0
     var currentDiagram: IDiagram? = null
 
-    public override fun tick() {
+    override fun tick() {
         if (!world.isRemote) {
             //LogHelper.logDebug(currentDiagram);
             if (currentDiagram != null)

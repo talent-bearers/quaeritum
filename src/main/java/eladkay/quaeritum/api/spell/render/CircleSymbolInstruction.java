@@ -1,7 +1,7 @@
 package eladkay.quaeritum.api.spell.render;
 
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -26,7 +26,7 @@ public class CircleSymbolInstruction implements ISymbolInstruction {
     @SideOnly(Side.CLIENT)
     public void render(ISymbolCarrier element, float x, float y) {
         Tessellator tess = Tessellator.getInstance();
-        VertexBuffer buffer = tess.getBuffer();
+        BufferBuilder buffer = tess.getBuffer();
         int color = element.color();
         int r = (color & (0xff0000)) >> 16;
         int g = (color & (0x00ff00)) >> 8;

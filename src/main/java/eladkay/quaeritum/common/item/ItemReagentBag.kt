@@ -6,7 +6,6 @@ import eladkay.quaeritum.api.spell.EnumSpellElement
 import eladkay.quaeritum.api.spell.ISpellReagent
 import eladkay.quaeritum.common.lib.LibNames
 import net.minecraft.creativetab.CreativeTabs
-import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.ActionResult
@@ -37,13 +36,15 @@ class ItemReagentBag : ItemMod(LibNames.REAGENT_BAG), ISpellReagent {
         }
     }
 
-    override fun getSubItems(itemIn: Item, tab: CreativeTabs?, subItems: NonNullList<ItemStack>) {
-        super.getSubItems(itemIn, tab, subItems)
-        val stack = ItemStack(itemIn)
-        for (el in EnumSpellElement.values())
-            setAmountIn(stack, el, -1)
-        stack.setStackDisplayName("∞")
-        subItems.add(stack)
+    override fun getSubItems(tab: CreativeTabs?, subItems: NonNullList<ItemStack>) {
+        super.getSubItems(tab, subItems)
+        if (isInCreativeTab(tab)) {
+            val stack = ItemStack(this)
+            for (el in EnumSpellElement.values())
+                setAmountIn(stack, el, -1)
+            stack.setStackDisplayName("∞")
+            subItems.add(stack)
+        }
     }
 
     override fun canAddToReagentBag(stack: ItemStack) = false

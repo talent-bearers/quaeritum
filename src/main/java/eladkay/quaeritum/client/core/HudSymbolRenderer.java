@@ -9,7 +9,7 @@ import eladkay.quaeritum.client.render.RenderSymbol;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.MathHelper;
@@ -157,7 +157,7 @@ public class HudSymbolRenderer {
 			GlStateManager.shadeModel(GL11.GL_SMOOTH);
 			GlStateManager.disableTexture2D();
 			Tessellator tess = Tessellator.getInstance();
-			VertexBuffer buffer = tess.getBuffer();
+			BufferBuilder buffer = tess.getBuffer();
 			buffer.begin(GL11.GL_QUAD_STRIP, DefaultVertexFormats.POSITION_COLOR);
 			RenderUtil.renderNGon(buffer,
 					cX + MathHelper.cos((float) startingAngle) * scale - 0.5,

@@ -1,0 +1,25 @@
+{
+	"type": "forge:ore_shaped",
+	"pattern": [
+		"Y Y",
+		"XZX",
+		"YHY"
+	],
+	"key": {
+		"Y": {
+			"item": "minecraft:blaze_powder"
+		},
+		"H": {
+			"item": "minecraft:lava_bucket"
+		},
+		"X": {
+			"item": "minecraft:fire_charge"
+		},
+		"Z": {
+			"item": "quaeritum:dormant_soulstone"
+		}
+	},
+	"result": {
+		"item": "quaeritum:passionate_soulstone"
+	}
+}

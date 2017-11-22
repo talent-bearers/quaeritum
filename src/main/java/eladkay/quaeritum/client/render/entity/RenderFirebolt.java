@@ -6,7 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -42,7 +42,7 @@ public class RenderFirebolt extends Render<EntityFirebolt> {
 		Minecraft.getMinecraft().entityRenderer.disableLightmap();
 
 		Tessellator tess = Tessellator.getInstance();
-		VertexBuffer buffer = tess.getBuffer();
+		BufferBuilder buffer = tess.getBuffer();
 
 		Vec3d norm = new Vec3d(entity.motionX, entity.motionY, entity.motionZ).normalize();
 		GlStateManager.rotate(90, 0, 1, 0);

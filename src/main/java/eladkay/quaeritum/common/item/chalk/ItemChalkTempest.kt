@@ -9,6 +9,7 @@ import eladkay.quaeritum.common.block.ModBlocks
 import eladkay.quaeritum.common.lib.LibLocations
 import eladkay.quaeritum.common.lib.LibNames
 import net.minecraft.block.state.IBlockState
+import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.entity.Entity
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemBlock
@@ -19,6 +20,8 @@ import net.minecraft.util.EnumHand
 import net.minecraft.util.SoundCategory
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
 
 class ItemChalkTempest : ItemMod(LibNames.CHALK_TEMPEST) {
     init {
@@ -55,7 +58,8 @@ class ItemChalkTempest : ItemMod(LibNames.CHALK_TEMPEST) {
         }
     }
 
-    override fun addInformation(stack: ItemStack, playerIn: EntityPlayer?, tooltip: MutableList<String>, advanced: Boolean) {
+    @SideOnly(Side.CLIENT)
+    override fun addInformation(stack: ItemStack, world: World?, tooltip: MutableList<String>, advanced: ITooltipFlag) {
         TooltipHelper.addToTooltip(tooltip, getUnlocalizedName(stack) + ".desc")
     }
 

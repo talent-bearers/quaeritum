@@ -1,12 +1,12 @@
 package eladkay.quaeritum.common.rituals.diagrams
 
+import com.teamwizardry.librarianlib.features.kotlin.sendSpamlessMessage
 import eladkay.quaeritum.api.animus.AnimusHelper
 import eladkay.quaeritum.api.animus.INetworkProvider
 import eladkay.quaeritum.api.animus.ISoulstone
 import eladkay.quaeritum.api.rituals.IDiagram
 import eladkay.quaeritum.api.rituals.PositionedBlock
 import eladkay.quaeritum.api.rituals.PositionedBlockChalk
-import eladkay.quaeritum.common.core.ChatHelper
 import net.minecraft.item.EnumDyeColor
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.math.BlockPos
@@ -63,7 +63,7 @@ class AltarOfTheFallingStarDiagram : IDiagram {
         if (flag)
             for (playerEntity in world.playerEntities)
                 if (playerEntity.uniqueID == player)
-                    ChatHelper.sendNoSpam2(playerEntity, TextComponentTranslation("misc.quaeritum.rushOfEnergy"))
+                    playerEntity.sendSpamlessMessage(TextComponentTranslation("misc.quaeritum.rushOfEnergy"), 1005)
     }
 
 

@@ -17,7 +17,7 @@ import net.minecraft.client.Minecraft
 import net.minecraft.client.particle.Particle
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.Tessellator
-import net.minecraft.client.renderer.VertexBuffer
+import net.minecraft.client.renderer.BufferBuilder
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats
 import net.minecraft.entity.Entity
 import net.minecraft.world.World
@@ -98,7 +98,7 @@ class FXWisp(world: World, internal var initialX: Double, internal var initialY:
         tessellator.buffer.pos((f11 + f1 * f10 - f4 * f10).toDouble(), (f12 - f2 * f10).toDouble(), (f13 + f3 * f10 - f5 * f10).toDouble()).tex(0.0, 0.0).lightmap(k3, l3).color(particleRed, particleGreen, particleBlue, 0.5f).endVertex()
     }
 
-    override fun renderParticle(wr: VertexBuffer, entity: Entity?, f: Float, f1: Float, f2: Float, f3: Float, f4: Float, f5: Float) {
+    override fun renderParticle(wr: BufferBuilder, entity: Entity?, f: Float, f1: Float, f2: Float, f3: Float, f4: Float, f5: Float) {
         this.f = f
         this.f1 = f1
         this.f2 = f2

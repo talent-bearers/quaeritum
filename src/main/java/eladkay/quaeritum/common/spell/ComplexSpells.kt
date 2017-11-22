@@ -18,7 +18,6 @@ import net.minecraft.item.ItemStack
 import net.minecraft.potion.Potion
 import net.minecraft.potion.PotionEffect
 import net.minecraft.util.math.RayTraceResult
-import net.minecraft.util.text.TextComponentString
 
 /**
  * @author WireSegal
@@ -71,7 +70,7 @@ object ComplexSpells {
             if (block != null && block.typeOfHit == RayTraceResult.Type.BLOCK) {
                 val pos = block.blockPos
                 for (i in 0..2 * trailing / total)
-                    if (applyBonemeal(ItemStack(Items.DYE, 1, 15), player.world, pos, player))
+                    if (applyBonemeal(ItemStack(Items.DYE, 1, 15), player.world, pos))
                         player.world.playEvent(2005, pos, 0)
             }
         }
