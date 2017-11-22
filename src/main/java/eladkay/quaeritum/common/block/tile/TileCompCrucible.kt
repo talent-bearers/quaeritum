@@ -4,6 +4,7 @@ import com.teamwizardry.librarianlib.features.autoregister.TileRegister
 import com.teamwizardry.librarianlib.features.base.block.tile.TileModTickable
 import com.teamwizardry.librarianlib.features.base.block.tile.module.ModuleFluid
 import com.teamwizardry.librarianlib.features.base.block.tile.module.ModuleInventory
+import com.teamwizardry.librarianlib.features.kotlin.isNotEmpty
 import com.teamwizardry.librarianlib.features.saving.Module
 import com.teamwizardry.librarianlib.features.saving.NoSync
 import com.teamwizardry.librarianlib.features.saving.Save
@@ -28,10 +29,15 @@ class TileCompCrucible : TileModTickable() {
         currentFuelTime--
         val liquid = inputLiquid.handler.fluid ?: return -processTime
         val item = inputItem.handler.getStackInSlot(0)
-        if(item.isEmpty || liquid.amount < 500) return -processTime
+        if (item.isEmpty || liquid.amount < 500) return -processTime
         val recipe = AlchemicalCompositions.getRecipe(liquid, item) ?: return -processTime
 
-        if(currentFuelTime <= 0) {
+        if (outputItem.handler.getStackInSlot(0).count >= outputItem.handler.getStackInSlot(0).maxStackSize)
+            return -processTime
+        if (outputItem.handler.insertItem(0, recipe.getCompositeStack(liquid, item), false).isNotEmpty)
+            return -processTime
+
+        if (currentFuelTime <= 0) {
             val fuel = fuelItem.handler.getStackInSlot(0)
             val value = TileEntityFurnace.getItemBurnTime(fuel)
             if (fuel.isEmpty || value <= 0) return if (processTime > 0) -1 else 0
@@ -39,8 +45,6 @@ class TileCompCrucible : TileModTickable() {
             fuel.shrink(1)
         }
 
-        if(outputItem.handler.getStackInSlot(0).count >= outputItem.handler.getStackInSlot(0).maxStackSize)
-            return -processTime
         if (processTime % 20 == 1)
             world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.x + 0.5, pos.y + 0.5, pos.z + 0.5, 0.0, 0.0, 0.0)
         if (processTime >= 500) {
