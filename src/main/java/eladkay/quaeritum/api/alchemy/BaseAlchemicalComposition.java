@@ -1,9 +1,9 @@
 package eladkay.quaeritum.api.alchemy;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.OreDictionary;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -15,9 +15,9 @@ public class BaseAlchemicalComposition implements IAlchemicalComposition {
     @NotNull
     public final Fluid fluid;
     @NotNull
-    public final ItemStack dust, composite;
+    public final Ingredient dust, composite;
 
-    public BaseAlchemicalComposition(@NotNull Fluid fluid, @NotNull ItemStack dust, @NotNull ItemStack composite) {
+    public BaseAlchemicalComposition(@NotNull Fluid fluid, @NotNull Ingredient dust, @NotNull Ingredient composite) {
         this.fluid = fluid;
         this.dust = dust;
         this.composite = composite;
@@ -33,23 +33,23 @@ public class BaseAlchemicalComposition implements IAlchemicalComposition {
     @NotNull
     @Override
     public ItemStack getDustStack(@NotNull ItemStack composite) {
-        return dust.copy();
+        return dust.getMatchingStacks()[0].copy();
     }
 
     @NotNull
     @Override
     public ItemStack getCompositeStack(@NotNull FluidStack fluid, @NotNull ItemStack dust) {
-        return composite.copy();
+        return composite.getMatchingStacks()[0].copy();
     }
 
     @Override
-    public boolean isCompositable(@NotNull FluidStack fluid, @NotNull ItemStack dust) {
-        return fluid.getFluid() == this.fluid && OreDictionary.itemMatches(this.dust, dust, false);
+    public boolean isComposable(@NotNull FluidStack fluid, @NotNull ItemStack dust) {
+        return fluid.getFluid() == this.fluid && this.dust.test(dust);
     }
 
     @Override
     public boolean isDecomposable(@NotNull ItemStack composite) {
-        return OreDictionary.itemMatches(this.composite, composite, false);
+        return this.composite.test(composite);
     }
 
     @NotNull
@@ -60,13 +60,13 @@ public class BaseAlchemicalComposition implements IAlchemicalComposition {
 
     @NotNull
     @Override
-    public ItemStack getExampleDustStack() {
+    public Ingredient getExampleDustStack() {
         return dust;
     }
 
     @NotNull
     @Override
-    public ItemStack getExampleCompositeStack() {
+    public Ingredient getExampleCompositeStack() {
         return composite;
     }
 }

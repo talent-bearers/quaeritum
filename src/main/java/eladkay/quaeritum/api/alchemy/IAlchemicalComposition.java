@@ -1,6 +1,7 @@
 package eladkay.quaeritum.api.alchemy;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -47,7 +48,7 @@ public interface IAlchemicalComposition {
      * @param dust The dust to be checked.
      * @return Whether the composite is valid.
      */
-    boolean isCompositable(@NotNull FluidStack fluid, @NotNull ItemStack dust);
+    boolean isComposable(@NotNull FluidStack fluid, @NotNull ItemStack dust);
 
     /**
      * Whether a composite can be decomposed into a liquid and a dust.
@@ -66,11 +67,11 @@ public interface IAlchemicalComposition {
      * @return An example dust, for JEI and similar displays.
      */
     @NotNull
-    ItemStack getExampleDustStack();
+    Ingredient getExampleDustStack();
 
     /**
      * @return An example composite, for JEI and similar displays.
      */
     @NotNull
-    ItemStack getExampleCompositeStack();
+    Ingredient getExampleCompositeStack();
 }

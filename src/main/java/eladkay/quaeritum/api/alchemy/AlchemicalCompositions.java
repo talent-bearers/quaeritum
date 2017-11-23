@@ -1,6 +1,7 @@
 package eladkay.quaeritum.api.alchemy;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
@@ -25,7 +26,7 @@ public final class AlchemicalCompositions {
     @Nullable
     public static IAlchemicalComposition getRecipe(@NotNull FluidStack stack, @NotNull ItemStack dust) {
         for (IAlchemicalComposition recipe : recipes)
-            if (recipe.isCompositable(stack, dust))
+            if (recipe.isComposable(stack, dust))
                 return recipe;
         return null;
     }
@@ -46,6 +47,11 @@ public final class AlchemicalCompositions {
 
     @NotNull
     public static BaseAlchemicalComposition registerRecipe(@NotNull Fluid liquid, @NotNull ItemStack dust, @NotNull ItemStack composite) {
+        return (BaseAlchemicalComposition) registerRecipe(new BaseAlchemicalComposition(liquid, Ingredient.fromStacks(dust), Ingredient.fromStacks(composite)));
+    }
+
+    @NotNull
+    public static BaseAlchemicalComposition registerRecipe(@NotNull Fluid liquid, @NotNull Ingredient dust, @NotNull Ingredient composite) {
         return (BaseAlchemicalComposition) registerRecipe(new BaseAlchemicalComposition(liquid, dust, composite));
     }
 }

@@ -18,19 +18,19 @@ import net.minecraftforge.items.ItemStackHandler
 @TileRegister("spiral_distillate")
 class TileSpiralDistillate : TileModTickable() {
     override fun tick() {
+        shouldInsert = true
         processTime += fireFuelLoop()
-        markDirty()
+        shouldInsert = false
     }
 
     fun fireFuelLoop(): Int {
-        currentFuelTime--
+        if (currentFuelTime > 0)
+            currentFuelTime--
         val item = inputItem.handler.getStackInSlot(0)
         if (item.isEmpty) return -processTime
         val recipe = AlchemicalCompositions.getRecipe(item) ?: return -processTime
 
-        if (outputItem.handler.getStackInSlot(0).count >= outputItem.handler.getStackInSlot(0).maxStackSize)
-            return -processTime
-        if (outputItem.handler.insertItem(0, recipe.getDustStack(item), false).isNotEmpty)
+        if (outputItem.handler.insertItem(0, recipe.getDustStack(item), true).isNotEmpty)
             return -processTime
         if (outputLiquid.handler.fill(recipe.getLiquidStack(item), false) < outputLiquid.handler.fluidAmount)
             return -processTime
@@ -48,17 +48,14 @@ class TileSpiralDistillate : TileModTickable() {
         if (processTime >= 500) {
             val stack = recipe.getDustStack(item)
             val fluid = recipe.getLiquidStack(item)
-            shouldInsert = true
             val didOutputItem = outputItem.handler.insertItem(0, stack, true).isEmpty
             val didOutputFluid = outputLiquid.handler.fill(fluid, false) >= outputLiquid.handler.fluidAmount
             if (didOutputItem && didOutputFluid) {
                 inputItem.handler.getStackInSlot(0).shrink(1)
                 outputItem.handler.insertItem(0, stack, false)
                 outputLiquid.handler.fill(fluid, true)
-                shouldInsert = false
                 return -processTime
             }
-            shouldInsert = false
         }
         return 1
 
@@ -67,18 +64,18 @@ class TileSpiralDistillate : TileModTickable() {
     private var shouldInsert = false
 
     @Module
-    val outputLiquid = ModuleFluid(2000).setSides(EnumFacing.NORTH, EnumFacing.SOUTH, EnumFacing.WEST, EnumFacing.EAST, EnumFacing.DOWN)
+    val outputLiquid = ModuleFluid(2000).disallowSides(EnumFacing.DOWN)
     @Module
     @NoSync
     val inputItem = ModuleInventory(1).setSides(EnumFacing.UP)
     @Module
     @NoSync
-    val fuelItem = ModuleInventory(1).setSides(EnumFacing.NORTH, EnumFacing.SOUTH, EnumFacing.WEST, EnumFacing.EAST)
+    val fuelItem = ModuleInventory(1).disallowSides(EnumFacing.UP, EnumFacing.DOWN)
     @Module
     @NoSync
     val outputItem = ModuleInventory(object : ItemStackHandler(1) {
         override fun insertItem(slot: Int, stack: ItemStack, simulate: Boolean) = if (shouldInsert) super.insertItem(slot, stack, simulate) else stack
-    }).setSides(EnumFacing.NORTH, EnumFacing.SOUTH, EnumFacing.WEST, EnumFacing.EAST, EnumFacing.DOWN)
+    }).disallowSides(EnumFacing.UP)
 
     @NoSync
     @Save var currentFuelTime = 0

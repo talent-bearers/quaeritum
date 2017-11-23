@@ -8,18 +8,15 @@ import com.teamwizardry.librarianlib.features.kotlin.isNotEmpty
 import com.teamwizardry.librarianlib.features.saving.Module
 import com.teamwizardry.librarianlib.features.saving.NoSync
 import com.teamwizardry.librarianlib.features.saving.Save
-import eladkay.quaeritum.api.alchemy.AlchemicalCompositions
+import eladkay.quaeritum.api.alchemy.Dessications
 import net.minecraft.item.ItemStack
 import net.minecraft.tileentity.TileEntityFurnace
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumParticleTypes
 import net.minecraftforge.items.ItemStackHandler
 
-/**
- * Created by Elad on 8/22/2017.
- */
-@TileRegister("compound_crucible")
-class TileCompCrucible : TileModTickable() {
+@TileRegister("dessication")
+class TileDessicationCrucible : TileModTickable() {
     override fun tick() {
         shouldInsert = true
         processTime += fireFuelLoop()
@@ -29,18 +26,16 @@ class TileCompCrucible : TileModTickable() {
     fun fireFuelLoop(): Int {
         if (currentFuelTime > 0)
             currentFuelTime--
-        val liquid = inputLiquid.handler.fluid ?: return -processTime
-        val item = inputItem.handler.getStackInSlot(0)
-        if (item.isEmpty || liquid.amount < 500) return -processTime
-        val recipe = AlchemicalCompositions.getRecipe(liquid, item) ?: return -processTime
+        val fluid = inputLiquid.handler.fluid ?: return -processTime
+        val recipe = Dessications.getRecipe(fluid) ?: return -processTime
 
-        if (outputItem.handler.insertItem(0, recipe.getCompositeStack(liquid, item), true).isNotEmpty)
+        if (outputItem.handler.insertItem(0, recipe.getDriedStack(fluid), true).isNotEmpty)
             return -processTime
 
         if (currentFuelTime <= 0) {
             val fuel = fuelItem.handler.getStackInSlot(0)
             val value = TileEntityFurnace.getItemBurnTime(fuel)
-            if (fuel.isEmpty || value <= 0) return if (processTime > 0) -1 else 0
+            if (fuel.isEmpty || value == 0) return if (processTime > 0) -1 else 0
             currentFuelTime = value
             fuel.shrink(1)
         }
@@ -48,12 +43,11 @@ class TileCompCrucible : TileModTickable() {
         if (processTime % 20 == 1)
             world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.x + 0.5, pos.y + 0.5, pos.z + 0.5, 0.0, 0.0, 0.0)
         if (processTime >= 500) {
-            val stack = recipe.getCompositeStack(liquid, item)
+            val stack = recipe.getDriedStack(fluid)
 
             val addedOutputStack = outputItem.handler.insertItem(0, stack, false)
 
             if (addedOutputStack.isEmpty) {
-                inputItem.handler.getStackInSlot(0).shrink(1)
                 inputLiquid.handler.drain(500, true)
                 return -processTime
             }
@@ -66,9 +60,6 @@ class TileCompCrucible : TileModTickable() {
 
     @Module
     val inputLiquid = ModuleFluid(2000).disallowSides(EnumFacing.DOWN)
-    @Module
-    @NoSync
-    val inputItem = ModuleInventory(1).setSides(EnumFacing.UP)
     @Module
     @NoSync
     val fuelItem = ModuleInventory(1).disallowSides(EnumFacing.UP, EnumFacing.DOWN)
