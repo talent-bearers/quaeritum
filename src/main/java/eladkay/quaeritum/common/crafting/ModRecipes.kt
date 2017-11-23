@@ -3,11 +3,14 @@ package eladkay.quaeritum.common.crafting
 import com.teamwizardry.librarianlib.core.common.RecipeGeneratorHandler
 import com.teamwizardry.librarianlib.core.common.RegistrationHandler
 import com.teamwizardry.librarianlib.features.kotlin.toRl
+import eladkay.quaeritum.api.alchemy.AlchemicalCompositions
+import eladkay.quaeritum.api.alchemy.Dessications
 import eladkay.quaeritum.api.animus.EnumAnimusTier
 import eladkay.quaeritum.api.lib.LibMisc
 import eladkay.quaeritum.api.machines.CentrifugeRecipes
 import eladkay.quaeritum.common.block.ModBlocks
 import eladkay.quaeritum.common.crafting.recipes.RecipeAwakenedSoulstone
+import eladkay.quaeritum.common.fluid.ModFluids
 import eladkay.quaeritum.common.item.EvocationRecipe
 import eladkay.quaeritum.common.item.ItemEssence
 import eladkay.quaeritum.common.item.ItemResource.Resources
@@ -17,6 +20,9 @@ import net.minecraft.init.Blocks
 import net.minecraft.init.Items
 import net.minecraft.init.PotionTypes
 import net.minecraft.item.ItemStack
+import net.minecraft.item.crafting.FurnaceRecipes
+import net.minecraft.item.crafting.Ingredient
+import net.minecraftforge.oredict.OreDictionary
 
 object ModRecipes {
 
@@ -45,10 +51,54 @@ object ModRecipes {
         CentrifugeRecipes.registerRecipe("stone", Items.CLAY_BALL, ItemStack(ModItems.dormant))
         CentrifugeRecipes.registerRecipe(ItemEssence.stackOf(EnumAnimusTier.VERDIS), "ingotGold", Resources.VICTIUM_INGOT.stackOf())
                 .setRequiresHeat(true)
+        CentrifugeRecipes.registerRecipe(ItemStack(Items.COAL), null, Resources.BITUMEN.stackOf())
+        CentrifugeRecipes.registerRecipe(ItemStack(Blocks.RED_FLOWER), null, ItemEssence.stackOf(EnumAnimusTier.VERDIS))
+        CentrifugeRecipes.registerRecipe(Resources.PERFECT_MATRIX.stackOf(), null, ItemEssence.stackOf(EnumAnimusTier.ARGENTUS))
 
+        Dessications.registerRecipe(ModFluids.BITUMEN.getActual(), Resources.BITUMEN.stackOf(2))
+        Dessications.registerRecipe(ModFluids.SWEET.getActual(), ItemStack(Items.SUGAR))
+        Dessications.registerRecipe(ModFluids.LIGHT.getActual(), ItemStack(Items.GLOWSTONE_DUST))
+        Dessications.registerRecipe(ModFluids.SLURRY.getActual(), Resources.MIXTURE_MATRIX.stackOf())
 
+        AlchemicalCompositions.registerRecipe(ModFluids.BITUMEN.getActual(),
+                ingredientOf(Resources.BITUMEN.stackOf()),
+                ingredientOf(ItemStack(Items.COAL), ItemStack(Items.COAL, 1, 1)))
+        AlchemicalCompositions.registerRecipe(ModFluids.SWEET.getActual(),
+                Resources.FLOWER_DUST.stackOf(),
+                ItemEssence.stackOf(EnumAnimusTier.VERDIS))
+        AlchemicalCompositions.registerRecipe(ModFluids.LIGHT.getActual(),
+                ItemStack(Items.BLAZE_POWDER),
+                ItemEssence.stackOf(EnumAnimusTier.LUCIS))
+        AlchemicalCompositions.registerRecipe(ModFluids.LIGHT.getActual(),
+                ingredientOf("nuggetIron"),
+                ingredientOf(Resources.SLURRY.stackOf()))
+        AlchemicalCompositions.registerRecipe(ModFluids.SLURRY.getActual(),
+                Resources.MIXTURE_MATRIX.stackOf(),
+                ItemEssence.stackOf(EnumAnimusTier.FERRUS))
+        AlchemicalCompositions.registerRecipe(ModFluids.BITUMEN.getActual(),
+                Resources.ALLOY_MATRIX.stackOf(),
+                Resources.RUSTED_MATRIX.stackOf())
+        AlchemicalCompositions.registerRecipe(ModFluids.LIGHT.getActual(),
+                Resources.RUSTED_MATRIX.stackOf(),
+                Resources.PERFECT_MATRIX.stackOf())
+
+        FurnaceRecipes.instance().addSmeltingRecipe(Resources.MIXTURE_MATRIX.stackOf(), Resources.ALLOY_MATRIX.stackOf(), 0.7f)
 
         ModPotionTypes.addCompletePotionRecipes(ModPotionTypes.potionPredicate("dyeBlack"), PotionTypes.AWKWARD, ModPotionTypes.BLINDNESS, ModPotionTypes.BLINDNESS_LONG, null)
+    }
+
+    fun ingredientOf(vararg itemStacks: ItemStack) = ingredientOf(itemStacks)
+
+    fun ingredientOf(any: Any): Ingredient {
+        if (any is ItemStack)
+            return Ingredient.fromStacks(any)
+        else if (any is String)
+            return ingredientOf(OreDictionary.getOres(any))
+        else if (any is Iterable<*>)
+            return Ingredient.fromStacks(*any.filterIsInstance<ItemStack>().toTypedArray())
+        else if (any is Array<*>)
+            return Ingredient.fromStacks(*any.filterIsInstance<ItemStack>().toTypedArray())
+        return Ingredient.EMPTY
     }
 
     private fun addOreDictRecipe(name: String, output: ItemStack, vararg recipe: Any) {

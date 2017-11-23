@@ -1,0 +1,101 @@
+{
+	"forge_marker": 1,
+	"variants": {
+		"level=0": {
+			"model": "forge:fluid",
+			"custom": {
+				"fluid": "bitumen"
+			}
+		},
+		"level=1": {
+			"model": "forge:fluid",
+			"custom": {
+				"fluid": "bitumen"
+			}
+		},
+		"level=2": {
+			"model": "forge:fluid",
+			"custom": {
+				"fluid": "bitumen"
+			}
+		},
+		"level=3": {
+			"model": "forge:fluid",
+			"custom": {
+				"fluid": "bitumen"
+			}
+		},
+		"level=4": {
+			"model": "forge:fluid",
+			"custom": {
+				"fluid": "bitumen"
+			}
+		},
+		"level=5": {
+			"model": "forge:fluid",
+			"custom": {
+				"fluid": "bitumen"
+			}
+		},
+		"level=6": {
+			"model": "forge:fluid",
+			"custom": {
+				"fluid": "bitumen"
+			}
+		},
+		"level=7": {
+			"model": "forge:fluid",
+			"custom": {
+				"fluid": "bitumen"
+			}
+		},
+		"level=8": {
+			"model": "forge:fluid",
+			"custom": {
+				"fluid": "bitumen"
+			}
+		},
+		"level=9": {
+			"model": "forge:fluid",
+			"custom": {
+				"fluid": "bitumen"
+			}
+		},
+		"level=10": {
+			"model": "forge:fluid",
+			"custom": {
+				"fluid": "bitumen"
+			}
+		},
+		"level=11": {
+			"model": "forge:fluid",
+			"custom": {
+				"fluid": "bitumen"
+			}
+		},
+		"level=12": {
+			"model": "forge:fluid",
+			"custom": {
+				"fluid": "bitumen"
+			}
+		},
+		"level=13": {
+			"model": "forge:fluid",
+			"custom": {
+				"fluid": "bitumen"
+			}
+		},
+		"level=14": {
+			"model": "forge:fluid",
+			"custom": {
+				"fluid": "bitumen"
+			}
+		},
+		"level=15": {
+			"model": "forge:fluid",
+			"custom": {
+				"fluid": "bitumen"
+			}
+		}
+	}
+}

@@ -42,12 +42,13 @@ class TileDessicationCrucible : TileModTickable() {
 
         if (processTime % 20 == 1)
             world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.x + 0.5, pos.y + 0.5, pos.z + 0.5, 0.0, 0.0, 0.0)
-        if (processTime >= 500) {
+        if (processTime >= 200) {
             val stack = recipe.getDriedStack(fluid)
 
-            val addedOutputStack = outputItem.handler.insertItem(0, stack, false)
+            val addedOutputStack = outputItem.handler.insertItem(0, stack, true)
 
             if (addedOutputStack.isEmpty) {
+                outputItem.handler.insertItem(0, stack, false)
                 inputLiquid.handler.drain(500, true)
                 return -processTime
             }

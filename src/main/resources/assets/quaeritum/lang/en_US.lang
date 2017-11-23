@@ -228,18 +228,33 @@ tile.quaeritum:foundation.name=Foundation Stone
 tile.quaeritum:centrifuge.name=Centrifuge
 jei.quaeritum.recipe.centrifuge=Centrifuge
 
-item.quaeritum:ruined_slag.name=Ruined Slag
 item.quaeritum:victium_ingot.name=Victium Ingot
 item.quaeritum:victium_nugget.name=Victium Nugget
 item.quaeritum:arcane_essence.name=Arcane Essence
 item.quaeritum:tempesteel.name=Tempesteel Ingot
+item.quaeritum:bitumen.name=Bitumen
+item.quaeritum:flower_dust.name=Fragrant Remains
+item.quaeritum:slurry.name=Alchemical Slurry
+item.quaeritum:mixture_matrix.name=Metallic Matrix
+item.quaeritum:alloy_matrix.name=Brazen Matrix
+item.quaeritum:rusted_matrix.name=Tarnished Matrix
+item.quaeritum:perfect_matrix.name=Philosopher's Matrix
 
-item.quaeritum:verdis.name=Arcane Essence
+fluid.bitumen=Bituminous Sludge
+fluid.iron_slurry=Alchemical Residue
+fluid.sugar_water=Aquae Dulcis
+fluid.liquid_light=Liquid Light
+
+item.quaeritum:verdis.name=Floral Essence
 item.quaeritum:lucis.name=Shining Stardust
 item.quaeritum:ferrus.name=Alchemist's Ash
 item.quaeritum:argentus.name=Philosopher's Dust
 item.quaeritum:atlas.name=Traveller's Heart
 item.quaeritum:quaeritus.name=Seeker's Soul
+
+tile.quaeritum:compound_crucible.name=Compound Crucible
+tile.quaeritum:dessicator.name=Dessication Crucible
+tile.quaeritum:spiral_distillate.name=Spiral Distillery
 
 quaeritum.subtitle.equip_bauble=Bauble is equipped
 quaeritum.subtitle.centrifuge=Centrifuge spins

@@ -47,7 +47,7 @@ class TileCompCrucible : TileModTickable() {
 
         if (processTime % 20 == 1)
             world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.x + 0.5, pos.y + 0.5, pos.z + 0.5, 0.0, 0.0, 0.0)
-        if (processTime >= 500) {
+        if (processTime >= 200) {
             val stack = recipe.getCompositeStack(liquid, item)
 
             val addedOutputStack = outputItem.handler.insertItem(0, stack, false)

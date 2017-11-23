@@ -6,6 +6,7 @@ import eladkay.quaeritum.common.core.CommonProxy
 import eladkay.quaeritum.common.core.QuaeritumInternalHandler
 import eladkay.quaeritum.common.core.command.CommandAddElement
 import eladkay.quaeritum.common.core.command.CommandCastSpell
+import net.minecraftforge.fluids.FluidRegistry
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.SidedProxy
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
@@ -15,6 +16,10 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent
 
 @Mod(modid = LibMisc.MOD_ID, name = LibMisc.NAME, version = LibMisc.VERSION, dependencies = LibMisc.DEPENDENCIES)
 class Quaeritum {
+
+    init {
+        FluidRegistry.enableUniversalBucket()
+    }
 
     @Mod.EventHandler
     fun pre(e: FMLPreInitializationEvent) {

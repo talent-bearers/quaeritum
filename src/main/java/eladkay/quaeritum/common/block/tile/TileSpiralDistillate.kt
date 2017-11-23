@@ -45,7 +45,7 @@ class TileSpiralDistillate : TileModTickable() {
 
         if (processTime % 20 == 1)
             world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.x + 0.5, pos.y + 0.5, pos.z + 0.5, 0.0, 0.0, 0.0)
-        if (processTime >= 500) {
+        if (processTime >= 200) {
             val stack = recipe.getDustStack(item)
             val fluid = recipe.getLiquidStack(item)
             val didOutputItem = outputItem.handler.insertItem(0, stack, true).isEmpty

@@ -8,6 +8,7 @@ import eladkay.quaeritum.common.Quaeritum
 import eladkay.quaeritum.common.block.ModBlocks
 import eladkay.quaeritum.common.crafting.ModRecipes
 import eladkay.quaeritum.common.entity.ModEntities
+import eladkay.quaeritum.common.fluid.ModFluids
 import eladkay.quaeritum.common.item.ModItems
 import eladkay.quaeritum.common.networking.RemainingItemRenderPacket
 import eladkay.quaeritum.common.potions.*
@@ -42,16 +43,16 @@ open class CommonProxy {
         BasicSpells
         SightHandler
         ModEntities.init()
-        ModRecipes.init()
         ClientEventHandler().init()
         AnimusHelper.Network.EventHandler()
         ModDiagrams.init()
         ModWorks.init()
+        ModFluids
         FMLInterModComms.sendMessage("Waila", "register", "eladkay.quaeritum.common.compat.waila.Waila.onWailaCall")
     }
 
     open fun init(e: FMLInitializationEvent) {
-
+        ModRecipes.init()
     }
 
     open fun post(e: FMLPostInitializationEvent) {
