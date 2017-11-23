@@ -1,17 +1,12 @@
 package eladkay.quaeritum.common.crafting
 
 import com.teamwizardry.librarianlib.core.common.RecipeGeneratorHandler
-import com.teamwizardry.librarianlib.core.common.RegistrationHandler
-import com.teamwizardry.librarianlib.features.kotlin.toRl
 import eladkay.quaeritum.api.alchemy.AlchemicalCompositions
 import eladkay.quaeritum.api.alchemy.Dessications
 import eladkay.quaeritum.api.animus.EnumAnimusTier
-import eladkay.quaeritum.api.lib.LibMisc
 import eladkay.quaeritum.api.machines.CentrifugeRecipes
 import eladkay.quaeritum.common.block.ModBlocks
-import eladkay.quaeritum.common.crafting.recipes.RecipeAwakenedSoulstone
 import eladkay.quaeritum.common.fluid.ModFluids
-import eladkay.quaeritum.common.item.EvocationRecipe
 import eladkay.quaeritum.common.item.ItemEssence
 import eladkay.quaeritum.common.item.ItemResource.Resources
 import eladkay.quaeritum.common.item.ModItems
@@ -22,6 +17,7 @@ import net.minecraft.init.PotionTypes
 import net.minecraft.item.ItemStack
 import net.minecraft.item.crafting.FurnaceRecipes
 import net.minecraft.item.crafting.Ingredient
+import net.minecraftforge.fluids.FluidRegistry
 import net.minecraftforge.oredict.OreDictionary
 
 object ModRecipes {
@@ -55,7 +51,9 @@ object ModRecipes {
         Dessications.registerRecipe(ModFluids.BITUMEN.getActual(), Resources.BITUMEN.stackOf(2))
         Dessications.registerRecipe(ModFluids.SWEET.getActual(), ItemStack(Items.SUGAR))
         Dessications.registerRecipe(ModFluids.LIGHT.getActual(), ItemStack(Items.GLOWSTONE_DUST))
-        Dessications.registerRecipe(ModFluids.SLURRY.getActual(), Resources.MIXTURE_MATRIX.stackOf())
+        Dessications.registerRecipe(ModFluids.SLURRY.getActual(), Resources.SLURRY.stackOf())
+        Dessications.registerRecipe(FluidRegistry.LAVA, ItemStack(Blocks.OBSIDIAN))
+        Dessications.registerRecipe(FluidRegistry.WATER, ItemStack.EMPTY)
 
         AlchemicalCompositions.registerRecipe(ModFluids.BITUMEN.getActual(),
                 ingredientOf(Resources.BITUMEN.stackOf()),

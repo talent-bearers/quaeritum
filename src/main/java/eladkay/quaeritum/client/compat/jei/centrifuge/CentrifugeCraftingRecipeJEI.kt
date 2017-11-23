@@ -5,12 +5,12 @@ import eladkay.quaeritum.api.machines.BaseCentrifugeRecipe
 import eladkay.quaeritum.client.compat.jei.JEICompat
 import mezz.jei.api.gui.IDrawableAnimated
 import mezz.jei.api.ingredients.IIngredients
-import mezz.jei.api.recipe.BlankRecipeWrapper
+import mezz.jei.api.recipe.IRecipeWrapper
 import net.minecraft.client.Minecraft
 import net.minecraft.item.ItemStack
 import net.minecraft.util.ResourceLocation
 
-class CentrifugeCraftingRecipeJEI(val baseRecipe: BaseCentrifugeRecipe) : BlankRecipeWrapper() {
+class CentrifugeCraftingRecipeJEI(val baseRecipe: BaseCentrifugeRecipe) : IRecipeWrapper {
 
     companion object {
         private val flame = JEICompat.helper.guiHelper.createDrawable(ResourceLocation(LibMisc.MOD_ID, "textures/gui/centrifuge.png"), 72, 0, 15, 14)

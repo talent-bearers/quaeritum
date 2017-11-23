@@ -15,7 +15,7 @@ object ModFluids {
             .makeBlock(Material.WATER)
     val LIGHT = ModFluid("liquid_light", "fluid/liquid_light", "fluid/liquid_light_flow", true)
             .setLuminosity(15)
-            .setViscosity(200)
+            .setViscosity(500)
             .makeBlock(Material.WATER)
     val SLURRY = ModFluid("iron_slurry", "fluid/iron_slurry", "fluid/iron_slurry_flow", true)
             .setViscosity(2000)

@@ -3,7 +3,6 @@ package eladkay.quaeritum.client.compat.jei
 import eladkay.quaeritum.api.machines.BaseCentrifugeRecipe
 import eladkay.quaeritum.api.machines.CentrifugeRecipes
 import eladkay.quaeritum.client.compat.jei.centrifuge.CentrifugeCraftingCategory
-import eladkay.quaeritum.client.compat.jei.centrifuge.CentrifugeCraftingRecipeHandler
 import eladkay.quaeritum.client.compat.jei.centrifuge.CentrifugeCraftingRecipeJEI
 import eladkay.quaeritum.common.block.ModBlocks
 import mezz.jei.api.*
@@ -22,12 +21,13 @@ class JEICompat : IModPlugin {
     override fun register(registry: IModRegistry) {
         helper = registry.jeiHelpers
 
-        registry.addRecipeHandlers(CentrifugeCraftingRecipeHandler)
-        registry.addRecipeCategories(CentrifugeCraftingCategory)
+        registry.handleRecipes(BaseCentrifugeRecipe::class.java, {
+            CentrifugeCraftingRecipeJEI(it)
+        }, CentrifugeCraftingCategory.uid)
         registry.addRecipes(CentrifugeRecipes.getRecipes().mapNotNull {
             if (it !is BaseCentrifugeRecipe) null else CentrifugeCraftingRecipeJEI(it)
-        })
-        registry.addRecipeCategoryCraftingItem(ItemStack(ModBlocks.centrifuge), CentrifugeCraftingCategory.uid)
+        }, CentrifugeCraftingCategory.uid)
+        registry.addRecipeCatalyst(ItemStack(ModBlocks.centrifuge), CentrifugeCraftingCategory.uid)
 
     }
 
@@ -35,8 +35,9 @@ class JEICompat : IModPlugin {
     override fun registerItemSubtypes(subtypeRegistry: ISubtypeRegistry) = Unit // NO-OP
     override fun registerIngredients(registry: IModIngredientRegistration) = Unit // NO-OP
 
-    override fun registerCategories(registry: IRecipeCategoryRegistration?) {
-        throw UnsupportedOperationException()
+    override fun registerCategories(registry: IRecipeCategoryRegistration) {
+        helper = registry.jeiHelpers
+        registry.addRecipeCategories(CentrifugeCraftingCategory)
     }
 }
 
