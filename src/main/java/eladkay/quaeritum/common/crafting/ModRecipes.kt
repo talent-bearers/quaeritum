@@ -29,9 +29,6 @@ object ModRecipes {
     private val dyeColors = arrayOf("White", "Orange", "Magenta", "LightBlue", "Yellow", "Lime", "Pink", "Gray", "LightGray", "Cyan", "Purple", "Blue", "Brown", "Green", "Red", "Black")
 
     fun init() {
-
-        RegistrationHandler.register(RecipeAwakenedSoulstone(), "${LibMisc.MOD_ID}:awakened".toRl())
-        RegistrationHandler.register(EvocationRecipe, "${LibMisc.MOD_ID}:evoker".toRl())
         addShapelessOreDictRecipe("blueprint", ItemStack(ModBlocks.blueprint), "dyeBlue", ItemStack(Items.PAPER), ItemStack(Blocks.STONE_SLAB))
         addShapelessOreDictRecipe("fertilizer", ItemStack(ModItems.fertilizer, 2), "dyePink", ItemStack(Items.DYE, 1, 15), ItemStack(ModItems.altas))
         addOreDictRecipe("passion", ItemStack(ModItems.passionate),

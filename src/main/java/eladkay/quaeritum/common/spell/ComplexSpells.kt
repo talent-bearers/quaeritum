@@ -10,7 +10,6 @@ import eladkay.quaeritum.common.potions.PotionIronskin
 import eladkay.quaeritum.common.potions.PotionRooted
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.init.Items
 import net.minecraft.init.MobEffects
 import net.minecraft.item.ItemDye.applyBonemeal
@@ -66,7 +65,7 @@ object ComplexSpells {
         }
 
         SpellParser.registerSpell(arrayOf(EARTH, WATER), RESTORATION, "bonemeal") { player, trailing, total ->
-            val block = RaycastUtils.raycast(player, (player as EntityPlayerMP).interactionManager.blockReachDistance + 3, false)
+            val block = RaycastUtils.raycast(player, player.getEntityAttribute(EntityPlayer.REACH_DISTANCE).attributeValue + 3, false)
             if (block != null && block.typeOfHit == RayTraceResult.Type.BLOCK) {
                 val pos = block.blockPos
                 for (i in 0..2 * trailing / total)
