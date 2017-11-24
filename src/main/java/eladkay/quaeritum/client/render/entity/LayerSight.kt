@@ -1,6 +1,5 @@
 package eladkay.quaeritum.client.render.entity
 
-import baubles.api.render.IRenderBauble
 import eladkay.quaeritum.api.lib.LibMisc
 import eladkay.quaeritum.common.core.SightHandler
 import net.minecraft.client.Minecraft
@@ -9,8 +8,12 @@ import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.Tessellator
 import net.minecraft.client.renderer.entity.layers.LayerRenderer
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats
+import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.util.ResourceLocation
+import net.minecraft.util.math.MathHelper
 import org.lwjgl.opengl.GL11
+
+
 
 
 
@@ -39,8 +42,8 @@ object LayerSight : LayerRenderer<AbstractClientPlayer> {
             GlStateManager.rotate(yaw - 270, 0f, 1f, 0f)
             GlStateManager.rotate(pitch, 0f, 0f, 1f)
 
-            IRenderBauble.Helper.translateToHeadLevel(player)
-            IRenderBauble.Helper.translateToFace()
+            Helper.translateToHeadLevel(player)
+            Helper.translateToFace()
             GlStateManager.translate(0.25f, 3.425f, 0.625f)
             GlStateManager.rotate(180f, 0f, 0f, 1f)
             GlStateManager.scale(0.5, 0.5, 0.5)
@@ -58,6 +61,41 @@ object LayerSight : LayerRenderer<AbstractClientPlayer> {
             GlStateManager.enableLighting()
             GlStateManager.disableBlend()
             GlStateManager.disableAlpha()
+        }
+    }
+
+    private object Helper {
+
+        fun rotateIfSneaking(player: EntityPlayer) {
+            if (player.isSneaking)
+                applySneakingRotation()
+        }
+
+        fun applySneakingRotation() {
+            GlStateManager.translate(0f, 0.2f, 0f)
+            GlStateManager.rotate(90f / Math.PI.toFloat(), 1.0f, 0.0f, 0.0f)
+        }
+
+        fun translateToHeadLevel(player: EntityPlayer) {
+            GlStateManager.translate(0f, -player.defaultEyeHeight, 0f)
+            if (player.isSneaking)
+                GlStateManager.translate(0.25f * MathHelper.sin(player.rotationPitch * Math.PI.toFloat() / 180), 0.25f * MathHelper.cos(player.rotationPitch * Math.PI.toFloat() / 180), 0f)
+        }
+
+        fun translateToFace() {
+            GlStateManager.rotate(90f, 0f, 1f, 0f)
+            GlStateManager.rotate(180f, 1f, 0f, 0f)
+            GlStateManager.translate(0f, -4.35f, -1.27f)
+        }
+
+        fun defaultTransforms() {
+            GlStateManager.translate(0.0, 3.0, 1.0)
+            GlStateManager.scale(0.55, 0.55, 0.55)
+        }
+
+        fun translateToChest() {
+            GlStateManager.rotate(180f, 1f, 0f, 0f)
+            GlStateManager.translate(0f, -3.2f, -0.85f)
         }
     }
 
