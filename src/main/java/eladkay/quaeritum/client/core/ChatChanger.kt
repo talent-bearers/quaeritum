@@ -80,7 +80,7 @@ object ChatChanger {
                 while (c.chatOpen && i < chatLines.size || !c.chatOpen && i < chatLines.size && i < 10) {
                     val l = chatLines[i]
                     val s = l.chatComponent.unformattedText
-                    val re = "(.*)(?:${TextFormatting.GOLD}\u00a7([0-9A-Fa-fK-Ok-oRr])${TextFormatting.RESET}   ${TextFormatting.BOLD}${TextFormatting.RESET})".toRegex()
+                    val re = "(?:${TextFormatting.GOLD}\u00a7([0-9A-Fa-fK-Ok-oRr])${TextFormatting.RESET}   ${TextFormatting.BOLD}${TextFormatting.RESET})".toRegex()
                     val matches = re.findAll(s)
                     for (match in matches) {
                         val j1 = updateCounter - l.updatedCounter
@@ -92,8 +92,8 @@ object ChatChanger {
                             if (c.chatOpen) l1 = 1f
 
 
-                            val before = match.groupValues[1]
-                            val id = match.groupValues[2]
+                            val before = s.substring(0 until (match.groups[0]?.range?.first ?: 0))
+                            val id = match.groupValues[1]
                             val formatting = TextFormatting.values().firstOrNull { it.toString() == "\u00a7$id" }
                             if (formatting != null && formatting.ordinal < EnumLegend.values().size) {
                                 val element = EnumLegend.values()[formatting.ordinal]
