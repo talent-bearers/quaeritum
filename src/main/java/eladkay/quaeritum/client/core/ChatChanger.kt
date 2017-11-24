@@ -74,24 +74,24 @@ object ChatChanger {
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
     fun renderSymbols(event: RenderGameOverlayEvent.Post) {
-        val c = Minecraft.getMinecraft().ingameGUI.chatGUI
+        val chatGui = Minecraft.getMinecraft().ingameGUI.chatGUI
         if (event.type == RenderGameOverlayEvent.ElementType.CHAT) {
             val updateCounter = Minecraft.getMinecraft().ingameGUI.updateCounter
-            val chatLines = c.lines
+            val chatLines = chatGui.lines
 
             var idx = 0
-            while (c.chatOpen && idx < chatLines.size || !c.chatOpen && idx < chatLines.size && idx < 10) {
+            while (chatGui.chatOpen && idx < chatLines.size || !chatGui.chatOpen && idx < chatLines.size && idx < 10) {
                 val line = chatLines[idx]
                 val text = line.chatComponent.unformattedText
                 val matches = PATTERN.findAll(text)
                 for (match in matches) {
-                    val j1 = updateCounter - line.updatedCounter
-                    if (j1 < 200 || c.chatOpen) {
-                        val f = Minecraft.getMinecraft().gameSettings.chatOpacity * 0.9f + 0.1f
-                        var fadeOut = MathHelper.clamp((1 - j1 / 200.0) * 10, 0.0, 1.0).toFloat()
+                    var timeSinceCreation = updateCounter - line.updatedCounter
+                    if (chatGui.chatOpen) timeSinceCreation = 0
+                    if (timeSinceCreation < 200) {
+                        val chatOpacity = Minecraft.getMinecraft().gameSettings.chatOpacity * 0.9f + 0.1f
+                        var fadeOut = MathHelper.clamp((1 - timeSinceCreation / 200.0) * 10, 0.0, 1.0).toFloat()
                         fadeOut *= fadeOut
-                        var alpha = fadeOut * f
-                        if (c.chatOpen) alpha = 1f
+                        val alpha = fadeOut * chatOpacity
 
 
                         val before = text.substring(0 until (match.groups[0]?.range?.first ?: 0))
