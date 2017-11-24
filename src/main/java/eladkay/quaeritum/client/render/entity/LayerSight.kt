@@ -29,7 +29,9 @@ object LayerSight : LayerRenderer<AbstractClientPlayer> {
         if (SightHandler.hasTheSight(player)) {
             val yaw = player.prevRotationYawHead + (player.rotationYawHead - player.prevRotationYawHead) * partialTicks
             val yawOffset = player.prevRenderYawOffset + (player.renderYawOffset - player.prevRenderYawOffset) * partialTicks
-            val pitch = player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch) * partialTicks
+            var pitch = player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch) * partialTicks
+            if (player.ticksElytraFlying > 4)
+                pitch = -45f
 
             val hasSight = SightHandler.hasTheSight(Minecraft.getMinecraft().player)
             val alpha = if (hasSight) 0.5f else 0.25f
