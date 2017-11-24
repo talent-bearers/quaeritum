@@ -53,7 +53,7 @@ object ChatChanger {
     fun playerName(event: PlayerEvent.NameFormat) {
         val uid = event.entityPlayer.uniqueID
         val legend = map[uid] ?: return
-        event.displayname = TextFormatting.GOLD.toString() + TextFormatting.values()[legend.ordinal] + "   " + TextFormatting.BOLD + TextFormatting.RESET + event.displayname
+        event.displayname = "${TextFormatting.GOLD}${TextFormatting.values()[legend.ordinal]}${TextFormatting.RESET}   ${TextFormatting.BOLD}${TextFormatting.RESET}${event.displayname}"
     }
 
     @SubscribeEvent
@@ -80,7 +80,7 @@ object ChatChanger {
                 while (c.chatOpen && i < chatLines.size || !c.chatOpen && i < chatLines.size && i < 10) {
                     val l = chatLines[i]
                     val s = l.chatComponent.unformattedText
-                    val re = "(.*)(?:${TextFormatting.GOLD}\u00a7([0-9A-Fa-fK-Ok-oRr])   ${TextFormatting.BOLD}${TextFormatting.RESET})".toRegex()
+                    val re = "(.*)(?:${TextFormatting.GOLD}\u00a7([0-9A-Fa-fK-Ok-oRr])${TextFormatting.RESET}   ${TextFormatting.BOLD}${TextFormatting.RESET})".toRegex()
                     val matches = re.findAll(s)
                     for (match in matches) {
                         val j1 = updateCounter - l.updatedCounter
