@@ -5,6 +5,7 @@ import com.teamwizardry.librarianlib.features.kotlin.toRl
 import com.teamwizardry.librarianlib.features.network.PacketHandler
 import eladkay.quaeritum.api.animus.AnimusHelper
 import eladkay.quaeritum.api.lib.LibMisc
+import eladkay.quaeritum.client.core.ChatChanger
 import eladkay.quaeritum.client.core.ClientEventHandler
 import eladkay.quaeritum.client.gui.GUIHandler
 import eladkay.quaeritum.common.Quaeritum
@@ -62,6 +63,7 @@ open class CommonProxy {
 
     open fun init(e: FMLInitializationEvent) {
         ModRecipes.init()
+        ChatChanger
     }
 
     open fun post(e: FMLPostInitializationEvent) {

@@ -9,6 +9,8 @@ import net.minecraft.util.math.MathHelper;
  */
 public final class RenderUtil {
 
+    public static float alphaMultiplier = 1f;
+
     public static final int SEGMENTS_CIRCLE = 36;
 
     public static void renderHalfCircle(BufferBuilder buffer, double cX, double cY, float r, float g, float b, double radius, double thickness, double angleOffset) {
@@ -27,7 +29,7 @@ public final class RenderUtil {
             double outerX = cX + normX * outerRadius;
             double outerY = cY + normY * outerRadius;
             buffer.pos(outerX, outerY, 0).color(0, 0, 0, 0).endVertex();
-            buffer.pos(innerX, innerY, 0).color(r, g, b, 0.75f).endVertex();
+            buffer.pos(innerX, innerY, 0).color(r, g, b, 0.75f * alphaMultiplier).endVertex();
         }
 
         for (int i = 0; i < SEGMENTS_CIRCLE; i++) {
@@ -39,7 +41,7 @@ public final class RenderUtil {
             double outerX = -xShift + cX + normX * length;
             double outerY = -yShift + cY + normY * length;
             buffer.pos(outerX, outerY, 0).color(0, 0, 0, 0).endVertex();
-            buffer.pos(-xShift + cX, -yShift + cY, 0).color(r, g, b, 0.75f).endVertex();
+            buffer.pos(-xShift + cX, -yShift + cY, 0).color(r, g, b, 0.75f * alphaMultiplier).endVertex();
         }
 
         for (int i = 0; i <= SEGMENTS_CIRCLE; i++) {
@@ -50,7 +52,7 @@ public final class RenderUtil {
             double innerY = cY + normY * radius;
             double centralX = cX + normX * centralRadius;
             double centralY = cY + normY * centralRadius;
-            buffer.pos(innerX, innerY, 0).color(r, g, b, 0.75f).endVertex();
+            buffer.pos(innerX, innerY, 0).color(r, g, b, 0.75f * alphaMultiplier).endVertex();
             buffer.pos(centralX, centralY, 0).color(0, 0, 0, 0).endVertex();
         }
 
@@ -63,7 +65,7 @@ public final class RenderUtil {
             double outerX = xShift + cX + normX * length;
             double outerY = yShift + cY + normY * length;
             buffer.pos(outerX, outerY, 0).color(0, 0, 0, 0).endVertex();
-            buffer.pos(xShift + cX, yShift + cY, 0).color(r, g, b, 0.75f).endVertex();
+            buffer.pos(xShift + cX, yShift + cY, 0).color(r, g, b, 0.75f * alphaMultiplier).endVertex();
         }
     }
 
@@ -76,7 +78,7 @@ public final class RenderUtil {
             double outerX = x1 + normX * thickness;
             double outerY = y1 + normY * thickness;
             buffer.pos(outerX, outerY, 0).color(0, 0, 0, 0).endVertex();
-            buffer.pos(x1, y1, 0).color(r, g, b, 0.75f).endVertex();
+            buffer.pos(x1, y1, 0).color(r, g, b, 0.75f * alphaMultiplier).endVertex();
         }
         for (int i = 0; i < SEGMENTS_CIRCLE; i++) {
             double angle = i * Math.PI / SEGMENTS_CIRCLE + atan - Math.PI / 2;
@@ -85,7 +87,7 @@ public final class RenderUtil {
             double outerX = x2 + normX * thickness;
             double outerY = y2 + normY * thickness;
             buffer.pos(outerX, outerY, 0).color(0, 0, 0, 0).endVertex();
-            buffer.pos(x2, y2, 0).color(r, g, b, 0.75f).endVertex();
+            buffer.pos(x2, y2, 0).color(r, g, b, 0.75f * alphaMultiplier).endVertex();
         }
         double angle = atan + Math.PI / 2;
         float normX = MathHelper.cos((float)angle);
@@ -93,7 +95,7 @@ public final class RenderUtil {
         double outerX = x1 + normX * thickness;
         double outerY = y1 + normY * thickness;
         buffer.pos(outerX, outerY, 0).color(0, 0, 0, 0).endVertex();
-        buffer.pos(x1, y1, 0).color(r, g, b, 0.75f).endVertex();
+        buffer.pos(x1, y1, 0).color(r, g, b, 0.75f * alphaMultiplier).endVertex();
     }
 
     public static void renderNGon(BufferBuilder buffer, double cX, double cY, float r, float g, float b, double radius, double thickness, int sides) {
@@ -113,7 +115,7 @@ public final class RenderUtil {
             double outerX = cX + normX * outerRadius;
             double outerY = cY + normY * outerRadius;
             buffer.pos(outerX, outerY, 0).color(0, 0, 0, 0).endVertex();
-            buffer.pos(innerX, innerY, 0).color(r, g, b, 0.75f).endVertex();
+            buffer.pos(innerX, innerY, 0).color(r, g, b, 0.75f * alphaMultiplier).endVertex();
         }
 
         for (int i = sides; i >= 0; i--) {
@@ -125,7 +127,7 @@ public final class RenderUtil {
             double centralX = cX + normX * centralRadius;
             double centralY = cY + normY * centralRadius;
             buffer.pos(centralX, centralY, 0).color(0, 0, 0, 0).endVertex();
-            buffer.pos(innerX, innerY, 0).color(r, g, b, 0.5f).endVertex();
+            buffer.pos(innerX, innerY, 0).color(r, g, b, 0.5f * alphaMultiplier).endVertex();
         }
 
         float normX = MathHelper.cos((float)angleOffset);
@@ -136,7 +138,7 @@ public final class RenderUtil {
         double outerY = cY + normY * outerRadius;
 
         buffer.pos(outerX, outerY, 0).color(0, 0, 0, 0).endVertex();
-        buffer.pos(innerX, innerY, 0).color(r, g, b, 0.75f).endVertex();
+        buffer.pos(innerX, innerY, 0).color(r, g, b, 0.75f * alphaMultiplier).endVertex();
     }
 
     public static float fastAtan2(float y, float x) {
