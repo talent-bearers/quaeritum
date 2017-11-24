@@ -34,6 +34,7 @@ object LayerSight : LayerRenderer<AbstractClientPlayer> {
             Minecraft.getMinecraft().renderEngine.bindTexture(SIGHT_ICON)
             GlStateManager.enableBlend()
             GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)
+            GlStateManager.depthMask(false)
             GlStateManager.enableAlpha()
             GlStateManager.pushMatrix()
             GlStateManager.disableCull()
