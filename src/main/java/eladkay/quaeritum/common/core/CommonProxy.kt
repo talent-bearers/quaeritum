@@ -44,7 +44,8 @@ open class CommonProxy {
         ModBlocks
         ModTab
         ModItems
-        PotionRooted; PotionSoulgaze; PotionIronskin; PotionPathwalker; PotionVampirism; PotionEmbodiment; PotionWrath
+        PotionRooted; PotionSoulgaze; PotionIronskin; PotionPathwalker
+        PotionVampirism; PotionEmbodiment; PotionWrath; PotionVoidbind
         ModPotionTypes
         BasicSpells
         SightHandler
