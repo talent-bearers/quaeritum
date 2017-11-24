@@ -2,6 +2,7 @@ package eladkay.quaeritum.common.core
 
 import eladkay.quaeritum.api.misc.SightEvent
 import eladkay.quaeritum.common.potions.PotionSoulgaze
+import eladkay.quaeritum.common.potions.PotionVoidbind
 import net.minecraft.client.Minecraft
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.MobEffects
@@ -47,6 +48,7 @@ object SightHandler {
 
         if (e.player.getActivePotionEffect(MobEffects.BLINDNESS) != null) e.hasThirdEye = true
         else if (PotionSoulgaze.hasEffect(e.player)) e.hasThirdEye = true
+        else if (PotionVoidbind.hasEffect(e.player)) e.hasThirdEye = true
         // todo when crown is implemented
     }
 }

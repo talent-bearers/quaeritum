@@ -10,6 +10,7 @@ import eladkay.quaeritum.common.item.ItemEvoker
 import eladkay.quaeritum.common.potions.PotionPathwalker
 import eladkay.quaeritum.common.potions.PotionRooted
 import eladkay.quaeritum.common.potions.PotionVampirism
+import eladkay.quaeritum.common.potions.PotionVoidbind
 import eladkay.quaeritum.common.spell.GreaterSpells.applyShiftedBuff
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.MobEffects
@@ -58,7 +59,7 @@ object EpicSpells {
         }
 
         SpellParser.registerSpell(arrayOf(FIRE, WATER, SOUL, AETHER, AETHER, SOUL, EARTH, AIR), ALTERATION, "unbind_thine_soul") { player, _, _ ->
-            // todo infuse self with void energy
+            applyShiftedBuff(PotionVoidbind, player, 8, 1, false)
         }
 
         hope = registerSpell(arrayOf(CONNECTION, AETHER, SPIRIT, FIRE, AIR, WATER, SOUL, FLOW), RESTORATION, "give_them_hope") {

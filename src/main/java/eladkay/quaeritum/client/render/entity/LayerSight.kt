@@ -31,9 +31,12 @@ object LayerSight : LayerRenderer<AbstractClientPlayer> {
             val yawOffset = player.prevRenderYawOffset + (player.renderYawOffset - player.prevRenderYawOffset) * partialTicks
             val pitch = player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch) * partialTicks
 
+            val hasSight = SightHandler.hasTheSight(Minecraft.getMinecraft().player)
+            val alpha = if (hasSight) 0.5f else 0.25f
+
             Minecraft.getMinecraft().renderEngine.bindTexture(SIGHT_ICON)
             GlStateManager.enableBlend()
-            GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)
+            GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE)
             GlStateManager.depthMask(false)
             GlStateManager.enableAlpha()
             GlStateManager.pushMatrix()
@@ -51,11 +54,11 @@ object LayerSight : LayerRenderer<AbstractClientPlayer> {
 
             val tess = Tessellator.getInstance()
             val buffer = tess.buffer
-            buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX)
-            buffer.pos(1.0, 1.0, 0.5).tex(1.0, 1.0).endVertex()
-            buffer.pos(0.0, 1.0, 0.5).tex(0.0, 1.0).endVertex()
-            buffer.pos(0.0, 0.0, 0.5).tex(0.0, 0.0).endVertex()
-            buffer.pos(1.0, 0.0, 0.5).tex(1.0, 0.0).endVertex()
+            buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR)
+            buffer.pos(1.0, 1.0, 0.5).tex(1.0, 1.0).color(1f, 1f, 1f, alpha).endVertex()
+            buffer.pos(0.0, 1.0, 0.5).tex(0.0, 1.0).color(1f, 1f, 1f, alpha).endVertex()
+            buffer.pos(0.0, 0.0, 0.5).tex(0.0, 0.0).color(1f, 1f, 1f, alpha).endVertex()
+            buffer.pos(1.0, 0.0, 0.5).tex(1.0, 0.0).color(1f, 1f, 1f, alpha).endVertex()
             tess.draw()
             GlStateManager.popMatrix()
             GlStateManager.enableCull()
