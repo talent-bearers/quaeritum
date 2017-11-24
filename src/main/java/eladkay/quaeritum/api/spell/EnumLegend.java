@@ -83,7 +83,7 @@ public enum EnumLegend implements ISymbolCarrier {
             new CircleSymbolInstruction(0.25f, 0.75f, 0.1f),
             new CircleSymbolInstruction(0.55f, 0.8f, 0.1f)),
     // Ancient of Elsewhere (Tristaric)
-    ELSEWHERE(new Color(0xFF004C), new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
+    ELSEWHERE(new Color(0x177FE8), new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
             new NGonSymbolInstruction(0.5f, 0.5f, 4, 0.5f),
             new LineSymbolInstruction(0.5f, 0f, 0.5f, 1f),
             new LineSymbolInstruction(0f, 0.5f, 1f, 0.5f)),

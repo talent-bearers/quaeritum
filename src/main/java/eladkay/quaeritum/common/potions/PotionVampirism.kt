@@ -4,6 +4,9 @@ import com.teamwizardry.librarianlib.features.base.PotionMod
 import eladkay.quaeritum.common.lib.LibNames
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.item.EntityArmorStand
+import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.init.MobEffects
+import net.minecraft.potion.PotionEffect
 import net.minecraft.util.DamageSource
 
 /**
@@ -17,14 +20,25 @@ object PotionVampirism : PotionMod(LibNames.VAMPIRISM, false, 0xB22018) {
     override fun performEffect(entity: EntityLivingBase, amplifier: Int) {
         if (!entity.world.isRemote) {
             var healthRemaining = Math.min(entity.maxHealth - entity.health, 5f)
-            if (healthRemaining == 0f) return
+            if (healthRemaining == 0f && entity is EntityPlayer)
+                healthRemaining = Math.min(20 - entity.foodStats.foodLevel.toFloat(), 5f)
             entity.world.getEntitiesWithinAABB(EntityLivingBase::class.java, entity.entityBoundingBox.grow(7.0)) {
-                it != null && it != entity && it !is EntityArmorStand && it.health > 1 && it.getDistanceSqToEntity(entity) <= 25.0
+                it != null && it != entity && it !is EntityArmorStand && it.getDistanceSqToEntity(entity) <= 25.0
             }.forEach {
-                val taken = Math.min(healthRemaining, it.health - 1)
-                it.attackEntityFrom(DamageSource.MAGIC, taken)
-                entity.heal(taken)
-                healthRemaining -= taken
+                if (it.health > 0.5) {
+                    if (healthRemaining != 0f) {
+                        val taken = Math.min(healthRemaining, it.health - 0.5f)
+                        it.attackEntityFrom(DamageSource.MAGIC, taken)
+                        entity.heal(taken)
+                        if (entity is EntityPlayer) {
+                            entity.foodStats.addStats(taken.toInt(), 1f)
+                        }
+                        healthRemaining -= taken
+                    }
+                } else {
+                    it.addPotionEffect(PotionEffect(MobEffects.SLOWNESS, 500, 3))
+                    it.addPotionEffect(PotionEffect(MobEffects.WEAKNESS, 500, 10))
+                }
                 // todo masquerade-style lightning effect
             }
         }
