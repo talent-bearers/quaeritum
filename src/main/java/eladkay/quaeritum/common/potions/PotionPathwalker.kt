@@ -23,11 +23,6 @@ object PotionPathwalker : PotionMod(LibNames.PATHWALKER, false, 0x50CE23) {
         val dist = -0.05
         val shift = 0.175
 
-        if (entity.isSneaking && entity.world.containsAnyLiquid(entity.entityBoundingBox.offset(0.0, dist + shift, 0.0)) && entity.motionY > -0.5) {
-            entity.motionY -= 0.15
-            entity.fallDistance = 0f
-        }
-
         if (entity.world.containsAnyLiquid(entity.entityBoundingBox.offset(0.0, dist + shift, 0.0)) && entity.motionY < 0.5) {
             entity.motionY += 0.15
             entity.fallDistance = 0f
