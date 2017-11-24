@@ -1,10 +1,12 @@
 package eladkay.quaeritum.client.core
 
+import com.teamwizardry.librarianlib.features.methodhandles.MethodHandleHelper
 import eladkay.quaeritum.api.spell.EnumLegend
 import eladkay.quaeritum.api.spell.render.RenderUtil
 import eladkay.quaeritum.client.render.RenderSymbol
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.ChatLine
+import net.minecraft.client.gui.GuiNewChat
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.util.math.MathHelper
 import net.minecraft.util.text.TextFormatting
@@ -53,7 +55,7 @@ object ChatChanger {
     fun playerName(event: PlayerEvent.NameFormat) {
         val uid = event.entityPlayer.uniqueID
         val legend = map[uid] ?: return
-        event.displayname = "${TextFormatting.GOLD}${TextFormatting.values()[legend.ordinal]}${TextFormatting.RESET}   ${TextFormatting.BOLD}${TextFormatting.RESET}${event.displayname}"
+        event.displayname = forLegend(legend) + event.displayname
     }
 
     @SubscribeEvent
@@ -63,57 +65,54 @@ object ChatChanger {
         chatY = event.posY
     }
 
+    fun forLegend(legend: EnumLegend) = "${TextFormatting.GOLD}${TextFormatting.values()[legend.ordinal]}${TextFormatting.RESET}   ${TextFormatting.BOLD}${TextFormatting.RESET}"
+
+    private val PATTERN = "(?:${TextFormatting.GOLD}\u00a7([0-9A-Fa-fK-Ok-oRr])${TextFormatting.RESET}   ${TextFormatting.BOLD}${TextFormatting.RESET})".toRegex()
+
+    val GuiNewChat.lines by MethodHandleHelper.delegateForReadOnly<GuiNewChat, List<ChatLine>>(GuiNewChat::class.java, "h", "field_146252_h", "chatLines")
+
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
     fun renderSymbols(event: RenderGameOverlayEvent.Post) {
         val c = Minecraft.getMinecraft().ingameGUI.chatGUI
         if (event.type == RenderGameOverlayEvent.ElementType.CHAT) {
-            try {
-                val fLines = c.javaClass.getDeclaredField("drawnChatLines")
-                fLines.isAccessible = true
-                val fCounter = Minecraft.getMinecraft().ingameGUI.javaClass.superclass.getDeclaredField("updateCounter")
-                fCounter.isAccessible = true
-                val updateCounter: Int = fCounter.getInt(Minecraft.getMinecraft().ingameGUI)
-                val chatLines: List<ChatLine> = (fLines.get(c) as List<*>).filterIsInstance<ChatLine>()
+            val updateCounter = Minecraft.getMinecraft().ingameGUI.updateCounter
+            val chatLines = c.lines
 
-                var i = 0
-                while (c.chatOpen && i < chatLines.size || !c.chatOpen && i < chatLines.size && i < 10) {
-                    val l = chatLines[i]
-                    val s = l.chatComponent.unformattedText
-                    val re = "(?:${TextFormatting.GOLD}\u00a7([0-9A-Fa-fK-Ok-oRr])${TextFormatting.RESET}   ${TextFormatting.BOLD}${TextFormatting.RESET})".toRegex()
-                    val matches = re.findAll(s)
-                    for (match in matches) {
-                        val j1 = updateCounter - l.updatedCounter
-                        if (j1 < 200 || c.chatOpen) {
-                            val f = Minecraft.getMinecraft().gameSettings.chatOpacity * 0.9f + 0.1f
-                            var d0 = MathHelper.clamp((1 - j1 / 200.0) * 10, 0.0, 1.0).toFloat()
-                            d0 *= d0
-                            var l1 = d0 * f
-                            if (c.chatOpen) l1 = 1f
+            var idx = 0
+            while (c.chatOpen && idx < chatLines.size || !c.chatOpen && idx < chatLines.size && idx < 10) {
+                val line = chatLines[idx]
+                val text = line.chatComponent.unformattedText
+                val matches = PATTERN.findAll(text)
+                for (match in matches) {
+                    val j1 = updateCounter - line.updatedCounter
+                    if (j1 < 200 || c.chatOpen) {
+                        val f = Minecraft.getMinecraft().gameSettings.chatOpacity * 0.9f + 0.1f
+                        var fadeOut = MathHelper.clamp((1 - j1 / 200.0) * 10, 0.0, 1.0).toFloat()
+                        fadeOut *= fadeOut
+                        var alpha = fadeOut * f
+                        if (c.chatOpen) alpha = 1f
 
 
-                            val before = s.substring(0 until (match.groups[0]?.range?.first ?: 0))
-                            val id = match.groupValues[1]
-                            val formatting = TextFormatting.values().firstOrNull { it.toString() == "\u00a7$id" }
-                            if (formatting != null && formatting.ordinal < EnumLegend.values().size) {
-                                val element = EnumLegend.values()[formatting.ordinal]
-                                val x = chatX + 3 + Minecraft.getMinecraft().fontRenderer.getStringWidth(before).toFloat()
-                                val y = chatY - (Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT) * i.toFloat()
-                                GlStateManager.pushMatrix()
-                                GlStateManager.scale(0.5, 0.5, 0.5)
-                                GlStateManager.translate(x + 0.5f, y, 0f)
-                                RenderUtil.alphaMultiplier = l1
-                                RenderSymbol.renderSymbol(x, y, element)
-                                RenderUtil.alphaMultiplier = 1f
-                                GlStateManager.popMatrix()
-                            }
+                        val before = text.substring(0 until (match.groups[0]?.range?.first ?: 0))
+                        val id = match.groupValues[1]
+                        val formatting = TextFormatting.values().firstOrNull { it.toString() == "\u00a7$id" }
+                        if (formatting != null && formatting.ordinal < EnumLegend.values().size) {
+                            val element = EnumLegend.values()[formatting.ordinal]
+                            val x = chatX + 3 + Minecraft.getMinecraft().fontRenderer.getStringWidth(before).toFloat()
+                            val y = chatY - (Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT) * idx.toFloat()
+                            GlStateManager.pushMatrix()
+                            GlStateManager.scale(0.5, 0.5, 0.5)
+                            GlStateManager.translate(x + 0.5f, y, 0f)
+                            val prevMultiplier = RenderUtil.alphaMultiplier
+                            RenderUtil.alphaMultiplier *= alpha
+                            RenderSymbol.renderSymbol(x, y, element)
+                            RenderUtil.alphaMultiplier = prevMultiplier
+                            GlStateManager.popMatrix()
                         }
                     }
-                    i++
                 }
-
-            } catch (e: Exception) {
-                e.printStackTrace()
+                idx++
             }
         }
 
