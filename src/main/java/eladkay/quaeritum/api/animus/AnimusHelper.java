@@ -147,8 +147,8 @@ public final class AnimusHelper {
 
         public static void updatePlayerName(EntityPlayer player) {
             NBTTagCompound compound = getPersistentCompound(player.getUniqueID());
-            if (!player.getDisplayNameString().equals(getStringSafe(compound, TAG_LAST_KNOWN_USERNAME, null))) {
-                compound.setString(TAG_LAST_KNOWN_USERNAME, player.getDisplayNameString());
+            if (!player.getName().equals(getStringSafe(compound, TAG_LAST_KNOWN_USERNAME, null))) {
+                compound.setString(TAG_LAST_KNOWN_USERNAME, player.getName());
                 getSaveData().markDirty();
             }
         }
