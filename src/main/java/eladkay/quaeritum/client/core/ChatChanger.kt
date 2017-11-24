@@ -80,9 +80,9 @@ object ChatChanger {
                 while (c.chatOpen && i < chatLines.size || !c.chatOpen && i < chatLines.size && i < 10) {
                     val l = chatLines[i]
                     val s = l.chatComponent.unformattedText
-                    val re = "(.*)(?:${TextFormatting.GOLD}\u00a7([0-9A-Fa-fK-Ok-oRr])   ${TextFormatting.BOLD}${TextFormatting.RESET})\\w+.*".toRegex()
-                    val match = re.matchEntire(s)
-                    if (match != null) {
+                    val re = "(.*)(?:${TextFormatting.GOLD}\u00a7([0-9A-Fa-fK-Ok-oRr])   ${TextFormatting.BOLD}${TextFormatting.RESET})".toRegex()
+                    val matches = re.findAll(s)
+                    for (match in matches) {
                         val j1 = updateCounter - l.updatedCounter
                         if (j1 < 200 || c.chatOpen) {
                             val f = Minecraft.getMinecraft().gameSettings.chatOpacity * 0.9f + 0.1f
