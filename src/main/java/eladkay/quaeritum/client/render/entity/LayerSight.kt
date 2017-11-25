@@ -4,6 +4,7 @@ import eladkay.quaeritum.api.lib.LibMisc
 import eladkay.quaeritum.common.core.SightHandler
 import net.minecraft.client.Minecraft
 import net.minecraft.client.entity.AbstractClientPlayer
+import net.minecraft.client.model.ModelRenderer
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.Tessellator
 import net.minecraft.client.renderer.entity.layers.LayerRenderer
@@ -21,20 +22,14 @@ import org.lwjgl.opengl.GL11
  * @author WireSegal
  * Created at 9:22 PM on 2/6/17.
  */
-object LayerSight : LayerRenderer<AbstractClientPlayer> {
+class LayerSight(val modelRenderer: ModelRenderer) : LayerRenderer<AbstractClientPlayer> {
 
     val SIGHT_ICON = ResourceLocation(LibMisc.MOD_ID, "textures/misc/sight.png")
 
     override fun doRenderLayer(player: AbstractClientPlayer, limbSwing: Float, limbSwingAmount: Float, partialTicks: Float, ageInTicks: Float, netHeadYaw: Float, headPitch: Float, scale: Float) {
         if (SightHandler.hasTheSight(player)) {
-            val yaw = player.prevRotationYawHead + (player.rotationYawHead - player.prevRotationYawHead) * partialTicks
-            val yawOffset = player.prevRenderYawOffset + (player.renderYawOffset - player.prevRenderYawOffset) * partialTicks
-            var pitch = player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch) * partialTicks
-            if (player.ticksElytraFlying > 4)
-                pitch = -45f
-
             val hasSight = SightHandler.hasTheSight(Minecraft.getMinecraft().player)
-            val alpha = if (hasSight) 0.5f else 0.25f
+            val alpha = if (hasSight) 0.75f else 0.25f
 
             Minecraft.getMinecraft().renderEngine.bindTexture(SIGHT_ICON)
             GlStateManager.enableBlend()
@@ -44,15 +39,14 @@ object LayerSight : LayerRenderer<AbstractClientPlayer> {
             GlStateManager.pushMatrix()
             GlStateManager.disableCull()
 
-            GlStateManager.rotate(yawOffset, 0f, -1f, 0f)
-            GlStateManager.rotate(yaw - 270, 0f, 1f, 0f)
-            GlStateManager.rotate(pitch, 0f, 0f, 1f)
+            if (player.isSneaking)
+                GlStateManager.translate(0.0f, 0.2f, 0.0f)
 
-            Helper.translateToHeadLevel(player)
-            Helper.translateToFace()
-            GlStateManager.translate(0.25f, 3.425f, 0.625f)
-            GlStateManager.rotate(180f, 0f, 0f, 1f)
-            GlStateManager.scale(0.5, 0.5, 0.5)
+            this.modelRenderer.postRender(0.0625f)
+
+            GlStateManager.translate(0.2375f, -0.6425f, -0.05f)
+            GlStateManager.rotate(180f, 0f, 1f, 0f)
+            GlStateManager.scale(0.475, 0.475, 0.475)
 
             val tess = Tessellator.getInstance()
             val buffer = tess.buffer

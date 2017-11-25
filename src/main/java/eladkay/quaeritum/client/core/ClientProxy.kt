@@ -121,11 +121,11 @@ class ClientProxy : CommonProxy() {
         val skinMap = Minecraft.getMinecraft().renderManager.skinMap
 
         var render = skinMap["default"]
-        render?.addLayer(LayerSight)
+        render?.addLayer(LayerSight(render.mainModel.bipedHead))
         render?.addLayer(LayerEmbodiment(render))
 
         render = skinMap["slim"]
-        render?.addLayer(LayerSight)
+        render?.addLayer(LayerSight(render.mainModel.bipedHead))
         render?.addLayer(LayerEmbodiment(render))
 
         Minecraft.getMinecraft().textureMapBlocks.registerSprite(ResourceLocation("quaeritum:entity/magicParticle"))
