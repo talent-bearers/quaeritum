@@ -33,6 +33,8 @@ class LayerEmbodiment(val renderer: RenderLivingBase<AbstractClientPlayer>) : La
         useLightmap(0xf000f0) {
             withLighting(false) {
                 GlStateManager.pushMatrix()
+                GlStateManager.enableBlend()
+                GlStateManager.disableCull()
                 translateToHand(player, side)
                 GlStateManager.translate(0f, 0.25f, 0f)
                 GlStateManager.rotate(-90.0f, 1.0f, 0.0f, 0.0f)
