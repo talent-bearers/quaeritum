@@ -8,7 +8,7 @@ import net.minecraft.block.material.Material
  * Created at 8:29 AM on 11/23/17.
  */
 object ModFluids {
-    val BITUMEN = ModFluid("bitumen", "fluid/bitumen", "fluid/bitumen", true)
+    val BITUMEN = ModFluid("bitumen", "fluid/bitumen", "fluid/bitumen_flow", true)
             .setDensity(3000)
             .setViscosity(9000)
             .setVaporizes(false)

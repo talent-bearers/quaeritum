@@ -46,6 +46,8 @@ class ItemResource : ItemMod(LibNames.RESOURCE, *Resources.NAMES) {
 
     init {
         for (variant in Resources.values())
-            OreDictionaryRegistrar.registerOre(variant.oreName, ItemStack(this, 1, variant.ordinal))
+            OreDictionaryRegistrar.registerOre(variant.oreName) {
+                ItemStack(this, 1, variant.ordinal)
+            }
     }
 }

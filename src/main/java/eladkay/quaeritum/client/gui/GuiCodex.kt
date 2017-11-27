@@ -1,7 +1,7 @@
 package eladkay.quaeritum.client.gui
 
 import com.teamwizardry.librarianlib.features.gui.GuiBase
-import com.teamwizardry.librarianlib.features.gui.GuiComponent
+import com.teamwizardry.librarianlib.features.gui.component.GuiComponentEvents
 import com.teamwizardry.librarianlib.features.gui.components.ComponentSprite
 import com.teamwizardry.librarianlib.features.gui.components.ComponentVoid
 import com.teamwizardry.librarianlib.features.network.PacketHandler
@@ -57,10 +57,10 @@ class GuiCodex : GuiBase(X_SIZE, Y_SIZE) {
         for ((idx, location) in locations.withIndex()) {
             val (x, y) = location
             val componentVoid = ComponentVoid(x, y, 16, 16)
-            componentVoid.BUS.hook(GuiComponent.MouseClickEvent::class.java) {
+            componentVoid.BUS.hook(GuiComponentEvents.MouseClickEvent::class.java) {
                 PacketHandler.NETWORK.sendToServer(ElementAddPacket(idx))
             }
-            componentVoid.BUS.hook(GuiComponent.PostDrawEvent::class.java) {
+            componentVoid.BUS.hook(GuiComponentEvents.PostDrawEvent::class.java) {
                 RenderSymbol.renderSymbol(x + 0.5f, y + 0.5f, EnumSpellElement.values()[idx])
             }
             mainComponents.add(componentVoid)
@@ -69,13 +69,13 @@ class GuiCodex : GuiBase(X_SIZE, Y_SIZE) {
         symbols = list
 
         val componentSymbol = ComponentSprite(inactive, 65, 76)
-        componentSymbol.BUS.hook(GuiComponent.ComponentTickEvent::class.java, { event ->
+        componentSymbol.BUS.hook(GuiComponentEvents.ComponentTickEvent::class.java, { event ->
             if (event.component.mouseOver && isShiftKeyDown())
                 componentSymbol.sprite = active
             else
                 componentSymbol.sprite = inactive
         })
-        componentSymbol.BUS.hook(GuiComponent.MouseClickEvent::class.java) {
+        componentSymbol.BUS.hook(GuiComponentEvents.MouseClickEvent::class.java) {
             if (isShiftKeyDown())
                 PacketHandler.NETWORK.sendToServer(ElementAddPacket(-1))
             else

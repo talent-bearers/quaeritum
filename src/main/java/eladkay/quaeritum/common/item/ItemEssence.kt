@@ -25,7 +25,9 @@ class ItemEssence : ItemMod(LibNames.ESSENCE, *NAMES), IAnimusResource, ISpellRe
 
     init {
         for (variant in EnumAnimusTier.values())
-            OreDictionaryRegistrar.registerOre(variant.oreName, ItemStack(this, 1, variant.ordinal))
+            OreDictionaryRegistrar.registerOre(variant.oreName) {
+                ItemStack(this, 1, variant.ordinal)
+            }
     }
 
     override fun getAnimus(stack: ItemStack)
