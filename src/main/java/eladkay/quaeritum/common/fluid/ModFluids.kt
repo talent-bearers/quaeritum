@@ -1,5 +1,6 @@
 package eladkay.quaeritum.common.fluid
 
+import com.teamwizardry.librarianlib.features.base.fluid.ModFluid
 import net.minecraft.block.material.Material
 
 /**
