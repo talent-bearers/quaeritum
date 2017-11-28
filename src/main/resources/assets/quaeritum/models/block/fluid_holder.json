@@ -1,0 +1,65 @@
+{
+  "__comment": "Designed by Wire Segal with Cubik Studio - https://cubik.studio",
+  "parent": "block/block",
+  "textures": {
+    "particle": "quaeritum:blocks/tank_top",
+    "side": "quaeritum:blocks/tank",
+    "top": "quaeritum:blocks/tank_top"
+  },
+  "elements": [
+    {
+      "__comment": "PlaneY2",
+      "from": [ 2, 0, 2 ],
+      "to": [ 14, 0.001, 14 ],
+      "faces": {
+        "down": { "uv": [ 2, 2, 14, 14 ], "texture": "#top", "cullface": "down" },
+        "up": { "uv": [ 2, 2, 14, 14 ], "texture": "#top" }
+      }
+    },
+    {
+      "__comment": "PlaneY3",
+      "from": [ 2, 15.999, 2 ],
+      "to": [ 14, 16, 14 ],
+      "faces": {
+        "down": { "uv": [ 2, 2, 14, 14 ], "texture": "#top" },
+        "up": { "uv": [ 2, 2, 14, 14 ], "texture": "#top", "cullface": "up" }
+      }
+    },
+    {
+      "__comment": "PlaneX4",
+      "from": [ 14, 0, 2 ],
+      "to": [ 14.001, 16, 14 ],
+      "faces": {
+        "west": { "uv": [ 2, 0, 14, 16 ], "texture": "#side" },
+        "east": { "uv": [ 2, 0, 14, 16 ], "texture": "#side" }
+      }
+    },
+    {
+      "__comment": "PlaneX4",
+      "from": [ 2, 0, 2 ],
+      "to": [ 2.001, 16, 14 ],
+      "faces": {
+        "west": { "uv": [ 2, 0, 14, 16 ], "texture": "#side" },
+        "east": { "uv": [ 2, 0, 14, 16 ], "texture": "#side" }
+      }
+    },
+    {
+      "__comment": "PlaneZ6",
+      "from": [ 2, 0, 14 ],
+      "to": [ 14, 16, 14.001 ],
+      "faces": {
+        "north": { "uv": [ 2, 0, 14, 16 ], "texture": "#side" },
+        "south": { "uv": [ 2, 0, 14, 16 ], "texture": "#side" }
+      }
+    },
+    {
+      "__comment": "PlaneZ6",
+      "from": [ 2, 0, 2 ],
+      "to": [ 14, 16, 2.001 ],
+      "faces": {
+        "north": { "uv": [ 2, 0, 14, 16 ], "texture": "#side" },
+        "south": { "uv": [ 2, 0, 14, 16 ], "texture": "#side" }
+      }
+    }
+  ]
+}

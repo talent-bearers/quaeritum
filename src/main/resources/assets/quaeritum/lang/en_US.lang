@@ -256,6 +256,9 @@ item.quaeritum:quaeritus.name=Seeker's Soul
 tile.quaeritum:compound_crucible.name=Compound Crucible
 tile.quaeritum:dessicator.name=Dessication Crucible
 tile.quaeritum:spiral_distillate.name=Spiral Distillery
+tile.quaeritum:fluid_holder.name=Fluid Chamber
+
+quaeritum.hud.fluid=%dx %s
 
 quaeritum.subtitle.equip_bauble=Bauble is equipped
 quaeritum.subtitle.centrifuge=Centrifuge spins

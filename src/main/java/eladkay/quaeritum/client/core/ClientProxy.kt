@@ -2,17 +2,22 @@ package eladkay.quaeritum.client.core
 
 import com.teamwizardry.librarianlib.core.client.ClientTickHandler
 import com.teamwizardry.librarianlib.core.client.RenderHookHandler.registerItemHook
+import com.teamwizardry.librarianlib.features.helpers.ItemNBTHelper
 import com.teamwizardry.librarianlib.features.utilities.client.GlUtils.useLightmap
 import com.teamwizardry.librarianlib.features.utilities.client.GlUtils.withLighting
 import eladkay.quaeritum.api.spell.render.RenderUtil
 import eladkay.quaeritum.api.util.RandUtil
 import eladkay.quaeritum.client.fx.FXMagicLine
+import eladkay.quaeritum.client.render.ClientUtil
 import eladkay.quaeritum.client.render.RemainingItemsRenderHandler
+import eladkay.quaeritum.client.render.RenderHolder
 import eladkay.quaeritum.client.render.RenderSymbol
 import eladkay.quaeritum.client.render.entity.LayerEmbodiment
 import eladkay.quaeritum.client.render.entity.LayerSight
 import eladkay.quaeritum.client.render.entity.RenderChaosborn
 import eladkay.quaeritum.client.render.entity.RenderFalling
+import eladkay.quaeritum.common.block.ModBlocks
+import eladkay.quaeritum.common.block.machine.BlockFluidHolder
 import eladkay.quaeritum.common.core.CommonProxy
 import eladkay.quaeritum.common.entity.EntityChaosborn
 import eladkay.quaeritum.common.entity.EntityDroppingBlock
@@ -29,6 +34,8 @@ import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.MathHelper
 import net.minecraft.util.math.Vec3d
 import net.minecraft.world.World
+import net.minecraftforge.fluids.FluidStack
+import net.minecraftforge.fml.client.registry.ClientRegistry
 import net.minecraftforge.fml.client.registry.RenderingRegistry
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
@@ -45,6 +52,8 @@ class ClientProxy : CommonProxy() {
         LightningRenderer.INSTANCE
         RiftRenderer(Vec3d(0.0, 20.0, 0.0), RandUtil.nextLong(0, 10000))
         ModEntities.initClient()
+
+        ClientRegistry.bindTileEntitySpecialRenderer(BlockFluidHolder.TileFluidColumn::class.java, RenderHolder)
 
         RenderingRegistry.registerEntityRenderingHandler(EntityChaosborn::class.java, { RenderChaosborn(it) })
         RenderingRegistry.registerEntityRenderingHandler(EntityDroppingBlock::class.java, { RenderFalling(it) })
@@ -108,6 +117,26 @@ class ClientProxy : CommonProxy() {
 
                         GlStateManager.depthMask(true)
                     }
+                }
+            }
+            if (stack.item == ModBlocks.fluidHolder.itemForm && stack.hasTagCompound() && ItemNBTHelper.verifyExistence(stack, "fluid")) {
+                val fluid = FluidStack.loadFluidStackFromNBT(ItemNBTHelper.getCompound(stack, "fluid")!!)
+                if (fluid != null) {
+                    GlStateManager.pushMatrix()
+                    GlStateManager.translate(0.16, 0.02, 0.16)
+                    GlStateManager.disableLighting()
+                    GlStateManager.enableBlend()
+                    GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)
+                    val x1 = 0.0
+                    val y1 = 0.0
+                    val z1 = 0.0
+                    val x2 = 0.7
+                    val y2 = fluid.amount.toDouble() / 4000.0 - 0.08
+                    val z2 = 0.7
+                    ClientUtil.renderFluidCuboid(fluid.copy(), x1, y1, z1, x2, y2, z2, fluid.fluid.getLuminosity(fluid) * 0x100010)
+                    GlStateManager.enableLighting()
+                    GlStateManager.disableBlend()
+                    GlStateManager.popMatrix()
                 }
             }
         }
