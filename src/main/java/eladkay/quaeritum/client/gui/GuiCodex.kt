@@ -61,7 +61,7 @@ class GuiCodex : GuiBase(X_SIZE, Y_SIZE) {
                 PacketHandler.NETWORK.sendToServer(ElementAddPacket(idx))
             }
             componentVoid.BUS.hook(GuiComponentEvents.PostDrawEvent::class.java) {
-                RenderSymbol.renderSymbol(x + 0.5f, y + 0.5f, EnumSpellElement.values()[idx])
+                RenderSymbol.renderSymbol(0.5f, 0.5f, EnumSpellElement.values()[idx])
             }
             mainComponents.add(componentVoid)
             list.add(componentVoid)
