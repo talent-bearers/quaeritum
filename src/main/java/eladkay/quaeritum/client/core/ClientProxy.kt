@@ -3,6 +3,7 @@ package eladkay.quaeritum.client.core
 import com.teamwizardry.librarianlib.core.client.ClientTickHandler
 import com.teamwizardry.librarianlib.core.client.RenderHookHandler.registerItemHook
 import com.teamwizardry.librarianlib.features.helpers.ItemNBTHelper
+import com.teamwizardry.librarianlib.features.utilities.client.GlUtils
 import com.teamwizardry.librarianlib.features.utilities.client.GlUtils.useLightmap
 import com.teamwizardry.librarianlib.features.utilities.client.GlUtils.withLighting
 import eladkay.quaeritum.api.spell.render.RenderUtil
@@ -26,6 +27,7 @@ import eladkay.quaeritum.common.item.ItemEvoker
 import net.minecraft.client.Minecraft
 import net.minecraft.client.particle.Particle
 import net.minecraft.client.renderer.GlStateManager
+import net.minecraft.client.renderer.OpenGlHelper
 import net.minecraft.client.renderer.Tessellator
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats
 import net.minecraft.entity.player.EntityPlayer
@@ -133,7 +135,11 @@ class ClientProxy : CommonProxy() {
                     val x2 = 0.7
                     val y2 = fluid.amount.toDouble() / 4000.0 - 0.08
                     val z2 = 0.7
-                    ClientUtil.renderFluidCuboid(fluid.copy(), x1, y1, z1, x2, y2, z2, fluid.fluid.getLuminosity(fluid) * 0x100010)
+
+                    val v = fluid.fluid.getLuminosity(fluid) shl 4
+                    GlUtils.useLightmap(OpenGlHelper.lastBrightnessX, Math.max(v.toFloat(), OpenGlHelper.lastBrightnessY)) {
+                        ClientUtil.renderFluidCuboid(fluid.copy(), x1, y1, z1, x2, y2, z2)
+                    }
                     GlStateManager.enableLighting()
                     GlStateManager.disableBlend()
                     GlStateManager.popMatrix()

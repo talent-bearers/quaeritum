@@ -1,5 +1,6 @@
 package eladkay.quaeritum.client.render
 
+import com.teamwizardry.librarianlib.features.utilities.client.GlUtils
 import eladkay.quaeritum.common.block.machine.BlockFluidHolder.TileFluidColumn
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer
@@ -25,7 +26,9 @@ object RenderHolder : TileEntitySpecialRenderer<TileFluidColumn>() {
             val x2 = 0.7
             val y2 = te.fluid.handler.fluidAmount.toDouble() / te.fluid.handler.capacity.toDouble() - 0.08
             val z2 = 0.7
-            ClientUtil.renderFluidCuboid(fluid.copy(), te.pos, x1, y1, z1, x2, y2, z2)
+            GlUtils.useLightmap(te.world.getCombinedLight(te.pos, fluid.fluid.getLuminosity(fluid))) {
+                ClientUtil.renderFluidCuboid(fluid.copy(), x1, y1, z1, x2, y2, z2)
+            }
             GlStateManager.enableLighting()
             GlStateManager.disableBlend()
             GlStateManager.popMatrix()

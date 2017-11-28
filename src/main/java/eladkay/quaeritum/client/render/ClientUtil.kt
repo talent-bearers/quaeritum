@@ -7,7 +7,6 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.client.renderer.texture.TextureMap
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats
 import net.minecraft.util.EnumFacing
-import net.minecraft.util.math.BlockPos
 import net.minecraftforge.fluids.FluidStack
 import org.lwjgl.opengl.GL11
 
@@ -16,46 +15,35 @@ import org.lwjgl.opengl.GL11
  * Created at 7:55 PM on 11/27/17.
  */
 object ClientUtil {
-    fun renderFluidCuboid(fluid: FluidStack, pos: BlockPos, x1: Double, y1: Double, z1: Double, x2: Double, y2: Double, z2: Double) {
+    fun renderFluidCuboid(fluid: FluidStack, x1: Double, y1: Double, z1: Double, x2: Double, y2: Double, z2: Double) {
         val color = fluid.fluid.getColor(fluid)
-        renderFluidCuboid(fluid, pos, x1, y1, z1, x2, y2, z2, color)
+        renderFluidCuboid(fluid, x1, y1, z1, x2, y2, z2, color)
     }
 
-    fun renderFluidCuboid(fluid: FluidStack, pos: BlockPos, x1: Double, y1: Double, z1: Double, x2: Double, y2: Double, z2: Double, color: Int) {
-        renderFluidCuboid(fluid, x1, y1, z1, x2, y2, z2, color, Minecraft.getMinecraft().world.getCombinedLight(pos, fluid.fluid.luminosity))
-    }
-
-    fun renderFluidCuboid(fluid: FluidStack, x1: Double, y1: Double, z1: Double, x2: Double, y2: Double, z2: Double, brightness: Int) {
-        val color = fluid.fluid.getColor(fluid)
-        renderFluidCuboid(fluid, x1, y1, z1, x2, y2, z2, color, brightness)
-    }
-
-    fun renderFluidCuboid(fluid: FluidStack, x1: Double, y1: Double, z1: Double, x2: Double, y2: Double, z2: Double, color: Int, brightness: Int) {
+    fun renderFluidCuboid(fluid: FluidStack, x1: Double, y1: Double, z1: Double, x2: Double, y2: Double, z2: Double, color: Int) {
         val renderer = Tessellator.getInstance().buffer
-        renderer.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK)
+        renderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR)
         Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE)
         val still = Minecraft.getMinecraft().textureMapBlocks.getTextureExtry(fluid.fluid.getStill(fluid).toString())
         val flowing = Minecraft.getMinecraft().textureMapBlocks.getTextureExtry(fluid.fluid.getFlowing(fluid).toString())
-        putTexturedQuad(renderer, still, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.DOWN, color, brightness, false)
-        putTexturedQuad(renderer, flowing, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.NORTH, color, brightness, true)
-        putTexturedQuad(renderer, flowing, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.EAST, color, brightness, true)
-        putTexturedQuad(renderer, flowing, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.SOUTH, color, brightness, true)
-        putTexturedQuad(renderer, flowing, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.WEST, color, brightness, true)
-        putTexturedQuad(renderer, still, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.UP, color, brightness, false)
+        putTexturedQuad(renderer, still, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.DOWN, color, false)
+        putTexturedQuad(renderer, flowing, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.NORTH, color, true)
+        putTexturedQuad(renderer, flowing, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.EAST, color, true)
+        putTexturedQuad(renderer, flowing, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.SOUTH, color, true)
+        putTexturedQuad(renderer, flowing, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.WEST, color, true)
+        putTexturedQuad(renderer, still, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.UP, color, false)
         Tessellator.getInstance().draw()
     }
 
-    fun putTexturedQuad(renderer: BufferBuilder, sprite: TextureAtlasSprite?, x: Double, y: Double, z: Double, w: Double, h: Double, d: Double, face: EnumFacing, color: Int, brightness: Int, flowing: Boolean) {
-        val l1 = brightness shr 0x10 and 0xFFFF
-        val l2 = brightness and 0xFFFF
+    fun putTexturedQuad(renderer: BufferBuilder, sprite: TextureAtlasSprite?, x: Double, y: Double, z: Double, w: Double, h: Double, d: Double, face: EnumFacing, color: Int, flowing: Boolean) {
         val a = color shr 24 and 0xFF
         val r = color shr 16 and 0xFF
         val g = color shr 8 and 0xFF
         val b = color and 0xFF
-        putTexturedQuad(renderer, sprite, x, y, z, w, h, d, face, r, g, b, a, l1, l2, flowing)
+        putTexturedQuad(renderer, sprite, x, y, z, w, h, d, face, r, g, b, a, flowing)
     }
 
-    fun putTexturedQuad(renderer: BufferBuilder, sprite: TextureAtlasSprite?, x: Double, y: Double, z: Double, w: Double, h: Double, d: Double, face: EnumFacing, r: Int, g: Int, b: Int, a: Int, light1: Int, light2: Int, flowing: Boolean) {
+    fun putTexturedQuad(renderer: BufferBuilder, sprite: TextureAtlasSprite?, x: Double, y: Double, z: Double, w: Double, h: Double, d: Double, face: EnumFacing, r: Int, g: Int, b: Int, a: Int, flowing: Boolean) {
         if (sprite == null) {
             return
         }
@@ -132,40 +120,40 @@ object ClientUtil {
 
         when (face) {
             EnumFacing.DOWN -> {
-                renderer.pos(x1, y1, z1).color(r, g, b, a).tex(minU, minV).lightmap(light1, light2).endVertex()
-                renderer.pos(x2, y1, z1).color(r, g, b, a).tex(maxU, minV).lightmap(light1, light2).endVertex()
-                renderer.pos(x2, y1, z2).color(r, g, b, a).tex(maxU, maxV).lightmap(light1, light2).endVertex()
-                renderer.pos(x1, y1, z2).color(r, g, b, a).tex(minU, maxV).lightmap(light1, light2).endVertex()
+                renderer.pos(x1, y1, z1).tex(minU, minV).color(r, g, b, a).endVertex()
+                renderer.pos(x2, y1, z1).tex(maxU, minV).color(r, g, b, a).endVertex()
+                renderer.pos(x2, y1, z2).tex(maxU, maxV).color(r, g, b, a).endVertex()
+                renderer.pos(x1, y1, z2).tex(minU, maxV).color(r, g, b, a).endVertex()
             }
             EnumFacing.UP -> {
-                renderer.pos(x1, y2, z1).color(r, g, b, a).tex(minU, minV).lightmap(light1, light2).endVertex()
-                renderer.pos(x1, y2, z2).color(r, g, b, a).tex(minU, maxV).lightmap(light1, light2).endVertex()
-                renderer.pos(x2, y2, z2).color(r, g, b, a).tex(maxU, maxV).lightmap(light1, light2).endVertex()
-                renderer.pos(x2, y2, z1).color(r, g, b, a).tex(maxU, minV).lightmap(light1, light2).endVertex()
+                renderer.pos(x1, y2, z1).tex(minU, minV).color(r, g, b, a).endVertex()
+                renderer.pos(x1, y2, z2).tex(minU, maxV).color(r, g, b, a).endVertex()
+                renderer.pos(x2, y2, z2).tex(maxU, maxV).color(r, g, b, a).endVertex()
+                renderer.pos(x2, y2, z1).tex(maxU, minV).color(r, g, b, a).endVertex()
             }
             EnumFacing.NORTH -> {
-                renderer.pos(x1, y1, z1).color(r, g, b, a).tex(minU, maxV).lightmap(light1, light2).endVertex()
-                renderer.pos(x1, y2, z1).color(r, g, b, a).tex(minU, minV).lightmap(light1, light2).endVertex()
-                renderer.pos(x2, y2, z1).color(r, g, b, a).tex(maxU, minV).lightmap(light1, light2).endVertex()
-                renderer.pos(x2, y1, z1).color(r, g, b, a).tex(maxU, maxV).lightmap(light1, light2).endVertex()
+                renderer.pos(x1, y1, z1).tex(minU, maxV).color(r, g, b, a).endVertex()
+                renderer.pos(x1, y2, z1).tex(minU, minV).color(r, g, b, a).endVertex()
+                renderer.pos(x2, y2, z1).tex(maxU, minV).color(r, g, b, a).endVertex()
+                renderer.pos(x2, y1, z1).tex(maxU, maxV).color(r, g, b, a).endVertex()
             }
             EnumFacing.SOUTH -> {
-                renderer.pos(x1, y1, z2).color(r, g, b, a).tex(maxU, maxV).lightmap(light1, light2).endVertex()
-                renderer.pos(x2, y1, z2).color(r, g, b, a).tex(minU, maxV).lightmap(light1, light2).endVertex()
-                renderer.pos(x2, y2, z2).color(r, g, b, a).tex(minU, minV).lightmap(light1, light2).endVertex()
-                renderer.pos(x1, y2, z2).color(r, g, b, a).tex(maxU, minV).lightmap(light1, light2).endVertex()
+                renderer.pos(x1, y1, z2).tex(maxU, maxV).color(r, g, b, a).endVertex()
+                renderer.pos(x2, y1, z2).tex(minU, maxV).color(r, g, b, a).endVertex()
+                renderer.pos(x2, y2, z2).tex(minU, minV).color(r, g, b, a).endVertex()
+                renderer.pos(x1, y2, z2).tex(maxU, minV).color(r, g, b, a).endVertex()
             }
             EnumFacing.WEST -> {
-                renderer.pos(x1, y1, z1).color(r, g, b, a).tex(maxU, maxV).lightmap(light1, light2).endVertex()
-                renderer.pos(x1, y1, z2).color(r, g, b, a).tex(minU, maxV).lightmap(light1, light2).endVertex()
-                renderer.pos(x1, y2, z2).color(r, g, b, a).tex(minU, minV).lightmap(light1, light2).endVertex()
-                renderer.pos(x1, y2, z1).color(r, g, b, a).tex(maxU, minV).lightmap(light1, light2).endVertex()
+                renderer.pos(x1, y1, z1).tex(maxU, maxV).color(r, g, b, a).endVertex()
+                renderer.pos(x1, y1, z2).tex(minU, maxV).color(r, g, b, a).endVertex()
+                renderer.pos(x1, y2, z2).tex(minU, minV).color(r, g, b, a).endVertex()
+                renderer.pos(x1, y2, z1).tex(maxU, minV).color(r, g, b, a).endVertex()
             }
             EnumFacing.EAST -> {
-                renderer.pos(x2, y1, z1).color(r, g, b, a).tex(minU, maxV).lightmap(light1, light2).endVertex()
-                renderer.pos(x2, y2, z1).color(r, g, b, a).tex(minU, minV).lightmap(light1, light2).endVertex()
-                renderer.pos(x2, y2, z2).color(r, g, b, a).tex(maxU, minV).lightmap(light1, light2).endVertex()
-                renderer.pos(x2, y1, z2).color(r, g, b, a).tex(maxU, maxV).lightmap(light1, light2).endVertex()
+                renderer.pos(x2, y1, z1).tex(minU, maxV).color(r, g, b, a).endVertex()
+                renderer.pos(x2, y2, z1).tex(minU, minV).color(r, g, b, a).endVertex()
+                renderer.pos(x2, y2, z2).tex(maxU, minV).color(r, g, b, a).endVertex()
+                renderer.pos(x2, y1, z2).tex(maxU, maxV).color(r, g, b, a).endVertex()
             }
         }
     }
