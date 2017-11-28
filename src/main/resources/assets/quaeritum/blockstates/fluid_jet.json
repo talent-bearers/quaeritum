@@ -1,0 +1,29 @@
+{
+  "variants": {
+    "attachment=down": {
+      "model": "quaeritum:fluid_jet",
+      "x": 180
+    },
+    "attachment=up": {
+      "model": "quaeritum:fluid_jet"
+    },
+    "attachment=north": {
+      "model": "quaeritum:fluid_jet",
+      "x": 90
+    },
+    "attachment=south": {
+      "model": "quaeritum:fluid_jet",
+      "x": 270
+    },
+    "attachment=west": {
+      "model": "quaeritum:fluid_jet",
+      "x": 90,
+      "y": 270
+    },
+    "attachment=east": {
+      "model": "quaeritum:fluid_jet",
+      "x": 90,
+      "y": 90
+    }
+  }
+}

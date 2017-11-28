@@ -9,16 +9,14 @@ import com.teamwizardry.librarianlib.features.utilities.client.GlUtils.withLight
 import eladkay.quaeritum.api.spell.render.RenderUtil
 import eladkay.quaeritum.api.util.RandUtil
 import eladkay.quaeritum.client.fx.FXMagicLine
-import eladkay.quaeritum.client.render.ClientUtil
-import eladkay.quaeritum.client.render.RemainingItemsRenderHandler
-import eladkay.quaeritum.client.render.RenderHolder
-import eladkay.quaeritum.client.render.RenderSymbol
+import eladkay.quaeritum.client.render.*
 import eladkay.quaeritum.client.render.entity.LayerEmbodiment
 import eladkay.quaeritum.client.render.entity.LayerSight
 import eladkay.quaeritum.client.render.entity.RenderChaosborn
 import eladkay.quaeritum.client.render.entity.RenderFalling
 import eladkay.quaeritum.common.block.ModBlocks
 import eladkay.quaeritum.common.block.machine.BlockFluidHolder
+import eladkay.quaeritum.common.block.machine.BlockFluidJet
 import eladkay.quaeritum.common.core.CommonProxy
 import eladkay.quaeritum.common.entity.EntityChaosborn
 import eladkay.quaeritum.common.entity.EntityDroppingBlock
@@ -56,6 +54,7 @@ class ClientProxy : CommonProxy() {
         ModEntities.initClient()
 
         ClientRegistry.bindTileEntitySpecialRenderer(BlockFluidHolder.TileFluidColumn::class.java, RenderHolder)
+        ClientRegistry.bindTileEntitySpecialRenderer(BlockFluidJet.TileJet::class.java, RenderJet)
 
         RenderingRegistry.registerEntityRenderingHandler(EntityChaosborn::class.java, { RenderChaosborn(it) })
         RenderingRegistry.registerEntityRenderingHandler(EntityDroppingBlock::class.java, { RenderFalling(it) })

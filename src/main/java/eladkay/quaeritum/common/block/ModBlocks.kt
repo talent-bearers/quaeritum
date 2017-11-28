@@ -29,6 +29,7 @@ object ModBlocks {
     val spiralDistillate = BlockSpiralDistillate()
     val dessicator = BlockDessicator()
     val fluidHolder = BlockFluidHolder()
+    val jet = BlockFluidJet()
 
     init {
         GameRegistry.registerTileEntity(TileEntityBlueprint::class.java, ResourceLocation(LibMisc.MOD_ID, LibNames.BLUEPRINT).toString())
