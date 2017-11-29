@@ -61,18 +61,6 @@ object SpellEventHandler {
         var reagents = ElementHandler.getReagentsTyped(player)
         var clear = true
 
-        if (PotionVoidbind.hasEffect(player)) {
-            val look = player.lookVec
-            val speedVec = look
-                    .scale(0.75)
-                    .addVector(player.motionX, player.motionY, player.motionZ)
-
-            player.motionX = speedVec.x
-            player.motionY = speedVec.y
-            player.motionZ = speedVec.z
-            player.velocityChanged = true
-        }
-
         val stack = player.heldItemMainhand
         if (ItemEvoker.hasEvocation(stack)) {
             val evocation = ItemEvoker.getEvocationFromStack(stack)
@@ -88,6 +76,16 @@ object SpellEventHandler {
             // todo fwoosh
             if (clear)
                 ElementHandler.clearReagents(player)
+        } else if (PotionVoidbind.hasEffect(player)) {
+            val look = player.lookVec
+            val speedVec = look
+                    .scale(0.75)
+                    .addVector(player.motionX, player.motionY, player.motionZ)
+
+            player.motionX = speedVec.x
+            player.motionY = speedVec.y
+            player.motionZ = speedVec.z
+            player.velocityChanged = true
         }
     }
 }

@@ -45,7 +45,7 @@ object PotionVoidbind : PotionMod("unbound", false, 0x590D57) {
         if ((player.onGround || player !is EntityPlayer || player.capabilities.isFlying) && player.moveForward > 0F && !player.isInsideOfMaterial(Material.WATER))
             player.moveRelative(0.0f, 0.0f, 0.0525f, 1f)
         if (player is EntityPlayer)
-            player.foodStats.addStats(1, 1f)
+            player.foodStats.addStats(1, 0f)
 
         EntityEquipmentSlot.values()
                 .map { player.getItemStackFromSlot(it) }
