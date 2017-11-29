@@ -7,7 +7,7 @@ import net.minecraft.block.state.IBlockState
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.world.World
 
-class BlockDessicator : BlockModContainer("dessicator", Material.IRON) {
+class BlockDessicator : BlockModContainer("desiccator", Material.IRON) {
     override fun createTileEntity(world: World, state: IBlockState): TileEntity? {
         return TileDessicationCrucible()
     }

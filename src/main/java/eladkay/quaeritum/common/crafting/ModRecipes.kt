@@ -41,6 +41,54 @@ object ModRecipes {
                     "dye" + dyeColors[i])
         }
 
+        addOreDictRecipe("jet", ItemStack(ModBlocks.jet),
+                " B ",
+                " R ",
+                "TRT",
+                'R', "dustRedstone",
+                'B', ItemStack(Items.BUCKET),
+                'T', "bitumen")
+
+        addOreDictRecipe("chamber", ItemStack(ModBlocks.fluidHolder),
+                "TRT",
+                "G G",
+                "TRT",
+                'R', "dustRedstone",
+                'G', "blockGlass",
+                'T', "bitumen")
+
+        addOreDictRecipe("centrifuge", ItemStack(ModBlocks.centrifuge),
+                "LGL",
+                "R R",
+                "LLL",
+                'R', "dustRedstone",
+                'L', "leather",
+                'G', "ingotGold")
+
+        addOreDictRecipe("distill", ItemStack(ModBlocks.spiralDistillate),
+                " G ",
+                "RGR",
+                "TTT",
+                'R', "dustRedstone",
+                'T', "bitumen",
+                'G', "blockGlass")
+
+        addOreDictRecipe("compound", ItemStack(ModBlocks.compoundCrucible),
+                "I I",
+                "ITI",
+                "RIR",
+                'R', "dustRedstone",
+                'I', "ingotIron",
+                'T', "bitumen")
+
+        addOreDictRecipe("desiccator", ItemStack(ModBlocks.desiccator),
+                "R R",
+                "ITI",
+                "RIR",
+                'R', "dustRedstone",
+                'I', "ingotIron",
+                'T', "bitumen")
+
         CentrifugeRecipes.registerRecipe("stone", Items.CLAY_BALL, ItemStack(ModItems.dormant))
         CentrifugeRecipes.registerRecipe(ItemEssence.stackOf(EnumAnimusTier.VERDIS), "ingotGold", Resources.VICTIUM_INGOT.stackOf())
                 .setRequiresHeat(true)

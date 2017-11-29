@@ -13,9 +13,6 @@ class FXBeam(par1World: World, x: Double, y: Double, z: Double, red: Float, blue
     }
 
     init {
-        var red = red
-        var blue = blue
-        var green = green
         this.motionX *= 0.10000000149011612
         this.motionY *= 0.10000000149011612
         this.motionZ *= 0.10000000149011612
@@ -24,12 +21,7 @@ class FXBeam(par1World: World, x: Double, y: Double, z: Double, red: Float, blue
         this.motionZ += motionZ * 0.4
         val offset = (Math.random() * 0.30000001192092896).toFloat()
 
-        red -= offset
-        blue -= offset
-        green -= offset
-
-
-        setRBGColorF(red, blue, green)
+        setRBGColorF(red - offset, blue - offset, green - offset)
 
         this.particleScale *= 2f
         this.particleMaxAge = (6.0 / (Math.random() * 0.8 + 0.6)).toInt()

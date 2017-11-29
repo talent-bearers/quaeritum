@@ -1,0 +1,25 @@
+{
+	"type": "forge:ore_shaped",
+	"pattern": [
+		" G ",
+		"RGR",
+		"TTT"
+	],
+	"key": {
+		"R": {
+			"type": "forge:ore_dict",
+			"ore": "dustRedstone"
+		},
+		"T": {
+			"type": "forge:ore_dict",
+			"ore": "bitumen"
+		},
+		"G": {
+			"type": "forge:ore_dict",
+			"ore": "blockGlass"
+		}
+	},
+	"result": {
+		"item": "quaeritum:spiral_distillate"
+	}
+}

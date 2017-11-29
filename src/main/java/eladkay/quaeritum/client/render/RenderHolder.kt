@@ -16,15 +16,15 @@ object RenderHolder : TileEntitySpecialRenderer<TileFluidColumn>() {
         val fluid = te.fluid.handler.fluid
         if (fluid != null) {
             GlStateManager.pushMatrix()
-            GlStateManager.translate(x + 0.16, y + 0.02, z + 0.16)
+            GlStateManager.translate(x + 0.15, y + 0.02, z + 0.15)
             GlStateManager.disableLighting()
             GlStateManager.enableBlend()
             GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)
             val x1 = 0.0
-            val y1 = 0.0
+            val y1 = 0.15 * 0.7
             val z1 = 0.0
             val x2 = 0.7
-            val y2 = te.fluid.handler.fluidAmount.toDouble() / te.fluid.handler.capacity.toDouble() - 0.08
+            val y2 = (te.fluid.handler.fluidAmount.toDouble() / te.fluid.handler.capacity.toDouble() + 0.15) * 0.725
             val z2 = 0.7
             GlUtils.useLightmap(te.world.getCombinedLight(te.pos, fluid.fluid.getLuminosity(fluid))) {
                 ClientUtil.renderFluidCuboid(fluid.copy(), x1, y1, z1, x2, y2, z2)

@@ -1,0 +1,25 @@
+{
+	"type": "forge:ore_shaped",
+	"pattern": [
+		"LGL",
+		"R R",
+		"LLL"
+	],
+	"key": {
+		"R": {
+			"type": "forge:ore_dict",
+			"ore": "dustRedstone"
+		},
+		"L": {
+			"type": "forge:ore_dict",
+			"ore": "leather"
+		},
+		"G": {
+			"type": "forge:ore_dict",
+			"ore": "ingotGold"
+		}
+	},
+	"result": {
+		"item": "quaeritum:centrifuge"
+	}
+}

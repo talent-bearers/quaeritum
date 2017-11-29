@@ -1,0 +1,24 @@
+{
+	"type": "forge:ore_shaped",
+	"pattern": [
+		" B ",
+		" R ",
+		"TRT"
+	],
+	"key": {
+		"R": {
+			"type": "forge:ore_dict",
+			"ore": "dustRedstone"
+		},
+		"B": {
+			"item": "minecraft:bucket"
+		},
+		"T": {
+			"type": "forge:ore_dict",
+			"ore": "bitumen"
+		}
+	},
+	"result": {
+		"item": "quaeritum:fluid_jet"
+	}
+}

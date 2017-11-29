@@ -27,7 +27,7 @@ object ModBlocks {
     val centrifuge = BlockCentrifuge()
     val compoundCrucible = BlockCompoundCrucible()
     val spiralDistillate = BlockSpiralDistillate()
-    val dessicator = BlockDessicator()
+    val desiccator = BlockDessicator()
     val fluidHolder = BlockFluidHolder()
     val jet = BlockFluidJet()
 

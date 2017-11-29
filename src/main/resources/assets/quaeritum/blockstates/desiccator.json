@@ -1,7 +1,7 @@
 {
 	"variants": {
 		"normal": {
-			"model": "quaeritum:dessicator"
+			"model": "quaeritum:desiccator"
 		}
 	}
 }

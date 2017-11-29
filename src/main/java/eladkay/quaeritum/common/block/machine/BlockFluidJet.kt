@@ -102,11 +102,11 @@ class BlockFluidJet : BlockModContainer("fluid_jet", Material.IRON) {
                 val cap = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing.opposite)
                 if (cap != null) {
                     val target = getTarget(pos, world) { _, te, facing ->
-                        te != null && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing)
+                        te != null && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing.opposite)
                     }
                     if (target != null) {
                         val (te, dist) = target
-                        val targetCap = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing.opposite)
+                        val targetCap = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing)
                         if (targetCap != null) {
                             val tentativeStack = cap.drain(100, false)
                             if (tentativeStack != null) {

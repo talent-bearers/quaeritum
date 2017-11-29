@@ -1,0 +1,25 @@
+{
+	"type": "forge:ore_shaped",
+	"pattern": [
+		"I I",
+		"ITI",
+		"RIR"
+	],
+	"key": {
+		"R": {
+			"type": "forge:ore_dict",
+			"ore": "dustRedstone"
+		},
+		"I": {
+			"type": "forge:ore_dict",
+			"ore": "ingotIron"
+		},
+		"T": {
+			"type": "forge:ore_dict",
+			"ore": "bitumen"
+		}
+	},
+	"result": {
+		"item": "quaeritum:compound_crucible"
+	}
+}
