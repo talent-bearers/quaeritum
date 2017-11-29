@@ -18,13 +18,13 @@ object RenderJet : TileEntitySpecialRenderer<BlockFluidJet.TileJet>() {
             val facing = te.world.getBlockState(te.pos).getValue(BlockFluidJet.FACING)
             GlStateManager.pushMatrix()
             GlStateManager.translate(
-                    x + 0.5 - (0.5 / 16.0) + 0.5 * facing.frontOffsetX / 16.0,
-                    y + 0.5 - (0.5 / 16.0) + 0.5 * facing.frontOffsetY / 16.0,
-                    z + 0.5 - (0.5 / 16.0) + 0.5 * facing.frontOffsetZ / 16.0)
+                    x + 0.501 - (0.5 / 16.0) + 1.4825 * facing.frontOffsetX / 16.0,
+                    y + 0.501 - (0.5 / 16.0) + 1.4825 * facing.frontOffsetY / 16.0,
+                    z + 0.501 - (0.5 / 16.0) + 1.4825 * facing.frontOffsetZ / 16.0)
             GlStateManager.scale(
-                    1 / 16.0 - (te.distance + 0.75 / 16.0) * facing.frontOffsetX,
-                    1 / 16.0 - (te.distance + 0.75 / 16.0) * facing.frontOffsetY,
-                    1 / 16.0 - (te.distance + 0.75 / 16.0) * facing.frontOffsetZ)
+                    0.98 / 16.0 - (te.distance + 1.75 / 16.0) * facing.frontOffsetX,
+                    0.98 / 16.0 - (te.distance + 1.75 / 16.0) * facing.frontOffsetY,
+                    0.98 / 16.0 - (te.distance + 1.75 / 16.0) * facing.frontOffsetZ)
             GlStateManager.disableLighting()
             GlStateManager.enableBlend()
             GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)

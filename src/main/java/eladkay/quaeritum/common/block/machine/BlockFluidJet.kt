@@ -51,12 +51,12 @@ class BlockFluidJet : BlockModContainer("fluid_jet", Material.IRON) {
             var state = worldIn.getBlockState(shift)
             var te = worldIn.getTileEntity(shift)
             var dist = 1
-            while (!predicate(state, te, thisFacing) && dist++ <= 7) {
+            while (!predicate(state, te, thisFacing) && dist++ < 7) {
                 shift = shift.offset(thisFacing)
                 state = worldIn.getBlockState(shift)
                 te = worldIn.getTileEntity(shift)
             }
-            if (dist == 9 || te == null) return null
+            if (dist == 8 || te == null) return null
             return te to dist
         }
     }
@@ -133,7 +133,7 @@ class BlockFluidJet : BlockModContainer("fluid_jet", Material.IRON) {
         }
 
         override fun getRenderBoundingBox(): AxisAlignedBB {
-            return AxisAlignedBB(pos).grow(8.0)
+            return INFINITE_EXTENT_AABB
         }
     }
 }
