@@ -6,6 +6,7 @@ import eladkay.quaeritum.api.spell.ElementHandler
 import eladkay.quaeritum.api.spell.SpellParser
 import eladkay.quaeritum.common.item.ItemEvoker
 import eladkay.quaeritum.common.networking.LeftClickMessage
+import eladkay.quaeritum.common.potions.PotionVoidbind
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.util.EnumActionResult
 import net.minecraftforge.common.MinecraftForge
@@ -59,6 +60,18 @@ object SpellEventHandler {
     fun leftClickServer(player: EntityPlayer) {
         var reagents = ElementHandler.getReagentsTyped(player)
         var clear = true
+
+        if (PotionVoidbind.hasEffect(player)) {
+            val look = player.lookVec
+            val speedVec = look
+                    .scale(0.75)
+                    .addVector(player.motionX, player.motionY, player.motionZ)
+
+            player.motionX = speedVec.x
+            player.motionY = speedVec.y
+            player.motionZ = speedVec.z
+            player.velocityChanged = true
+        }
 
         val stack = player.heldItemMainhand
         if (ItemEvoker.hasEvocation(stack)) {

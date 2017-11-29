@@ -254,7 +254,7 @@ item.quaeritum:atlas.name=Traveller's Heart
 item.quaeritum:quaeritus.name=Seeker's Soul
 
 tile.quaeritum:compound_crucible.name=Compound Crucible
-tile.quaeritum:desiccator.name=Dessication Crucible
+tile.quaeritum:desiccator.name=Desiccation Crucible
 tile.quaeritum:spiral_distillate.name=Spiral Distillery
 tile.quaeritum:fluid_holder.name=Fluid Chamber
 tile.quaeritum:fluid_jet.name=High-Pressure Fluid Jet

@@ -59,8 +59,6 @@ class LayerSight(val modelRenderer: ModelRenderer) : LayerRenderer<AbstractClien
             GlStateManager.popMatrix()
             GlStateManager.enableCull()
             GlStateManager.enableLighting()
-            GlStateManager.disableBlend()
-            GlStateManager.disableAlpha()
         }
     }
 
