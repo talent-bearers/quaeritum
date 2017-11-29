@@ -76,7 +76,7 @@ object SpellEventHandler {
             // todo fwoosh
             if (clear)
                 ElementHandler.clearReagents(player)
-        } else if (PotionVoidbind.hasEffect(player)) {
+        } else if (!player.capabilities.isFlying && PotionVoidbind.hasEffect(player)) {
             val look = player.lookVec
             val speedVec = look
                     .scale(0.75)

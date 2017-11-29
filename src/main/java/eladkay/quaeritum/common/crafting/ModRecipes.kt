@@ -19,6 +19,7 @@ import net.minecraft.item.crafting.FurnaceRecipes
 import net.minecraft.item.crafting.Ingredient
 import net.minecraftforge.fluids.FluidRegistry
 import net.minecraftforge.oredict.OreDictionary
+import net.minecraftforge.oredict.OreIngredient
 
 object ModRecipes {
 
@@ -136,7 +137,7 @@ object ModRecipes {
         if (any is ItemStack)
             return Ingredient.fromStacks(any)
         else if (any is String)
-            return ingredientOf(OreDictionary.getOres(any))
+            return OreIngredient(any)
         else if (any is Iterable<*>)
             return Ingredient.fromStacks(*any.filterIsInstance<ItemStack>().toTypedArray())
         else if (any is Array<*>)

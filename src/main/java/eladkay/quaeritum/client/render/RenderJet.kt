@@ -18,24 +18,18 @@ object RenderJet : TileEntitySpecialRenderer<BlockFluidJet.TileJet>() {
             val facing = te.world.getBlockState(te.pos).getValue(BlockFluidJet.FACING)
             GlStateManager.pushMatrix()
             GlStateManager.translate(
-                    x + 0.5 - (0.325 / 16.0) + 1.25 * facing.frontOffsetX / 16.0,
-                    y + 0.5 - (0.325 / 16.0) + 1.25 * facing.frontOffsetY / 16.0,
-                    z + 0.5 - (0.325 / 16.0) + 1.25 * facing.frontOffsetZ / 16.0)
+                    x + 0.5 - (0.5 / 16.0) + 0.5 * facing.frontOffsetX / 16.0,
+                    y + 0.5 - (0.5 / 16.0) + 0.5 * facing.frontOffsetY / 16.0,
+                    z + 0.5 - (0.5 / 16.0) + 0.5 * facing.frontOffsetZ / 16.0)
             GlStateManager.scale(
-                    1 / 16.0 - (te.distance + 1.25 / 16.0) * facing.frontOffsetX,
-                    1 / 16.0 - (te.distance + 1.25 / 16.0) * facing.frontOffsetY,
-                    1 / 16.0 - (te.distance + 1.25 / 16.0) * facing.frontOffsetZ)
+                    1 / 16.0 - (te.distance + 0.75 / 16.0) * facing.frontOffsetX,
+                    1 / 16.0 - (te.distance + 0.75 / 16.0) * facing.frontOffsetY,
+                    1 / 16.0 - (te.distance + 0.75 / 16.0) * facing.frontOffsetZ)
             GlStateManager.disableLighting()
             GlStateManager.enableBlend()
             GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)
-            val x1 = 0.0
-            val y1 = 0.0
-            val z1 = 0.0
-            val x2 = 0.7
-            val y2 = 0.7
-            val z2 = 0.7
             GlUtils.useLightmap(te.world.getCombinedLight(te.pos, fluid.fluid.getLuminosity(fluid))) {
-                ClientUtil.renderFluidCuboid(fluid.copy(), x1, y1, z1, x2, y2, z2)
+                ClientUtil.renderFluidCuboid(fluid.copy(), 0.0, 0.0, 0.0, 1.0, 1.0, 1.0)
             }
             GlStateManager.enableLighting()
             GlStateManager.disableBlend()

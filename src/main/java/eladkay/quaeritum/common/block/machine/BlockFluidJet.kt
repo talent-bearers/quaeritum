@@ -116,7 +116,7 @@ class BlockFluidJet : BlockModContainer("fluid_jet", Material.IRON) {
                                     val offset = pos.offset(facing.opposite, dist)
                                     val trace = world.getBlockState(offset)
                                             .collisionRayTrace(world, pos, Vec3d(pos).addVector(0.5, 0.5, 0.5), Vec3d(offset).addVector(0.5, 0.5, 0.5))
-                                    distance = trace.hitVec.subtract(Vec3d(pos).addVector(0.5, 0.5, 0.5)).lengthVector() + dist
+                                    distance = dist - trace.hitVec.subtract(Vec3d(pos).addVector(0.5, 0.5, 0.5)).lengthVector()
                                     // todo hurt people who are in the way
                                     targetCap.fill(cap.drain(100, true), true)
                                     te.markDirty()

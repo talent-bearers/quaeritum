@@ -41,7 +41,7 @@ object PotionVoidbind : PotionMod("unbound", false, 0x590D57) {
                             it.isAmbient,
                             it.doesShowParticles())
                             .apply { curativeItems = it.curativeItems }) }
-        player.fallDistance = Math.min(player.fallDistance, 4f)
+        player.fallDistance = Math.min(player.fallDistance, 3f)
         if ((player.onGround || player !is EntityPlayer || player.capabilities.isFlying) && player.moveForward > 0F && !player.isInsideOfMaterial(Material.WATER))
             player.moveRelative(0.0f, 0.0f, 0.0525f, 1f)
         if (player is EntityPlayer)

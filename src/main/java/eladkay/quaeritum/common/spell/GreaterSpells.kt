@@ -30,13 +30,19 @@ object GreaterSpells {
         EpicSpells
 
         SpellParser.registerSpell(arrayOf(AIR, ENTROPY, EARTH), EVOCATION, "sparkbolt") { player, trailing, _ ->
+            val lookedAt = RaycastUtils.getEntityLookedAt(player, 32.0 + trailing * 6.0)
             val block = RaycastUtils.raycast(player, 32.0 + trailing * 6.0)
-            if (block != null)
+            if (lookedAt != null)
+                player.world.addWeatherEffect(EntityLightningBolt(player.world,
+                        lookedAt.posX,
+                        lookedAt.posY,
+                        lookedAt.posZ, false))
+            else if (block != null)
                 if (block.typeOfHit == RayTraceResult.Type.MISS)
                     player.world.addWeatherEffect(EntityLightningBolt(player.world,
-                            player.posX + player.lookVec.x * 32,
-                            player.posY + player.lookVec.y * 32,
-                            player.posZ + player.lookVec.z * 32, false))
+                            player.posX + player.lookVec.x * (32.0 + trailing * 6.0),
+                            player.posY + player.lookVec.y * (32.0 + trailing * 6.0),
+                            player.posZ + player.lookVec.z * (32.0 + trailing * 6.0), false))
                 else
                     player.world.addWeatherEffect(EntityLightningBolt(player.world, block.hitVec.x, block.hitVec.y, block.hitVec.z, false))
         }

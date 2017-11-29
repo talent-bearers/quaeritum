@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
  *
  * A simple data class to hold both an alchemical spell and an integer.
  */
-public class SpellInfo {
+public final class SpellInfo {
     @Nonnull
     private final IAlchemicalSpell spell;
     private final int trailingAether;
