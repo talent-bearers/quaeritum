@@ -136,8 +136,8 @@ class BlockFluidHolder : BlockModContainer("fluid_holder", Material.GLASS) {
 
         override fun tick() {
             for (i in listOf(EnumFacing.UP, EnumFacing.DOWN)) {
-                val from = if (i == EnumFacing.DOWN) this else world.getTileEntity(pos.down())
-                val target = if (i == EnumFacing.UP) this else world.getTileEntity(pos.up())
+                val from = if (i == EnumFacing.DOWN) this else world.getTileEntity(pos.up())
+                val target = if (i == EnumFacing.UP) this else world.getTileEntity(pos.down())
                 if (from != null && target != null) {
                     val cap = from.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, i.opposite)
                     val targetCap = target.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, i)
