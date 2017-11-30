@@ -22,6 +22,7 @@ object RenderHolder : TileEntitySpecialRenderer<TileFluidColumn>() {
         if (fluid != null) {
 
             var amount = fluid.amount
+            var total = 1
 
             var up: TileFluidColumn? = te
             val pos = BlockPos.MutableBlockPos(te.pos)
@@ -32,6 +33,7 @@ object RenderHolder : TileEntitySpecialRenderer<TileFluidColumn>() {
                     if (up.fluid.handler.fluid?.fluid != fluid.fluid)
                         break
                     amount += up.fluid.handler.fluidAmount
+                    total++
                     if (up.fluid.handler.fluidAmount != up.fluid.handler.capacity)
                         break
                 }
@@ -46,7 +48,7 @@ object RenderHolder : TileEntitySpecialRenderer<TileFluidColumn>() {
             val y1 = 0.00
             val z1 = 0.05
             val x2 = 0.65
-            val y2 = (amount / te.fluid.handler.capacity.toDouble() + 0.15) * 0.7825 + ((amount - 1) / te.fluid.handler.capacity) * 0.2
+            val y2 = (amount / te.fluid.handler.capacity.toDouble() / total + 0.15) * (0.9 / 1.15 + total * 0.87 - 0.87)
             val z2 = 0.65
             GlUtils.useLightmap(te.world.getCombinedLight(te.pos, fluid.fluid.getLuminosity(fluid))) {
                 ClientUtil.renderFluidCuboid(fluid.copy(), x1, y1, z1, x2, y2, z2)
