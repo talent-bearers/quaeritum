@@ -128,12 +128,12 @@ class ClientProxy : CommonProxy() {
                     GlStateManager.disableLighting()
                     GlStateManager.enableBlend()
                     GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)
-                    val x1 = 0.0
-                    val y1 = 0.15 * 0.7
-                    val z1 = 0.0
-                    val x2 = 0.7
-                    val y2 = (fluid.amount / 4000.0 + 0.15) * 0.725
-                    val z2 = 0.7
+                    val x1 = 0.05
+                    val y1 = 0.00
+                    val z1 = 0.05
+                    val x2 = 0.65
+                    val y2 = (fluid.amount / 4000.0 + 0.15) * 0.7825
+                    val z2 = 0.65
 
                     val v = fluid.fluid.getLuminosity(fluid) shl 4
                     GlUtils.useLightmap(OpenGlHelper.lastBrightnessX, Math.max(v.toFloat(), OpenGlHelper.lastBrightnessY)) {

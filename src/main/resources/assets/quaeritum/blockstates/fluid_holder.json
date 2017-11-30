@@ -1,7 +1,16 @@
 {
 	"variants": {
-		"normal": {
-			"model": "quaeritum:fluid_holder"
+		"down=true,up=true": {
+			"model": "quaeritum:tank_both"
+		},
+		"down=true,up=false": {
+			"model": "quaeritum:tank_down"
+		},
+		"down=false,up=true": {
+			"model": "quaeritum:tank_up"
+		},
+		"down=false,up=false": {
+			"model": "quaeritum:tank_none"
 		}
 	}
 }
