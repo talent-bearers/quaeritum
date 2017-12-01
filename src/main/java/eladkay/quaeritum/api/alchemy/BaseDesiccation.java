@@ -9,14 +9,14 @@ import org.jetbrains.annotations.NotNull;
  * @author WireSegal
  *         Created at 8:40 PM on 8/20/17.
  */
-public class BaseDessication implements IDessication {
+public class BaseDesiccation implements IDesiccation {
 
     @NotNull
     public final Fluid fluid;
     @NotNull
     public final ItemStack result;
 
-    public BaseDessication(@NotNull Fluid fluid, @NotNull ItemStack result) {
+    public BaseDesiccation(@NotNull Fluid fluid, @NotNull ItemStack result) {
         this.fluid = fluid;
         this.result = result;
     }

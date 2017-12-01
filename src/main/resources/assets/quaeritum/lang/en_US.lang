@@ -227,7 +227,10 @@ item.quaeritum:reagent_atlas.name=Atlas Reagent
 tile.quaeritum:foundation.name=Foundation Stone
 
 tile.quaeritum:centrifuge.name=Centrifuge
-jei.quaeritum.recipe.centrifuge=Centrifuge
+jei.quaeritum.recipe.centrifuge=Centrifuging
+jei.quaeritum.recipe.desiccator=Desiccation
+jei.quaeritum.recipe.compound=Compounding
+jei.quaeritum.recipe.distillation=Distillation
 
 item.quaeritum:victium_ingot.name=Victium Ingot
 item.quaeritum:victium_nugget.name=Victium Nugget

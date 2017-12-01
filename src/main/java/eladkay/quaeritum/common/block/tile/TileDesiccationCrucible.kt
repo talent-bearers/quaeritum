@@ -8,15 +8,15 @@ import com.teamwizardry.librarianlib.features.kotlin.isNotEmpty
 import com.teamwizardry.librarianlib.features.saving.Module
 import com.teamwizardry.librarianlib.features.saving.NoSync
 import com.teamwizardry.librarianlib.features.saving.Save
-import eladkay.quaeritum.api.alchemy.Dessications
+import eladkay.quaeritum.api.alchemy.Desiccations
 import net.minecraft.item.ItemStack
 import net.minecraft.tileentity.TileEntityFurnace
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumParticleTypes
 import net.minecraftforge.items.ItemStackHandler
 
-@TileRegister("dessication")
-class TileDessicationCrucible : TileModTickable() {
+@TileRegister("desiccation")
+class TileDesiccationCrucible : TileModTickable() {
     override fun tick() {
         shouldInsert = true
         processTime += fireFuelLoop()
@@ -27,7 +27,7 @@ class TileDessicationCrucible : TileModTickable() {
         if (currentFuelTime > 0)
             currentFuelTime--
         val fluid = inputLiquid.handler.fluid ?: return -processTime
-        val recipe = Dessications.getRecipe(fluid) ?: return -processTime
+        val recipe = Desiccations.getRecipe(fluid) ?: return -processTime
 
         if (outputItem.handler.insertItem(0, recipe.getDriedStack(fluid), true).isNotEmpty)
             return -processTime

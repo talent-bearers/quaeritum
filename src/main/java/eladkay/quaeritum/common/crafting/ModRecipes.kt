@@ -2,7 +2,7 @@ package eladkay.quaeritum.common.crafting
 
 import com.teamwizardry.librarianlib.core.common.RecipeGeneratorHandler
 import eladkay.quaeritum.api.alchemy.AlchemicalCompositions
-import eladkay.quaeritum.api.alchemy.Dessications
+import eladkay.quaeritum.api.alchemy.Desiccations
 import eladkay.quaeritum.api.animus.EnumAnimusTier
 import eladkay.quaeritum.api.machines.CentrifugeRecipes
 import eladkay.quaeritum.common.block.ModBlocks
@@ -18,7 +18,6 @@ import net.minecraft.item.ItemStack
 import net.minecraft.item.crafting.FurnaceRecipes
 import net.minecraft.item.crafting.Ingredient
 import net.minecraftforge.fluids.FluidRegistry
-import net.minecraftforge.oredict.OreDictionary
 import net.minecraftforge.oredict.OreIngredient
 
 object ModRecipes {
@@ -97,12 +96,12 @@ object ModRecipes {
         CentrifugeRecipes.registerRecipe(ItemStack(Blocks.RED_FLOWER), null, ItemEssence.stackOf(EnumAnimusTier.VERDIS))
         CentrifugeRecipes.registerRecipe(Resources.PERFECT_MATRIX.stackOf(), null, ItemEssence.stackOf(EnumAnimusTier.ARGENTUS))
 
-        Dessications.registerRecipe(ModFluids.BITUMEN.getActual(), Resources.BITUMEN.stackOf(2))
-        Dessications.registerRecipe(ModFluids.SWEET.getActual(), ItemStack(Items.SUGAR))
-        Dessications.registerRecipe(ModFluids.LIGHT.getActual(), ItemStack(Items.GLOWSTONE_DUST))
-        Dessications.registerRecipe(ModFluids.SLURRY.getActual(), Resources.SLURRY.stackOf())
-        Dessications.registerRecipe(FluidRegistry.LAVA, ItemStack(Blocks.OBSIDIAN))
-        Dessications.registerRecipe(FluidRegistry.WATER, ItemStack.EMPTY)
+        Desiccations.registerRecipe(ModFluids.BITUMEN.getActual(), Resources.BITUMEN.stackOf(2))
+        Desiccations.registerRecipe(ModFluids.SWEET.getActual(), ItemStack(Items.SUGAR))
+        Desiccations.registerRecipe(ModFluids.LIGHT.getActual(), ItemStack(Items.GLOWSTONE_DUST))
+        Desiccations.registerRecipe(ModFluids.SLURRY.getActual(), Resources.SLURRY.stackOf())
+        Desiccations.registerRecipe(FluidRegistry.LAVA, ItemStack(Blocks.OBSIDIAN))
+        Desiccations.registerRecipe(FluidRegistry.WATER, ItemStack.EMPTY)
 
         AlchemicalCompositions.registerRecipe(ModFluids.BITUMEN.getActual(),
                 ingredientOf(Resources.BITUMEN.stackOf()),

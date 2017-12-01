@@ -13,31 +13,31 @@ import java.util.List;
  * @author WireSegal
  *         Created at 9:56 AM on 2/1/17.
  */
-public final class Dessications {
+public final class Desiccations {
     @NotNull
-    private static final List<IDessication> recipes = new ArrayList<>();
+    private static final List<IDesiccation> recipes = new ArrayList<>();
 
     @NotNull
-    public static List<IDessication> getRecipes() {
+    public static List<IDesiccation> getRecipes() {
         return recipes;
     }
 
     @Nullable
-    public static IDessication getRecipe(@NotNull FluidStack stack) {
-        for (IDessication recipe : recipes)
+    public static IDesiccation getRecipe(@NotNull FluidStack stack) {
+        for (IDesiccation recipe : recipes)
             if (recipe.matches(stack))
                 return recipe;
         return null;
     }
 
     @NotNull
-    public static IDessication registerRecipe(@NotNull IDessication recipe) {
+    public static IDesiccation registerRecipe(@NotNull IDesiccation recipe) {
         recipes.add(recipe);
         return recipe;
     }
 
     @NotNull
-    public static BaseDessication registerRecipe(@NotNull Fluid liquid, @NotNull ItemStack result) {
-        return (BaseDessication) registerRecipe(new BaseDessication(liquid, result));
+    public static BaseDesiccation registerRecipe(@NotNull Fluid liquid, @NotNull ItemStack result) {
+        return (BaseDesiccation) registerRecipe(new BaseDesiccation(liquid, result));
     }
 }
