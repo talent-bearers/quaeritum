@@ -19,13 +19,12 @@ object RenderJet : TileEntitySpecialRenderer<BlockFluidJet.TileJet>() {
             GlStateManager.pushMatrix()
             GlStateManager.translate(
                     x + 0.501 - (0.5 / 16.0) + 1.4825 * facing.frontOffsetX / 16.0,
-                    y + 0.5625 - (0.5 / 16.0) + 1.4825 * facing.frontOffsetY / 16.0,
+                    y + 0.501 - (0.5 / 16.0) + 1.4825 * facing.frontOffsetY / 16.0,
                     z + 0.501 - (0.5 / 16.0) + 1.4825 * facing.frontOffsetZ / 16.0)
             GlStateManager.scale(
-                    0.98 / 16.0 + (te.distance + 1.75 / 16.0) * facing.frontOffsetX,
-                    0.98 / 16.0 + (te.distance + 1.75 / 16.0) * facing.frontOffsetY,
-                    0.98 / 16.0 + (te.distance + 1.75 / 16.0) * facing.frontOffsetZ)
-            GlStateManager.rotate(180f, facing.frontOffsetY.toFloat(), facing.frontOffsetZ.toFloat(), facing.frontOffsetX.toFloat())
+                    0.98 / 16.0 - (te.distance + 1.75 / 16.0) * facing.frontOffsetX,
+                    0.98 / 16.0 - (te.distance + 1.75 / 16.0) * facing.frontOffsetY,
+                    0.98 / 16.0 - (te.distance + 1.75 / 16.0) * facing.frontOffsetZ)
             GlStateManager.disableLighting()
             GlStateManager.enableBlend()
             GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)
