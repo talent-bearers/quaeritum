@@ -142,11 +142,11 @@ class BlockFluidHolder : BlockModContainer("fluid_holder", Material.GLASS) {
                     val cap = from.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, i.opposite)
                     val targetCap = target.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, i)
                     if (cap != null && targetCap != null) {
-                        val tentativeStack = cap.drain(100, false)
+                        val tentativeStack = cap.drain(500, false)
                         if (tentativeStack != null) {
                             val succeeded = targetCap.fill(tentativeStack, false) == tentativeStack.amount
                             if (succeeded) {
-                                targetCap.fill(cap.drain(100, true), true)
+                                targetCap.fill(cap.drain(500, true), true)
                                 from.markDirty()
                                 target.markDirty()
                             }
