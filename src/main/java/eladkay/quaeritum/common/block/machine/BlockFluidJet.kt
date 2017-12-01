@@ -110,15 +110,15 @@ class BlockFluidJet : BlockModContainer("fluid_jet", Material.IRON) {
                         if (targetCap != null) {
                             val tentativeStack = cap.drain(100, false)
                             if (tentativeStack != null) {
-                                val succeeded = targetCap.fill(tentativeStack, false) == tentativeStack.amount
-                                if (succeeded) {
+                                val succeeded = targetCap.fill(tentativeStack, false)
+                                if (succeeded > 0) {
                                     lastStack = tentativeStack
                                     val offset = pos.offset(facing.opposite, dist)
                                     val trace = world.getBlockState(offset)
                                             .collisionRayTrace(world, pos, Vec3d(pos).addVector(0.5, 0.5, 0.5), Vec3d(offset).addVector(0.5, 0.5, 0.5))
                                     distance = dist - trace.hitVec.subtract(Vec3d(pos).addVector(0.5, 0.5, 0.5)).lengthVector()
                                     // todo hurt people who are in the way
-                                    targetCap.fill(cap.drain(100, true), true)
+                                    targetCap.fill(cap.drain(succeeded, true), true)
                                     te.markDirty()
                                     tile.markDirty()
                                 }
