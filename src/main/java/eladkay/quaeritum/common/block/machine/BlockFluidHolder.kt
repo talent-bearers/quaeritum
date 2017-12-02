@@ -53,10 +53,10 @@ class BlockFluidHolder : BlockModContainer("fluid_holder", Material.GLASS) {
 
     override fun getActualState(state: IBlockState, worldIn: IBlockAccess, pos: BlockPos): IBlockState {
         var retState = state
-        if (worldIn.getBlockState(pos.down()).block != this)
-            retState = retState.withProperty(DOWN, false)
-        if (worldIn.getBlockState(pos.up()).block != this)
-            retState = retState.withProperty(UP, false)
+        if (worldIn.getBlockState(pos.down()).block == this)
+            retState = retState.withProperty(DOWN, true)
+        if (worldIn.getBlockState(pos.up()).block == this)
+            retState = retState.withProperty(UP, true)
         return retState
     }
 
