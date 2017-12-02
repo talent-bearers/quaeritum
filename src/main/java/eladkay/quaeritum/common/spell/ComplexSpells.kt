@@ -111,7 +111,7 @@ object ComplexSpells {
             val shiftTotal = Math.max(1, total - 1)
             val velocity = Math.min(2f, 3f * shiftTotal / (trailing + 1))
             val inaccuracy = Math.max(shiftTotal - trailing.toFloat(), 0f)
-            val damage = 3.5f + 3.5f * trailing / shiftTotal
+            val damage = 3.5f + 3.5f * (trailing + 2) / shiftTotal
             frostshock.damage = damage
             frostshock.gravity = velocity * 0.0125f
             frostshock.knockback = 0.0f

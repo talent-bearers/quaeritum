@@ -8,6 +8,7 @@ import eladkay.quaeritum.common.potions.PotionEmbodiment
 import eladkay.quaeritum.common.potions.PotionWrath
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.effect.EntityLightningBolt
+import net.minecraft.init.MobEffects
 import net.minecraft.potion.Potion
 import net.minecraft.potion.PotionEffect
 import net.minecraft.util.math.RayTraceResult
@@ -20,9 +21,9 @@ object GreaterSpells {
 
     // Greater spells are those with three, or four symbols. They don't cost anything extra to have multiples.
 
-    fun applyShiftedBuff(potion: Potion, player: EntityLivingBase, trailing: Int, total: Int, amplifier: Boolean) {
+    fun applyShiftedBuff(potion: Potion, player: EntityLivingBase, trailing: Int, amplifier: Boolean) {
         val potionEffect = player.removeActivePotionEffect(potion) ?: PotionEffect(potion)
-        player.addPotionEffect(PotionEffect(potion, Math.max(5 + (trailing * 5) / total, 1) * (if (amplifier) 20 else 25) + potionEffect.duration,
+        player.addPotionEffect(PotionEffect(potion, Math.max(5 + (trailing * 5), 1) * (if (amplifier) 20 else 25) + potionEffect.duration,
                 if (amplifier) trailing / 2 else 0, true, true))
     }
 
@@ -56,11 +57,11 @@ object GreaterSpells {
         }
 
         SpellParser.registerSpell(arrayOf(EARTH, FORM, METAL, WATER), ALTERATION, "protection") { player, trailing, _ ->
-            applyShiftedBuff(PotionEmbodiment, player, trailing + 3, 1, true)
+            applyShiftedBuff(PotionEmbodiment, player, trailing + 3, true)
         }
 
         SpellParser.registerSpell(arrayOf(EARTH, FORM, METAL, FIRE), ALTERATION, "weaponry") { player, trailing, _ ->
-            applyShiftedBuff(PotionWrath, player, trailing + 3, 1, true)
+            applyShiftedBuff(PotionWrath, player, trailing + 3, true)
         }
 
         SpellParser.registerSpell(arrayOf(FIRE, WATER, EARTH, AIR), EVOCATION, "gatecrash") { player, trailing, _ ->
@@ -68,10 +69,11 @@ object GreaterSpells {
         }
 
         SpellParser.registerSpell(arrayOf(SPIRIT, SOUL, WATER, EARTH), RESTORATION, "true_heal") { player, trailing, _ ->
-            player.heal(trailing * 8f + 4f)
+            applyShiftedBuff(MobEffects.REGENERATION, player, trailing + 3, true)
+            applyShiftedBuff(MobEffects.SATURATION, player, 0, false)
             val entity = RaycastUtils.getEntityLookedAt(player)
             if (entity != null && entity is EntityLivingBase)
-                entity.heal(trailing * 8f + 4f)
+                applyShiftedBuff(MobEffects.REGENERATION, entity, trailing + 3, true)
         }
     }
 }

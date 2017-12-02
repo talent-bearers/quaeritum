@@ -33,10 +33,10 @@ object EpicSpells {
                 it != null && it != player && it.getDistanceSqToEntity(player) < 625.0
             }.forEach {
                 it.heal(trailing * 5f + 5f)
-                applyShiftedBuff(MobEffects.SPEED, player, trailing + 4, 1, true)
-                applyShiftedBuff(MobEffects.JUMP_BOOST, player, trailing + 4, 1, true)
-                applyShiftedBuff(MobEffects.STRENGTH, player, trailing + 4, 1, true)
-                applyShiftedBuff(MobEffects.RESISTANCE, player, trailing + 4, 1, true)
+                applyShiftedBuff(MobEffects.SPEED, player, trailing + 4, true)
+                applyShiftedBuff(MobEffects.JUMP_BOOST, player, trailing + 4, true)
+                applyShiftedBuff(MobEffects.STRENGTH, player, trailing + 4, true)
+                applyShiftedBuff(MobEffects.RESISTANCE, player, trailing + 4, true)
             }
 
             player.addPotionEffect(PotionEffect(MobEffects.WITHER, 500, 3))
@@ -51,15 +51,15 @@ object EpicSpells {
         }
 
         SpellParser.registerSpell(arrayOf(EARTH, SPIRIT, ENTROPY, FIRE, FLOW), EVOCATION, "walk_the_path") { player, trailing, _ ->
-            applyShiftedBuff(PotionPathwalker, player, trailing + 4, 1, false)
+            applyShiftedBuff(PotionPathwalker, player, trailing + 4, false)
         }
 
         SpellParser.registerSpell(arrayOf(CONNECTION, SPIRIT, ENTROPY, METAL, WATER), ALTERATION, "steal_their_strength") { player, trailing, _ ->
-            applyShiftedBuff(PotionVampirism, player, trailing + 4, 1, false)
+            applyShiftedBuff(PotionVampirism, player, trailing + 4, false)
         }
 
-        SpellParser.registerSpell(arrayOf(FIRE, WATER, SOUL, AETHER, AETHER, SOUL, EARTH, AIR), ALTERATION, "unbind_thine_soul") { player, _, _ ->
-            applyShiftedBuff(PotionVoidbind, player, 8, 1, false)
+        SpellParser.registerSpell(arrayOf(FIRE, WATER, SOUL, AETHER, AETHER, SOUL, EARTH, AIR), RESTORATION, "unbind_thine_soul") { player, _, _ ->
+            applyShiftedBuff(PotionVoidbind, player, 8, false)
         }
 
         hope = registerSpell(arrayOf(CONNECTION, AETHER, SPIRIT, FIRE, AIR, WATER, SOUL, FLOW), RESTORATION, "give_them_hope") {

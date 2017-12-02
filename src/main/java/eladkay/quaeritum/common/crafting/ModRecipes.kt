@@ -11,13 +11,18 @@ import eladkay.quaeritum.common.item.ItemEssence
 import eladkay.quaeritum.common.item.ItemResource.Resources
 import eladkay.quaeritum.common.item.ModItems
 import eladkay.quaeritum.common.potions.ModPotionTypes
+import net.minecraft.block.Block
 import net.minecraft.init.Blocks
 import net.minecraft.init.Items
 import net.minecraft.init.PotionTypes
+import net.minecraft.item.EnumDyeColor
+import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.item.crafting.FurnaceRecipes
 import net.minecraft.item.crafting.Ingredient
+import net.minecraft.util.ResourceLocation
 import net.minecraftforge.fluids.FluidRegistry
+import net.minecraftforge.fml.common.Loader
 import net.minecraftforge.oredict.OreIngredient
 
 object ModRecipes {
@@ -125,6 +130,17 @@ object ModRecipes {
                 Resources.RUSTED_MATRIX.stackOf(),
                 Resources.PERFECT_MATRIX.stackOf())
 
+        if (Loader.isModLoaded("wizardry")) {
+            val fairyItem = Item.REGISTRY.getObject(ResourceLocation("wizardry", "fairy_dust"))
+            val devilItem = Item.REGISTRY.getObject(ResourceLocation("wizardry", "devil_dust"))
+
+            AlchemicalCompositions.registerRecipe(FluidRegistry.getFluid("mana_fluid"),
+                    ingredientOf(devilItem),
+                    ingredientOf(fairyItem))
+
+            Desiccations.registerRecipe(FluidRegistry.getFluid("mana_fluid"), ItemStack(Items.DYE, 1, EnumDyeColor.BLUE.dyeDamage))
+        }
+
         FurnaceRecipes.instance().addSmeltingRecipe(Resources.MIXTURE_MATRIX.stackOf(), Resources.ALLOY_MATRIX.stackOf(), 0.7f)
 
         ModPotionTypes.addCompletePotionRecipes(ModPotionTypes.potionPredicate("dyeBlack"), PotionTypes.AWKWARD, ModPotionTypes.BLINDNESS, ModPotionTypes.BLINDNESS_LONG, null)
@@ -132,8 +148,12 @@ object ModRecipes {
 
     fun ingredientOf(vararg itemStacks: ItemStack) = ingredientOf(itemStacks)
 
-    fun ingredientOf(any: Any): Ingredient {
-        if (any is ItemStack)
+    fun ingredientOf(any: Any?): Ingredient {
+        if (any is Item)
+            return Ingredient.fromItem(any)
+        else if (any is Block)
+            return Ingredient.fromItem(Item.getItemFromBlock(any))
+        else if (any is ItemStack)
             return Ingredient.fromStacks(any)
         else if (any is String)
             return OreIngredient(any)

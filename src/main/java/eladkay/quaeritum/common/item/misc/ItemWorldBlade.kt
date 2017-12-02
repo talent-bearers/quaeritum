@@ -5,7 +5,6 @@ import com.teamwizardry.librarianlib.features.base.item.ItemModSword
 import com.teamwizardry.librarianlib.features.helpers.ItemNBTHelper
 import com.teamwizardry.librarianlib.features.kotlin.times
 import com.teamwizardry.librarianlib.features.utilities.RaycastUtils
-import eladkay.quaeritum.common.Quaeritum
 import eladkay.quaeritum.common.core.QuaeritumMethodHandles
 import eladkay.quaeritum.common.lib.LibMaterials
 import eladkay.quaeritum.common.lib.LibNames
@@ -26,8 +25,6 @@ import net.minecraft.util.math.Vec3d
 import net.minecraft.world.World
 
 class ItemWorldBlade : ItemModSword(LibNames.WORLD_BLADE, LibMaterials.TEMPESTEEL) {
-
-    internal var shouldUseElucentParticles = false
 
     override fun onUpdate(stack: ItemStack, worldIn: World, entityIn: Entity?, itemSlot: Int, isSelected: Boolean) {
         val ticks = ItemNBTHelper.getInt(stack, TAG_TELEPORTED, 0)
@@ -80,31 +77,21 @@ class ItemWorldBlade : ItemModSword(LibNames.WORLD_BLADE, LibMaterials.TEMPESTEE
             entityLiving.fallDistance = 0f
 
             if (entityLiving.world.isRemote)
-                for (i in 0..99) {
-                    if (!shouldUseElucentParticles)
-                        entityLiving.world.spawnParticle(EnumParticleTypes.PORTAL,
-                                entityLiving.posX + (entityLiving.world.rand.nextDouble() - 0.5) * entityLiving.width.toDouble(),
-                                entityLiving.posY + entityLiving.world.rand.nextDouble() * entityLiving.height.toDouble() - 0.25,
-                                entityLiving.posZ + (entityLiving.world.rand.nextDouble() - 0.5) * entityLiving.width.toDouble(),
-                                (entityLiving.world.rand.nextDouble() - 0.5) * 2.0,
-                                -entityLiving.world.rand.nextDouble(),
-                                (entityLiving.world.rand.nextDouble() - 0.5) * 2.0)
-                    else
-                        Quaeritum.proxy!!.spawnStafflikeParticles(
-                                entityLiving.world, //world
-                                entityLiving.posX + (entityLiving.world.rand.nextDouble() - 0.5) * entityLiving.width.toDouble(), //x
-                                entityLiving.posY + entityLiving.world.rand.nextDouble() * entityLiving.height.toDouble() - 0.25, //y
-                                entityLiving.posZ + (entityLiving.world.rand.nextDouble() - 0.5) * entityLiving.width.toDouble() //z
-                        )
-                }
-
+                for (i in 0..99)
+                    entityLiving.world.spawnParticle(EnumParticleTypes.PORTAL,
+                            entityLiving.posX + (entityLiving.world.rand.nextDouble() - 0.5) * entityLiving.width.toDouble(),
+                            entityLiving.posY + entityLiving.world.rand.nextDouble() * entityLiving.height.toDouble() - 0.25,
+                            entityLiving.posZ + (entityLiving.world.rand.nextDouble() - 0.5) * entityLiving.width.toDouble(),
+                            (entityLiving.world.rand.nextDouble() - 0.5) * 2.0,
+                            -entityLiving.world.rand.nextDouble(),
+                            (entityLiving.world.rand.nextDouble() - 0.5) * 2.0)
             entityLiving.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1f, 1f)
 
 
             if (!hitEntity)
                 ItemNBTHelper.setInt(stack, TAG_TELEPORTED, QuaeritumMethodHandles.getSwingTicks(entityLiving))
 
-            if (entityLiving is EntityPlayer && entityLiving.world.isRemote)
+            if (entityLiving is EntityPlayer)
                 entityLiving.cooldownTracker.setCooldown(this, entityLiving.cooldownPeriod.toInt())
         }
 
