@@ -41,6 +41,7 @@ import net.minecraftforge.fml.relauncher.SideOnly
 class BlockFluidHolder : BlockModContainer("fluid_holder", Material.GLASS) {
     init {
         setHardness(1f)
+        defaultState = defaultState.withProperty(UP, false).withProperty(DOWN, false)
     }
 
     companion object {

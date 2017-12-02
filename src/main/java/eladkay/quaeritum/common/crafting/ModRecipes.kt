@@ -23,6 +23,7 @@ import net.minecraft.item.crafting.Ingredient
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.fluids.FluidRegistry
 import net.minecraftforge.fml.common.Loader
+import net.minecraftforge.oredict.OreDictionary
 import net.minecraftforge.oredict.OreIngredient
 
 object ModRecipes {
@@ -106,7 +107,8 @@ object ModRecipes {
         Desiccations.registerRecipe(ModFluids.LIGHT.getActual(), ItemStack(Items.GLOWSTONE_DUST))
         Desiccations.registerRecipe(ModFluids.SLURRY.getActual(), Resources.SLURRY.stackOf())
         Desiccations.registerRecipe(FluidRegistry.LAVA, ItemStack(Blocks.OBSIDIAN))
-        Desiccations.registerRecipe(FluidRegistry.WATER, ItemStack.EMPTY)
+        val salt = OreDictionary.getOres("dustSalt").firstOrNull() ?: ItemStack.EMPTY
+        Desiccations.registerRecipe(FluidRegistry.WATER, salt)
 
         AlchemicalCompositions.registerRecipe(ModFluids.BITUMEN.getActual(),
                 ingredientOf(Resources.BITUMEN.stackOf()),

@@ -153,10 +153,8 @@ object BasicSpells {
 
         registerSpell(arrayOf(SPIRIT), ALTERATION, "dominate") { player, trailing, total ->
             val range = 3 + (trailing.toDouble() + 1) / total
-            @Suppress("UNCHECKED_CAST")
-            val entities = player.world.getEntitiesWithinAABB(Entity::class.java, player.entityBoundingBox.grow(range)) {
-                it is IMob
-            } as List<IMob>
+            val entities = player.world.getEntitiesWithinAABB(Entity::class.java, player.entityBoundingBox.grow(range))
+                    .filterIsInstance<IMob>()
 
             entities.filterIsInstance<EntityLiving>()
                     .any { brainwashEntity(it, entities) }
