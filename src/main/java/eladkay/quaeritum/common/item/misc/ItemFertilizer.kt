@@ -1,8 +1,6 @@
 package eladkay.quaeritum.common.item.misc
 
 import com.teamwizardry.librarianlib.features.base.item.ItemMod
-import eladkay.quaeritum.common.block.ModBlocks
-import eladkay.quaeritum.common.block.flowers.BlockAnimusFlower
 import eladkay.quaeritum.common.lib.LibNames
 import net.minecraft.block.material.Material
 import net.minecraft.entity.player.EntityPlayer
@@ -29,16 +27,16 @@ class ItemFertilizer : ItemMod(LibNames.FERTILIZER) {
         }
 
         private fun applyBonemeal0(stack: ItemStack, worldIn: World, target: BlockPos): Boolean {
-            val iblockstate = worldIn.getBlockState(target)
-            if (iblockstate == ModBlocks.flower.getStateFromMeta(BlockAnimusFlower.Variants.COMMON_ARCANE.ordinal)) {
-                if (!worldIn.isRemote) {
-                    if (Math.random() < 0.05)
-                        worldIn.setBlockState(target, ModBlocks.flower.getStateFromMeta(BlockAnimusFlower.Variants.ARCANE.ordinal))
-                    worldIn.playBroadcastSound(2005, target, 0)
-                    spawnBonemealParticles(worldIn, target, 0)
-                }
-                stack.count--
-            }
+//            val iblockstate = worldIn.getBlockState(target)
+//            if (iblockstate == ModBlocks.flower.getStateFromMeta(BlockFiresoulFlower.Variants.IRONHEART.ordinal)) {
+//                if (!worldIn.isRemote) {
+//                    if (Math.random() < 0.05)
+//                        worldIn.setBlockState(target, ModBlocks.flower.getStateFromMeta(BlockFiresoulFlower.Variants.ARCANE.ordinal))
+//                    worldIn.playBroadcastSound(2005, target, 0)
+//                    spawnBonemealParticles(worldIn, target, 0)
+//                }
+//                stack.count--
+//            }
             return true
         }
 

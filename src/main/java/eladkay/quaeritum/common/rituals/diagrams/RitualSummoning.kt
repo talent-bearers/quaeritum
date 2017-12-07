@@ -7,7 +7,6 @@ import eladkay.quaeritum.api.rituals.IDiagram
 import eladkay.quaeritum.api.rituals.PositionedBlock
 import eladkay.quaeritum.api.rituals.PositionedBlockChalk
 import eladkay.quaeritum.common.block.ModBlocks
-import eladkay.quaeritum.common.block.flowers.BlockAnimusFlower
 import eladkay.quaeritum.common.entity.EntityChaosborn
 import eladkay.quaeritum.common.item.ModItems
 import net.minecraft.init.Items
@@ -68,7 +67,7 @@ class RitualSummoning : IDiagram {
     val requiredItems: ArrayList<ItemStack>
         get() {
             val list = Lists.newArrayList<ItemStack>()
-            list.add(ItemStack(ModBlocks.flower, 1, BlockAnimusFlower.Variants.COMMON_ARCANE.ordinal))
+//            list.add(ItemStack(ModBlocks.flower, 1, BlockFiresoulFlower.Variants.IRONHEART.ordinal))
             list.add(ItemStack(ModBlocks.crystal))
             list.add(ItemStack(Items.NETHER_WART))
             list.add(ItemStack(ModItems.awakened))

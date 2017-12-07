@@ -4,7 +4,7 @@ import eladkay.quaeritum.api.lib.LibMisc
 import eladkay.quaeritum.api.rituals.PositionedBlockChalk
 import eladkay.quaeritum.common.block.chalk.BlockChalk
 import eladkay.quaeritum.common.block.chalk.BlockChalkTempest
-import eladkay.quaeritum.common.block.flowers.BlockAnimusFlower
+import eladkay.quaeritum.common.block.flowers.BlockFiresoulFlower
 import eladkay.quaeritum.common.block.machine.*
 import eladkay.quaeritum.common.block.tile.TileEntityBlueprint
 import eladkay.quaeritum.common.block.tile.TileEntityFoundationStone
@@ -19,7 +19,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry
 object ModBlocks {
     val blueprint = BlockBlueprint(LibNames.BLUEPRINT)
     val chalk = BlockChalk()
-    val flower = BlockAnimusFlower()
+    val flower = BlockFiresoulFlower()
     val crystal = CrystalSoul()
     val foundation = BlockFoundationStone()
     val tempest = BlockChalkTempest()

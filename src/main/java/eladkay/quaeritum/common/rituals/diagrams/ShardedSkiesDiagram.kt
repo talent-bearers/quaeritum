@@ -1,12 +1,9 @@
 package eladkay.quaeritum.common.rituals.diagrams
 
-import com.google.common.collect.Lists
 //import com.teamwizardry.librarianlib.client.book.gui.PageText
+import com.google.common.collect.Lists
 import eladkay.quaeritum.api.rituals.IDiagram
 import eladkay.quaeritum.api.rituals.PositionedBlock
-import eladkay.quaeritum.common.block.ModBlocks
-import eladkay.quaeritum.common.block.flowers.BlockAnimusFlower
-import net.minecraft.entity.item.EntityItem
 import net.minecraft.init.Blocks
 import net.minecraft.item.ItemStack
 import net.minecraft.tileentity.TileEntity
@@ -31,7 +28,7 @@ class ShardedSkiesDiagram : IDiagram {
     }
 
     override fun run(world: World, pos: BlockPos, tes: TileEntity) {
-        val item = EntityItem(world, pos.x.toDouble(), (pos.y + 2).toDouble(), pos.z.toDouble(), ItemStack(ModBlocks.flower, 1, BlockAnimusFlower.Variants.COMMON.ordinal))
+//        val item = EntityItem(world, pos.x.toDouble(), (pos.y + 2).toDouble(), pos.z.toDouble(), ItemStack(ModBlocks.flower, 1, BlockFiresoulFlower.Variants.FIRESOUL.ordinal))
 
         for (stack in IDiagram.Helper.entitiesAroundAltar(tes, 4.0)) {
             if (!IDiagram.Helper.isEntityItemInList(stack, requiredItems)) continue
@@ -39,7 +36,7 @@ class ShardedSkiesDiagram : IDiagram {
             server.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, stack.position.x + 0.5, stack.position.y + 1.0, stack.position.z + 0.5, 1, 0.1, 0.0, 0.1, 0.0)
             stack.setDead()
         }
-        world.spawnEntity(item)
+//        world.spawnEntity(item)
     }
 
     override fun onPrepUpdate(world: World, pos: BlockPos, tile: TileEntity, ticksRemaining: Int): Boolean {

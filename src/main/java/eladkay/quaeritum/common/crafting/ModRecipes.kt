@@ -32,7 +32,6 @@ object ModRecipes {
 
     fun init() {
         addShapelessOreDictRecipe("blueprint", ItemStack(ModBlocks.blueprint), "dyeBlue", ItemStack(Items.PAPER), ItemStack(Blocks.STONE_SLAB))
-        addShapelessOreDictRecipe("fertilizer", ItemStack(ModItems.fertilizer, 2), "dyePink", ItemStack(Items.DYE, 1, 15), ItemStack(ModItems.altas))
         addOreDictRecipe("passion", ItemStack(ModItems.passionate),
                 "Y Y",
                 "XZX",

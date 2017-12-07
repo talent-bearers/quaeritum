@@ -4,9 +4,6 @@ import com.teamwizardry.librarianlib.core.common.OreDictionaryRegistrar
 import com.teamwizardry.librarianlib.features.base.item.ItemMod
 import eladkay.quaeritum.common.lib.LibNames
 import net.minecraft.item.ItemStack
-import net.minecraftforge.common.MinecraftForge
-import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 
 /**
  * @author WireSegal
@@ -28,20 +25,12 @@ class ItemResource : ItemMod(LibNames.RESOURCE, *Resources.NAMES) {
         }
     }
 
-    companion object {
-        @SubscribeEvent
-        fun fuel(e: FurnaceFuelBurnTimeEvent) {
-            if (e.itemStack.item is ItemResource) {
-                if (e.itemStack.itemDamage == Resources.BITUMEN.ordinal)
-                    e.burnTime = 1600
-                else if (e.itemStack.itemDamage == Resources.FLOWER_DUST.ordinal)
-                    e.burnTime = 400
-            }
-        }
-
-        init {
-            MinecraftForge.EVENT_BUS.register(this)
-        }
+    override fun getItemBurnTime(itemStack: ItemStack): Int {
+        if (itemStack.itemDamage == Resources.BITUMEN.ordinal)
+            return 1600
+        else if (itemStack.itemDamage == Resources.FLOWER_DUST.ordinal)
+            return 400
+        return -1
     }
 
     init {

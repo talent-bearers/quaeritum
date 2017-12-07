@@ -1,7 +1,7 @@
 package eladkay.quaeritum.common.block.chalk
 
-import eladkay.quaeritum.common.block.flowers.BlockAnimusFlower
 import eladkay.quaeritum.common.lib.LibNames
+import eladkay.quaeritum.common.lib.capitalizeFirst
 import net.minecraft.util.IStringSerializable
 
 enum class EnumChalkColor : IStringSerializable {
@@ -33,10 +33,9 @@ enum class EnumChalkColor : IStringSerializable {
             LibNames.CHALK + variant.getName()
                     .split("_".toRegex())
                     .filter(String::isNotEmpty)
-                    .map { BlockAnimusFlower.capitalizeFirst(it) }
+                    .map(String::capitalizeFirst)
                     .joinToString("")
         }
-
 
         fun of(meta: Int): EnumChalkColor? {
             if (meta < 0 || meta > values().size) return null

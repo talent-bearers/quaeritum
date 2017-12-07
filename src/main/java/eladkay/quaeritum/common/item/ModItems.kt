@@ -15,7 +15,6 @@ object ModItems {
     val attuned: ItemAttunedSoulstone = ItemAttunedSoulstone()
     val chalk: ItemChalk = ItemChalk()
     val fertilizer: ItemFertilizer = ItemFertilizer()
-    val altas: ItemReagentAtlas = ItemReagentAtlas()
     val riftmakerPart: ItemRiftmakerPart = ItemRiftmakerPart()
     val worldBlade: ItemWorldBlade = ItemWorldBlade()
     val picture: ItemPicture = ItemPicture()

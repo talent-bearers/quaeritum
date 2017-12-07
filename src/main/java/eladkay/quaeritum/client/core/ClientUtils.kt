@@ -3,7 +3,7 @@ package eladkay.quaeritum.client.core
 import com.teamwizardry.librarianlib.core.LibrarianLib
 import com.teamwizardry.librarianlib.features.utilities.client.TooltipHelper
 import eladkay.quaeritum.api.animus.AnimusHelper
-import eladkay.quaeritum.common.block.flowers.BlockAnimusFlower
+import eladkay.quaeritum.api.animus.EnumAnimusTier
 import net.minecraft.item.ItemStack
 
 object ClientUtils {
@@ -13,8 +13,8 @@ object ClientUtils {
                 tooltip.add("Animus: " + AnimusHelper.getAnimus(stack))
                 tooltip.add("Rarity: " + AnimusHelper.getTier(stack))
             } else
-                for (variant in BlockAnimusFlower.Variants.values())
-                    if (variant.rarity == AnimusHelper.getTier(stack).ordinal)
+                for (variant in EnumAnimusTier.values())
+                    if (variant == AnimusHelper.getTier(stack))
                         tooltip.add("Rarity: " + TooltipHelper.local(variant.getName()))
         })
     }

@@ -5,7 +5,7 @@ import eladkay.quaeritum.api.rituals.IDiagram
 import eladkay.quaeritum.api.rituals.IWork
 import eladkay.quaeritum.api.rituals.PositionedBlock
 import eladkay.quaeritum.common.block.ModBlocks
-import eladkay.quaeritum.common.block.flowers.BlockAnimusFlower
+import eladkay.quaeritum.common.block.flowers.BlockFiresoulFlower
 import eladkay.quaeritum.common.rituals.diagrams.ShardedSkiesDiagram
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.Blocks
@@ -24,8 +24,8 @@ class ShardedSkiesWork : IWork {
         if (!ModBlocks.flower.canBlockStay(world, pos.up().up(), world.getBlockState(pos.up().up())) || world.getBlockState(pos.up().up()).block !== Blocks.AIR || !IDiagram.Helper.takeAnimus(20, EnumAnimusTier.VERDIS, tile, 4.0, true)) return true
         /*EntityItem item = new EntityItem(world, pos.getX(), pos.getY() + 2, pos.getZ(), new ItemStack(ModBlocks.flower, 1, new Random().nextInt(BlockAnimusFlower.Variants.values().length)));
         world.spawnEntity(item);*/
-        val state = ModBlocks.flower.getStateFromMeta(Random().nextInt(BlockAnimusFlower.Variants.values().size))
-        world.setBlockState(pos.up().up(), state)
+//        val state = ModBlocks.flower.getStateFromMeta(Random().nextInt(BlockFiresoulFlower.Variants.values().size))
+//        world.setBlockState(pos.up().up(), state)
         return true
 
     }
