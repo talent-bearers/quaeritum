@@ -53,8 +53,8 @@ class JEICompat : IModPlugin {
         helper = registry.jeiHelpers
         registry.addRecipeCategories(CentrifugeCraftingCategory)
         registry.addRecipeCategories(DesiccationCraftingCategory)
-        registry.addRecipeCategories(DistillationCraftingCategory)
         registry.addRecipeCategories(CompoundingCraftingCategory)
+        registry.addRecipeCategories(DistillationCraftingCategory)
     }
 }
 

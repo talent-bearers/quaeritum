@@ -1,0 +1,15 @@
+{
+	"type": "forge:ore_shapeless",
+	"ingredients": [
+		{
+			"item": "quaeritum:flower_firesoul"
+		},
+		{
+			"item": "quaeritum:resource",
+			"data": 5
+		}
+	],
+	"result": {
+		"item": "quaeritum:ironheart_seed"
+	}
+}

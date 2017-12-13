@@ -5,6 +5,8 @@ import eladkay.quaeritum.api.rituals.PositionedBlockChalk
 import eladkay.quaeritum.common.block.chalk.BlockChalk
 import eladkay.quaeritum.common.block.chalk.BlockChalkTempest
 import eladkay.quaeritum.common.block.flowers.BlockFiresoulFlower
+import eladkay.quaeritum.common.block.flowers.BlockIronheartCrop
+import eladkay.quaeritum.common.block.flowers.BlockIronheartFlower
 import eladkay.quaeritum.common.block.machine.*
 import eladkay.quaeritum.common.block.tile.TileEntityBlueprint
 import eladkay.quaeritum.common.block.tile.TileEntityFoundationStone
@@ -30,6 +32,9 @@ object ModBlocks {
     val desiccator = BlockDesiccator()
     val fluidHolder = BlockFluidHolder()
     val jet = BlockFluidJet()
+
+    val ironCrop = BlockIronheartCrop()
+    val ironheart = BlockIronheartFlower()
 
     init {
         GameRegistry.registerTileEntity(TileEntityBlueprint::class.java, ResourceLocation(LibMisc.MOD_ID, LibNames.BLUEPRINT).toString())

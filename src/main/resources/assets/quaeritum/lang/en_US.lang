@@ -248,6 +248,10 @@ fluid.iron_slurry=Alchemical Residue
 fluid.sugar_water=Aquae Dulcis
 fluid.liquid_light=Liquid Light
 
+tile.quaeritum:flower_firesoul.name=Firesoul Flower
+tile.quaeritum:flower_ironheart.name=Ironheart Bloom
+item.quaeritum:ironheart_seed.name=Ironheart Root
+
 item.quaeritum:verdis.name=Floral Essence
 item.quaeritum:lucis.name=Shining Stardust
 item.quaeritum:ferrus.name=Alchemist's Ash

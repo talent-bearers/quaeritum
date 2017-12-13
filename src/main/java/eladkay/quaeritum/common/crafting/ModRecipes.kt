@@ -8,7 +8,7 @@ import eladkay.quaeritum.api.machines.CentrifugeRecipes
 import eladkay.quaeritum.common.block.ModBlocks
 import eladkay.quaeritum.common.fluid.ModFluids
 import eladkay.quaeritum.common.item.ItemEssence
-import eladkay.quaeritum.common.item.ItemResource.Resources
+import eladkay.quaeritum.common.item.ItemResource.Resources.*
 import eladkay.quaeritum.common.item.ModItems
 import eladkay.quaeritum.common.potions.ModPotionTypes
 import net.minecraft.block.Block
@@ -94,42 +94,47 @@ object ModRecipes {
                 'I', "ingotIron",
                 'T', "bitumen")
 
-        CentrifugeRecipes.registerRecipe("stone", Items.CLAY_BALL, ItemStack(ModItems.dormant))
-        CentrifugeRecipes.registerRecipe(ItemEssence.stackOf(EnumAnimusTier.VERDIS), "ingotGold", Resources.VICTIUM_INGOT.stackOf())
-                .setRequiresHeat(true)
-        CentrifugeRecipes.registerRecipe(ItemStack(Items.COAL), null, Resources.BITUMEN.stackOf())
-        CentrifugeRecipes.registerRecipe(ItemStack(Blocks.RED_FLOWER), null, ItemEssence.stackOf(EnumAnimusTier.VERDIS))
-        CentrifugeRecipes.registerRecipe(Resources.PERFECT_MATRIX.stackOf(), null, ItemEssence.stackOf(EnumAnimusTier.ARGENTUS))
+        addShapelessOreDictRecipe("ironheart", ItemStack(ModItems.resourceSeed),
+                ModBlocks.flower, SLURRY.stackOf())
 
-        Desiccations.registerRecipe(ModFluids.BITUMEN.getActual(), Resources.BITUMEN.stackOf(2))
+        CentrifugeRecipes.registerRecipe("stone", Items.CLAY_BALL, ItemStack(ModItems.dormant))
+        CentrifugeRecipes.registerRecipe(ItemEssence.stackOf(EnumAnimusTier.VERDIS), "ingotGold", VICTIUM_INGOT.stackOf())
+                .setRequiresHeat(true)
+        CentrifugeRecipes.registerRecipe(ItemStack(Items.COAL), null, BITUMEN.stackOf())
+        CentrifugeRecipes.registerRecipe(ItemStack(Blocks.RED_FLOWER), null, ItemEssence.stackOf(EnumAnimusTier.VERDIS))
+        CentrifugeRecipes.registerRecipe(ItemStack(ModBlocks.flower), null, ItemEssence.stackOf(EnumAnimusTier.LUCIS))
+        CentrifugeRecipes.registerRecipe(ItemStack(ModBlocks.ironheart), null, ItemEssence.stackOf(EnumAnimusTier.FERRUS))
+        CentrifugeRecipes.registerRecipe(PERFECT_MATRIX.stackOf(), null, ItemEssence.stackOf(EnumAnimusTier.ARGENTUS))
+
+        Desiccations.registerRecipe(ModFluids.BITUMEN.getActual(), BITUMEN.stackOf(2))
         Desiccations.registerRecipe(ModFluids.SWEET.getActual(), ItemStack(Items.SUGAR))
         Desiccations.registerRecipe(ModFluids.LIGHT.getActual(), ItemStack(Items.GLOWSTONE_DUST))
-        Desiccations.registerRecipe(ModFluids.SLURRY.getActual(), Resources.SLURRY.stackOf())
+        Desiccations.registerRecipe(ModFluids.SLURRY.getActual(), SLURRY.stackOf())
         Desiccations.registerRecipe(FluidRegistry.LAVA, ItemStack(Blocks.OBSIDIAN))
         val salt = OreDictionary.getOres("dustSalt").firstOrNull() ?: ItemStack.EMPTY
         Desiccations.registerRecipe(FluidRegistry.WATER, salt)
 
         AlchemicalCompositions.registerRecipe(ModFluids.BITUMEN.getActual(),
-                ingredientOf(Resources.BITUMEN.stackOf()),
+                ingredientOf(BITUMEN.stackOf()),
                 ingredientOf(ItemStack(Items.COAL), ItemStack(Items.COAL, 1, 1)))
         AlchemicalCompositions.registerRecipe(ModFluids.SWEET.getActual(),
-                Resources.FLOWER_DUST.stackOf(),
+                FLOWER_DUST.stackOf(),
                 ItemEssence.stackOf(EnumAnimusTier.VERDIS))
         AlchemicalCompositions.registerRecipe(ModFluids.LIGHT.getActual(),
                 ItemStack(Items.BLAZE_POWDER),
                 ItemEssence.stackOf(EnumAnimusTier.LUCIS))
         AlchemicalCompositions.registerRecipe(ModFluids.LIGHT.getActual(),
                 ingredientOf("nuggetIron"),
-                ingredientOf(Resources.SLURRY.stackOf()))
+                ingredientOf(SLURRY.stackOf()))
         AlchemicalCompositions.registerRecipe(ModFluids.SLURRY.getActual(),
-                Resources.MIXTURE_MATRIX.stackOf(),
+                MIXTURE_MATRIX.stackOf(),
                 ItemEssence.stackOf(EnumAnimusTier.FERRUS))
         AlchemicalCompositions.registerRecipe(ModFluids.BITUMEN.getActual(),
-                Resources.ALLOY_MATRIX.stackOf(),
-                Resources.RUSTED_MATRIX.stackOf())
+                ALLOY_MATRIX.stackOf(),
+                RUSTED_MATRIX.stackOf())
         AlchemicalCompositions.registerRecipe(ModFluids.LIGHT.getActual(),
-                Resources.RUSTED_MATRIX.stackOf(),
-                Resources.PERFECT_MATRIX.stackOf())
+                RUSTED_MATRIX.stackOf(),
+                PERFECT_MATRIX.stackOf())
 
         if (Loader.isModLoaded("wizardry")) {
             val fairyItem = Item.REGISTRY.getObject(ResourceLocation("wizardry", "fairy_dust"))
@@ -142,7 +147,7 @@ object ModRecipes {
             Desiccations.registerRecipe(FluidRegistry.getFluid("mana_fluid"), ItemStack(Items.DYE, 1, EnumDyeColor.BLUE.dyeDamage))
         }
 
-        FurnaceRecipes.instance().addSmeltingRecipe(Resources.MIXTURE_MATRIX.stackOf(), Resources.ALLOY_MATRIX.stackOf(), 0.7f)
+        FurnaceRecipes.instance().addSmeltingRecipe(MIXTURE_MATRIX.stackOf(), ALLOY_MATRIX.stackOf(), 0.7f)
 
         ModPotionTypes.addCompletePotionRecipes(ModPotionTypes.potionPredicate("dyeBlack"), PotionTypes.AWKWARD, ModPotionTypes.BLINDNESS, ModPotionTypes.BLINDNESS_LONG, null)
     }
