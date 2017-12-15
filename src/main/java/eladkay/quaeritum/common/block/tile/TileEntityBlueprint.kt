@@ -49,7 +49,6 @@ class TileEntityBlueprint : TileModTickable() {
                     bestDiagram = ritual
                     highestChalks = chalks
                 }
-                println(chalks.toString() + ", " + requirementsMet + ", " + foundAll + ", " + ritual.unlocalizedName)
             }
             return bestDiagram
         }

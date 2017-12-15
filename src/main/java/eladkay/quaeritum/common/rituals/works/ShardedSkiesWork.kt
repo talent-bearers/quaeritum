@@ -5,14 +5,12 @@ import eladkay.quaeritum.api.rituals.IDiagram
 import eladkay.quaeritum.api.rituals.IWork
 import eladkay.quaeritum.api.rituals.PositionedBlock
 import eladkay.quaeritum.common.block.ModBlocks
-import eladkay.quaeritum.common.block.flowers.BlockFiresoulFlower
 import eladkay.quaeritum.common.rituals.diagrams.ShardedSkiesDiagram
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.Blocks
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
-import java.util.*
 
 class ShardedSkiesWork : IWork {
     override fun getUnlocalizedName(): String {
@@ -1413,10 +1411,6 @@ class ShardedSkiesWork : IWork {
 
     override fun getDiagramCounterpart(): IDiagram? {
         return ShardedSkiesDiagram()
-    }
-
-    override fun constructBook() {
-        //PageWorkFactory.addWorkToBook("test", this, ItemStack(ModBlocks.flower))
     }
 
 }

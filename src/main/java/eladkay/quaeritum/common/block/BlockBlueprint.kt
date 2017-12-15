@@ -59,18 +59,15 @@ class BlockBlueprint(name: String) : BlockMod(name, Material.PISTON), /*IGuideLi
         return tile is TileEntityBlueprint && tile.onBlockActivated()
     }
 
-    override fun onNeighborChange(world: IBlockAccess?, pos: BlockPos?, neighbor: BlockPos?) {
-        if ((world as World).isBlockPowered(pos!!)) {
-            val tile = world.getTileEntity(pos)
+    override fun neighborChanged(state: IBlockState?, worldIn: World, pos: BlockPos, blockIn: Block, fromPos: BlockPos) {
+        if (worldIn.isBlockPowered(pos)) {
+            val tile = worldIn.getTileEntity(pos)
             if (tile is TileEntityBlueprint) tile.onBlockActivated()
         }
     }
 
-    override fun neighborChanged(state: IBlockState?, worldIn: World?, pos: BlockPos?, blockIn: Block?, fromPos: BlockPos?) {
-        if (worldIn!!.isBlockPowered(pos!!)) {
-            val tile = worldIn.getTileEntity(pos)
-            if (tile is TileEntityBlueprint) tile.onBlockActivated()
-        }
+    override fun observedNeighborChange(observerState: IBlockState?, world: World?, observerPos: BlockPos?, changedBlock: Block?, changedBlockPos: BlockPos?) {
+        super.observedNeighborChange(observerState, world, observerPos, changedBlock, changedBlockPos)
     }
 
    /* override fun getLinkedEntry(world: World, pos: BlockPos, player: EntityPlayer, stack: ItemStack): ResourceLocation {

@@ -16,14 +16,6 @@ import java.util.*
 
 class AltarOfTheFallingStarDiagram : IDiagram {
 
-    override fun constructBook() {
-        /*pages.add(PageText(TooltipHelper.local(LibBook.ENTRY_CIRCLE_OF_THE_FINAL_MOMENT_PAGE1)))
-        val list = ArrayList<PositionedBlock>()
-        buildChalks(list)
-        pages.add(PageDiagram(list, ImmutableList.of<ItemStack>()))
-        ModBook.register(ModBook.pagesDiagrams, LibBook.ENTRY_ALTAR_OF_THE_FALLING_STAR, pages, ItemStack(ModItems.awakened))*/
-    }
-
     override fun getUnlocalizedName(): String {
         return "rituals.quaeritum.altarofthefallingstar"
     }

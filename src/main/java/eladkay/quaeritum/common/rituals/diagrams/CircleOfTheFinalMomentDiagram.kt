@@ -21,14 +21,6 @@ class CircleOfTheFinalMomentDiagram : IDiagram {
         //noop lol
     }
 
-    override fun constructBook() {
-        /*pages.add(PageText(TooltipHelper.local(LibBook.ENTRY_CIRCLE_OF_THE_FINAL_MOMENT_PAGE1)))
-        val list = ArrayList<PositionedBlock>()
-        buildChalks(list)
-        pages.add(PageDiagram(list, ImmutableList.of<ItemStack>()))
-        ModBook.register(ModBook.pagesDiagrams, LibBook.ENTRY_CIRCLE_OF_THE_FINAL_MOMENT, pages, ItemStack(Items.CLOCK))*/
-    }
-
     override fun getPrepTime(world: World, pos: BlockPos, tile: TileEntity): Int {
         return 600
     }

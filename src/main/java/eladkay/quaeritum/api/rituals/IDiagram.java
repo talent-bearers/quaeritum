@@ -39,10 +39,6 @@ public interface IDiagram {
 
     void buildChalks(@NotNull List<PositionedBlock> chalks);
 
-    default void constructBook() {
-        //NO-OP
-    }
-
     class Helper {
 
         public static boolean consumeAnimusForRitual(TileEntity tes, boolean drain, int animus, EnumAnimusTier rarity) {

@@ -1,0 +1,32 @@
+{
+	"parent": "item/generated",
+	"textures": {
+		"layer0": "quaeritum:items/waking_blossom"
+	},
+	"overrides": [
+		{
+			"predicate": {
+				"quaeritum:blossom": 1
+			},
+			"model": "quaeritum:item/waking_blossom_peeking"
+		},
+		{
+			"predicate": {
+				"quaeritum:blossom": 2
+			},
+			"model": "quaeritum:item/waking_blossom_opening"
+		},
+		{
+			"predicate": {
+				"quaeritum:blossom": 3
+			},
+			"model": "quaeritum:item/waking_blossom_flourish"
+		},
+		{
+			"predicate": {
+				"quaeritum:blossom": 4
+			},
+			"model": "quaeritum:item/awoken_blossom"
+		}
+	]
+}

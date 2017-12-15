@@ -78,14 +78,6 @@ class ShardedSkiesTier2Diagram : IDiagram {
         chalks.add(PositionedBlockChalk(EnumDyeColor.GREEN, BlockPos(1, 0, 1)))
     }
 
-    override fun constructBook() {
-       /* pages.add(PageText(TooltipHelper.local(LibBook.ENTRY_SHARDED_SKIES2_PAGE1)))
-        val list = ArrayList<PositionedBlock>()
-        buildChalks(list)
-        pages.add(PageDiagram(list, requiredItems))
-        ModBook.register(ModBook.pagesDiagrams, LibBook.ENTRY_SHARDED_SKIES_NAME2, pages, ItemStack(ModBlocks.flower, 1, 1))*/
-    }
-
     companion object {
         //var pages: MutableList<IPage> = ArrayList()
     }

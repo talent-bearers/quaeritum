@@ -8,6 +8,8 @@ import net.minecraftforge.fml.common.Loader;
 
 import java.util.Collection;
 
+import static com.teamwizardry.librarianlib.features.helpers.CommonUtilMethods.getCurrentModId;
+
 public final class RitualRegistry {
     public static HashBiMap<String, IDiagram> mapDiagrams = HashBiMap.create();
     public static HashBiMap<String, IWork> mapWorks = HashBiMap.create();
@@ -15,8 +17,7 @@ public final class RitualRegistry {
     public static IDiagram registerDiagram(IDiagram ritual, String name) {
         FMLLog.info("Registering diagram \"" + name + "\".");
 
-        ritual.constructBook();
-        String modid = Loader.instance().activeModContainer().getModId();
+        String modid = getCurrentModId();
 
         if (!modid.equals(LibMisc.MOD_ID)) {
             ResourceLocation rl = new ResourceLocation(name);
@@ -36,8 +37,7 @@ public final class RitualRegistry {
     public static IWork registerWork(IWork ritual, String name) {
         FMLLog.info("Registering work \"" + name + "\".");
 
-        ritual.constructBook();
-        String modid = Loader.instance().activeModContainer().getModId();
+        String modid = getCurrentModId();
 
         if (!modid.equals(LibMisc.MOD_ID)) {
             ResourceLocation rl = new ResourceLocation(name);

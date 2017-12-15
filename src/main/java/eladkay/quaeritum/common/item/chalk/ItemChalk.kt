@@ -70,6 +70,10 @@ class ItemChalk : ItemMod(LibNames.CHALK, *ItemChalk.COLORS), IItemColorProvider
         }
     }
 
+    override fun getMetadata(damage: Int): Int {
+        return damage
+    }
+
     fun placeBlockAt(stack: ItemStack, player: EntityPlayer, world: World, pos: BlockPos, side: EnumFacing, hitX: Float, hitY: Float, hitZ: Float, newState: IBlockState): Boolean {
         if (!world.setBlockState(pos, newState, 3)) return false
 

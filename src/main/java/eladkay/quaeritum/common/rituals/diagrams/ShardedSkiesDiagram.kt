@@ -1,53 +1,49 @@
 package eladkay.quaeritum.common.rituals.diagrams
 
 //import com.teamwizardry.librarianlib.client.book.gui.PageText
-import com.google.common.collect.Lists
 import eladkay.quaeritum.api.rituals.IDiagram
 import eladkay.quaeritum.api.rituals.PositionedBlock
+import eladkay.quaeritum.api.rituals.PositionedBlockChalk
+import eladkay.quaeritum.common.block.ModBlocks
+import net.minecraft.entity.item.EntityItem
 import net.minecraft.init.Blocks
+import net.minecraft.item.EnumDyeColor
 import net.minecraft.item.ItemStack
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumParticleTypes
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraft.world.WorldServer
-import java.util.*
 
 class ShardedSkiesDiagram : IDiagram {
-
-    override fun constructBook() {
-       /* pages.add(PageText(TooltipHelper.local(LibBook.ENTRY_SHARDED_SKIES_PAGE1)))
-        val list = ArrayList<PositionedBlock>()
-        buildChalks(list)
-        pages.add(PageDiagram(list, requiredItems))
-        ModBook.register(ModBook.pagesDiagrams, LibBook.ENTRY_SHARDED_SKIES_NAME, pages, ItemStack(ModBlocks.flower))*/
-    }
 
     override fun getUnlocalizedName(): String {
         return "rituals.quaeritum.shardedsky"
     }
 
     override fun run(world: World, pos: BlockPos, tes: TileEntity) {
-//        val item = EntityItem(world, pos.x.toDouble(), (pos.y + 2).toDouble(), pos.z.toDouble(), ItemStack(ModBlocks.flower, 1, BlockFiresoulFlower.Variants.FIRESOUL.ordinal))
 
         for (stack in IDiagram.Helper.entitiesAroundAltar(tes, 4.0)) {
             if (!IDiagram.Helper.isEntityItemInList(stack, requiredItems)) continue
             val server = tes.world as WorldServer
-            server.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, stack.position.x + 0.5, stack.position.y + 1.0, stack.position.z + 0.5, 1, 0.1, 0.0, 0.1, 0.0)
-            stack.setDead()
+            server.spawnParticle(EnumParticleTypes.FLAME, stack.posX, stack.posY + 0.25, stack.posZ, 1, 0.1, 0.0, 0.1, 0.0)
+            stack.item.shrink(1)
+            if (stack.item.isEmpty)
+                stack.setDead()
+
+            val item = EntityItem(world, stack.posX, stack.posY + 0.125, stack.posZ, ItemStack(ModBlocks.flower))
+            world.spawnEntity(item)
         }
-//        world.spawnEntity(item)
+
     }
 
     override fun onPrepUpdate(world: World, pos: BlockPos, tile: TileEntity, ticksRemaining: Int): Boolean {
-        // NetworkHelper.tellEveryoneAround(new FancyParticlePacket(pos.getX(), pos.getY(), pos.getZ(), 100), world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 16);
-        var flag = false
-        for (stack in IDiagram.Helper.entitiesAroundAltar(tile, 4.0))
-            if (IDiagram.Helper.isEntityItemInList(stack, requiredItems)) {
-
-                flag = true
-            }
-        return flag
+        for (stack in IDiagram.Helper.entitiesAroundAltar(tile, 4.0)) {
+            if (!IDiagram.Helper.isEntityItemInList(stack, requiredItems)) continue
+            val server = tile.world as WorldServer
+            server.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, stack.posX, stack.posY + 0.25, stack.posZ, 1, 0.1, 0.0, 0.1, 0.0)
+        }
+        return hasRequiredItems(world, pos, tile)
     }
 
     override fun getPrepTime(world: World, pos: BlockPos, tile: TileEntity): Int {
@@ -62,15 +58,14 @@ class ShardedSkiesDiagram : IDiagram {
         return true
     }
 
-    val requiredItems: ArrayList<ItemStack>
-        get() {
-            val list = Lists.newArrayList<ItemStack>()
-            list.add(ItemStack(Blocks.RED_FLOWER))
-            return list
-        }
+    val requiredItems: List<ItemStack>
+        get() = listOf(ItemStack(Blocks.RED_FLOWER))
 
-    override fun buildChalks(chalks: List<PositionedBlock>) {
-        //NO-OP
+    override fun buildChalks(chalks: MutableList<PositionedBlock>) {
+        chalks.add(PositionedBlockChalk(EnumDyeColor.LIME, BlockPos(0, 0, -1)))
+        chalks.add(PositionedBlockChalk(EnumDyeColor.LIME, BlockPos(-1, 0, 0)))
+        chalks.add(PositionedBlockChalk(EnumDyeColor.LIME, BlockPos(1, 0, 0)))
+        chalks.add(PositionedBlockChalk(EnumDyeColor.LIME, BlockPos(0, 0, 1)))
     }
 
     companion object {

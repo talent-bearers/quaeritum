@@ -42,18 +42,15 @@ object PositionedBlockHelper {
                 else if (comparables != null) {
                     for (property in comparables) {
                         if (block.state.getValue(property as IProperty<Comparable<Comparable<*>>>) != state.getValue(property)) {
-                            LogHelper.logDebug("Expected " + block.state + " in " + block.getPos() + " for ritual " + optionalName + ". Got " + state)
                             return -1
                         }
                     }
                     chalks++
                 } else if (block.state !== state) {
-                    LogHelper.logDebug("Expected " + block.state + " in " + block.getPos() + " for ritual " + optionalName + ". Got " + state)
                     return -1
                 } else
                     chalks++
             } else {
-                LogHelper.logDebug("Expected " + block.state + " in " + block.getPos() + " for ritual " + optionalName + ". Got " + state)
                 return -1
             }
         }

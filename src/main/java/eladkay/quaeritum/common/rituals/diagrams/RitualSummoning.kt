@@ -102,15 +102,6 @@ class RitualSummoning : IDiagram {
 
     }
 
-    override fun constructBook() {
-       /* pages.add(PageText(TooltipHelper.local(LibBook.ENTRY_SUMMONING_PAGE1)))
-        pages.add(PageText(TooltipHelper.local(LibBook.ENTRY_SUMMONING_PAGE2)))
-        val l = Lists.newArrayList<PositionedBlock>()
-        buildChalks(l)
-        pages.add(PageDiagram(l, requiredItems))
-        ModBook.register(ModBook.pagesDiagrams, LibBook.ENTRY_SUMMONING_NAME, pages, ItemStack(ModItems.altas))*
-    */}
-
     companion object {
         //var pages: MutableList<IPage> = ArrayList()
     }

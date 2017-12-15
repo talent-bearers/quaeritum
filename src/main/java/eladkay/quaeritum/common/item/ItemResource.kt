@@ -12,7 +12,8 @@ import net.minecraft.item.ItemStack
 class ItemResource : ItemMod(LibNames.RESOURCE, *Resources.NAMES) {
     enum class Resources {
         VICTIUM_INGOT, VICTIUM_NUGGET, TEMPESTEEL,
-        BITUMEN, FLOWER_DUST, SLURRY, MIXTURE_MATRIX, ALLOY_MATRIX, RUSTED_MATRIX, PERFECT_MATRIX;
+        BITUMEN, FLOWER_DUST, SLURRY, MIXTURE_MATRIX, ALLOY_MATRIX, RUSTED_MATRIX, PERFECT_MATRIX,
+        AWOKEN_BLOSSOM;
 
         @JvmOverloads
         fun stackOf(size: Int = 1) = ItemStack(ModItems.resource, size, ordinal)
