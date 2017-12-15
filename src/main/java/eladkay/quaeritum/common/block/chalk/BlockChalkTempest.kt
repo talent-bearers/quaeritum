@@ -1,14 +1,19 @@
 package eladkay.quaeritum.common.block.chalk
 
 import com.teamwizardry.librarianlib.features.base.block.BlockMod
+import com.teamwizardry.librarianlib.features.base.block.ItemModBlock
+import com.teamwizardry.librarianlib.features.helpers.ItemNBTHelper
+import com.teamwizardry.librarianlib.features.utilities.client.TooltipHelper
+import eladkay.quaeritum.api.lib.LibNBT
 import eladkay.quaeritum.common.block.ModBlocks
-import eladkay.quaeritum.common.item.ModItems
+import eladkay.quaeritum.common.lib.LibLocations
 import eladkay.quaeritum.common.lib.LibNames
 import net.minecraft.block.Block
 import net.minecraft.block.material.Material
 import net.minecraft.block.properties.PropertyEnum
 import net.minecraft.block.state.BlockStateContainer
 import net.minecraft.block.state.IBlockState
+import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.Blocks
 import net.minecraft.item.ItemBlock
@@ -16,7 +21,6 @@ import net.minecraft.item.ItemStack
 import net.minecraft.util.*
 import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
-import net.minecraft.util.math.RayTraceResult
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 import net.minecraftforge.fml.relauncher.Side
@@ -117,7 +121,7 @@ class BlockChalkTempest : BlockMod(LibNames.CHALK_BLOCK_TEMPEST, Material.CIRCUI
 
     override fun onBlockActivated(worldIn: World, pos: BlockPos?, state: IBlockState?, playerIn: EntityPlayer, hand: EnumHand?, side: EnumFacing?, hitX: Float, hitY: Float, hitZ: Float): Boolean {
         val stack = playerIn.getHeldItem(hand)
-        if (stack.item === ModItems.chalk) {
+        if (stack.item === ModBlocks.chalk.itemForm) {
             worldIn.setBlockState(pos!!, ModBlocks.chalk.getStateFromMeta(stack.itemDamage))
             return stack.itemDamage != getMetaFromState(state)
         }
@@ -136,16 +140,29 @@ class BlockChalkTempest : BlockMod(LibNames.CHALK_BLOCK_TEMPEST, Material.CIRCUI
         }
     }
 
-    override fun getPickBlock(state: IBlockState, target: RayTraceResult?, world: World, pos: BlockPos, player: EntityPlayer?): ItemStack {
-        return ItemStack(ModItems.tempest, 1, getMetaFromState(state))
-    }
-
     override fun quantityDropped(random: Random?): Int {
         return 0
     }
 
     override fun createItemForm(): ItemBlock? {
-        return null
+        return object : ItemModBlock(this) {
+            init {
+                addPropertyOverride(LibLocations.FLAT_CHALK) { stack, _, _ -> if (ItemNBTHelper.getBoolean(stack, LibNBT.FLAT, false)) 1.0f else 0.0f }
+                setMaxStackSize(1)
+            }
+
+            override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
+                TooltipHelper.addToTooltip(tooltip, getUnlocalizedName(stack) + ".desc")
+            }
+
+            override fun onItemUse(player: EntityPlayer, worldIn: World, pos: BlockPos, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): EnumActionResult {
+                val stack = player.getHeldItem(hand)
+                val count = stack.count
+                val ret = super.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ)
+                stack.count = count
+                return ret
+            }
+        }
     }
 
     enum class EnumAttachPosition(private val nm: String) : IStringSerializable {

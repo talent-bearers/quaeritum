@@ -1,14 +1,10 @@
 package eladkay.quaeritum.common.core
 
 import com.google.common.collect.Lists
-import com.teamwizardry.librarianlib.features.helpers.ItemNBTHelper
-import eladkay.quaeritum.api.lib.LibNBT
 import eladkay.quaeritum.api.rituals.PositionedBlock
 import eladkay.quaeritum.common.block.ModBlocks
-import eladkay.quaeritum.common.item.ModItems
 import net.minecraft.block.properties.IProperty
 import net.minecraft.item.EnumDyeColor
-import net.minecraft.item.ItemStack
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Vec3i
@@ -76,32 +72,6 @@ object PositionedBlockHelper {
             maxZ = Math.max(block.getPos().z, maxZ)
         }
         return Vec3i(maxX - minX, maxY - minY, maxZ - minZ)
-    }
-
-    @Deprecated("")
-    fun getItemStackArrayArrayArrayFromPositionedBlockList(blocks: List<PositionedBlock>): Array<Array<Array<ItemStack?>>> {
-        val ret = Array(50) { Array(50) { arrayOfNulls<ItemStack>(50) } }
-        for (block in blocks) {
-            val stack = ItemStack(ModItems.chalk, 1, block.state.block.getMetaFromState(block.state))
-            ret[block.getPos().x + 3][block.getPos().y + 3][block.getPos().z + 3] = stack
-        }
-        return ret
-    }
-
-    fun getStackFromChalk(block: PositionedBlock): ItemStack {
-        if (block.state.block === ModBlocks.blueprint) return ItemStack(ModItems.picture, 1, 0)
-        return ItemStack(ModItems.chalk, 1, block.state.block.getMetaFromState(block.state))
-    }
-
-    fun getStackFromChalk(block: PositionedBlock, flat: Boolean): ItemStack {
-        var ret = ItemStack(block.state.block, 1, block.state.block.getMetaFromState(block.state))
-        if (block.state.block === ModBlocks.chalk)
-            ret = ItemStack(ModItems.chalk, 1, block.state.block.getMetaFromState(block.state))
-        else if (block.state.block === ModBlocks.tempest) ret = ItemStack(ModItems.tempest, 1)
-        if (flat)
-            ItemNBTHelper.setBoolean(ret, LibNBT.FLAT, true)
-
-        return ret
     }
 
 }

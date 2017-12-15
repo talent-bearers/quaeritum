@@ -15,7 +15,7 @@ object LibNames {
     val DEBUG = "debug"
 
     val CHALK = "chalk"
-    val CHALK_BLOCK = "chalkBlock"
+    val CHALK_BLOCK = "chalk"
 
     val FLOWER = "flower"
 
@@ -34,7 +34,7 @@ object LibNames {
     val FOUNDATION = "foundation"
     val TRANSDUCER = "transducer"
     val CHALK_TEMPEST = "tempestChalk"
-    val CHALK_BLOCK_TEMPEST = "tempestChalkBlock"
+    val CHALK_BLOCK_TEMPEST = "tempestChalk"
     val CIRCLE = "circle"
     val HOLLOWER = "hollower"
     val DEV_PLACER = "devplacer"

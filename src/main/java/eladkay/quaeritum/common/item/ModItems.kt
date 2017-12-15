@@ -2,8 +2,6 @@ package eladkay.quaeritum.common.item
 
 import com.teamwizardry.librarianlib.core.LibrarianLib
 import eladkay.quaeritum.common.block.ModBlocks
-import eladkay.quaeritum.common.item.chalk.ItemChalk
-import eladkay.quaeritum.common.item.chalk.ItemChalkTempest
 import eladkay.quaeritum.common.item.misc.*
 import eladkay.quaeritum.common.item.soulstones.*
 
@@ -14,12 +12,10 @@ object ModItems {
     val passionate = ItemPassionateSoulstone()
     val passive = ItemWorldSoulstone()
     val attuned = ItemAttunedSoulstone()
-    val chalk = ItemChalk()
     val fertilizer = ItemFertilizer()
     val riftmakerPart = ItemRiftmakerPart()
     val worldBlade = ItemWorldBlade()
     val picture = ItemPicture()
-    val tempest = ItemChalkTempest()
     val resource = ItemResource()
     val worldShield = ItemWorldShield()
     val essence = ItemEssence()

@@ -114,7 +114,7 @@ class ItemDebug : ItemMod(LibNames.DEBUG) {
                 }
             }
         }
-        return super.onItemUse(playerIn, worldIn, pos, hand, facing, hitX, hitY, hitZ)
+        return EnumActionResult.SUCCESS
     }
 
 }

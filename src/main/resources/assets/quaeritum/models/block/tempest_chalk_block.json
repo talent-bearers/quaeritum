@@ -1,6 +1,0 @@
-{
-	"parent": "block/cube_all",
-	"textures": {
-		"all": "quaeritum:blocks/tempest_chalk_block"
-	}
-}

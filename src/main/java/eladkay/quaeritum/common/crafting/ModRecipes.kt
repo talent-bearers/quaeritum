@@ -41,7 +41,7 @@ object ModRecipes {
                 'X', ItemStack(Items.FIRE_CHARGE),
                 'Z', ItemStack(ModItems.dormant))
         for (i in dyeColors.indices) {
-            addShapelessOreDictRecipe("chalk$i", ItemStack(ModItems.chalk, 1, i),
+            addShapelessOreDictRecipe("chalk$i", ItemStack(ModBlocks.chalk, 1, i),
                     ItemStack(Items.CLAY_BALL),
                     "dye" + dyeColors[i])
         }
