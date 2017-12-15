@@ -29,7 +29,7 @@ class ItemChalkTempest : ItemMod(LibNames.CHALK_TEMPEST) {
         setMaxStackSize(1)
     }
 
-    val block = ModBlocks.chalk
+    val block = ModBlocks.tempest
 
 
     override fun onItemUse(player: EntityPlayer, worldIn: World, pos: BlockPos, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): EnumActionResult {
