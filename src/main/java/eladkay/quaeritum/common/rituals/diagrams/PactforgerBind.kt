@@ -24,7 +24,7 @@ class PactforgerBind : IDiagram {
     }
 
     override fun run(world: World, pos: BlockPos, tile: TileEntity) {
-        val oathStack = IDiagram.Helper.stacksAroundAltar(tile, 4.0).firstOrNull { it.item == ModItems.scroll } ?: return
+        val oathStack = IDiagram.Helper.stacksAroundAltar(tile, 4.0).firstOrNull { it.item == ModItems.scroll && it.itemDamage == 1 } ?: return
         val id = oathStack.oath
         if (id > 0 && id <= ContractRegistry.getMaxId()) {
             val oath = ContractRegistry.getOathFromId(id)

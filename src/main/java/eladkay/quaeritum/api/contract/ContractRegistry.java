@@ -92,7 +92,7 @@ public final class ContractRegistry {
             }
 
             @Override
-            public void fireContract(@NotNull EntityPlayer player, @NotNull ItemStack stack, @NotNull World world, @NotNull BlockPos pos) {
+            public void fireContract(@Nullable EntityPlayer player, @NotNull ItemStack stack, @NotNull World world, @NotNull BlockPos pos) {
                 fire.consume(player, stack, world, pos);
             }
         });

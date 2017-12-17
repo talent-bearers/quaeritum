@@ -92,7 +92,7 @@ public interface IDiagram {
         }
 
         public static List<EntityItem> entitiesAroundAltar(TileEntity tile, double range) {
-            List<EntityItem> entities = tile.getWorld().getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(tile.getPos().add(3, 2, 3), tile.getPos().add(-3, -2, -3)));
+            List<EntityItem> entities = tile.getWorld().getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(tile.getPos()).grow(range));
             return entities.stream()
                     .filter(entity -> tile.getPos().add(0.5, 0.5, 0.5).distanceSq(entity.posX, entity.posY, entity.posZ) < range * range)
                     .collect(Collectors.toList());
