@@ -40,21 +40,13 @@ object ModRecipes {
                 'H', ItemStack(Items.LAVA_BUCKET),
                 'X', ItemStack(Items.FIRE_CHARGE),
                 'Z', ItemStack(ModItems.dormant))
-        for (i in dyeColors.indices) {
+        for (i in dyeColors.indices)
             addShapelessOreDictRecipe("chalk$i", ItemStack(ModBlocks.chalk, 1, i),
-                    ItemStack(Items.CLAY_BALL),
-                    "dye" + dyeColors[i])
-        }
+                ItemStack(Items.CLAY_BALL),
+                "dye" + dyeColors[i])
 
-        addOreDictRecipe("chalk_tempest", ItemStack(ModBlocks.tempest),
-                "VLF",
-                "ACT",
-                'V', "essenceVerdis",
-                'L', "essenceLucis",
-                'F', "essenceFerrus",
-                'A', "essenceArgentus",
-                'C', ItemStack(Items.CLAY_BALL),
-                'T', "essenceAtlas")
+        addShapelessOreDictRecipe("chalk_tempest", ItemStack(ModBlocks.tempest),
+                "essenceVerdis", "essenceLucis", "essenceFerrus",  "essenceArgentus", "essenceAtlas", ItemStack(Items.CLAY_BALL))
 
         addOreDictRecipe("jet", ItemStack(ModBlocks.jet),
                 " B ",
@@ -115,7 +107,7 @@ object ModRecipes {
                 'A', "essenceArgentus",
                 'L', "enderpearl")
 
-        addOreDictRecipe("scroll", ItemStack(ModItems.scroll),
+        addShapelessOreDictRecipe("scroll", ItemStack(ModItems.scroll),
                 "FLI",
                 "PPP",
                 'F', "feather",
