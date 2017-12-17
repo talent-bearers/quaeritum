@@ -42,12 +42,12 @@ class BlockChalkTempest : BlockMod(LibNames.CHALK_BLOCK_TEMPEST, Material.CIRCUI
     }
 
     override fun getCollisionBoundingBox(blockState: IBlockState?, worldIn: IBlockAccess?, pos: BlockPos?): AxisAlignedBB? {
-        return collision
+        return NULL_AABB
     }
 
     override fun addCollisionBoxToList(state: IBlockState, worldIn: World, pos: BlockPos, entityBox: AxisAlignedBB, collidingBoxes: MutableList<AxisAlignedBB>, entityIn: Entity?, flag: Boolean) {
         if (entityIn is EntityLiving)
-            super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn, flag)
+            Block.addCollisionBoxToList(pos, entityBox, collidingBoxes, collision)
     }
 
     override fun getActualState(state: IBlockState, worldIn: IBlockAccess, pos: BlockPos): IBlockState {
