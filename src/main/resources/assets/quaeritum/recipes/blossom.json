@@ -1,0 +1,25 @@
+{
+	"type": "forge:ore_shaped",
+	"pattern": [
+		"OAO",
+		"ALA",
+		"OAO"
+	],
+	"key": {
+		"O": {
+			"type": "forge:ore_dict",
+			"ore": "dustOpium"
+		},
+		"A": {
+			"type": "forge:ore_dict",
+			"ore": "argentus"
+		},
+		"L": {
+			"type": "forge:ore_dict",
+			"ore": "gemLapis"
+		}
+	},
+	"result": {
+		"item": "quaeritum:waking_blossom"
+	}
+}

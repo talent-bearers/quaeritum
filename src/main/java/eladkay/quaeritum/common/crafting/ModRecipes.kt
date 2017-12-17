@@ -97,14 +97,21 @@ object ModRecipes {
         addShapelessOreDictRecipe("ironheart", ItemStack(ModItems.resourceSeed),
                 ModBlocks.flower, SLURRY.stackOf())
 
+        addOreDictRecipe("blossom", ItemStack(ModItems.wakingBlossom),
+                "OAO",
+                "ALA",
+                "OAO",
+                'O', "dustOpium",
+                'A', "argentus",
+                'L', "gemLapis")
+
         CentrifugeRecipes.registerRecipe("stone", Items.CLAY_BALL, ItemStack(ModItems.dormant))
-        CentrifugeRecipes.registerRecipe(ItemEssence.stackOf(EnumAnimusTier.VERDIS), "ingotGold", VICTIUM_INGOT.stackOf())
-                .setRequiresHeat(true)
         CentrifugeRecipes.registerRecipe(ItemStack(Items.COAL), null, BITUMEN.stackOf())
         CentrifugeRecipes.registerRecipe(ItemStack(Blocks.RED_FLOWER), null, ItemEssence.stackOf(EnumAnimusTier.VERDIS))
         CentrifugeRecipes.registerRecipe(ItemStack(ModBlocks.flower), null, ItemEssence.stackOf(EnumAnimusTier.LUCIS))
         CentrifugeRecipes.registerRecipe(ItemStack(ModBlocks.ironheart), null, ItemEssence.stackOf(EnumAnimusTier.FERRUS))
         CentrifugeRecipes.registerRecipe(PERFECT_MATRIX.stackOf(), null, ItemEssence.stackOf(EnumAnimusTier.ARGENTUS))
+        CentrifugeRecipes.registerRecipe(AWOKEN_BLOSSOM.stackOf(), null, ItemEssence.stackOf(EnumAnimusTier.ATLAS))
 
         Desiccations.registerRecipe(ModFluids.BITUMEN.getActual(), BITUMEN.stackOf(2))
         Desiccations.registerRecipe(ModFluids.SWEET.getActual(), ItemStack(Items.SUGAR))

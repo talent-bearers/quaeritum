@@ -1,5 +1,6 @@
 package eladkay.quaeritum.common.item
 
+import com.teamwizardry.librarianlib.core.common.OreDictionaryRegistrar
 import com.teamwizardry.librarianlib.features.base.item.ItemModFood
 import net.minecraft.init.MobEffects
 import net.minecraft.item.ItemStack
@@ -13,6 +14,7 @@ class ItemOpium : ItemModFood("flower_dust", 3, 0.6f) {
     init {
         setPotionEffect(PotionEffect(MobEffects.NAUSEA, 400), 0.9f)
         setAlwaysEdible()
+        OreDictionaryRegistrar.registerOre("dustOpium", this)
     }
 
     override fun getItemBurnTime(itemStack: ItemStack): Int {
