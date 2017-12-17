@@ -132,26 +132,29 @@ class ItemContractScroll : ItemMod(LibNames.SCROLL, LibNames.SCROLL, LibNames.SE
         if (!playerIn.isSneaking)
             return ActionResult(EnumActionResult.PASS, itemStackIn)
 
-        if (!worldIn.isRemote && itemStackIn.itemDamage == 0) {
-            val oathIndex = itemStackIn.oath
-            var newOathIndex = (oathIndex + 1) % ContractRegistry.getMaxId()
-            var newOath = ContractRegistry.getOathFromId(newOathIndex)!!
-            while (!newOath.unlocked(playerIn)) {
-                newOathIndex = (newOathIndex + 1) % ContractRegistry.getMaxId()
-                newOath = ContractRegistry.getOathFromId(newOathIndex)!!
-            }
-            itemStackIn.oath = newOathIndex
-            ItemNBTHelper.setUUID(itemStackIn, "uuid", playerIn.uniqueID)
-            val component = TextComponentTranslation(newOath.getUnlocName(itemStackIn)).setStyle(Style().setBold(true))
-            for (line in newOath.getUnlocText(itemStackIn)) {
-                component.appendSibling(TextComponentString("\n | ").setStyle(Style().setBold(false)))
-                component.appendSibling(TextComponentTranslation(line).setStyle(Style().setBold(false)))
-            }
+        if (itemStackIn.itemDamage == 0) {
+            if (!worldIn.isRemote) {
+                val oathIndex = itemStackIn.oath
+                var newOathIndex = (oathIndex + 1) % ContractRegistry.getMaxId()
+                var newOath = ContractRegistry.getOathFromId(newOathIndex)!!
+                while (!newOath.unlocked(playerIn)) {
+                    newOathIndex = (newOathIndex + 1) % ContractRegistry.getMaxId()
+                    newOath = ContractRegistry.getOathFromId(newOathIndex)!!
+                }
+                itemStackIn.oath = newOathIndex
+                ItemNBTHelper.setUUID(itemStackIn, "uuid", playerIn.uniqueID)
+                val component = TextComponentTranslation(newOath.getUnlocName(itemStackIn)).setStyle(Style().setBold(true))
+                for (line in newOath.getUnlocText(itemStackIn)) {
+                    component.appendSibling(TextComponentString("\n | ").setStyle(Style().setBold(false)))
+                    component.appendSibling(TextComponentTranslation(line).setStyle(Style().setBold(false)))
+                }
 
-            playerIn.sendSpamlessMessage(component, WORDS_OF_AGES)
+                playerIn.sendSpamlessMessage(component, WORDS_OF_AGES)
+            }
+            return ActionResult(EnumActionResult.SUCCESS, itemStackIn)
         }
 
-        return ActionResult(EnumActionResult.SUCCESS, itemStackIn)
+        return ActionResult(EnumActionResult.PASS, itemStackIn)
     }
 
     override fun getSubItems(tab: CreativeTabs?, subItems: NonNullList<ItemStack>) {
