@@ -1,0 +1,35 @@
+{
+	"type": "forge:ore_shaped",
+	"pattern": [
+		"VLF",
+		"ACT"
+	],
+	"key": {
+		"V": {
+			"type": "forge:ore_dict",
+			"ore": "essenceVerdis"
+		},
+		"L": {
+			"type": "forge:ore_dict",
+			"ore": "essenceLucis"
+		},
+		"F": {
+			"type": "forge:ore_dict",
+			"ore": "essenceFerrus"
+		},
+		"A": {
+			"type": "forge:ore_dict",
+			"ore": "essenceArgentus"
+		},
+		"C": {
+			"item": "minecraft:clay_ball"
+		},
+		"T": {
+			"type": "forge:ore_dict",
+			"ore": "essenceAtlas"
+		}
+	},
+	"result": {
+		"item": "quaeritum:tempest_chalk"
+	}
+}

@@ -25,10 +25,10 @@ public enum EnumAnimusTier implements IStringSerializable {
     private final EnumSpellElement elementPrimary;
     private final EnumSpellElement elementSecondary;
 
-    public final String oreName = decapitalize(Arrays
+    public final String oreName = "essence" + Arrays
             .stream(name().toLowerCase().split("_"))
             .map(EnumAnimusTier::capitalize)
-            .collect(Collectors.joining()));
+            .collect(Collectors.joining());
 
     EnumAnimusTier(double awakenedFillPercentage, EnumSpellElement elementPrimary, EnumSpellElement elementSecondary) {
         this.awakenedFillPercentage = awakenedFillPercentage;

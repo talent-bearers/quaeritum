@@ -1,0 +1,29 @@
+{
+	"type": "forge:ore_shaped",
+	"pattern": [
+		"FLI",
+		"PPP"
+	],
+	"key": {
+		"F": {
+			"type": "forge:ore_dict",
+			"ore": "feather"
+		},
+		"L": {
+			"type": "forge:ore_dict",
+			"ore": "essenceLucis"
+		},
+		"I": {
+			"type": "forge:ore_dict",
+			"ore": "dyeBlack"
+		},
+		"P": {
+			"type": "forge:ore_dict",
+			"ore": "paper"
+		}
+	},
+	"result": {
+		"item": "quaeritum:scroll",
+		"data": 0
+	}
+}

@@ -10,6 +10,7 @@ import eladkay.quaeritum.common.lib.LibNames
 import net.minecraft.item.ItemStack
 import net.minecraft.util.ActionResult
 import net.minecraft.util.EnumActionResult
+import java.util.*
 
 /**
  * @author WireSegal
@@ -20,7 +21,7 @@ class ItemEssence : ItemMod(LibNames.ESSENCE, *NAMES), IAnimusResource, ISpellRe
         @JvmOverloads
         fun stackOf(enum: EnumAnimusTier, size: Int = 1) = ItemStack(ModItems.essence, size, enum.ordinal)
 
-        val NAMES = EnumAnimusTier.values().map { it.oreName }.toTypedArray()
+        val NAMES = EnumAnimusTier.values().map { it.name.toLowerCase(Locale.ROOT) }.toTypedArray()
     }
 
     init {

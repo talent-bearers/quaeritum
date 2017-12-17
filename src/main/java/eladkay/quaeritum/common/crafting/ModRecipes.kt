@@ -31,7 +31,7 @@ object ModRecipes {
     private val dyeColors = arrayOf("White", "Orange", "Magenta", "LightBlue", "Yellow", "Lime", "Pink", "Gray", "LightGray", "Cyan", "Purple", "Blue", "Brown", "Green", "Red", "Black")
 
     fun init() {
-        addShapelessOreDictRecipe("blueprint", ItemStack(ModBlocks.blueprint), "dyeBlue", ItemStack(Items.PAPER), ItemStack(Blocks.STONE_SLAB))
+        addShapelessOreDictRecipe("blueprint", ItemStack(ModBlocks.blueprint), "dyeBlue", ItemStack(Items.PAPER), ItemStack(Blocks.STONE_SLAB), "essenceVerdis")
         addOreDictRecipe("passion", ItemStack(ModItems.passionate),
                 "Y Y",
                 "XZX",
@@ -45,6 +45,16 @@ object ModRecipes {
                     ItemStack(Items.CLAY_BALL),
                     "dye" + dyeColors[i])
         }
+
+        addOreDictRecipe("chalk_tempest", ItemStack(ModBlocks.tempest),
+                "VLF",
+                "ACT",
+                'V', "essenceVerdis",
+                'L', "essenceLucis",
+                'F', "essenceFerrus",
+                'A', "essenceArgentus",
+                'C', ItemStack(Items.CLAY_BALL),
+                'T', "essenceAtlas")
 
         addOreDictRecipe("jet", ItemStack(ModBlocks.jet),
                 " B ",
@@ -102,8 +112,16 @@ object ModRecipes {
                 "ALA",
                 "OAO",
                 'O', "dustOpium",
-                'A', "argentus",
+                'A', "essenceArgentus",
                 'L', "enderpearl")
+
+        addOreDictRecipe("scroll", ItemStack(ModItems.scroll),
+                "FLI",
+                "PPP",
+                'F', "feather",
+                'L', "essenceLucis",
+                'I', "dyeBlack",
+                'P', "paper")
 
         CentrifugeRecipes.registerRecipe("stone", Items.CLAY_BALL, ItemStack(ModItems.dormant))
         CentrifugeRecipes.registerRecipe(ItemStack(Items.COAL), null, BITUMEN.stackOf())

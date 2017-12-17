@@ -68,6 +68,7 @@ item.quaeritum:riftbook.name=The Blasphemous Art
 item.quaeritum:scroll.name=Contract Scroll
 item.quaeritum:sealed_scroll.name=Signed Contract Scroll
 item.quaeritum:reagent_bag.name=Reagent Pouch
+item.quaeritum:reagent_bag.infinite.name=Creative Reagent Pouch
 
 tile.quaeritum:blueprint.name=Blueprint
 item.quaeritum:dormant_soulstone.name=Dormant Soulstone

@@ -9,6 +9,7 @@ import com.teamwizardry.librarianlib.features.kotlin.sendSpamlessMessage
 import com.teamwizardry.librarianlib.features.utilities.client.TooltipHelper
 import eladkay.quaeritum.api.animus.AnimusHelper
 import eladkay.quaeritum.api.animus.EnumAnimusTier
+import eladkay.quaeritum.api.animus.ISoulstone
 import eladkay.quaeritum.api.contract.ContractRegistry
 import eladkay.quaeritum.api.rituals.IDiagram
 import eladkay.quaeritum.common.block.ModBlocks
@@ -56,22 +57,25 @@ class ItemContractScroll : ItemMod(LibNames.SCROLL, LibNames.SCROLL, LibNames.SE
                         ItemEssence.stackOf(EnumAnimusTier.ATLAS)
                 ))) {
                     items.forEach {
-                        if (it.item.item !is ItemContractScroll) {
+                        if (it.item.item != ModItems.scroll &&
+                                (it.item.item != ModItems.essence || it.item.itemDamage != EnumAnimusTier.QUAERITUS.ordinal) &&
+                                (it.item.item != ModItems.hiddenBook) &&
+                                (it.item.item !is ISoulstone)) {
                             it.setDead()
                             (world as WorldServer).spawnParticle(EnumParticleTypes.SMOKE_NORMAL,
-                                    it.posX, it.posY + 0.25, it.posZ, 10, 0.1, 0.0, 0.1, 0.0)
+                                    it.posX, it.posY + 0.5, it.posZ, 100, 0.1, 0.0, 0.1, 0.0)
                         }
                     }
                     val output = EntityItem(world, pos.x + 0.5, pos.y + 1.0, pos.z + 0.5,
                             if (rot) ItemStack(ModItems.hiddenBook) else ItemEssence.stackOf(EnumAnimusTier.QUAERITUS)
                     )
                     output.motionX = 0.0
-                    output.motionY = 0.01
+                    output.motionY = 0.05
                     output.motionZ = 0.0
                     output.setNoGravity(true)
                     world.spawnEntity(output)
                     (world as WorldServer).spawnParticle(EnumParticleTypes.SMOKE_NORMAL,
-                            output.posX, output.posY + 0.25, output.posZ, 10, 0.1, 0.0, 0.1, 0.0)
+                            output.posX, output.posY + 0.5, output.posZ, 100, 0.1, 0.0, 0.1, 0.0)
                     player?.sendSpamlessMessage(TextComponentTranslation("quaeritum.oath.innocentia.scream" + (if (rot) "_rot" else ""))
                             .setStyle(Style().setBold(true).setColor(TextFormatting.DARK_PURPLE)), WORDS_OF_AGES)
                 }

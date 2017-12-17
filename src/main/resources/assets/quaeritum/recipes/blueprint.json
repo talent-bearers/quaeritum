@@ -11,6 +11,10 @@
 		{
 			"item": "minecraft:stone_slab",
 			"data": 0
+		},
+		{
+			"type": "forge:ore_dict",
+			"ore": "essenceVerdis"
 		}
 	],
 	"result": {

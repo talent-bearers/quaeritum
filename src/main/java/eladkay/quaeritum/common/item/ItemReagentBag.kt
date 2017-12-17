@@ -42,9 +42,16 @@ class ItemReagentBag : ItemMod(LibNames.REAGENT_BAG), ISpellReagent {
             val stack = ItemStack(this)
             for (el in EnumSpellElement.values())
                 setAmountIn(stack, el, -1)
-            stack.setStackDisplayName("∞")
+            ItemNBTHelper.setBoolean(stack, "infinite", true)
             subItems.add(stack)
         }
+    }
+
+    override fun getUnlocalizedName(stack: ItemStack): String {
+        return if (ItemNBTHelper.getBoolean(stack, "infinite", false))
+            super.getUnlocalizedName(stack) + ".infinite"
+        else
+            super.getUnlocalizedName(stack)
     }
 
     override fun canAddToReagentBag(stack: ItemStack) = false
