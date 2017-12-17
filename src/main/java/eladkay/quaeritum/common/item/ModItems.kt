@@ -1,6 +1,7 @@
 package eladkay.quaeritum.common.item
 
 import com.teamwizardry.librarianlib.core.LibrarianLib
+import com.teamwizardry.librarianlib.features.base.item.ItemModShield
 import eladkay.quaeritum.common.block.ModBlocks
 import eladkay.quaeritum.common.item.misc.*
 import eladkay.quaeritum.common.item.soulstones.*
@@ -23,7 +24,7 @@ object ModItems {
     val codex = ItemCodex()
     val reagentBag = ItemReagentBag()
     val evoker = ItemEvoker()
-    val resourceSeed= ItemModSeed("ironheart_seed", ModBlocks.ironCrop)
+    val resourceSeed = ItemModSeed("ironheart_seed", ModBlocks.ironCrop).makeSeedBehavior()
     val wakingBlossom = ItemWakingBlossom()
 
     lateinit var debug: ItemDebug

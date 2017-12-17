@@ -1,0 +1,6 @@
+{
+	"parent": "quaeritum:block/cross_crop",
+	"textures": {
+		"cross": "quaeritum:blocks/flower_ironheart_crop0"
+	}
+}
