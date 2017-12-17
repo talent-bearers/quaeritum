@@ -118,7 +118,7 @@ object ModRecipes {
                 ingredientOf(BITUMEN.stackOf()),
                 ingredientOf(ItemStack(Items.COAL), ItemStack(Items.COAL, 1, 1)))
         AlchemicalCompositions.registerRecipe(ModFluids.SWEET.getActual(),
-                FLOWER_DUST.stackOf(),
+                ItemStack(ModItems.opium),
                 ItemEssence.stackOf(EnumAnimusTier.VERDIS))
         AlchemicalCompositions.registerRecipe(ModFluids.LIGHT.getActual(),
                 ItemStack(Items.BLAZE_POWDER),

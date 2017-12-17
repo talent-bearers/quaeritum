@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack
 class ItemResource : ItemMod(LibNames.RESOURCE, *Resources.NAMES) {
     enum class Resources {
         VICTIUM_INGOT, VICTIUM_NUGGET, TEMPESTEEL,
-        BITUMEN, FLOWER_DUST, SLURRY, MIXTURE_MATRIX, ALLOY_MATRIX, RUSTED_MATRIX, PERFECT_MATRIX,
+        BITUMEN, SLURRY, MIXTURE_MATRIX, ALLOY_MATRIX, RUSTED_MATRIX, PERFECT_MATRIX,
         AWOKEN_BLOSSOM;
 
         @JvmOverloads
@@ -29,8 +29,6 @@ class ItemResource : ItemMod(LibNames.RESOURCE, *Resources.NAMES) {
     override fun getItemBurnTime(itemStack: ItemStack): Int {
         if (itemStack.itemDamage == Resources.BITUMEN.ordinal)
             return 1600
-        else if (itemStack.itemDamage == Resources.FLOWER_DUST.ordinal)
-            return 400
         return -1
     }
 
