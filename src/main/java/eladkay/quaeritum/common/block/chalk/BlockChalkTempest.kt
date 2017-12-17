@@ -42,7 +42,7 @@ class BlockChalkTempest : BlockMod(LibNames.CHALK_BLOCK_TEMPEST, Material.CIRCUI
     }
 
     override fun getCollisionBoundingBox(blockState: IBlockState?, worldIn: IBlockAccess?, pos: BlockPos?): AxisAlignedBB? {
-        return FULL_BLOCK_AABB
+        return collision
     }
 
     override fun addCollisionBoxToList(state: IBlockState, worldIn: World, pos: BlockPos, entityBox: AxisAlignedBB, collidingBoxes: MutableList<AxisAlignedBB>, entityIn: Entity?, flag: Boolean) {
@@ -187,6 +187,8 @@ class BlockChalkTempest : BlockMod(LibNames.CHALK_BLOCK_TEMPEST, Material.CIRCUI
     }
 
     companion object {
+        val collision = AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 1.5, 1.0)
+
         val NORTH = PropertyEnum.create<EnumAttachPosition>("north", EnumAttachPosition::class.java)
         val EAST = PropertyEnum.create<EnumAttachPosition>("east", EnumAttachPosition::class.java)
         val SOUTH = PropertyEnum.create<EnumAttachPosition>("south", EnumAttachPosition::class.java)
