@@ -1,13 +1,12 @@
 package eladkay.quaeritum.common.block
 
-import com.teamwizardry.librarianlib.features.base.block.BlockMod
 import com.teamwizardry.librarianlib.features.base.block.ItemModBlock
+import com.teamwizardry.librarianlib.features.base.block.tile.BlockModContainer
 import com.teamwizardry.librarianlib.features.helpers.ItemNBTHelper
 import eladkay.quaeritum.api.lib.LibNBT
 import eladkay.quaeritum.common.block.tile.TileEntityBlueprint
 import eladkay.quaeritum.common.lib.LibLocations
 import net.minecraft.block.Block
-import net.minecraft.block.ITileEntityProvider
 import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.player.EntityPlayer
@@ -20,11 +19,10 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 
-class BlockBlueprint(name: String) : BlockMod(name, Material.PISTON), /*IGuideLinked, */ITileEntityProvider {
+class BlockBlueprint(name: String) : BlockModContainer(name, Material.PISTON) {
 
     init {
         setHardness(1.2f)
-       // constructBook()
     }
 
     override fun createItemForm(): ItemBlock? {
@@ -53,9 +51,8 @@ class BlockBlueprint(name: String) : BlockMod(name, Material.PISTON), /*IGuideLi
         return super.isSideSolid(base_state, world, pos, side)
     }
 
-    override fun onBlockActivated(worldIn: World?, pos: BlockPos?, state: IBlockState?, playerIn: EntityPlayer?, hand: EnumHand?, side: EnumFacing?, hitX: Float, hitY: Float, hitZ: Float): Boolean {
-        //Quaeritum.proxy.spawnStafflikeParticles(worldIn, pos.getX(), pos.getY() + 1, pos.getZ());
-        val tile = worldIn!!.getTileEntity(pos!!)
+    override fun onBlockActivated(worldIn: World, pos: BlockPos, state: IBlockState, playerIn: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
+        val tile = worldIn.getTileEntity(pos)
         return tile is TileEntityBlueprint && tile.onBlockActivated()
     }
 
@@ -70,22 +67,12 @@ class BlockBlueprint(name: String) : BlockMod(name, Material.PISTON), /*IGuideLi
         super.observedNeighborChange(observerState, world, observerPos, changedBlock, changedBlockPos)
     }
 
-   /* override fun getLinkedEntry(world: World, pos: BlockPos, player: EntityPlayer, stack: ItemStack): ResourceLocation {
-        return ResourceLocation(LibMisc.MOD_ID, LibBook.ENTRY_BLUEPRINT_NAME)
-    }
-
-    fun constructBook() {
-        pages.add(PageText(TooltipHelper.local(LibBook.ENTRY_BLUEPRINT_PAGE1)))
-        ModBook.register(ModBook.pagesAnimus, LibBook.ENTRY_BLUEPRINT_NAME, pages, ItemStack(ModBlocks.blueprint))
-    }*/
-
-    override fun createNewTileEntity(worldIn: World, meta: Int): TileEntity {
+    override fun createTileEntity(world: World, state: IBlockState): TileEntity? {
         return TileEntityBlueprint()
     }
 
     companion object {
 
-        val BOUNDS = AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 0.5, 1.0)
-      //  var pages: MutableList<IPage> = ArrayList()
+        val BOUNDS = AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 1 / 16.0, 1.0)
     }
 }
