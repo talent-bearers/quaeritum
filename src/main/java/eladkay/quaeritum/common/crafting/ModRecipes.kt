@@ -103,7 +103,7 @@ object ModRecipes {
                 "OAO",
                 'O', "dustOpium",
                 'A', "argentus",
-                'L', "gemLapis")
+                'L', "enderpearl")
 
         CentrifugeRecipes.registerRecipe("stone", Items.CLAY_BALL, ItemStack(ModItems.dormant))
         CentrifugeRecipes.registerRecipe(ItemStack(Items.COAL), null, BITUMEN.stackOf())

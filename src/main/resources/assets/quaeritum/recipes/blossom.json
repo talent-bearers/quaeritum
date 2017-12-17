@@ -16,7 +16,7 @@
 		},
 		"L": {
 			"type": "forge:ore_dict",
-			"ore": "gemLapis"
+			"ore": "enderpearl"
 		}
 	},
 	"result": {
