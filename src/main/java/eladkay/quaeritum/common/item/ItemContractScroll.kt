@@ -27,6 +27,7 @@ import net.minecraft.util.*
 import net.minecraft.util.text.Style
 import net.minecraft.util.text.TextComponentString
 import net.minecraft.util.text.TextComponentTranslation
+import net.minecraft.util.text.TextFormatting
 import net.minecraft.world.World
 import net.minecraft.world.WorldServer
 import net.minecraftforge.fml.relauncher.Side
@@ -43,7 +44,7 @@ class ItemContractScroll : ItemMod(LibNames.SCROLL, LibNames.SCROLL, LibNames.SE
         init {
             ContractRegistry.registerOath("ea", 4)
             ContractRegistry.registerOath("seven", 4)
-            ContractRegistry.registerOath("innocentia", 4, { _, _, world, pos ->
+            ContractRegistry.registerOath("innocentia", 4, { player, _, world, pos ->
                 val chalkState = world.getBlockState(pos.add(3, 0, 3))
                 val rot = chalkState.block == ModBlocks.chalk && chalkState.getValue(BlockModColored.COLOR) == EnumDyeColor.BROWN
                 val items = IDiagram.Helper.entitiesAroundAltar(world.getTileEntity(pos), 4.0)
@@ -65,14 +66,24 @@ class ItemContractScroll : ItemMod(LibNames.SCROLL, LibNames.SCROLL, LibNames.SE
                             if (rot) ItemStack(ModItems.hiddenBook) else ItemEssence.stackOf(EnumAnimusTier.QUAERITUS)
                     )
                     output.motionX = 0.0
+                    output.motionY = 0.01
                     output.motionZ = 0.0
                     output.setNoGravity(true)
                     world.spawnEntity(output)
                     (world as WorldServer).spawnParticle(EnumParticleTypes.SMOKE_NORMAL,
                             output.posX, output.posY + 0.25, output.posZ, 10, 0.1, 0.0, 0.1, 0.0)
+                    player?.sendSpamlessMessage(TextComponentTranslation("quaeritum.oath.innocentia.scream" + (if (rot) "_rot" else ""))
+                            .setStyle(Style().setBold(true).setColor(TextFormatting.DARK_PURPLE)), WORDS_OF_AGES)
                 }
             })
         }
+        /*
+            May secrets be kept in the shadows of light,
+            may truth be found in the apex of night.
+            May life flow through all flesh and blood,
+            through soul and storm, let our hope be a flood.
+         */
+        val WORDS_OF_AGES = 0x2F0E38FE
     }
 
     override fun getEntityLifespan(itemStack: ItemStack?, world: World?): Int {
@@ -81,7 +92,7 @@ class ItemContractScroll : ItemMod(LibNames.SCROLL, LibNames.SCROLL, LibNames.SE
 
     override fun getItemStackDisplayName(stack: ItemStack): String {
         val id = stack.oath
-        if (id > 0 && id <= ContractRegistry.getMaxId()) {
+        if (id >= 0 && id <= ContractRegistry.getMaxId()) {
             val oath = ContractRegistry.getOathFromId(id)
             if (oath != null) {
                 return LibrarianLib.PROXY.translate(oath.getUnlocName(stack))
@@ -93,7 +104,7 @@ class ItemContractScroll : ItemMod(LibNames.SCROLL, LibNames.SCROLL, LibNames.SE
     @SideOnly(Side.CLIENT)
     override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
         val id = stack.oath
-        if (id > 0 && id <= ContractRegistry.getMaxId()) {
+        if (id >= 0 && id <= ContractRegistry.getMaxId()) {
             val oath = ContractRegistry.getOathFromId(id)
             if (oath != null) {
                 for (line in oath.getUnlocText(stack))
@@ -109,13 +120,7 @@ class ItemContractScroll : ItemMod(LibNames.SCROLL, LibNames.SCROLL, LibNames.SE
             else -1
         }
 
-    /*
-        May secrets be kept in the shadows of light,
-        may truth be found in the apex of night.
-        May life flow through all flesh and blood,
-        through soul and storm, let our hope be a flood.
-     */
-    val WORDS_OF_AGES = 0x2F0E38FE
+
 
     override fun onItemRightClick(worldIn: World, playerIn: EntityPlayer, hand: EnumHand): ActionResult<ItemStack> {
         val itemStackIn = playerIn.getHeldItem(hand)

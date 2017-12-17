@@ -63,6 +63,12 @@ quaeritum.diagramtooltip=§7This ritual is a §r§bDiagram§r§7
 quaeritum.nochalk=§7None
 item_group.quaeritum=Quaeritum
 
+item.quaeritum:book.name=Secrets of the Soul
+item.quaeritum:riftbook.name=The Blasphemous Art
+item.quaeritum:scroll.name=Contract Scroll
+item.quaeritum:sealed_scroll.name=Signed Contract Scroll
+item.quaeritum:reagent_bag.name=Reagent Pouch
+
 tile.quaeritum:blueprint.name=Blueprint
 item.quaeritum:dormant_soulstone.name=Dormant Soulstone
 item.quaeritum:attuned_soulstone.name=Attuned Soulstone
@@ -290,3 +296,6 @@ quaeritum.oath.innocentia0=They cannot see what we have wrought
 quaeritum.oath.innocentia1=but the twisted forms we've bade them.
 quaeritum.oath.innocentia2=I beg you to give them hope
 quaeritum.oath.innocentia3=to give them back what made them.
+
+quaeritum.oath.innocentia.scream=IT IS DONE.
+quaeritum.oath.innocentia.scream_rot=IT IS DONE. PROTECT THEM WHERE I CANNOT.
