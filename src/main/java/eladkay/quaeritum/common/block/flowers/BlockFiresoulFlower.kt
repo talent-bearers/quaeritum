@@ -25,7 +25,7 @@ class BlockFiresoulFlower : BlockModBush(LibNames.FLOWER + "_firesoul", Material
         val aabb = getBoundingBox(stateIn, worldIn, pos)
         val d0 = aabb.center.x + pos.x
         val d1 = aabb.maxY + pos.y
-        val d2 = aabb.center.y + pos.z
+        val d2 = aabb.center.z + pos.z
 
         worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0, d1, d2, 0.0, 0.0, 0.0)
         worldIn.spawnParticle(EnumParticleTypes.FLAME, d0, d1, d2, 0.0, 0.0, 0.0)
