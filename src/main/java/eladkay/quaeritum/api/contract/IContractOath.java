@@ -5,6 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -23,5 +24,5 @@ public interface IContractOath {
         return true;
     }
 
-    void fireContract(@NotNull EntityPlayer player, @NotNull ItemStack stack, @NotNull World world, @NotNull BlockPos pos);
+    void fireContract(@Nullable EntityPlayer player, @NotNull ItemStack stack, @NotNull World world, @NotNull BlockPos pos);
 }

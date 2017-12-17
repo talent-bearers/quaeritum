@@ -76,10 +76,10 @@ class ItemDebug : ItemMod(LibNames.DEBUG) {
                     }
                 }
                 if (out != "")
-                    Quaeritum.proxy!!.copyText(out)
+                    Quaeritum.proxy.copyText(out)
                 if (!worldIn.isRemote) {
                     if (out != "")
-                        playerIn.sendMessage(TextComponentString(TextFormatting.GREEN + "Copied Diagrammic information to clipboard"))
+                        playerIn.sendMessage(TextComponentString(TextFormatting.GREEN + "Copied Diagrammatic information to clipboard"))
                     else
                         playerIn.sendMessage(TextComponentString(TextFormatting.RED + "Output is empty!"))
                 }

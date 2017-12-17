@@ -16,6 +16,7 @@ import eladkay.quaeritum.common.entity.ModEntities
 import eladkay.quaeritum.common.fluid.ModFluids
 import eladkay.quaeritum.common.item.EvocationRecipe
 import eladkay.quaeritum.common.item.ModItems
+import eladkay.quaeritum.common.item.SigningRecipe
 import eladkay.quaeritum.common.networking.RemainingItemRenderPacket
 import eladkay.quaeritum.common.potions.*
 import eladkay.quaeritum.common.rituals.ModDiagrams
@@ -60,6 +61,7 @@ open class CommonProxy {
 
         RegistrationHandler.register(RecipeAwakenedSoulstone(), "${LibMisc.MOD_ID}:awakened".toRl())
         RegistrationHandler.register(EvocationRecipe, "${LibMisc.MOD_ID}:evoker".toRl())
+        RegistrationHandler.register(SigningRecipe, "${LibMisc.MOD_ID}:signing".toRl())
     }
 
     open fun init(e: FMLInitializationEvent) {

@@ -10,6 +10,7 @@ object ModDiagrams {
         RitualRegistry.registerDiagram(RitualSummoning(), "summonChaosborn")
         RitualRegistry.registerDiagram(AltarOfTheFallingStarDiagram(), "altarOfTheFallingStar")
         RitualRegistry.registerDiagram(CircleOfTheFinalMomentDiagram(), "circleofthefinalmoment")
+        RitualRegistry.registerDiagram(PactforgerBind(), "pactforge")
     }
 
 }
