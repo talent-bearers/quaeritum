@@ -11,6 +11,8 @@ object ModDiagrams {
         RitualRegistry.registerDiagram(AltarOfTheFallingStarDiagram(), "altarOfTheFallingStar")
         RitualRegistry.registerDiagram(CircleOfTheFinalMomentDiagram(), "circleofthefinalmoment")
         RitualRegistry.registerDiagram(PactforgerBind(), "pactforge")
+        RitualRegistry.registerDiagram(PactbreakerBind(), "pactbreak")
+
     }
 
 }

@@ -128,6 +128,11 @@ public final class ContractRegistry {
         return registerOath(getKey(id), length, fire);
     }
 
+    @NotNull
+    public static IContractOath registerOath(@NotNull String id, int length) {
+        return registerOath(getKey(id), length, (entityPlayer, itemStack, world, blockPos) -> {});
+    }
+
     @Nullable
     public static IContractOath getOathFromName(@NotNull ResourceLocation id) {
         return oaths.getObject(id);

@@ -1,9 +1,13 @@
 package eladkay.quaeritum.common.item
 
 import com.teamwizardry.librarianlib.core.LibrarianLib
+import com.teamwizardry.librarianlib.features.base.item.ItemMod
 import eladkay.quaeritum.common.block.ModBlocks
 import eladkay.quaeritum.common.item.misc.*
 import eladkay.quaeritum.common.item.soulstones.*
+import net.minecraft.creativetab.CreativeTabs
+import net.minecraft.item.ItemStack
+import net.minecraft.util.NonNullList
 
 object ModItems {
 
@@ -26,6 +30,12 @@ object ModItems {
     val resourceSeed = ItemModSeed("ironheart_seed", ModBlocks.ironCrop).makeSeedBehavior()
     val wakingBlossom = ItemWakingBlossom()
     val opium = ItemOpium()
+    val book = ItemMod("book")
+    val hiddenBook = object : ItemMod("riftbook") {
+        override fun getSubItems(tab: CreativeTabs?, subItems: NonNullList<ItemStack>) {
+            // NO-OP
+        }
+    }
 
     lateinit var debug: ItemDebug
     lateinit var hollower: ItemHollower

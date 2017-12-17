@@ -11,12 +11,15 @@ import eladkay.quaeritum.api.animus.AnimusHelper
 import eladkay.quaeritum.api.animus.EnumAnimusTier
 import eladkay.quaeritum.api.contract.ContractRegistry
 import eladkay.quaeritum.api.rituals.IDiagram
+import eladkay.quaeritum.common.block.ModBlocks
+import eladkay.quaeritum.common.block.base.BlockModColored
 import eladkay.quaeritum.common.lib.LibNames
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.entity.item.EntityItem
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.inventory.InventoryCrafting
+import net.minecraft.item.EnumDyeColor
 import net.minecraft.item.ItemStack
 import net.minecraft.item.crafting.IRecipe
 import net.minecraft.item.crafting.Ingredient
@@ -38,9 +41,11 @@ import net.minecraftforge.registries.IForgeRegistryEntry
 class ItemContractScroll : ItemMod(LibNames.SCROLL, LibNames.SCROLL, LibNames.SEALED_SCROLL), IItemColorProvider {
     companion object {
         init {
-            ContractRegistry.registerOath("ea", 4, { player, stack, world, pos -> })
-            ContractRegistry.registerOath("seven", 4, { player, stack, world, pos -> })
-            ContractRegistry.registerOath("innocentia", 4, { player, stack, world, pos ->
+            ContractRegistry.registerOath("ea", 4)
+            ContractRegistry.registerOath("seven", 4)
+            ContractRegistry.registerOath("innocentia", 4, { _, _, world, pos ->
+                val chalkState = world.getBlockState(pos.add(3, 0, 3))
+                val rot = chalkState.block == ModBlocks.chalk && chalkState.getValue(BlockModColored.COLOR) == EnumDyeColor.BROWN
                 val items = IDiagram.Helper.entitiesAroundAltar(world.getTileEntity(pos), 4.0)
                 if (IDiagram.Helper.matches(items.map { it.item }, mutableListOf(
                         ItemEssence.stackOf(EnumAnimusTier.VERDIS),
@@ -56,7 +61,9 @@ class ItemContractScroll : ItemMod(LibNames.SCROLL, LibNames.SCROLL, LibNames.SE
                                     it.posX, it.posY + 0.25, it.posZ, 10, 0.1, 0.0, 0.1, 0.0)
                         }
                     }
-                    val output = EntityItem(world, pos.x + 0.5, pos.y + 1.0, pos.z + 0.5, ItemEssence.stackOf(EnumAnimusTier.QUAERITUS))
+                    val output = EntityItem(world, pos.x + 0.5, pos.y + 1.0, pos.z + 0.5,
+                            if (rot) ItemStack(ModItems.hiddenBook) else ItemEssence.stackOf(EnumAnimusTier.QUAERITUS)
+                    )
                     output.motionX = 0.0
                     output.motionZ = 0.0
                     output.setNoGravity(true)
