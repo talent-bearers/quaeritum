@@ -127,15 +127,29 @@ public interface IDiagram {
 
         public static boolean takeAnimus(int amount, EnumAnimusTier rarity, TileEntity tile, double range, boolean drain) {
             EntityItem bestFit = null;
-            for (EntityItem stack : entitiesAroundAltar(tile, range).stream().filter((stack1 ->
+            List<EntityItem> around = entitiesAroundAltar(tile, range);
+            for (EntityItem stack : around.stream().filter((stack1 ->
                     stack1.getItem().getItem() instanceof ISoulstone)).collect(Collectors.toList())) {
                 if (bestFit == null) bestFit = stack;
                 else if (AnimusHelper.getTier(stack.getItem()).ordinal() >= rarity.ordinal() && AnimusHelper.getAnimus(stack.getItem()) >= amount)
                     bestFit = stack;
             }
+            for (EntityItem stack : around.stream().filter((stack1 ->
+                    stack1.getItem().getItem() instanceof INetworkProvider &&
+                            ((INetworkProvider) stack1.getItem().getItem()).isProvider(stack1.getItem()))).collect(Collectors.toList())) {
+                INetworkProvider provider = (INetworkProvider) stack.getItem().getItem();
+                UUID player = provider.getPlayer(stack.getItem());
+                if (bestFit == null) bestFit = stack;
+                else if (AnimusHelper.Network.getTier(player).ordinal() >= rarity.ordinal() && AnimusHelper.Network.getAnimus(player) >= amount)
+                    bestFit = stack;
+            }
             if (bestFit != null && AnimusHelper.getTier(bestFit.getItem()).ordinal() >= rarity.ordinal() && AnimusHelper.getAnimus(bestFit.getItem()) >= amount) {
-                if (drain)
-                    AnimusHelper.addAnimus(bestFit.getItem(), -amount);
+                if (drain) {
+                    if (bestFit.getItem().getItem() instanceof ISoulstone)
+                        AnimusHelper.addAnimus(bestFit.getItem(), -amount);
+                    else
+                        AnimusHelper.Network.addAnimus(((INetworkProvider) bestFit.getItem().getItem()).getPlayer(bestFit.getItem()), -amount);
+                }
                 return true;
             }
             return false;
