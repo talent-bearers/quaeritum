@@ -153,7 +153,23 @@ public interface IDiagram {
                 return true;
             }
             return false;
+        }
 
+        public static boolean takeAnimusNoNetworks(int amount, EnumAnimusTier rarity, TileEntity tile, double range, boolean drain) {
+            EntityItem bestFit = null;
+            List<EntityItem> around = entitiesAroundAltar(tile, range);
+            for (EntityItem stack : around.stream().filter((stack1 ->
+                    stack1.getItem().getItem() instanceof ISoulstone)).collect(Collectors.toList())) {
+                if (bestFit == null) bestFit = stack;
+                else if (AnimusHelper.getTier(stack.getItem()).ordinal() >= rarity.ordinal() && AnimusHelper.getAnimus(stack.getItem()) >= amount)
+                    bestFit = stack;
+            }
+            if (bestFit != null && AnimusHelper.getTier(bestFit.getItem()).ordinal() >= rarity.ordinal() && AnimusHelper.getAnimus(bestFit.getItem()) >= amount) {
+                if (drain)
+                    AnimusHelper.addAnimus(bestFit.getItem(), -amount);
+                return true;
+            }
+            return false;
         }
 
         public static boolean itemEquals(ItemStack stack, Object stack2) {
