@@ -6,6 +6,7 @@ import eladkay.quaeritum.api.animus.INetworkProvider;
 import eladkay.quaeritum.api.animus.ISoulstone;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -121,10 +122,6 @@ public interface IDiagram {
             return inputsMissing.isEmpty();
         }
 
-        public static boolean simpleAreStacksEqual(ItemStack stack, ItemStack stack2) {
-            return stack.getItem() == stack2.getItem() && stack.getItemDamage() == stack2.getItemDamage();
-        }
-
         public static boolean takeAnimus(int amount, EnumAnimusTier rarity, TileEntity tile, double range, boolean drain) {
             EntityItem bestFit = null;
             List<EntityItem> around = entitiesAroundAltar(tile, range);
@@ -173,16 +170,15 @@ public interface IDiagram {
         }
 
         public static boolean itemEquals(ItemStack stack, Object stack2) {
-            if (stack2 instanceof String) {
-
+            if (stack2 instanceof String)
                 for (ItemStack orestack : OreDictionary.getOres((String) stack2)) {
-                    ItemStack cstack = orestack.copy();
-
-                    if (cstack.getItemDamage() == 32767) cstack.setItemDamage(stack.getItemDamage());
-                    if (stack.isItemEqual(cstack)) return true;
+                    if (OreDictionary.itemMatches(stack, orestack, false))
+                        return true;
                 }
-
-            } else return stack2 instanceof ItemStack && simpleAreStacksEqual(stack, (ItemStack) stack2);
+            else if (stack2 instanceof Ingredient)
+                return ((Ingredient) stack2).apply(stack);
+            else
+                return stack2 instanceof ItemStack && OreDictionary.itemMatches(stack, (ItemStack) stack2, false);
             return false;
         }
 
