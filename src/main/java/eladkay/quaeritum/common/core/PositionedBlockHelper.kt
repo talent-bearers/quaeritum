@@ -33,11 +33,11 @@ object PositionedBlockHelper {
             val comparables = block.comparables
 
             if (block.state.block === state.block) {
-                if (block.state.block === ModBlocks.tempest && state.block === ModBlocks.tempest)
+                if (block.state.block === ModBlocks.tempest)
                     chalks++
                 else if (comparables != null) {
                     for (property in comparables) {
-                        if (castCheckValue(property, block.state, state)) {
+                        if (!castCheckValue(property, block.state, state)) {
                             return -1
                         }
                     }

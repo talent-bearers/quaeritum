@@ -81,7 +81,7 @@ class ItemContractScroll : ItemMod(LibNames.SCROLL, LibNames.SCROLL, LibNames.SE
             ContractRegistry.registerOath("reweaver", 4, { _, _, world, pos ->
                 val items = IDiagram.Helper.entitiesAroundAltar(world.getTileEntity(pos), 4.0)
                 if (IDiagram.Helper.matches(items.map { it.item }, mutableListOf("ingotGold"))
-                        && IDiagram.Helper.takeAnimus(10, EnumAnimusTier.ATLAS, world.getTileEntity(pos), 4.0, true)) {
+                        && IDiagram.Helper.takeAnimus(1000, EnumAnimusTier.QUAERITUS, world.getTileEntity(pos), 4.0, true)) {
                     items.forEach {
                         if (canDelete(it.item)) {
                             it.setDead()
@@ -142,6 +142,12 @@ class ItemContractScroll : ItemMod(LibNames.SCROLL, LibNames.SCROLL, LibNames.SE
                 for (line in oath.getUnlocText(stack))
                     TooltipHelper.addToTooltip(tooltip, line)
             }
+        }
+        if (stack.itemDamage == 1) {
+            val uuid = ItemNBTHelper.getUUID(stack, "uuid")
+            val name = AnimusHelper.Network.getLastKnownUsername(uuid)
+            if (name != null)
+                TooltipHelper.addToTooltip(tooltip, "quaeritum.misc.signed", name)
         }
     }
 

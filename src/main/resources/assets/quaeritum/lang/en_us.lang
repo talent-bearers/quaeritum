@@ -276,6 +276,7 @@ item.quaeritum:awoken_blossom.name=Awoken Blossom
 item.quaeritum:waking_blossom.name=Waking Blossom
 
 quaeritum.hud.fluid=%dx %s
+quaeritum.misc.signed=Signed: %s
 
 quaeritum.subtitle.equip_bauble=Bauble is equipped
 quaeritum.subtitle.centrifuge=Centrifuge spins
