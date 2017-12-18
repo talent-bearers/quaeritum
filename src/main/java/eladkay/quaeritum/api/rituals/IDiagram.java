@@ -94,14 +94,11 @@ public interface IDiagram {
                     .collect(Collectors.toList());
         }
 
-        public static boolean matches(List<ItemStack> items, List<ItemStack> required) {
-            List<ItemStack> inputsMissing = new ArrayList<>(required);
+        public static boolean matches(List<ItemStack> items, List<?> required) {
+            List<Object> inputsMissing = new ArrayList<>(required);
             for (ItemStack i : items) {
                 for (int j = 0; j < inputsMissing.size(); j++) {
-                    ItemStack inp = inputsMissing.get(j).copy();
-                    if (inp.getItemDamage() == 32767)
-                        inp.setItemDamage(i.getItemDamage());
-
+                    Object inp = inputsMissing.get(j);
                     if (itemEquals(i, inp)) {
                         inputsMissing.remove(j);
                         break;

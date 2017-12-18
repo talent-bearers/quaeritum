@@ -9,6 +9,7 @@ import com.teamwizardry.librarianlib.features.kotlin.sendSpamlessMessage
 import com.teamwizardry.librarianlib.features.utilities.client.TooltipHelper
 import eladkay.quaeritum.api.animus.AnimusHelper
 import eladkay.quaeritum.api.animus.EnumAnimusTier
+import eladkay.quaeritum.api.animus.INetworkProvider
 import eladkay.quaeritum.api.animus.ISoulstone
 import eladkay.quaeritum.api.contract.ContractRegistry
 import eladkay.quaeritum.api.rituals.IDiagram
@@ -57,10 +58,7 @@ class ItemContractScroll : ItemMod(LibNames.SCROLL, LibNames.SCROLL, LibNames.SE
                         ItemEssence.stackOf(EnumAnimusTier.ATLAS)
                 )) && IDiagram.Helper.takeAnimus(10, EnumAnimusTier.ATLAS, world.getTileEntity(pos), 4.0, true)) {
                     items.forEach {
-                        if (it.item.item != ModItems.scroll &&
-                                (it.item.item != ModItems.essence || it.item.itemDamage != EnumAnimusTier.QUAERITUS.ordinal) &&
-                                (it.item.item != ModItems.hiddenBook) &&
-                                (it.item.item !is ISoulstone)) {
+                        if (canDelete(it.item)) {
                             it.setDead()
                             (world as WorldServer).spawnParticle(EnumParticleTypes.SMOKE_NORMAL,
                                     it.posX, it.posY + 0.5, it.posZ, 100, 0.1, 0.0, 0.1, 0.0)
@@ -80,6 +78,27 @@ class ItemContractScroll : ItemMod(LibNames.SCROLL, LibNames.SCROLL, LibNames.SE
                             .setStyle(Style().setBold(true).setColor(TextFormatting.DARK_PURPLE)), WORDS_OF_AGES)
                 }
             })
+            ContractRegistry.registerOath("reweaver", 4, { _, _, world, pos ->
+                val items = IDiagram.Helper.entitiesAroundAltar(world.getTileEntity(pos), 4.0)
+                if (IDiagram.Helper.matches(items.map { it.item }, mutableListOf("ingotGold"))
+                        && IDiagram.Helper.takeAnimus(10, EnumAnimusTier.ATLAS, world.getTileEntity(pos), 4.0, true)) {
+                    items.forEach {
+                        if (canDelete(it.item)) {
+                            it.setDead()
+                            (world as WorldServer).spawnParticle(EnumParticleTypes.SMOKE_NORMAL,
+                                    it.posX, it.posY + 0.5, it.posZ, 100, 0.1, 0.0, 0.1, 0.0)
+                        }
+                    }
+                    val output = EntityItem(world, pos.x + 0.5, pos.y + 1.0, pos.z + 0.5, ItemResource.Resources.TEMPESTEEL.stackOf())
+                    output.motionX = 0.0
+                    output.motionY = -0.025
+                    output.motionZ = 0.0
+                    output.setNoGravity(true)
+                    world.spawnEntity(output)
+                    (world as WorldServer).spawnParticle(EnumParticleTypes.SMOKE_NORMAL,
+                            output.posX, output.posY + 0.5, output.posZ, 100, 0.1, 0.0, 0.1, 0.0)
+                }
+            })
         }
         /*
             May secrets be kept in the shadows of light,
@@ -88,6 +107,15 @@ class ItemContractScroll : ItemMod(LibNames.SCROLL, LibNames.SCROLL, LibNames.SE
             through soul and storm, let our hope be a flood.
          */
         val WORDS_OF_AGES = 0x2F0E38FE
+
+        fun canDelete(stack: ItemStack): Boolean {
+            if (stack.item == ModItems.scroll) return false
+            if (stack.item == ModItems.essence && stack.itemDamage == EnumAnimusTier.QUAERITUS.ordinal) return false
+            if (stack.item == ModItems.hiddenBook) return false
+            if (stack.item is ISoulstone || stack.item is INetworkProvider) return false
+            if (stack.item == ModItems.resource && stack.itemDamage == ItemResource.Resources.TEMPESTEEL.ordinal) return false
+            return true
+        }
     }
 
     override fun getEntityLifespan(itemStack: ItemStack?, world: World?): Int {
