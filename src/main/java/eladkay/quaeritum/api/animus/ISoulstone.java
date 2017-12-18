@@ -25,7 +25,7 @@ public interface ISoulstone {
     @NotNull
     default ItemStack setAnimusTier(@NotNull ItemStack stack, @NotNull EnumAnimusTier tier) {
         EnumAnimusTier maxTier = getMaxAnimusTier(stack);
-        EnumAnimusTier newTier = maxTier.compareTo(maxTier) < 0 ? tier : maxTier;
+        EnumAnimusTier newTier = tier.ordinal() <= maxTier.ordinal() ? tier : maxTier;
         ItemNBTHelper.setInt(stack, LibNBT.TAG_RARITY, newTier.ordinal());
         return stack;
     }

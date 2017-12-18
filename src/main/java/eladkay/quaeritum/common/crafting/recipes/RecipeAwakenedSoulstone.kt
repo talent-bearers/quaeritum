@@ -1,9 +1,9 @@
 package eladkay.quaeritum.common.crafting.recipes
 
+import com.teamwizardry.librarianlib.features.kotlin.isNotEmpty
 import eladkay.quaeritum.api.animus.IAnimusResource
 import eladkay.quaeritum.common.item.soulstones.ItemAwakenedSoulstone
 import eladkay.quaeritum.common.item.soulstones.ItemDormantSoulstone
-import net.minecraft.block.Block
 import net.minecraft.inventory.InventoryCrafting
 import net.minecraft.item.ItemStack
 import net.minecraft.item.crafting.IRecipe
@@ -17,7 +17,8 @@ class RecipeAwakenedSoulstone : IForgeRegistryEntry.Impl<IRecipe>(), IRecipe {
         var foundSoulstone = false
         var foundResource = false
         (0 until inventoryCrafting.sizeInventory)
-                .mapNotNull { inventoryCrafting.getStackInSlot(it) }
+                .map { inventoryCrafting.getStackInSlot(it) }
+                .filter { it.isNotEmpty }
                 .forEach {
                     if (it.item is ItemDormantSoulstone && !foundSoulstone) foundSoulstone = true
                     else if (it.item is IAnimusResource && (it.item as IAnimusResource).getAnimus(it) > 0) foundResource = true
@@ -32,9 +33,9 @@ class RecipeAwakenedSoulstone : IForgeRegistryEntry.Impl<IRecipe>(), IRecipe {
         var rarity = Integer.MAX_VALUE
         for (index in 0 until inventoryCrafting.sizeInventory) {
             val stack = inventoryCrafting.getStackInSlot(index)
-            if (stack != null && Block.getBlockFromItem(stack.item) is IAnimusResource) {
-                animus += (Block.getBlockFromItem(stack.item) as IAnimusResource).getAnimus(stack)
-                rarity = Math.min((Block.getBlockFromItem(stack.item) as IAnimusResource).getAnimusTier(stack).ordinal, rarity)
+            if (stack != null && stack.item is IAnimusResource) {
+                animus += (stack.item as IAnimusResource).getAnimus(stack)
+                rarity = Math.min((stack.item as IAnimusResource).getAnimusTier(stack).ordinal, rarity)
             }
         }
         return ItemAwakenedSoulstone.withAnimus(animus, rarity)
