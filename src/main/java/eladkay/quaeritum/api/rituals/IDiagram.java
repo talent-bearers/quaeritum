@@ -49,22 +49,11 @@ public interface IDiagram {
             return AnimusHelper.Network.requestAnimus(uuid, animus, rarity, drain);
         }
 
-        //ffs takeanimus
-        /*public static boolean consumeAnimusForRitualFromSoulstone(TileEntity tes, boolean drain, int animus, int rarity) {
-            ItemStack stack1 = Helper.getNearestSoulstone(tes, 4);
-            if(stack1 == null) return false;
-            ISoulstone stone = (ISoulstone) stack1.getItem();
-            if(stone.getAnimusLevel(stack1) < animus) return false;
-            if(stone.getRarityLevel(stack1) < rarity) return false;
-            if(drain) {
-                AnimusHelper.addAnimus(stack1, -animus);
-            }
-            return true;
-        }*/
         public static ItemStack getNearestAttunedSoulstone(TileEntity tile, double range) {
             MutableObject<ItemStack> ret = new MutableObject<>(null);
             stacksAroundAltar(tile, range).forEach((stack -> {
-                if (stack.getItem() instanceof INetworkProvider) ret.value = stack;
+                if (stack.getItem() instanceof INetworkProvider &&
+                        ((INetworkProvider) stack.getItem()).isProvider(stack)) ret.value = stack;
             }));
             return ret.value;
         }
