@@ -2,7 +2,6 @@ package eladkay.quaeritum.common.item.soulstones
 
 import com.teamwizardry.librarianlib.features.base.item.ItemMod
 import com.teamwizardry.librarianlib.features.helpers.ItemNBTHelper
-import eladkay.quaeritum.api.animus.AnimusHelper
 import eladkay.quaeritum.api.animus.EnumAnimusTier
 import eladkay.quaeritum.api.animus.IAnimusResource
 import eladkay.quaeritum.api.animus.ISoulstone
@@ -37,23 +36,15 @@ class ItemAwakenedSoulstone(name: String = LibNames.AWAKENED_SOULSTONE) : ItemMo
         return true
     }
 
-    override fun getDamage(stack: ItemStack): Int {
-        if (super.getDamage(stack) != 0)
-            super.setDamage(stack, 0)
-        return 0
-    }
-
     override fun getSubItems(tab: CreativeTabs?, subItems: NonNullList<ItemStack>) {
         if (isInCreativeTab(tab)) {
-            subItems.add(ItemStack(this))
-            val stack2 = ItemStack(this)
-            AnimusHelper.setAnimus(stack2, getMaxAnimus(stack2))
-            subItems.add(stack2)
+            for (tier in EnumAnimusTier.values()) {
+                val example = ItemStack(this)
+                setAnimusTier(example, tier)
+                setAnimus(example, getMaxAnimus(example))
+                subItems.add(example)
+            }
         }
-    }
-
-    override fun getMaxDamage(stack: ItemStack): Int {
-        return getAnimusLevel(stack)
     }
 
     @SideOnly(Side.CLIENT)
@@ -70,15 +61,15 @@ class ItemAwakenedSoulstone(name: String = LibNames.AWAKENED_SOULSTONE) : ItemMo
     }
 
     override fun getMaxAnimus(stack: ItemStack): Int {
-        return MAX_ANIMUS
+        return MAX_ANIMUS * (getAnimusTier(stack).ordinal + 1)
     }
 
     companion object {
 
         @JvmOverloads fun withAnimus(animus: Int, rarity: Int = 0): ItemStack {
             val stack = ItemStack(ModItems.awakened)
-            ModItems.awakened.setAnimus(stack, animus)
             ModItems.awakened.setAnimusTier(stack, EnumAnimusTier.fromMeta(rarity))
+            ModItems.awakened.setAnimus(stack, animus)
             return stack
         }
     }
