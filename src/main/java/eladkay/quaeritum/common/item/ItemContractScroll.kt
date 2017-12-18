@@ -55,7 +55,7 @@ class ItemContractScroll : ItemMod(LibNames.SCROLL, LibNames.SCROLL, LibNames.SE
                         ItemEssence.stackOf(EnumAnimusTier.FERRUS),
                         ItemEssence.stackOf(EnumAnimusTier.ARGENTUS),
                         ItemEssence.stackOf(EnumAnimusTier.ATLAS)
-                ))) {
+                )) && IDiagram.Helper.takeAnimus(200, EnumAnimusTier.ATLAS, world.getTileEntity(pos), 4.0, true)) {
                     items.forEach {
                         if (it.item.item != ModItems.scroll &&
                                 (it.item.item != ModItems.essence || it.item.itemDamage != EnumAnimusTier.QUAERITUS.ordinal) &&

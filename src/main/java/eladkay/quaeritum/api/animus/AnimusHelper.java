@@ -76,11 +76,11 @@ public final class AnimusHelper {
             if (uuid != null) {
                 String username = getLastKnownUsername(uuid);
                 if (username != null)
-                    TooltipHelper.addToTooltip(tooltip, "misc." + LibMisc.MOD_ID + ".animusBound", username);
+                    TooltipHelper.addToTooltip(tooltip, "misc." + LibMisc.MOD_ID + ".animus_bound", username);
                 else
-                    TooltipHelper.addToTooltip(tooltip, "misc." + LibMisc.MOD_ID + ".notBound");
+                    TooltipHelper.addToTooltip(tooltip, "misc." + LibMisc.MOD_ID + ".not_bound");
             } else
-                TooltipHelper.addToTooltip(tooltip, "misc." + LibMisc.MOD_ID + ".notBound");
+                TooltipHelper.addToTooltip(tooltip, "misc." + LibMisc.MOD_ID + ".not_bound");
         }
 
         public static void setAnimus(EntityPlayer player, int animus) {
