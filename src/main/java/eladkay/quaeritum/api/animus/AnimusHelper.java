@@ -21,11 +21,23 @@ import java.util.List;
 public final class AnimusHelper {
 
     public static ItemStack setAnimus(ItemStack stack, int animus) {
+        if (stack.getItem() instanceof INetworkProvider && !(stack.getItem() instanceof ISoulstone)) {
+            Network.setAnimus(((INetworkProvider) stack.getItem()).getPlayer(stack), animus);
+            return stack;
+        }
+        if (!(stack.getItem() instanceof ISoulstone))
+            return stack;
         ((ISoulstone) stack.getItem()).setAnimus(stack, animus);
         return stack;
     }
 
     public static ItemStack setTier(ItemStack stack, EnumAnimusTier tier) {
+        if (stack.getItem() instanceof INetworkProvider && !(stack.getItem() instanceof ISoulstone)) {
+            Network.setTier(((INetworkProvider) stack.getItem()).getPlayer(stack), tier);
+            return stack;
+        }
+        if (!(stack.getItem() instanceof ISoulstone))
+            return stack;
         ((ISoulstone) stack.getItem()).setAnimusTier(stack, tier);
         return stack;
     }
@@ -35,10 +47,16 @@ public final class AnimusHelper {
     }
 
     public static EnumAnimusTier getTier(ItemStack stack) {
+        if (stack.getItem() instanceof INetworkProvider && !(stack.getItem() instanceof ISoulstone))
+            return Network.getTier(((INetworkProvider) stack.getItem()).getPlayer(stack));
+        if (!(stack.getItem() instanceof ISoulstone)) return EnumAnimusTier.VERDIS;
         return ((ISoulstone) stack.getItem()).getAnimusTier(stack);
     }
 
     public static int getAnimus(ItemStack stack) {
+        if (stack.getItem() instanceof INetworkProvider && !(stack.getItem() instanceof ISoulstone))
+            return Network.getAnimus(((INetworkProvider) stack.getItem()).getPlayer(stack));
+        if (!(stack.getItem() instanceof ISoulstone)) return 0;
         return ((ISoulstone) stack.getItem()).getAnimusLevel(stack);
     }
 

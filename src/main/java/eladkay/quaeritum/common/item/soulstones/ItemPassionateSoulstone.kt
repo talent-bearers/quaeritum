@@ -2,6 +2,7 @@ package eladkay.quaeritum.common.item.soulstones
 
 import com.teamwizardry.librarianlib.features.base.item.ItemMod
 import eladkay.quaeritum.api.animus.AnimusHelper
+import eladkay.quaeritum.api.animus.EnumAnimusTier
 import eladkay.quaeritum.api.animus.INetworkProvider
 import eladkay.quaeritum.common.lib.LibNames
 import net.minecraft.client.util.ITooltipFlag
@@ -14,23 +15,21 @@ import net.minecraft.util.EnumActionResult
 import net.minecraft.util.EnumHand
 import net.minecraft.util.SoundCategory
 import net.minecraft.world.World
-import net.minecraftforge.fml.common.IFuelHandler
-import net.minecraftforge.fml.common.registry.GameRegistry
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 
-class ItemPassionateSoulstone : ItemMod(LibNames.PASSIONATE_SOULSTONE), INetworkProvider, IFuelHandler {
+class ItemPassionateSoulstone : ItemMod(LibNames.PASSIONATE_SOULSTONE), INetworkProvider {
 
     init {
         setMaxStackSize(1)
-        GameRegistry.registerFuelHandler(this)
     }
 
-    override fun getContainerItem(itemStack: ItemStack): ItemStack? {
-        if (getPlayer(itemStack) == null) return null
+    override fun getContainerItem(itemStack: ItemStack): ItemStack {
+        if (getPlayer(itemStack) == null) return ItemStack.EMPTY
         AnimusHelper.Network.addAnimus(getPlayer(itemStack), -4)
+        itemStack.grow(1)
         val copiedStack = itemStack.copy()
-        copiedStack.count = 1
+        itemStack.shrink(1)
         return copiedStack
     }
 
@@ -55,24 +54,25 @@ class ItemPassionateSoulstone : ItemMod(LibNames.PASSIONATE_SOULSTONE), INetwork
         return Integer.MAX_VALUE
     }
 
-    override fun onUpdate(stack: ItemStack?, worldIn: World?, entityIn: Entity?, itemSlot: Int, isSelected: Boolean) {
-        if (getPlayer(stack!!) == null && entityIn is EntityPlayer)
+    override fun onUpdate(stack: ItemStack, worldIn: World?, entityIn: Entity, itemSlot: Int, isSelected: Boolean) {
+        if (getPlayer(stack) == null && entityIn is EntityPlayer)
             setPlayer(stack, entityIn.uniqueID)
     }
 
-    override fun onItemRightClick(worldIn: World?, playerIn: EntityPlayer?, hand: EnumHand?): ActionResult<ItemStack> {
-        val itemStackIn = playerIn!!.getHeldItem(hand)
+    override fun getItemBurnTime(fuel: ItemStack): Int {
+        return if (AnimusHelper.Network.getAnimus(getPlayer(fuel)) >= 4 &&
+                AnimusHelper.Network.getTier(getPlayer(fuel)).ordinal >= EnumAnimusTier.LUCIS.ordinal) 200 else 0
+    }
 
-        if (playerIn!!.isSneaking) {
+    override fun onItemRightClick(worldIn: World?, playerIn: EntityPlayer, hand: EnumHand?): ActionResult<ItemStack> {
+        val itemStackIn = playerIn.getHeldItem(hand)
+
+        if (playerIn.isSneaking) {
             setPlayer(itemStackIn, playerIn.uniqueID)
             worldIn!!.playSound(playerIn, playerIn.position, SoundEvents.ITEM_ARMOR_EQUIP_IRON, SoundCategory.PLAYERS, 1f, 1f)
             return ActionResult(EnumActionResult.SUCCESS, itemStackIn)
         }
         return super.onItemRightClick(worldIn, playerIn, hand)
-    }
-
-    override fun getBurnTime(fuel: ItemStack): Int {
-        return if (fuel.item === this && AnimusHelper.Network.getAnimus(getPlayer(fuel)) >= 4) 200 else 0
     }
 }
 

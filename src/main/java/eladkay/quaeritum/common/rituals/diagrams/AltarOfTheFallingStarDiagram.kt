@@ -47,12 +47,14 @@ class AltarOfTheFallingStarDiagram : IDiagram {
             val stack = item.item
             if (stack.item !is ISoulstone) continue
             val ss = stack.item as ISoulstone
-            AnimusHelper.Network.addAnimus(player, ss.getAnimusLevel(stack))
-            AnimusHelper.Network.addTier(player, ss.getAnimusTier(stack))
-            ss.setAnimus(stack, 0)
-            item.item = ss.drainedStack(stack)
-            if (item.item.isEmpty) item.setDead()
-            flag = true
+            if (ss.getAnimusTier(stack).ordinal >= AnimusHelper.Network.getTier(player).ordinal) {
+                AnimusHelper.Network.addAnimus(player, ss.getAnimusLevel(stack))
+                AnimusHelper.Network.addTier(player, ss.getAnimusTier(stack))
+                ss.setAnimus(stack, 0)
+                item.item = ss.drainedStack(stack)
+                if (item.item.isEmpty) item.setDead()
+                flag = true
+            }
         }
         if (flag)
             world.playerEntities

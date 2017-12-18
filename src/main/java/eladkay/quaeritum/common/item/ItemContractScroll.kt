@@ -46,7 +46,8 @@ class ItemContractScroll : ItemMod(LibNames.SCROLL, LibNames.SCROLL, LibNames.SE
         init {
             ContractRegistry.registerOath("ea", 4)
             ContractRegistry.registerOath("seven", 4)
-            ContractRegistry.registerOath("innocentia", 4, { player, _, world, pos ->
+            ContractRegistry.registerOath("innocentia", 4, { AnimusHelper.Network.getTier(it).ordinal >= EnumAnimusTier.ATLAS.ordinal },
+                    { player, _, world, pos ->
                 val chalkState = world.getBlockState(pos.add(3, 0, 3))
                 val rot = chalkState.block == ModBlocks.chalk && chalkState.getValue(BlockModColored.COLOR) == EnumDyeColor.BROWN
                 val items = IDiagram.Helper.entitiesAroundAltar(world.getTileEntity(pos), 4.0)
@@ -78,7 +79,8 @@ class ItemContractScroll : ItemMod(LibNames.SCROLL, LibNames.SCROLL, LibNames.SE
                             .setStyle(Style().setBold(true).setColor(TextFormatting.DARK_PURPLE)), WORDS_OF_AGES)
                 }
             })
-            ContractRegistry.registerOath("reweaver", 4, { _, _, world, pos ->
+            ContractRegistry.registerOath("reweaver", 4, { AnimusHelper.Network.getTier(it).ordinal >= EnumAnimusTier.QUAERITUS.ordinal },
+                    { _, _, world, pos ->
                 val items = IDiagram.Helper.entitiesAroundAltar(world.getTileEntity(pos), 4.0)
                 if (IDiagram.Helper.matches(items.map { it.item }, mutableListOf("ingotGold"))
                         && IDiagram.Helper.takeAnimus(1000, EnumAnimusTier.QUAERITUS, world.getTileEntity(pos), 4.0, true)) {
