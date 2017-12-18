@@ -53,9 +53,9 @@ class AltarOfTheFallingStarDiagram : IDiagram {
             flag = true
         }
         if (flag)
-            for (playerEntity in world.playerEntities)
-                if (playerEntity.uniqueID == player)
-                    playerEntity.sendSpamlessMessage(TextComponentTranslation("misc.quaeritum.rushOfEnergy"), 1005)
+            world.playerEntities
+                    .filter { it.uniqueID == player }
+                    .forEach { it.sendSpamlessMessage(TextComponentTranslation("misc.quaeritum.rush_of_energy"), 1005) }
     }
 
 

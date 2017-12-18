@@ -28,6 +28,10 @@ class ItemAwakenedSoulstone(name: String = LibNames.AWAKENED_SOULSTONE) : ItemMo
     override fun getAnimus(stack: ItemStack) = getAnimusLevel(stack)
     override fun getAnimusTier(stack: ItemStack) = super.getAnimusTier(stack)
 
+    override fun drainedStack(stack: ItemStack): ItemStack {
+        return ItemStack(ModItems.dormant)
+    }
+
     override fun getDurabilityForDisplay(stack: ItemStack): Double {
         return 1 - getAnimusLevel(stack).toDouble() / getMaxAnimus(stack).toDouble()
     }

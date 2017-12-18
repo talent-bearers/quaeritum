@@ -35,5 +35,10 @@ public interface ISoulstone {
         return EnumAnimusTier.QUAERITUS;
     }
 
+    @NotNull
+    default ItemStack drainedStack(@NotNull ItemStack stack) {
+        return stack;
+    }
+
     int getMaxAnimus(@NotNull ItemStack stack);
 }

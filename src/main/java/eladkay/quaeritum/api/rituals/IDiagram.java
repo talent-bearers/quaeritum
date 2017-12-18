@@ -142,9 +142,11 @@ public interface IDiagram {
             }
             if (bestFit != null && AnimusHelper.getTier(bestFit.getItem()).ordinal() >= rarity.ordinal() && AnimusHelper.getAnimus(bestFit.getItem()) >= amount) {
                 if (drain) {
-                    if (bestFit.getItem().getItem() instanceof ISoulstone)
+                    if (bestFit.getItem().getItem() instanceof ISoulstone) {
                         AnimusHelper.addAnimus(bestFit.getItem(), -amount);
-                    else
+                        if (AnimusHelper.getAnimus(bestFit.getItem()) == 0)
+                            bestFit.setItem(((ISoulstone) bestFit.getItem().getItem()).drainedStack(bestFit.getItem()));
+                    } else
                         AnimusHelper.Network.addAnimus(((INetworkProvider) bestFit.getItem().getItem()).getPlayer(bestFit.getItem()), -amount);
                 }
                 return true;
@@ -162,8 +164,11 @@ public interface IDiagram {
                     bestFit = stack;
             }
             if (bestFit != null && AnimusHelper.getTier(bestFit.getItem()).ordinal() >= rarity.ordinal() && AnimusHelper.getAnimus(bestFit.getItem()) >= amount) {
-                if (drain)
+                if (drain) {
                     AnimusHelper.addAnimus(bestFit.getItem(), -amount);
+                    if (AnimusHelper.getAnimus(bestFit.getItem()) == 0)
+                        bestFit.setItem(((ISoulstone) bestFit.getItem().getItem()).drainedStack(bestFit.getItem()));
+                }
                 return true;
             }
             return false;

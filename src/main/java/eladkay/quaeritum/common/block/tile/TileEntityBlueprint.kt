@@ -44,7 +44,7 @@ class TileEntityBlueprint : TileModTickable() {
                 val requirementsMet = ritual.canRitualRun(this.world, pos, this)
                 val blocks = arrayListOf<PositionedBlock>()
                 ritual.buildChalks(blocks)
-                val chalks = PositionedBlockHelper.getChalkPriority(blocks, this, ritual.unlocalizedName)
+                val chalks = PositionedBlockHelper.getChalkPriority(blocks, this)
                 if (foundAll && requirementsMet && highestChalks < chalks) {
                     bestDiagram = ritual
                     highestChalks = chalks

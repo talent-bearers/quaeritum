@@ -35,7 +35,7 @@ class TileEntityFoundationStone : TileModTickable() {
                 val requirementsMet = ritual.canRitualRun(this.world, pos, this)
                 val blocks = arrayListOf<PositionedBlock>()
                 ritual.buildPositions(blocks)
-                val chalks = PositionedBlockHelper.getChalkPriority(blocks, this, ritual.unlocalizedName)
+                val chalks = PositionedBlockHelper.getChalkPriority(blocks, this)
                 if (requirementsMet && highestChalks < chalks) {
                     bestWork = ritual
                     highestChalks = chalks
