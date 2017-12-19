@@ -118,9 +118,8 @@ class ItemContractScroll : ItemMod(LibNames.SCROLL, LibNames.SCROLL, LibNames.SE
                                 }
                                 val cost = players.filter { it != player && it is EntityLivingBase && it !is EntityArmorStand }.size * 10
                                 if (players.size > 0 && takeAnimusFrom(cost, EnumAnimusTier.ARGENTUS, stack)) {
-                                    (world as WorldServer).spawnParticle(EnumParticleTypes.PORTAL,
-                                            target.x + 0.5, target.y + 0.5, target.z + 0.5, 1000, 0.1, 0.0, 0.1, 1.0)
                                     val shift = target.subtract(pos)
+                                    world as WorldServer
                                     players.forEach {
                                         world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL,
                                                 it.posX, it.posY + 0.5, it.posZ, 100, 0.1, 0.0, 0.1, 0.0)
@@ -131,6 +130,8 @@ class ItemContractScroll : ItemMod(LibNames.SCROLL, LibNames.SCROLL, LibNames.SE
                                         world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL,
                                                 it.posX, it.posY + 0.5, it.posZ, 100, 0.1, 0.0, 0.1, 0.0)
                                     }
+                                    world.spawnParticle(EnumParticleTypes.PORTAL,
+                                            target.x + 0.5, target.y + 0.5, target.z + 0.5, 1000, 0.1, 0.0, 0.1, 1.0)
                                 }
                             }
                             (world as WorldServer).spawnParticle(EnumParticleTypes.PORTAL,
