@@ -31,6 +31,8 @@ class ItemWorldBlade : ItemModSword(LibNames.WORLD_BLADE, LibMaterials.TEMPESTEE
         if (ticks > 0 && entityIn is EntityLivingBase)
             QuaeritumMethodHandles.setSwingTicks((entityIn as EntityLivingBase?)!!, ticks)
         ItemNBTHelper.removeEntry(stack, TAG_TELEPORTED)
+        if (stack.tagCompound?.size == 0)
+            stack.tagCompound = null
     }
 
     override fun onEntitySwing(entityLiving: EntityLivingBase, stack: ItemStack): Boolean {

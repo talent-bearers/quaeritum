@@ -302,8 +302,14 @@ quaeritum.oath.innocentia3=to give them back what made them.
 quaeritum.oath.reweaver=Command of Perfection
 quaeritum.oath.reweaver0=I swear to seek perfection in all its many forms
 quaeritum.oath.reweaver1=I cast away the answer but its soul I will reform
-quaeritum.oath.reweaver2=I cannot have perfection but I'll sieze it anyway
+quaeritum.oath.reweaver2=I cannot have perfection but I'll seize it anyway
 quaeritum.oath.reweaver3=So I will take this vision and to mundane convey.
+
+quaeritum.oath.connection=Oath of Connection
+quaeritum.oath.connection0=You will not breach these walls
+quaeritum.oath.connection1=They hold stronger than your towers and halls
+quaeritum.oath.connection2=I claim this land for the people who claim me
+quaeritum.oath.connection3=So claim your own, and leave me be.
 
 quaeritum.oath.innocentia.scream=IT IS DONE.
 quaeritum.oath.innocentia.scream_rot=IT IS DONE. PROTECT THEM WHERE I CANNOT.

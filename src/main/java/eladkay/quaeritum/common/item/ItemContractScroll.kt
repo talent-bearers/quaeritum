@@ -18,14 +18,20 @@ import eladkay.quaeritum.common.block.base.BlockModColored
 import eladkay.quaeritum.common.lib.LibNames
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.creativetab.CreativeTabs
+import net.minecraft.entity.Entity
+import net.minecraft.entity.EntityLivingBase
+import net.minecraft.entity.item.EntityArmorStand
 import net.minecraft.entity.item.EntityItem
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.inventory.InventoryCrafting
 import net.minecraft.item.EnumDyeColor
 import net.minecraft.item.ItemStack
 import net.minecraft.item.crafting.IRecipe
 import net.minecraft.item.crafting.Ingredient
 import net.minecraft.util.*
+import net.minecraft.util.math.AxisAlignedBB
+import net.minecraft.util.math.BlockPos
 import net.minecraft.util.text.Style
 import net.minecraft.util.text.TextComponentString
 import net.minecraft.util.text.TextComponentTranslation
@@ -47,61 +53,98 @@ class ItemContractScroll : ItemMod(LibNames.SCROLL, LibNames.SCROLL, LibNames.SE
             ContractRegistry.registerOath("ea", 4)
             ContractRegistry.registerOath("seven", 4)
             ContractRegistry.registerOath("innocentia", 4, { AnimusHelper.Network.getTier(it).ordinal >= EnumAnimusTier.ATLAS.ordinal },
-                    { player, _, world, pos ->
-                val chalkState = world.getBlockState(pos.add(3, 0, 3))
-                val rot = chalkState.block == ModBlocks.chalk && chalkState.getValue(BlockModColored.COLOR) == EnumDyeColor.BROWN
-                val items = IDiagram.Helper.entitiesAroundAltar(world.getTileEntity(pos), 4.0)
-                if (IDiagram.Helper.matches(items.map { it.item }, mutableListOf(
-                        ItemEssence.stackOf(EnumAnimusTier.VERDIS),
-                        ItemEssence.stackOf(EnumAnimusTier.LUCIS),
-                        ItemEssence.stackOf(EnumAnimusTier.FERRUS),
-                        ItemEssence.stackOf(EnumAnimusTier.ARGENTUS),
-                        ItemEssence.stackOf(EnumAnimusTier.ATLAS)
-                )) && IDiagram.Helper.takeAnimus(10, EnumAnimusTier.ATLAS, world.getTileEntity(pos), 4.0, true)) {
-                    items.forEach {
-                        if (canDelete(it.item)) {
-                            it.setDead()
+                    { player, stack, world, pos ->
+                        val chalkState = world.getBlockState(pos.add(3, 0, 3))
+                        val rot = chalkState.block == ModBlocks.chalk && chalkState.getValue(BlockModColored.COLOR) == EnumDyeColor.BROWN
+                        val items = IDiagram.Helper.entitiesAroundAltar(world.getTileEntity(pos), 4.0)
+                        if (IDiagram.Helper.matches(items.map { it.item }, mutableListOf(
+                                ItemEssence.stackOf(EnumAnimusTier.VERDIS),
+                                ItemEssence.stackOf(EnumAnimusTier.LUCIS),
+                                ItemEssence.stackOf(EnumAnimusTier.FERRUS),
+                                ItemEssence.stackOf(EnumAnimusTier.ARGENTUS),
+                                ItemEssence.stackOf(EnumAnimusTier.ATLAS)
+                        )) && takeAnimusFrom(20, EnumAnimusTier.ATLAS, stack)) {
+                            items.forEach {
+                                if (canDelete(it.item)) {
+                                    it.setDead()
+                                    (world as WorldServer).spawnParticle(EnumParticleTypes.SMOKE_NORMAL,
+                                            it.posX, it.posY + 0.5, it.posZ, 100, 0.1, 0.0, 0.1, 0.0)
+                                }
+                            }
+                            val output = EntityItem(world, pos.x + 0.5, pos.y + 1.0, pos.z + 0.5,
+                                    if (rot) ItemStack(ModItems.hiddenBook) else ItemEssence.stackOf(EnumAnimusTier.QUAERITUS)
+                            )
+                            output.motionX = 0.0
+                            output.motionY = 0.05
+                            output.motionZ = 0.0
+                            output.setNoGravity(true)
+                            world.spawnEntity(output)
                             (world as WorldServer).spawnParticle(EnumParticleTypes.SMOKE_NORMAL,
-                                    it.posX, it.posY + 0.5, it.posZ, 100, 0.1, 0.0, 0.1, 0.0)
+                                    output.posX, output.posY + 0.5, output.posZ, 100, 0.1, 0.0, 0.1, 0.0)
+                            player?.sendSpamlessMessage(TextComponentTranslation("quaeritum.oath.innocentia.scream" + (if (rot) "_rot" else ""))
+                                    .setStyle(Style().setBold(true).setColor(TextFormatting.DARK_PURPLE)), WORDS_OF_AGES)
                         }
-                    }
-                    val output = EntityItem(world, pos.x + 0.5, pos.y + 1.0, pos.z + 0.5,
-                            if (rot) ItemStack(ModItems.hiddenBook) else ItemEssence.stackOf(EnumAnimusTier.QUAERITUS)
-                    )
-                    output.motionX = 0.0
-                    output.motionY = 0.05
-                    output.motionZ = 0.0
-                    output.setNoGravity(true)
-                    world.spawnEntity(output)
-                    (world as WorldServer).spawnParticle(EnumParticleTypes.SMOKE_NORMAL,
-                            output.posX, output.posY + 0.5, output.posZ, 100, 0.1, 0.0, 0.1, 0.0)
-                    player?.sendSpamlessMessage(TextComponentTranslation("quaeritum.oath.innocentia.scream" + (if (rot) "_rot" else ""))
-                            .setStyle(Style().setBold(true).setColor(TextFormatting.DARK_PURPLE)), WORDS_OF_AGES)
-                }
-            })
+                    })
             ContractRegistry.registerOath("reweaver", 4, { AnimusHelper.Network.getTier(it).ordinal >= EnumAnimusTier.QUAERITUS.ordinal },
-                    { _, _, world, pos ->
-                val items = IDiagram.Helper.entitiesAroundAltar(world.getTileEntity(pos), 4.0)
-                if (IDiagram.Helper.matches(items.map { it.item }, mutableListOf("ingotGold"))
-                        && IDiagram.Helper.takeAnimus(1000, EnumAnimusTier.QUAERITUS, world.getTileEntity(pos), 4.0, true)) {
-                    items.forEach {
-                        if (canDelete(it.item)) {
-                            it.setDead()
+                    { _, stack, world, pos ->
+                        val items = IDiagram.Helper.entitiesAroundAltar(world.getTileEntity(pos), 4.0)
+                        if (IDiagram.Helper.matches(items.map { it.item }, mutableListOf("ingotGold"))
+                                && takeAnimusFrom(1000, EnumAnimusTier.QUAERITUS, stack)) {
+                            items.forEach {
+                                if (canDelete(it.item)) {
+                                    it.setDead()
+                                    (world as WorldServer).spawnParticle(EnumParticleTypes.SMOKE_NORMAL,
+                                            it.posX, it.posY + 0.5, it.posZ, 100, 0.1, 0.0, 0.1, 0.0)
+                                }
+                            }
+                            val output = EntityItem(world, pos.x + 0.5, pos.y + 0.25, pos.z + 0.5, ItemResource.Resources.TEMPESTEEL.stackOf())
+                            output.motionX = 0.0
+                            output.motionY = 0.05
+                            output.motionZ = 0.0
+                            output.setNoGravity(true)
+                            world.spawnEntity(output)
                             (world as WorldServer).spawnParticle(EnumParticleTypes.SMOKE_NORMAL,
-                                    it.posX, it.posY + 0.5, it.posZ, 100, 0.1, 0.0, 0.1, 0.0)
+                                    output.posX, output.posY + 0.5, output.posZ, 100, 0.1, 0.0, 0.1, 0.0)
                         }
-                    }
-                    val output = EntityItem(world, pos.x + 0.5, pos.y + 1.0, pos.z + 0.5, ItemResource.Resources.TEMPESTEEL.stackOf())
-                    output.motionX = 0.0
-                    output.motionY = -0.025
-                    output.motionZ = 0.0
-                    output.setNoGravity(true)
-                    world.spawnEntity(output)
-                    (world as WorldServer).spawnParticle(EnumParticleTypes.SMOKE_NORMAL,
-                            output.posX, output.posY + 0.5, output.posZ, 100, 0.1, 0.0, 0.1, 0.0)
-                }
-            })
+                    })
+            ContractRegistry.registerOath("connection", 4, { AnimusHelper.Network.getTier(it).ordinal >= EnumAnimusTier.ARGENTUS.ordinal },
+                    { player, stack, world, pos ->
+                        if (world.provider.dimension == 0) {
+                            val posCompressed = ItemNBTHelper.getLong(stack, "pos", Long.MIN_VALUE)
+                            if (posCompressed != Long.MIN_VALUE) {
+                                val target = BlockPos.fromLong(posCompressed)
+                                val players = world.getEntitiesWithinAABB(Entity::class.java, AxisAlignedBB(pos).grow(4.0)) {
+                                    it != null && it.getDistanceSq(pos) <= 16.0
+                                }
+                                val cost = players.filter { it != player && it is EntityLivingBase && it !is EntityArmorStand }.size * 10
+                                if (players.size > 0 && takeAnimusFrom(cost, EnumAnimusTier.ARGENTUS, stack)) {
+                                    (world as WorldServer).spawnParticle(EnumParticleTypes.PORTAL,
+                                            target.x + 0.5, target.y + 0.5, target.z + 0.5, 1000, 0.1, 0.0, 0.1, 1.0)
+                                    val shift = target.subtract(pos)
+                                    players.forEach {
+                                        world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL,
+                                                it.posX, it.posY + 0.5, it.posZ, 100, 0.1, 0.0, 0.1, 0.0)
+                                        if (it is EntityPlayerMP)
+                                            it.connection.setPlayerLocation(it.posX + shift.x, it.posY + shift.y, it.posZ + shift.z, it.rotationYaw, it.rotationPitch)
+                                        else
+                                            it.setLocationAndAngles(it.posX + shift.x, it.posY + shift.y, it.posZ + shift.z, it.rotationYaw, it.rotationPitch)
+                                        world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL,
+                                                it.posX, it.posY + 0.5, it.posZ, 100, 0.1, 0.0, 0.1, 0.0)
+                                    }
+                                }
+                            }
+                            (world as WorldServer).spawnParticle(EnumParticleTypes.PORTAL,
+                                    pos.x + 0.5, pos.y + 0.5, pos.z + 0.5, 1000, 0.1, 0.0, 0.1, 1.0)
+                            ItemNBTHelper.setLong(stack, "pos", pos.toLong())
+                        }
+                    })
         }
+
+        fun takeAnimusFrom(amount: Int, rarity: EnumAnimusTier, stack: ItemStack): Boolean {
+            val player = ItemNBTHelper.getUUID(stack, "uuid")
+            return AnimusHelper.Network.requestAnimus(player, amount, rarity, true)
+        }
+
         /*
             May secrets be kept in the shadows of light,
             may truth be found in the apex of night.
@@ -118,6 +161,10 @@ class ItemContractScroll : ItemMod(LibNames.SCROLL, LibNames.SCROLL, LibNames.SE
             if (stack.item == ModItems.resource && stack.itemDamage == ItemResource.Resources.TEMPESTEEL.ordinal) return false
             return true
         }
+    }
+
+    init {
+        setMaxStackSize(1)
     }
 
     override fun getEntityLifespan(itemStack: ItemStack?, world: World?): Int {

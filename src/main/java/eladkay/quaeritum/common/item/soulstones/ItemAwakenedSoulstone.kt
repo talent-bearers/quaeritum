@@ -65,7 +65,7 @@ class ItemAwakenedSoulstone(name: String = LibNames.AWAKENED_SOULSTONE) : ItemMo
     }
 
     override fun getMaxAnimus(stack: ItemStack): Int {
-        return MAX_ANIMUS * (getAnimusTier(stack).ordinal + 1)
+        return 8 * (getAnimusTier(stack).awakenedFillPercentage * MAX_ANIMUS).toInt()
     }
 
     companion object {
