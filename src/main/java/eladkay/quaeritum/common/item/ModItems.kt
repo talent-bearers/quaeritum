@@ -2,6 +2,7 @@ package eladkay.quaeritum.common.item
 
 import com.teamwizardry.librarianlib.core.LibrarianLib
 import com.teamwizardry.librarianlib.features.base.item.ItemMod
+import com.teamwizardry.librarianlib.features.base.item.ItemModSeed
 import eladkay.quaeritum.common.block.ModBlocks
 import eladkay.quaeritum.common.item.misc.*
 import eladkay.quaeritum.common.item.soulstones.*

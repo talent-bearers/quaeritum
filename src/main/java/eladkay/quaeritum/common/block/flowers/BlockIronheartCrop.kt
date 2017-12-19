@@ -24,7 +24,7 @@ import net.minecraft.world.World
  * @author WireSegal
  * Created at 10:14 PM on 12/12/17.
  */
-class BlockIronheartCrop : BlockModCrops(LibNames.FLOWER + "_iron_crop", 3) {
+class BlockIronheartCrop : BlockModCrops(LibNames.FLOWER + "_iron_crop", 4) {
     override fun getCrop(): Item {
         return ModBlocks.ironheart.itemForm!!
     }
@@ -43,7 +43,6 @@ class BlockIronheartCrop : BlockModCrops(LibNames.FLOWER + "_iron_crop", 3) {
         else ItemStack(getCrop())
     }
 
-    override fun getMaxAge(): Int = 3
 
     override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos): AxisAlignedBB {
         return AABBS[state.getValue(getAgeProperty())]
