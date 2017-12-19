@@ -14,12 +14,12 @@ import java.util.stream.Collectors;
  */
 public enum EnumAnimusTier implements IStringSerializable {
 
-    VERDIS(.1, EnumSpellElement.WATER, EnumSpellElement.EARTH),
-    LUCIS(.2, EnumSpellElement.FIRE, EnumSpellElement.AIR),
-    FERRUS(.3, EnumSpellElement.METAL, EnumSpellElement.ENTROPY),
-    ARGENTUS(.6, EnumSpellElement.FORM, EnumSpellElement.FLOW),
-    ATLAS(.75, EnumSpellElement.CONNECTION, EnumSpellElement.SPIRIT),
-    QUAERITUS(1, EnumSpellElement.AETHER, EnumSpellElement.SOUL);
+    VERDIS(.2, EnumSpellElement.WATER, EnumSpellElement.EARTH),
+    LUCIS(.4, EnumSpellElement.FIRE, EnumSpellElement.AIR),
+    FERRUS(.8, EnumSpellElement.METAL, EnumSpellElement.ENTROPY),
+    ARGENTUS(1.6, EnumSpellElement.FORM, EnumSpellElement.FLOW),
+    ATLAS(3.2, EnumSpellElement.CONNECTION, EnumSpellElement.SPIRIT),
+    QUAERITUS(6.4, EnumSpellElement.AETHER, EnumSpellElement.SOUL);
 
     public final double awakenedFillPercentage;
     private final EnumSpellElement elementPrimary;
