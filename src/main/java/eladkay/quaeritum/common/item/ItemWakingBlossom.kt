@@ -30,7 +30,7 @@ class ItemWakingBlossom : ItemMod("waking_blossom") {
     fun update(stack: ItemStack, world: World, posX: Int, posZ: Int): ItemStack {
         var biome = world.getBiome(BlockPos(posX, 0, posZ))
         if (biome.isMutation)
-            biome = Biome.REGISTRY.getObjectById(Biome.MUTATION_TO_BASE_ID_MAP[biome])
+            biome = Biome.REGISTRY.getObjectById(Biome.MUTATION_TO_BASE_ID_MAP[biome]) ?: biome
         val biomeName = biome.biomeClass.name
         val allNames = ItemNBTHelper.getList(stack, "biomes", Constants.NBT.TAG_STRING) ?: NBTTagList()
 
@@ -44,8 +44,8 @@ class ItemWakingBlossom : ItemMod("waking_blossom") {
             else {
                 return ItemResource.Resources.AWOKEN_BLOSSOM.stackOf(stack.count)
                         .apply {
-                            tagCompound = stack.tagCompound?.copy().apply { removeTag("biomes") }
-                            if (tagCompound?.keySet.size == 0)
+                            tagCompound = stack.tagCompound?.copy()?.apply { removeTag("biomes") }
+                            if (tagCompound?.keySet?.size == 0)
                                 tagCompound = null
                         }
             }

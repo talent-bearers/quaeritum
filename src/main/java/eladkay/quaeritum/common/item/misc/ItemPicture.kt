@@ -10,7 +10,7 @@ import net.minecraft.util.NonNullList
 //This item is here just for its texture.
 class ItemPicture : ItemMod(LibNames.PICTURE, "picture", "questionMark") {
 
-    override fun getSubItems(tab: CreativeTabs?, subItems: NonNullList<ItemStack>) {
+    override fun getSubItems(tab: CreativeTabs, subItems: NonNullList<ItemStack>) {
         // NO-OP
     }
 }

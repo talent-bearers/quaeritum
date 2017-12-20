@@ -36,7 +36,7 @@ class ItemReagentBag : ItemMod(LibNames.REAGENT_BAG), ISpellReagent {
         }
     }
 
-    override fun getSubItems(tab: CreativeTabs?, subItems: NonNullList<ItemStack>) {
+    override fun getSubItems(tab: CreativeTabs, subItems: NonNullList<ItemStack>) {
         super.getSubItems(tab, subItems)
         if (isInCreativeTab(tab)) {
             val stack = ItemStack(this)

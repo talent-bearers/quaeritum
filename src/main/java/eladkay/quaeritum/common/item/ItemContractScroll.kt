@@ -240,7 +240,7 @@ class ItemContractScroll : ItemMod(LibNames.SCROLL, LibNames.SCROLL, LibNames.SE
         return ActionResult(EnumActionResult.PASS, itemStackIn)
     }
 
-    override fun getSubItems(tab: CreativeTabs?, subItems: NonNullList<ItemStack>) {
+    override fun getSubItems(tab: CreativeTabs, subItems: NonNullList<ItemStack>) {
         if (isInCreativeTab(tab))
             subItems.add(ItemStack(this))
     }

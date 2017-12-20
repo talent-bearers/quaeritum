@@ -33,7 +33,7 @@ object ModItems {
     val opium = ItemOpium()
     val book = ItemMod("book")
     val hiddenBook = object : ItemMod("riftbook") {
-        override fun getSubItems(tab: CreativeTabs?, subItems: NonNullList<ItemStack>) {
+        override fun getSubItems(tab: CreativeTabs, subItems: NonNullList<ItemStack>) {
             // NO-OP
         }
     }

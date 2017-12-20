@@ -3,8 +3,6 @@ package eladkay.quaeritum.api.rituals;
 import com.google.common.collect.HashBiMap;
 import eladkay.quaeritum.api.lib.LibMisc;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.FMLLog;
-import net.minecraftforge.fml.common.Loader;
 
 import java.util.Collection;
 
@@ -15,7 +13,6 @@ public final class RitualRegistry {
     public static HashBiMap<String, IWork> mapWorks = HashBiMap.create();
 
     public static IDiagram registerDiagram(IDiagram ritual, String name) {
-        FMLLog.info("Registering diagram \"" + name + "\".");
 
         String modid = getCurrentModId();
 
@@ -27,7 +24,6 @@ public final class RitualRegistry {
         if (!mapDiagrams.containsKey(name)) {
             mapDiagrams.put(name, ritual);
         } else {
-            FMLLog.warning("Diagram \"" + name + "\" registered twice. Report this to the author of " + Loader.instance().activeModContainer().getModId() + ".");
             return null;
         }
 
@@ -35,7 +31,6 @@ public final class RitualRegistry {
     }
 
     public static IWork registerWork(IWork ritual, String name) {
-        FMLLog.info("Registering work \"" + name + "\".");
 
         String modid = getCurrentModId();
 
@@ -47,7 +42,6 @@ public final class RitualRegistry {
         if (!mapWorks.containsKey(name)) {
             mapWorks.put(name, ritual);
         } else {
-            FMLLog.warning("Work \"" + name + "\" registered twice. Report this to the author of " + Loader.instance().activeModContainer().getModId() + ".");
             return null;
         }
 

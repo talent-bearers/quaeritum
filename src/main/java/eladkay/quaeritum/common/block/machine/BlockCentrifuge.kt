@@ -54,7 +54,7 @@ class BlockCentrifuge : BlockModContainer(LibNames.CENTRIFUGE, Material.CLOTH) {
     override fun getStateForPlacement(world: World?, pos: BlockPos?, facing: EnumFacing?, hitX: Float, hitY: Float, hitZ: Float, meta: Int, placer: EntityLivingBase, hand: EnumHand?): IBlockState
             = defaultState.withProperty(BlockHorizontal.FACING, placer.horizontalFacing)
 
-    override fun hasComparatorInputOverride(state: IBlockState?): Boolean = true
+    override fun hasComparatorInputOverride(state: IBlockState): Boolean = true
     override fun getComparatorInputOverride(blockState: IBlockState, worldIn: World, pos: BlockPos): Int {
         return (worldIn.getTileEntity(pos) as? TileCentrifuge)?.getComparatorOutput() ?: 0
     }
