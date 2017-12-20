@@ -74,12 +74,11 @@ public final class AnimusHelper {
         private static final String TAG_INFUSED = "infused";
         private static final String TAG_ANIMUS_RARITY = "animusRarity";
         private static final String TAG_LAST_KNOWN_USERNAME = "lastUsername";
+        private static final Map<UUID, Integer> cachedColors = new HashMap<>();
 
         public static int getAnimusColor(EntityPlayer player) {
             return getAnimusColor(player.getUniqueID());
         }
-
-        private static final Map<UUID, Integer> cachedColors = new HashMap<>();
 
         public static int getAnimusColor(UUID uuid) {
             if (cachedColors.containsKey(uuid)) return cachedColors.get(uuid);

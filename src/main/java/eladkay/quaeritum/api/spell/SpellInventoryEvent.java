@@ -11,25 +11,12 @@ import java.util.List;
 
 /**
  * @author WireSegal
- *         Created at 9:13 PM on 2/10/17.
+ * Created at 9:13 PM on 2/10/17.
  */
 public final class SpellInventoryEvent extends Event {
     private final EntityPlayer player;
-
-    public EntityPlayer getPlayer() {
-        return player;
-    }
-
-    public EnumSpellElement getElement() {
-        return element;
-    }
-
     private final EnumSpellElement element;
     private final List<IItemHandlerModifiable> handlers;
-
-    public List<IItemHandlerModifiable> getHandlers() {
-        return handlers;
-    }
 
     public SpellInventoryEvent(EntityPlayer player, EnumSpellElement element, List<IItemHandlerModifiable> handlers) {
         this.player = player;
@@ -42,5 +29,17 @@ public final class SpellInventoryEvent extends Event {
         SpellInventoryEvent event = new SpellInventoryEvent(player, element, Lists.newArrayList(playerHandler));
         MinecraftForge.EVENT_BUS.post(event);
         return event.getHandlers();
+    }
+
+    public EntityPlayer getPlayer() {
+        return player;
+    }
+
+    public EnumSpellElement getElement() {
+        return element;
+    }
+
+    public List<IItemHandlerModifiable> getHandlers() {
+        return handlers;
     }
 }

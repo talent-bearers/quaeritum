@@ -19,7 +19,7 @@ import static com.teamwizardry.librarianlib.features.helpers.CommonUtilMethods.g
 
 /**
  * @author WireSegal
- *         Created at 9:19 PM on 2/10/17.
+ * Created at 9:19 PM on 2/10/17.
  */
 public final class ContractRegistry {
     private static final RegistryNamespaced<ResourceLocation, IContractOath> oaths = new RegistryNamespaced<>();
@@ -130,7 +130,8 @@ public final class ContractRegistry {
 
     @NotNull
     public static IContractOath registerOath(@NotNull String id, int length) {
-        return registerOath(getKey(id), length, (entityPlayer, itemStack, world, blockPos) -> {});
+        return registerOath(getKey(id), length, (entityPlayer, itemStack, world, blockPos) -> {
+        });
     }
 
     @Nullable

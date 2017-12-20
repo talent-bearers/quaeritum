@@ -13,7 +13,7 @@ import static eladkay.quaeritum.api.spell.render.LineSymbolInstruction.R2O2;
 
 /**
  * @author WireSegal
- *         Created at 11:20 PM on 7/1/17.
+ * Created at 11:20 PM on 7/1/17.
  */
 public enum EnumSpellElement implements ISymbolCarrier {
     EARTH(new Color(0x794715), 'V', new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
@@ -79,7 +79,7 @@ public enum EnumSpellElement implements ISymbolCarrier {
             return Color.HSBtoRGB((ClientTickHandler.getTicksInGame() * 2L % 360L) / 360.0F, 0.8F, 1.0F);
 
         int c = color.getRGB();
-        int add = (int)(MathHelper.sin(ClientTickHandler.getTicksInGame() * 0.2f) * 24);
+        int add = (int) (MathHelper.sin(ClientTickHandler.getTicksInGame() * 0.2f) * 24);
         int r = (c & (0xff0000)) >> 16;
         int g = (c & (0x00ff00)) >> 8;
         int b = (c & (0x0000ff));

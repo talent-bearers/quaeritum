@@ -1,7 +1,7 @@
 package eladkay.quaeritum.api.spell.render;
 
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -9,14 +9,13 @@ import org.lwjgl.opengl.GL11;
 
 /**
  * @author WireSegal
- *         Created at 8:47 PM on 7/26/17.
+ * Created at 8:47 PM on 7/26/17.
  */
 public class LineSymbolInstruction implements ISymbolInstruction {
-    public final float x1, y1, x2, y2;
-
     public static final float R2O2 = 1 / (float) Math.sqrt(2) - 0.5f;
     public static final float CIRCLE_EDGE = (float) Math.sqrt(3) / 4 + 0.5f;
     public static final float CIRCLE_EDGE_2 = (float) Math.sqrt(15) / 8 + 0.5f;
+    public final float x1, y1, x2, y2;
 
     public LineSymbolInstruction(float x1, float y1, float x2, float y2) {
         this.x1 = x1 * 15;

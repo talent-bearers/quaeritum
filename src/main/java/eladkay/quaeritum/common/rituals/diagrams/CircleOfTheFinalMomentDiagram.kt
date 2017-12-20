@@ -1,8 +1,6 @@
 package eladkay.quaeritum.common.rituals.diagrams
 
 
-
-
 import eladkay.quaeritum.api.rituals.IDiagram
 import eladkay.quaeritum.api.rituals.PositionedBlock
 import eladkay.quaeritum.api.rituals.PositionedBlockChalk

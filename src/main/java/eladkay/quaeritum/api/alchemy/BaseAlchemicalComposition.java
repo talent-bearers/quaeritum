@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * @author WireSegal
- *         Created at 8:40 PM on 8/20/17.
+ * Created at 8:40 PM on 8/20/17.
  */
 public class BaseAlchemicalComposition implements IAlchemicalComposition {
 

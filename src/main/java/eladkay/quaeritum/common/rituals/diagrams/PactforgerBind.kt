@@ -13,7 +13,6 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 
 
-
 /**
  * @author WireSegal
  * Created at 12:04 AM on 12/17/17.

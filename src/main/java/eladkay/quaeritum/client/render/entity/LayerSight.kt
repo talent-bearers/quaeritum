@@ -15,9 +15,6 @@ import net.minecraft.util.math.MathHelper
 import org.lwjgl.opengl.GL11
 
 
-
-
-
 /**
  * @author WireSegal
  * Created at 9:22 PM on 2/6/17.

@@ -23,14 +23,14 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler
 
 class BlockFluidJet : BlockModContainer("fluid_jet", Material.IRON) {
     companion object {
-        val UP_AABB    = AxisAlignedBB(6 / 16.0, 9 / 16.0, 6 / 16.0, 10 / 16.0,      1.0, 10 / 16.0)
-        val DOWN_AABB  = AxisAlignedBB(6 / 16.0,      0.0, 6 / 16.0, 10 / 16.0, 7 / 16.0, 10 / 16.0)
+        val UP_AABB = AxisAlignedBB(6 / 16.0, 9 / 16.0, 6 / 16.0, 10 / 16.0, 1.0, 10 / 16.0)
+        val DOWN_AABB = AxisAlignedBB(6 / 16.0, 0.0, 6 / 16.0, 10 / 16.0, 7 / 16.0, 10 / 16.0)
 
-        val SOUTH_AABB = AxisAlignedBB(6 / 16.0, 6 / 16.0, 9 / 16.0, 10 / 16.0, 10 / 16.0,      1.0)
-        val NORTH_AABB = AxisAlignedBB(6 / 16.0, 6 / 16.0,      0.0, 10 / 16.0, 10 / 16.0, 7 / 16.0)
+        val SOUTH_AABB = AxisAlignedBB(6 / 16.0, 6 / 16.0, 9 / 16.0, 10 / 16.0, 10 / 16.0, 1.0)
+        val NORTH_AABB = AxisAlignedBB(6 / 16.0, 6 / 16.0, 0.0, 10 / 16.0, 10 / 16.0, 7 / 16.0)
 
-        val EAST_AABB  = AxisAlignedBB(9 / 16.0, 6 / 16.0, 6 / 16.0,      1.0, 10 / 16.0, 10 / 16.0)
-        val WEST_AABB  = AxisAlignedBB(     0.0, 6 / 16.0, 6 / 16.0, 7 / 16.0, 10 / 16.0, 10 / 16.0)
+        val EAST_AABB = AxisAlignedBB(9 / 16.0, 6 / 16.0, 6 / 16.0, 1.0, 10 / 16.0, 10 / 16.0)
+        val WEST_AABB = AxisAlignedBB(0.0, 6 / 16.0, 6 / 16.0, 7 / 16.0, 10 / 16.0, 10 / 16.0)
 
         val FACING: PropertyDirection = PropertyDirection.create("attachment")
 

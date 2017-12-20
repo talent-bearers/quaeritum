@@ -11,29 +11,29 @@ import java.util.List;
  */
 public class InterpScale implements InterpFunction<Float> {
 
-	private float start;
-	private float finish;
+    private float start;
+    private float finish;
 
-	public InterpScale(float start, float finish) {
+    public InterpScale(float start, float finish) {
 
-		this.start = start;
-		this.finish = finish;
-	}
+        this.start = start;
+        this.finish = finish;
+    }
 
-	@Override
-	public Float get(float v) {
-		return Math.abs((start * (1 - v)) + (finish * v));
-	}
+    @Override
+    public Float get(float v) {
+        return Math.abs((start * (1 - v)) + (finish * v));
+    }
 
-	@Nonnull
-	@Override
-	public InterpFunction<Float> reverse() {
-		return null;
-	}
+    @Nonnull
+    @Override
+    public InterpFunction<Float> reverse() {
+        return null;
+    }
 
-	@Nonnull
-	@Override
-	public List<Float> list(int i) {
-		return null;
-	}
+    @Nonnull
+    @Override
+    public List<Float> list(int i) {
+        return null;
+    }
 }

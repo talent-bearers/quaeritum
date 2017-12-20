@@ -148,7 +148,6 @@ class ClientProxy : CommonProxy() {
     }
 
 
-
     override fun init(e: FMLInitializationEvent) {
         super.init(e)
 

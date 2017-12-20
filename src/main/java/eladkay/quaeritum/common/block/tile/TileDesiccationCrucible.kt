@@ -71,8 +71,10 @@ class TileDesiccationCrucible : TileModTickable() {
     }).setSides(EnumFacing.DOWN)
 
     @NoSync
-    @Save var currentFuelTime = 0
+    @Save
+    var currentFuelTime = 0
     @NoSync
-    @Save var processTime = 0
+    @Save
+    var processTime = 0
 
 }

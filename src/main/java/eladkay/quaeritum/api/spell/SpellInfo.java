@@ -4,8 +4,8 @@ import javax.annotation.Nonnull;
 
 /**
  * @author WireSegal
- *         Created at 3:52 AM on 7/2/17.
- *
+ * Created at 3:52 AM on 7/2/17.
+ * <p>
  * A simple data class to hold both an alchemical spell and an integer.
  */
 public final class SpellInfo {

@@ -118,7 +118,8 @@ object RenderHelper {
         GlStateManager.enableTexture2D()
     }
 
-    @JvmOverloads fun drawTexturedModalRect(par1: Int, par2: Int, z: Float, par3: Int, par4: Int, par5: Int, par6: Int, f: Float = 0.00390625f, f1: Float = 0.00390625f) {
+    @JvmOverloads
+    fun drawTexturedModalRect(par1: Int, par2: Int, z: Float, par3: Int, par4: Int, par5: Int, par6: Int, f: Float = 0.00390625f, f1: Float = 0.00390625f) {
         val tessellator = Tessellator.getInstance()
         tessellator.buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX)
         tessellator.buffer.pos(par1.toDouble(), (par2 + par6).toDouble(), z.toDouble()).tex((par3 * f).toDouble(), ((par4 + par6) * f1).toDouble()).endVertex()

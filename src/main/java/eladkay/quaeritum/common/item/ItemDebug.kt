@@ -105,7 +105,7 @@ class ItemDebug : ItemMod(LibNames.DEBUG) {
                     }
                 }
                 if (out != "")
-                    Quaeritum.proxy!!.copyText(out)
+                    Quaeritum.proxy.copyText(out)
                 if (!worldIn.isRemote) {
                     if (out != "")
                         playerIn.sendMessage(TextComponentString(TextFormatting.GREEN + "Copied Work information to clipboard"))

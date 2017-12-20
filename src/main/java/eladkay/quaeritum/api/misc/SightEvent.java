@@ -5,17 +5,16 @@ import net.minecraftforge.fml.common.eventhandler.Event;
 
 /**
  * @author WireSegal
- *         Created at 9:06 PM on 2/6/17.
+ * Created at 9:06 PM on 2/6/17.
  */
 public final class SightEvent extends Event {
+
+    private final EntityPlayer player;
+    private boolean hasThirdEye = false;
 
     public SightEvent(EntityPlayer player) {
         this.player = player;
     }
-
-    private final EntityPlayer player;
-
-    private boolean hasThirdEye = false;
 
     public EntityPlayer getPlayer() {
         return player;

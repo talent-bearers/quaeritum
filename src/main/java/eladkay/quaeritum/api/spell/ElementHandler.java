@@ -14,13 +14,11 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Arrays;
 import java.util.List;
 
-import static net.minecraft.util.EnumActionResult.FAIL;
-import static net.minecraft.util.EnumActionResult.PASS;
-import static net.minecraft.util.EnumActionResult.SUCCESS;
+import static net.minecraft.util.EnumActionResult.*;
 
 /**
  * @author WireSegal
- *         Created at 10:27 PM on 7/28/17.
+ * Created at 10:27 PM on 7/28/17.
  */
 public final class ElementHandler {
 
@@ -33,21 +31,23 @@ public final class ElementHandler {
     public static EnumActionResult takeReagent(@NotNull EntityPlayer player, @NotNull EnumSpellElement element, boolean take) {
         List<IItemHandlerModifiable> inventories = SpellInventoryEvent.getHandlers(player, element);
         EnumActionResult result = PASS;
-        main: for (IItemHandlerModifiable inventory : inventories) for (int slot = 0; slot < inventory.getSlots(); slot++) {
-            ItemStack stack = inventory.getStackInSlot(slot);
-            if (stack.getItem() instanceof ISpellReagent) {
-                ISpellReagent item = (ISpellReagent) stack.getItem();
-                ActionResult<ItemStack> actionResult = item.consumeCharge(stack, element, 1);
-                if (actionResult.getType() != PASS && result == PASS)
-                    result = actionResult.getType();
+        main:
+        for (IItemHandlerModifiable inventory : inventories)
+            for (int slot = 0; slot < inventory.getSlots(); slot++) {
+                ItemStack stack = inventory.getStackInSlot(slot);
+                if (stack.getItem() instanceof ISpellReagent) {
+                    ISpellReagent item = (ISpellReagent) stack.getItem();
+                    ActionResult<ItemStack> actionResult = item.consumeCharge(stack, element, 1);
+                    if (actionResult.getType() != PASS && result == PASS)
+                        result = actionResult.getType();
 
-                if (actionResult.getType() != PASS && take)
-                    inventory.setStackInSlot(slot, actionResult.getResult());
+                    if (actionResult.getType() != PASS && take)
+                        inventory.setStackInSlot(slot, actionResult.getResult());
 
-                if (actionResult.getType() == SUCCESS)
-                    break main;
+                    if (actionResult.getType() == SUCCESS)
+                        break main;
+                }
             }
-        }
 
         return result;
     }

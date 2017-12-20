@@ -36,7 +36,7 @@ class ItemHollower : ItemMod(LibNames.HOLLOWER) {
     override fun onItemUse(playerIn: EntityPlayer?, worldIn: World?, pos: BlockPos, hand: EnumHand?, facing: EnumFacing?, hitX: Float, hitY: Float, hitZ: Float): EnumActionResult {
         val stack = playerIn!!.getHeldItem(hand)
         ItemNBTHelper.setLong(stack, LibNBT.CORNER2, pos.toLong())
-        playerIn!!.sendMessage(TextComponentString(TextFormatting.GREEN + "Second corner set to: " + pos))
+        playerIn.sendMessage(TextComponentString(TextFormatting.GREEN + "Second corner set to: " + pos))
         return EnumActionResult.PASS
     }
 
@@ -57,7 +57,7 @@ class ItemHollower : ItemMod(LibNames.HOLLOWER) {
         }
         poses.forEach(Consumer<BlockPos> { worldIn!!.setBlockToAir(it) })
 
-        playerIn!!.sendMessage(TextComponentString(TextFormatting.GREEN + "Done! Blocks affected: " + flag))
+        playerIn.sendMessage(TextComponentString(TextFormatting.GREEN + "Done! Blocks affected: " + flag))
         return ActionResult.newResult(EnumActionResult.PASS, stack)
     }
 }

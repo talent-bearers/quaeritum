@@ -3,14 +3,14 @@ package eladkay.quaeritum.api.machines;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import org.jetbrains.annotations.NotNull;
-
 import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author WireSegal
- *         Created at 9:56 AM on 2/1/17.
+ * Created at 9:56 AM on 2/1/17.
  */
 public final class CentrifugeRecipes {
     @NotNull

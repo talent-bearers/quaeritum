@@ -36,8 +36,7 @@ class EntityChaosborn : EntityMob {
         setSize(1f, 1f)
     }
 
-    constructor(world: World, quality: Int, x: Int, y: Int, z: Int) : this(world, quality, BlockPos(x, y, z)) {
-    }
+    constructor(world: World, quality: Int, x: Int, y: Int, z: Int) : this(world, quality, BlockPos(x, y, z))
 
     constructor(world: World, quality: Int, x: Double, y: Double, z: Double) : super(world) {
         setPosition(x, y, z)
@@ -107,11 +106,6 @@ class EntityChaosborn : EntityMob {
         this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).baseValue = 0.25
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).baseValue = 0.75
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).baseValue = ((quality + 1) * 5).toDouble()
-    }
-
-    //Unused.
-    override fun onDeath(cause: DamageSource) {
-        super.onDeath(cause)
     }
 
     //Used to apply status effects.

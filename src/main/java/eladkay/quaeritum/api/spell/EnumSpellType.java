@@ -4,7 +4,7 @@ import java.util.Locale;
 
 /**
  * @author WireSegal
- *         Created at 11:20 PM on 7/1/17.
+ * Created at 11:20 PM on 7/1/17.
  */
 public enum EnumSpellType {
     /**

@@ -35,8 +35,10 @@ class BlockChalk : BlockModColored(LibNames.CHALK_BLOCK, Material.CIRCUITS), IBl
     private val WIRE_AABBS = arrayOf(AxisAlignedBB(0.1875, 0.0, 0.1875, 0.8125, 0.0625, 0.8125), AxisAlignedBB(0.1875, 0.0, 0.1875, 0.8125, 0.0625, 1.0), AxisAlignedBB(0.0, 0.0, 0.1875, 0.8125, 0.0625, 0.8125), AxisAlignedBB(0.0, 0.0, 0.1875, 0.8125, 0.0625, 1.0), AxisAlignedBB(0.1875, 0.0, 0.0, 0.8125, 0.0625, 0.8125), AxisAlignedBB(0.1875, 0.0, 0.0, 0.8125, 0.0625, 1.0), AxisAlignedBB(0.0, 0.0, 0.0, 0.8125, 0.0625, 0.8125), AxisAlignedBB(0.0, 0.0, 0.0, 0.8125, 0.0625, 1.0), AxisAlignedBB(0.1875, 0.0, 0.1875, 1.0, 0.0625, 0.8125), AxisAlignedBB(0.1875, 0.0, 0.1875, 1.0, 0.0625, 1.0), AxisAlignedBB(0.0, 0.0, 0.1875, 1.0, 0.0625, 0.8125), AxisAlignedBB(0.0, 0.0, 0.1875, 1.0, 0.0625, 1.0), AxisAlignedBB(0.1875, 0.0, 0.0, 1.0, 0.0625, 0.8125), AxisAlignedBB(0.1875, 0.0, 0.0, 1.0, 0.0625, 1.0), AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 0.0625, 0.8125), AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 0.0625, 1.0))
 
     override val itemColorFunction: ((ItemStack, Int) -> Int)?
-        get() = { stack, _ -> if (ItemNBTHelper.getBoolean(stack.copy(), LibNBT.FLAT, false) && stack.itemDamage < 16)
-            ItemDye.DYE_COLORS[15 - stack.itemDamage] else 0xFFFFFF }
+        get() = { stack, _ ->
+            if (ItemNBTHelper.getBoolean(stack.copy(), LibNBT.FLAT, false) && stack.itemDamage < 16)
+                ItemDye.DYE_COLORS[15 - stack.itemDamage] else 0xFFFFFF
+        }
 
     override val blockColorFunction: ((IBlockState, IBlockAccess?, BlockPos?, Int) -> Int)?
         get() = { state, _, _, _ -> state.getValue(BlockModColored.COLOR).colorValue }
@@ -181,7 +183,7 @@ class BlockChalk : BlockModColored(LibNames.CHALK_BLOCK, Material.CIRCUITS), IBl
         }
     }
 
-    enum class EnumAttachPosition() : EnumStringSerializable {
+    enum class EnumAttachPosition : EnumStringSerializable {
         UP,
         SIDE,
         NONE;

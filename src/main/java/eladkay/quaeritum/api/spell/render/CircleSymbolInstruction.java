@@ -1,7 +1,7 @@
 package eladkay.quaeritum.api.spell.render;
 
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -9,12 +9,11 @@ import org.lwjgl.opengl.GL11;
 
 /**
  * @author WireSegal
- *         Created at 8:47 PM on 7/26/17.
+ * Created at 8:47 PM on 7/26/17.
  */
 public class CircleSymbolInstruction implements ISymbolInstruction {
-    public final float cX, cY, radius;
-
     public static final float RADIUS_MOD = 0.25f / (float) Math.sqrt(2);
+    public final float cX, cY, radius;
 
     public CircleSymbolInstruction(float cX, float cY, float radius) {
         this.cX = cX * 15;

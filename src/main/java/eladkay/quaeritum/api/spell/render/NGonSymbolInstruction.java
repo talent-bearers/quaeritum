@@ -1,7 +1,7 @@
 package eladkay.quaeritum.api.spell.render;
 
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -9,7 +9,7 @@ import org.lwjgl.opengl.GL11;
 
 /**
  * @author WireSegal
- *         Created at 8:47 PM on 7/26/17.
+ * Created at 8:47 PM on 7/26/17.
  */
 public class NGonSymbolInstruction implements ISymbolInstruction {
     public final float cX, cY, radius, angleOffset;

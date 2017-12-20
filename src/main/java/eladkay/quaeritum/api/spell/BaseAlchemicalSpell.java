@@ -6,15 +6,11 @@ import javax.annotation.Nonnull;
 
 /**
  * @author WireSegal
- *         Created at 10:17 AM on 7/2/17.
- *
+ * Created at 10:17 AM on 7/2/17.
+ * <p>
  * A helpful class that takes an array and a callable lambda in its constructor, and uses those to implement
  */
 public class BaseAlchemicalSpell implements IAlchemicalSpell {
-    public interface SpellRunnable {
-        void cast(@Nonnull EntityPlayer caster, int trailingAether, int totalSpells);
-    }
-
     @Nonnull
     private final EnumSpellElement[] pattern;
     @Nonnull
@@ -23,7 +19,6 @@ public class BaseAlchemicalSpell implements IAlchemicalSpell {
     private final EnumSpellType type;
     @Nonnull
     private final String locKey;
-
     public BaseAlchemicalSpell(@Nonnull EnumSpellElement[] pattern, @Nonnull EnumSpellType type, @Nonnull String locKey, @Nonnull SpellRunnable onCast) {
         this.pattern = pattern;
         this.onCast = onCast;
@@ -52,5 +47,9 @@ public class BaseAlchemicalSpell implements IAlchemicalSpell {
     @Override
     public String getLocalizationKey() {
         return locKey;
+    }
+
+    public interface SpellRunnable {
+        void cast(@Nonnull EntityPlayer caster, int trailingAether, int totalSpells);
     }
 }

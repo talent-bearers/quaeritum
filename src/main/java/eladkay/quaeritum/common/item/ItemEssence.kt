@@ -33,6 +33,7 @@ class ItemEssence : ItemMod(LibNames.ESSENCE, *NAMES), IAnimusResource, ISpellRe
 
     override fun getAnimus(stack: ItemStack)
             = (EnumAnimusTier.fromMeta(stack.itemDamage).awakenedFillPercentage * ModItems.awakened.MAX_ANIMUS).toInt()
+
     override fun getAnimusTier(stack: ItemStack) = EnumAnimusTier.fromMeta(stack.itemDamage)
 
     override fun canAddToReagentBag(stack: ItemStack) = true

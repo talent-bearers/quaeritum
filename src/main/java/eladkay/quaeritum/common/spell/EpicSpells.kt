@@ -62,8 +62,7 @@ object EpicSpells {
             applyShiftedBuff(PotionVoidbind, player, 8, false)
         }
 
-        hope = registerSpell(arrayOf(CONNECTION, AETHER, SPIRIT, FIRE, AIR, WATER, SOUL, FLOW), RESTORATION, "give_them_hope") {
-            player, _, _ ->
+        hope = registerSpell(arrayOf(CONNECTION, AETHER, SPIRIT, FIRE, AIR, WATER, SOUL, FLOW), RESTORATION, "give_them_hope") { player, _, _ ->
 
             var evoker = player.heldItemMainhand
             if (!ItemEvoker.hasEvocation(evoker))

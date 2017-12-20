@@ -16,7 +16,7 @@ import net.minecraft.world.World
 object ParticleHelper {
     fun summonParticleBetweenTwoVectors(worldIn: World, pos1: BlockPos, pos2: BlockPos) {
         if (pos1.subtract(pos2) === BlockPos.ORIGIN)
-            Quaeritum.proxy!!.spawnStafflikeParticles(
+            Quaeritum.proxy.spawnStafflikeParticles(
                     worldIn,
                     pos1.x.toDouble(),
                     pos1.y.toDouble(),
@@ -128,7 +128,7 @@ object ParticleHelper {
                     entityfx = FXBeam(Minecraft.getMinecraft().world, posX, posY, posZ, r.toFloat(), g.toFloat(), b.toFloat(), true)
                 }
 
-                Quaeritum.proxy!!.spawnParticle(entityfx ?: throw IllegalArgumentException(particleName), Minecraft.getMinecraft().world)
+                Quaeritum.proxy.spawnParticle(entityfx ?: throw IllegalArgumentException(particleName), Minecraft.getMinecraft().world)
             }
         }
 

@@ -1,7 +1,6 @@
 package eladkay.quaeritum.common.block.machine
 
 import com.teamwizardry.librarianlib.features.base.block.tile.BlockModContainer
-import eladkay.quaeritum.common.block.tile.TileCompCrucible
 import eladkay.quaeritum.common.block.tile.TileSpiralDistillate
 import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState

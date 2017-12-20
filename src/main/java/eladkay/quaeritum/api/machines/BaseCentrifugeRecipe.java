@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  * @author WireSegal
- *         Created at 10:07 AM on 2/1/17.
+ * Created at 10:07 AM on 2/1/17.
  */
 public class BaseCentrifugeRecipe implements ICentrifugeRecipe {
     @NotNull
@@ -25,6 +25,15 @@ public class BaseCentrifugeRecipe implements ICentrifugeRecipe {
     private final ItemStack output;
     private int steamRequired = 2000;
     private boolean requiresHeat = false;
+
+    public BaseCentrifugeRecipe(@NotNull Object inputOne, @Nullable Object inputTwo, @NotNull ItemStack output) {
+        this.inputOne = convertInputItem(inputOne);
+        if (inputTwo != null)
+            this.inputTwo = convertInputItem(inputTwo);
+        else
+            this.inputTwo = null;
+        this.output = output;
+    }
 
     public boolean requiresHeat() {
         return requiresHeat;
@@ -38,6 +47,7 @@ public class BaseCentrifugeRecipe implements ICentrifugeRecipe {
         this.requiresHeat = requiresHeat;
         return this;
     }
+
     public BaseCentrifugeRecipe setSteamRequired(int steamRequired) {
         this.steamRequired = steamRequired;
         return this;
@@ -47,6 +57,7 @@ public class BaseCentrifugeRecipe implements ICentrifugeRecipe {
     public List<ItemStack> getInputOne() {
         return inputOne;
     }
+
     @Nullable
     public List<ItemStack> getInputTwo() {
         return inputTwo;
@@ -55,15 +66,6 @@ public class BaseCentrifugeRecipe implements ICentrifugeRecipe {
     @NotNull
     public ItemStack getOutput() {
         return output;
-    }
-
-    public BaseCentrifugeRecipe(@NotNull Object inputOne, @Nullable Object inputTwo, @NotNull ItemStack output) {
-        this.inputOne = convertInputItem(inputOne);
-        if (inputTwo != null)
-            this.inputTwo = convertInputItem(inputTwo);
-        else
-            this.inputTwo = null;
-        this.output = output;
     }
 
     private List<ItemStack> convertInputItem(@NotNull Object input) {

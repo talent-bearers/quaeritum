@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * @author WireSegal
- *         Created at 9:11 PM on 2/10/17.
+ * Created at 9:11 PM on 2/10/17.
  */
 public interface IContractOath {
     @NotNull

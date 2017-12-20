@@ -12,19 +12,30 @@ import java.util.List;
 
 /**
  * @author WireSegal
- *         Created at 4:08 AM on 7/2/17.
+ * Created at 4:08 AM on 7/2/17.
  */
 public final class SpellParser {
+    @Nonnull
+    private static final List<IAlchemicalSpell> allSpells = new ArrayList<>();
+    private static final String PREFIX = "quaeritum.spell.";
     @Nonnull
     private final EnumSpellElement[] symbols;
     @Nonnull
     private final SpellInfo[] spells;
 
-    @Nonnull
-    private static final List<IAlchemicalSpell> allSpells = new ArrayList<>();
+    /**
+     * Construct a new parser object from a symbol cache.
+     *
+     * @param symbols The symbol cache to use.
+     */
+    public SpellParser(@Nonnull EnumSpellElement[] symbols) {
+        this.symbols = symbols;
+        this.spells = fromElements(symbols);
+    }
 
     /**
      * Register your spell to be parsable.
+     *
      * @param spell The spell you're registering.
      * @return The registered spell.
      */
@@ -36,7 +47,8 @@ public final class SpellParser {
 
     /**
      * Register your spell to be parsable, using the base behavior.
-     * @param pattern The spell pattern.
+     *
+     * @param pattern  The spell pattern.
      * @param runnable A callback for what to do when the spell is cast.
      * @return The registered spell.
      */
@@ -44,8 +56,6 @@ public final class SpellParser {
     public static IAlchemicalSpell registerSpell(@Nonnull EnumSpellElement[] pattern, @Nonnull EnumSpellType type, @Nonnull String localizationKey, @Nonnull SpellRunnable runnable) {
         return registerSpell(new BaseAlchemicalSpell(pattern, type, localizationKey, runnable));
     }
-
-    private static final String PREFIX = "quaeritum.spell.";
 
     @Nonnull
     public static ITextComponent localized(@Nonnull SpellInfo spellInfo) {
@@ -73,6 +83,7 @@ public final class SpellParser {
 
     /**
      * Takes an array of spell symbols and turns it into castable spells.
+     *
      * @param input Spell symbols. While the player's symbol cache is capped at eight, this method has no such limit.
      * @return An array of castable spell objects.
      */
@@ -101,16 +112,8 @@ public final class SpellParser {
     }
 
     /**
-     * Construct a new parser object from a symbol cache.
-     * @param symbols The symbol cache to use.
-     */
-    public SpellParser(@Nonnull EnumSpellElement[] symbols) {
-        this.symbols = symbols;
-        this.spells = fromElements(symbols);
-    }
-
-    /**
      * Fires, in order, each spell contained within the parsed spell.
+     *
      * @param player The player casting the spell.
      */
     public void cast(@Nonnull EntityPlayer player) {

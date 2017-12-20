@@ -44,9 +44,8 @@ class ItemWakingBlossom : ItemMod("waking_blossom") {
             else {
                 return ItemResource.Resources.AWOKEN_BLOSSOM.stackOf(stack.count)
                         .apply {
-                            tagCompound = stack.tagCompound?.copy()
-                                    ?.apply { removeTag("biomes") }
-                            if (tagCompound?.keySet?.size == 0)
+                            tagCompound = stack.tagCompound?.copy().apply { removeTag("biomes") }
+                            if (tagCompound?.keySet.size == 0)
                                 tagCompound = null
                         }
             }

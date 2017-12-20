@@ -1,7 +1,7 @@
 package eladkay.quaeritum.api.spell.render;
 
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
@@ -12,13 +12,12 @@ import static eladkay.quaeritum.api.spell.render.LineSymbolInstruction.R2O2;
 
 /**
  * @author WireSegal
- *         Created at 8:47 PM on 7/26/17.
+ * Created at 8:47 PM on 7/26/17.
  */
 public class HalfCircleSymbolInstruction implements ISymbolInstruction {
-    public final float cX, cY, radius, angleOffset;
-
     public static final float TRI_OFFSET_PARAM = (0.5f - R2O2) / MathHelper.cos((float) Math.PI / 6);
     public static final float TRI_OFFSET = MathHelper.sin((float) Math.PI / 6) * TRI_OFFSET_PARAM + R2O2;
+    public final float cX, cY, radius, angleOffset;
 
     public HalfCircleSymbolInstruction(float cX, float cY, float radius, double angleOffset) {
         this(cX, cY, radius, (float) angleOffset);

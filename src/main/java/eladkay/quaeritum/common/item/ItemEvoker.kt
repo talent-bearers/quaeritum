@@ -48,7 +48,7 @@ class ItemEvoker : ItemMod(LibNames.SOUL_EVOKER), IItemColorProvider {
         fun getEvocationFromStack(stack: ItemStack): Array<EnumSpellElement> {
             if (stack.maxStackSize != 1) return arrayOf()
             if (!ItemNBTHelper.getNBT(stack, false).hasKey("quaeritum_elements")) return arrayOf()
-            return ElementHandler.fromBytes(ItemNBTHelper.getByteArray(stack, "quaeritum_elements")?: byteArrayOf())
+            return ElementHandler.fromBytes(ItemNBTHelper.getByteArray(stack, "quaeritum_elements") ?: byteArrayOf())
         }
 
         fun setStackEvocation(stack: ItemStack, elements: Array<EnumSpellElement>) {
@@ -165,7 +165,7 @@ class ItemEvoker : ItemMod(LibNames.SOUL_EVOKER), IItemColorProvider {
                 setStackEvocation(stack, arrayOf())
                 ElementHandler.setReagents(playerIn, *evocation)
             } else if (ElementHandler.addReagents(playerIn, *evocation) != EnumActionResult.SUCCESS)
-                // todo breaking sound
+            // todo breaking sound
                 return ActionResult(EnumActionResult.SUCCESS, stack)
         }
         return ActionResult(EnumActionResult.SUCCESS, stack)

@@ -1,7 +1,6 @@
 package eladkay.quaeritum.client.render.entity
 
 import eladkay.quaeritum.common.lib.LibLocations
-import net.minecraft.client.renderer.entity.Render
 import net.minecraft.client.renderer.entity.RenderLiving
 import net.minecraft.client.renderer.entity.RenderManager
 import net.minecraft.entity.EntityLiving

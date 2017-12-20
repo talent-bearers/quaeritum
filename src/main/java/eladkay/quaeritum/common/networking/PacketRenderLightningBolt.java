@@ -18,24 +18,24 @@ import org.jetbrains.annotations.NotNull;
 @PacketRegister(Side.CLIENT)
 public class PacketRenderLightningBolt extends PacketBase {
 
-	@Save
-	private Vec3d point1;
-	@Save
-	private Vec3d point2;
-	@Save
-	private long seed;
+    @Save
+    private Vec3d point1;
+    @Save
+    private Vec3d point2;
+    @Save
+    private long seed;
 
-	public PacketRenderLightningBolt() {
-	}
+    public PacketRenderLightningBolt() {
+    }
 
-	public PacketRenderLightningBolt(Vec3d point1, Vec3d point2, long seed) {
-		this.point1 = point1;
-		this.point2 = point2;
-		this.seed = seed;
-	}
+    public PacketRenderLightningBolt(Vec3d point1, Vec3d point2, long seed) {
+        this.point1 = point1;
+        this.point2 = point2;
+        this.seed = seed;
+    }
 
-	@Override
-	public void handle(@NotNull MessageContext messageContext) {
-		LightningRenderer.INSTANCE.addBolt(new LightningGenerator(point1, point2, new RandUtilSeed(seed)).generate(), RandUtil.nextInt(30, 40));
-	}
+    @Override
+    public void handle(@NotNull MessageContext messageContext) {
+        LightningRenderer.INSTANCE.addBolt(new LightningGenerator(point1, point2, new RandUtilSeed(seed)).generate(), RandUtil.nextInt(30, 40));
+    }
 }

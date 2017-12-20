@@ -13,15 +13,17 @@ infix operator fun Long.plus(int: Int) = int.toLong() + this
 infix fun Long.equals(int: Int) = int.toLong() == this
 fun <K, V> K.collect(v: V) = this
 fun <K, V> MutableMap<K, V>.putIfAbsent(key: K, value: V): V? {
-    var v = get(key);
+    var v = get(key)
     if (v == null) {
-        v = put(key, value);
+        v = put(key, value)
     }
-    return v;
+    return v
 }
+
 fun <T, V> Array<T>.add(provider: (V) -> T, array: Array<V>) {
-    for(index in array.indices) this[index] = provider(array[index])
+    for (index in array.indices) this[index] = provider(array[index])
 }
+
 fun arrayOfStrings(int: Int): Array<String> {
-    return Array<String>(int, {""})
+    return Array<String>(int, { "" })
 }

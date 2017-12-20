@@ -34,11 +34,11 @@ object GUIHandler : IGuiHandler {
     }
 
     private fun getStack(p: EntityPlayer, itemClass: Class<*>): ItemStack {
-        var item = p.heldItemMainhand?.item
+        var item = p.heldItemMainhand.item
         if (item != null && itemClass.isInstance(item) || (item is ItemBlock && itemClass.isInstance(item.block)))
             return p.heldItemMainhand
 
-        item = p.heldItemOffhand?.item
+        item = p.heldItemOffhand.item
         if (item != null && itemClass.isInstance(item) || (item is ItemBlock && itemClass.isInstance(item.block)))
             return p.heldItemOffhand
 

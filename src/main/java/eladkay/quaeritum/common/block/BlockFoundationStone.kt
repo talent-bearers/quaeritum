@@ -24,14 +24,14 @@ class BlockFoundationStone : BlockMod(LibNames.FOUNDATION, Material.ROCK), /*IGu
         //constructBook()
     }
 
-   /*fun constructBook() {
-        pages.add(PageText(TooltipHelper.local(LibBook.ENTRY_BLUEPRINT_PAGE1)))
-        ModBook.register(ModBook.pagesAnimus, LibBook.ENTRY_BLUEPRINT_NAME, pages, ItemStack(ModBlocks.blueprint))
-    }
+    /*fun constructBook() {
+         pages.add(PageText(TooltipHelper.local(LibBook.ENTRY_BLUEPRINT_PAGE1)))
+         ModBook.register(ModBook.pagesAnimus, LibBook.ENTRY_BLUEPRINT_NAME, pages, ItemStack(ModBlocks.blueprint))
+     }
 
-    override fun getLinkedEntry(world: World, pos: BlockPos, player: EntityPlayer, stack: ItemStack): ResourceLocation {
-        return ResourceLocation(LibMisc.MOD_ID, LibBook.ENTRY_BLUEPRINT_NAME)
-    }*/
+     override fun getLinkedEntry(world: World, pos: BlockPos, player: EntityPlayer, stack: ItemStack): ResourceLocation {
+         return ResourceLocation(LibMisc.MOD_ID, LibBook.ENTRY_BLUEPRINT_NAME)
+     }*/
 
     override fun createNewTileEntity(worldIn: World, meta: Int): TileEntity {
         return TileEntityFoundationStone()

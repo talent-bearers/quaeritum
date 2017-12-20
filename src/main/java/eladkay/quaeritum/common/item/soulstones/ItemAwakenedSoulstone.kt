@@ -26,7 +26,6 @@ class ItemAwakenedSoulstone(name: String = LibNames.AWAKENED_SOULSTONE) : ItemMo
     val MAX_ANIMUS = 800
 
     override fun getAnimus(stack: ItemStack) = getAnimusLevel(stack)
-    override fun getAnimusTier(stack: ItemStack) = super.getAnimusTier(stack)
 
     override fun drainedStack(stack: ItemStack): ItemStack {
         return ItemStack(ModItems.dormant)
@@ -70,7 +69,8 @@ class ItemAwakenedSoulstone(name: String = LibNames.AWAKENED_SOULSTONE) : ItemMo
 
     companion object {
 
-        @JvmOverloads fun withAnimus(animus: Int, rarity: Int = 0): ItemStack {
+        @JvmOverloads
+        fun withAnimus(animus: Int, rarity: Int = 0): ItemStack {
             val stack = ItemStack(ModItems.awakened)
             ModItems.awakened.setAnimusTier(stack, EnumAnimusTier.fromMeta(rarity))
             ModItems.awakened.setAnimus(stack, animus)

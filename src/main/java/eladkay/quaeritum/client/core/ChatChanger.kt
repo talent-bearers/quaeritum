@@ -19,8 +19,6 @@ import net.minecraftforge.fml.relauncher.SideOnly
 import java.util.*
 
 
-
-
 /**
  * @author WireSegal
  * Created at 10:52 PM on 11/23/17.

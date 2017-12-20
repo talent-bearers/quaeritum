@@ -20,8 +20,7 @@ class EntityAIArrowAttack(par1IRangedAttackMob: IRangedAttackMob, par2: Double, 
     private var field_96562_i: Float = 0.toFloat()
     private var field_82642_h: Float = 0.toFloat()
 
-    constructor(par1IRangedAttackMob: IRangedAttackMob, par2: Double, par4: Int, par5: Float) : this(par1IRangedAttackMob, par2, par4, par4, par5) {
-    }
+    constructor(par1IRangedAttackMob: IRangedAttackMob, par2: Double, par4: Int, par5: Float) : this(par1IRangedAttackMob, par2, par4, par4, par5)
 
     init {
         this.rangedAttackTime = -1

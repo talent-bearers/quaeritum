@@ -209,7 +209,6 @@ class ItemContractScroll : ItemMod(LibNames.SCROLL, LibNames.SCROLL, LibNames.SE
         }
 
 
-
     override fun onItemRightClick(worldIn: World, playerIn: EntityPlayer, hand: EnumHand): ActionResult<ItemStack> {
         val itemStackIn = playerIn.getHeldItem(hand)
 

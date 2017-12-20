@@ -69,8 +69,8 @@ class ItemWorldShield : ItemMod(LibNames.SHIELD) {
                         val xDif = enemyEntity.posX - player.posX
                         val zDif = enemyEntity.posZ - player.posZ
                         player.world.playSound(player, enemyEntity.posX, enemyEntity.posY, enemyEntity.posZ, SoundEvents.BLOCK_ANVIL_LAND, SoundCategory.PLAYERS, 1f, 0.9f + 0.1f * Math.random().toFloat())
-                        enemyEntity.heldItemMainhand?.damageItem(100, enemyEntity)
-                        enemyEntity.heldItemOffhand?.damageItem(100, enemyEntity)
+                        enemyEntity.heldItemMainhand.damageItem(100, enemyEntity)
+                        enemyEntity.heldItemOffhand.damageItem(100, enemyEntity)
                         enemyEntity.knockBack(player, 1f, -xDif, -zDif)
                     }
                 }

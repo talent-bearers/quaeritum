@@ -5,25 +5,24 @@ import net.minecraft.util.math.MathHelper;
 
 /**
  * @author WireSegal
- *         Created at 8:32 PM on 7/26/17.
+ * Created at 8:32 PM on 7/26/17.
  */
 public final class RenderUtil {
 
-    public static float alphaMultiplier = 1f;
-
     public static final int SEGMENTS_CIRCLE = 36;
+    public static float alphaMultiplier = 1f;
 
     public static void renderHalfCircle(BufferBuilder buffer, double cX, double cY, float r, float g, float b, double radius, double thickness, double angleOffset) {
         double outerRadius = radius + thickness;
         double centralRadius = radius - thickness / 2;
 
-        double xShift = MathHelper.cos((float)angleOffset) * radius;
-        double yShift = MathHelper.sin((float)angleOffset) * radius;
+        double xShift = MathHelper.cos((float) angleOffset) * radius;
+        double yShift = MathHelper.sin((float) angleOffset) * radius;
 
         for (int i = 0; i < SEGMENTS_CIRCLE; i++) {
             double angle = i * Math.PI / SEGMENTS_CIRCLE + angleOffset;
-            float normX = MathHelper.cos((float)angle);
-            float normY = MathHelper.sin((float)angle);
+            float normX = MathHelper.cos((float) angle);
+            float normY = MathHelper.sin((float) angle);
             double innerX = cX + normX * radius;
             double innerY = cY + normY * radius;
             double outerX = cX + normX * outerRadius;
@@ -34,9 +33,9 @@ public final class RenderUtil {
 
         for (int i = 0; i < SEGMENTS_CIRCLE; i++) {
             double angle = i * Math.PI / SEGMENTS_CIRCLE + angleOffset + Math.PI;
-            float normX = MathHelper.cos((float)angle);
-            float normXOffset = MathHelper.cos((float)(angle - angleOffset));
-            float normY = MathHelper.sin((float)angle);
+            float normX = MathHelper.cos((float) angle);
+            float normXOffset = MathHelper.cos((float) (angle - angleOffset));
+            float normY = MathHelper.sin((float) angle);
             double length = thickness / (2 + normXOffset);
             double outerX = -xShift + cX + normX * length;
             double outerY = -yShift + cY + normY * length;
@@ -46,8 +45,8 @@ public final class RenderUtil {
 
         for (int i = 0; i <= SEGMENTS_CIRCLE; i++) {
             double angle = i * Math.PI / SEGMENTS_CIRCLE + angleOffset;
-            float normX = MathHelper.cos((float)angle);
-            float normY = MathHelper.sin((float)angle);
+            float normX = MathHelper.cos((float) angle);
+            float normY = MathHelper.sin((float) angle);
             double innerX = cX + normX * radius;
             double innerY = cY + normY * radius;
             double centralX = cX + normX * centralRadius;
@@ -58,9 +57,9 @@ public final class RenderUtil {
 
         for (int i = 0; i < SEGMENTS_CIRCLE; i++) {
             double angle = i * Math.PI / SEGMENTS_CIRCLE + angleOffset - Math.PI;
-            float normX = MathHelper.cos((float)angle);
-            float normXOffset = MathHelper.cos((float)(angle - angleOffset));
-            float normY = MathHelper.sin((float)angle);
+            float normX = MathHelper.cos((float) angle);
+            float normXOffset = MathHelper.cos((float) (angle - angleOffset));
+            float normY = MathHelper.sin((float) angle);
             double length = thickness / (2 - normXOffset);
             double outerX = xShift + cX + normX * length;
             double outerY = yShift + cY + normY * length;
@@ -73,8 +72,8 @@ public final class RenderUtil {
         float atan = fastAtan2((float) (y2 - y1), (float) (x2 - x1));
         for (int i = 0; i < SEGMENTS_CIRCLE; i++) {
             double angle = i * Math.PI / SEGMENTS_CIRCLE + atan + Math.PI / 2;
-            float normX = MathHelper.cos((float)angle);
-            float normY = MathHelper.sin((float)angle);
+            float normX = MathHelper.cos((float) angle);
+            float normY = MathHelper.sin((float) angle);
             double outerX = x1 + normX * thickness;
             double outerY = y1 + normY * thickness;
             buffer.pos(outerX, outerY, 0).color(0, 0, 0, 0).endVertex();
@@ -82,16 +81,16 @@ public final class RenderUtil {
         }
         for (int i = 0; i < SEGMENTS_CIRCLE; i++) {
             double angle = i * Math.PI / SEGMENTS_CIRCLE + atan - Math.PI / 2;
-            float normX = MathHelper.cos((float)angle);
-            float normY = MathHelper.sin((float)angle);
+            float normX = MathHelper.cos((float) angle);
+            float normY = MathHelper.sin((float) angle);
             double outerX = x2 + normX * thickness;
             double outerY = y2 + normY * thickness;
             buffer.pos(outerX, outerY, 0).color(0, 0, 0, 0).endVertex();
             buffer.pos(x2, y2, 0).color(r, g, b, 0.75f * alphaMultiplier).endVertex();
         }
         double angle = atan + Math.PI / 2;
-        float normX = MathHelper.cos((float)angle);
-        float normY = MathHelper.sin((float)angle);
+        float normX = MathHelper.cos((float) angle);
+        float normY = MathHelper.sin((float) angle);
         double outerX = x1 + normX * thickness;
         double outerY = y1 + normY * thickness;
         buffer.pos(outerX, outerY, 0).color(0, 0, 0, 0).endVertex();
@@ -108,8 +107,8 @@ public final class RenderUtil {
 
         for (int i = 0; i <= sides; i++) {
             double angle = i * 2 * Math.PI / sides + angleOffset;
-            float normX = MathHelper.cos((float)angle);
-            float normY = MathHelper.sin((float)angle);
+            float normX = MathHelper.cos((float) angle);
+            float normY = MathHelper.sin((float) angle);
             double innerX = cX + normX * radius;
             double innerY = cY + normY * radius;
             double outerX = cX + normX * outerRadius;
@@ -120,8 +119,8 @@ public final class RenderUtil {
 
         for (int i = sides; i >= 0; i--) {
             double angle = i * 2 * Math.PI / sides + angleOffset;
-            float normX = MathHelper.cos((float)angle);
-            float normY = MathHelper.sin((float)angle);
+            float normX = MathHelper.cos((float) angle);
+            float normY = MathHelper.sin((float) angle);
             double innerX = cX + normX * radius;
             double innerY = cY + normY * radius;
             double centralX = cX + normX * centralRadius;
@@ -130,8 +129,8 @@ public final class RenderUtil {
             buffer.pos(innerX, innerY, 0).color(r, g, b, 0.5f * alphaMultiplier).endVertex();
         }
 
-        float normX = MathHelper.cos((float)angleOffset);
-        float normY = MathHelper.sin((float)angleOffset);
+        float normX = MathHelper.cos((float) angleOffset);
+        float normY = MathHelper.sin((float) angleOffset);
         double innerX = cX + normX * radius;
         double innerY = cY + normY * radius;
         double outerX = cX + normX * outerRadius;

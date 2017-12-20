@@ -8,7 +8,7 @@ import java.util.Iterator;
 
 /**
  * @author WireSegal
- *         Created at 12:52 PM on 2/11/17.
+ * Created at 12:52 PM on 2/11/17.
  */
 public final class RegistryEntry<K, V> {
     private final int id;
@@ -21,6 +21,28 @@ public final class RegistryEntry<K, V> {
         this.id = id;
         this.key = key;
         this.value = value;
+    }
+
+    @NotNull
+    public static <K, V> Iterator<RegistryEntry<K, V>> iterateOverRegistry(@NotNull RegistryNamespaced<K, V> registry) {
+        return new Iterator<RegistryEntry<K, V>>() {
+            Iterator<V> underlying = registry.iterator();
+
+            @Override
+            public boolean hasNext() {
+                return underlying.hasNext();
+            }
+
+            @Override
+            public RegistryEntry<K, V> next() {
+                V next = underlying.next();
+                K key = registry.getNameForObject(next);
+
+                assert key != null;
+
+                return new RegistryEntry<>(registry.getIDForObject(next), key, next);
+            }
+        };
     }
 
     public int getId() {
@@ -76,27 +98,5 @@ public final class RegistryEntry<K, V> {
         result = 31 * result + key.hashCode();
         result = 31 * result + value.hashCode();
         return result;
-    }
-
-    @NotNull
-    public static <K, V> Iterator<RegistryEntry<K, V>> iterateOverRegistry(@NotNull RegistryNamespaced<K, V> registry) {
-        return new Iterator<RegistryEntry<K, V>>() {
-            Iterator<V> underlying = registry.iterator();
-
-            @Override
-            public boolean hasNext() {
-                return underlying.hasNext();
-            }
-
-            @Override
-            public RegistryEntry<K, V> next() {
-                V next = underlying.next();
-                K key = registry.getNameForObject(next);
-
-                assert key != null;
-
-                return new RegistryEntry<>(registry.getIDForObject(next), key, next);
-            }
-        };
     }
 }

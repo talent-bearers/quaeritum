@@ -6,7 +6,6 @@ import net.minecraft.item.EnumDyeColor
 import net.minecraft.util.math.BlockPos
 
 
-
 /**
  * @author WireSegal
  * Created at 12:04 AM on 12/17/17.

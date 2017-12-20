@@ -12,8 +12,7 @@ class EntityCircleOfTheFinalMoment : Entity {
         ticksLeft = 1000
     }
 
-    constructor(worldIn: World, pos: BlockPos) : super(worldIn) {
-    }
+    constructor(worldIn: World, pos: BlockPos) : super(worldIn)
 
     override fun onUpdate() {
         super.onUpdate()

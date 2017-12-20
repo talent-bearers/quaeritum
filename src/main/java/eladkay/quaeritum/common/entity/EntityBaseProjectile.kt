@@ -130,7 +130,7 @@ abstract class EntityBaseProjectile(worldIn: World) : Entity(worldIn), IProjecti
 
         if (trace != null && trace.entityHit is EntityPlayer && shootingEntity is EntityPlayer &&
                 (shootingEntity as EntityPlayer).canAttackPlayer(trace.entityHit as EntityPlayer))
-                trace = null
+            trace = null
 
         if (trace != null)
             onHit(trace)
@@ -171,7 +171,10 @@ abstract class EntityBaseProjectile(worldIn: World) : Entity(worldIn), IProjecti
 
     abstract fun getDefaultDamageSource(): DamageSource?
     abstract fun getShotDamageSource(shooter: Entity): DamageSource?
-    open fun onImpactEntity(entity: Entity, successful: Boolean) { if (entity is EntityEnderman) setDead() }
+    open fun onImpactEntity(entity: Entity, successful: Boolean) {
+        if (entity is EntityEnderman) setDead()
+    }
+
     open fun onImpactBlock(hitVec: Vec3d, side: EnumFacing, position: BlockPos) = setDead()
 
     protected fun onHit(trace: RayTraceResult) {

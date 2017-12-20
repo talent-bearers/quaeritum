@@ -47,10 +47,6 @@ class BlockBlueprint(name: String) : BlockModContainer(name, Material.PISTON) {
         return false
     }
 
-    override fun isSideSolid(base_state: IBlockState?, world: IBlockAccess?, pos: BlockPos?, side: EnumFacing?): Boolean {
-        return super.isSideSolid(base_state, world, pos, side)
-    }
-
     override fun onBlockActivated(worldIn: World, pos: BlockPos, state: IBlockState, playerIn: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
         val tile = worldIn.getTileEntity(pos)
         return tile is TileEntityBlueprint && tile.onBlockActivated()
@@ -61,10 +57,6 @@ class BlockBlueprint(name: String) : BlockModContainer(name, Material.PISTON) {
             val tile = worldIn.getTileEntity(pos)
             if (tile is TileEntityBlueprint) tile.onBlockActivated()
         }
-    }
-
-    override fun observedNeighborChange(observerState: IBlockState?, world: World?, observerPos: BlockPos?, changedBlock: Block?, changedBlockPos: BlockPos?) {
-        super.observedNeighborChange(observerState, world, observerPos, changedBlock, changedBlockPos)
     }
 
     override fun createTileEntity(world: World, state: IBlockState): TileEntity? {

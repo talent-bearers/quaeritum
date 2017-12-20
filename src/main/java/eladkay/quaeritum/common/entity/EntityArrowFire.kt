@@ -9,13 +9,10 @@ import net.minecraft.world.World
 
 class EntityArrowFire : EntityArrow {
 
-    constructor(worldIn: World) : super(worldIn) {
-
-    }
+    constructor(worldIn: World) : super(worldIn)
 
     constructor(world: World, entityChaosborn: EntityChaosborn,
-                p_82196_1_: EntityLivingBase, f: Float, g: Float) : super(world, entityChaosborn) {
-    }
+                p_82196_1_: EntityLivingBase, f: Float, g: Float) : super(world, entityChaosborn)
 
     override fun getArrowStack(): ItemStack {
         return ItemStack(Blocks.AIR)

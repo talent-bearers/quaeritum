@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 /**
  * @author WireSegal
- *         Created at 5:00 PM on 2/8/17.
+ * Created at 5:00 PM on 2/8/17.
  */
 public enum EnumAnimusTier implements IStringSerializable {
 
@@ -22,13 +22,12 @@ public enum EnumAnimusTier implements IStringSerializable {
     QUAERITUS(6.4, EnumSpellElement.AETHER, EnumSpellElement.SOUL);
 
     public final double awakenedFillPercentage;
-    private final EnumSpellElement elementPrimary;
-    private final EnumSpellElement elementSecondary;
-
     public final String oreName = "essence" + Arrays
             .stream(name().toLowerCase().split("_"))
             .map(EnumAnimusTier::capitalize)
             .collect(Collectors.joining());
+    private final EnumSpellElement elementPrimary;
+    private final EnumSpellElement elementSecondary;
 
     EnumAnimusTier(double awakenedFillPercentage, EnumSpellElement elementPrimary, EnumSpellElement elementSecondary) {
         this.awakenedFillPercentage = awakenedFillPercentage;
@@ -44,15 +43,15 @@ public enum EnumAnimusTier implements IStringSerializable {
         return Character.toLowerCase(line.charAt(0)) + line.substring(1);
     }
 
+    @NotNull
+    public static EnumAnimusTier fromMeta(int meta) {
+        return values()[meta % values().length];
+    }
+
     @Override
     @NotNull
     public String getName() {
         return name().toLowerCase(Locale.ROOT);
-    }
-
-    @NotNull
-    public static EnumAnimusTier fromMeta(int meta) {
-        return values()[meta % values().length];
     }
 
     public EnumSpellElement getElementPrimary() {

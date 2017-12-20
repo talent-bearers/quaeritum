@@ -41,16 +41,18 @@ class BlockCentrifuge : BlockModContainer(LibNames.CENTRIFUGE, Material.CLOTH) {
 
     override fun withRotation(state: IBlockState, rot: Rotation): IBlockState
             = state.withProperty(FACING, rot.rotate(state.getValue(FACING)))
+
     override fun withMirror(state: IBlockState, mirrorIn: Mirror): IBlockState
             = state.withRotation(mirrorIn.toRotation(state.getValue(FACING)))
 
     override fun getStateFromMeta(meta: Int): IBlockState
             = defaultState.withProperty(FACING, EnumFacing.getHorizontal(meta))
+
     override fun getMetaFromState(state: IBlockState)
             = state.getValue(FACING).horizontalIndex
 
     override fun getStateForPlacement(world: World?, pos: BlockPos?, facing: EnumFacing?, hitX: Float, hitY: Float, hitZ: Float, meta: Int, placer: EntityLivingBase, hand: EnumHand?): IBlockState
-         = defaultState.withProperty(BlockHorizontal.FACING, placer.horizontalFacing)
+            = defaultState.withProperty(BlockHorizontal.FACING, placer.horizontalFacing)
 
     override fun hasComparatorInputOverride(state: IBlockState?): Boolean = true
     override fun getComparatorInputOverride(blockState: IBlockState, worldIn: World, pos: BlockPos): Int {
@@ -106,8 +108,8 @@ class BlockCentrifuge : BlockModContainer(LibNames.CENTRIFUGE, Material.CLOTH) {
                         if (stack.isEmpty) listOf()
                         else listOf(IndexedValue(it, stack))
                     }.sumByDouble {
-                        it.value.count / Math.min(internalHandler.getStackLimit(it.index, it.value), it.value.maxStackSize).toDouble()
-                    } / internalHandler.slots.toFloat()) * 14.0
+                it.value.count / Math.min(internalHandler.getStackLimit(it.index, it.value), it.value.maxStackSize).toDouble()
+            } / internalHandler.slots.toFloat()) * 14.0
             val floored = Math.floor(unfloored).toInt()
 
             return floored + if (unfloored > 0.0) 1 else 0
@@ -131,7 +133,8 @@ class BlockCentrifuge : BlockModContainer(LibNames.CENTRIFUGE, Material.CLOTH) {
             return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing)
         }
 
-        @Save var totalSteam = 0
+        @Save
+        var totalSteam = 0
 
         override fun update() {
             if (world.isRemote) return

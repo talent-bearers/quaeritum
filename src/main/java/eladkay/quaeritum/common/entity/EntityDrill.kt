@@ -70,7 +70,8 @@ class EntityDrill : EntityBaseProjectile {
                 } else when (dropBlock(shootingEntity, world, position)) {
                     EnumActionResult.SUCCESS -> blocksLeft--
                     EnumActionResult.FAIL -> setDead()
-                    else -> {} // NO-OP
+                    else -> {
+                    } // NO-OP
                 }
         }
     }
@@ -81,7 +82,8 @@ class EntityDrill : EntityBaseProjectile {
             when (dropBlock(shootingEntity, world, position)) {
                 EnumActionResult.SUCCESS -> blocksLeft--
                 EnumActionResult.FAIL -> setDead()
-                else -> {} // NO-OP
+                else -> {
+                } // NO-OP
             }
     }
 

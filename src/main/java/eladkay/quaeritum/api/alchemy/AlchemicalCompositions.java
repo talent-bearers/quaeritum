@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * @author WireSegal
- *         Created at 9:56 AM on 2/1/17.
+ * Created at 9:56 AM on 2/1/17.
  */
 public final class AlchemicalCompositions {
     @NotNull

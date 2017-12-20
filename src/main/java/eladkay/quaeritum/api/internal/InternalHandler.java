@@ -9,7 +9,7 @@ import java.util.Objects;
 
 /**
  * @author WireSegal
- *         Created at 11:51 AM on 7/29/17.
+ * Created at 11:51 AM on 7/29/17.
  */
 public final class InternalHandler {
     @NotNull

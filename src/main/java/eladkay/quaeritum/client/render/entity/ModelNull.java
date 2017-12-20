@@ -8,12 +8,12 @@ import net.minecraft.entity.Entity;
  */
 public class ModelNull extends ModelBase {
 
-	public ModelNull() {
-		textureWidth = 64;
-		textureHeight = 64;
-	}
+    public ModelNull() {
+        textureWidth = 64;
+        textureHeight = 64;
+    }
 
-	@Override
-	public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-	}
+    @Override
+    public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+    }
 }

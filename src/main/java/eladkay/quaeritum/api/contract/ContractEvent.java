@@ -9,7 +9,7 @@ import net.minecraftforge.fml.common.eventhandler.Event;
 
 /**
  * @author WireSegal
- *         Created at 9:13 PM on 2/10/17.
+ * Created at 9:13 PM on 2/10/17.
  */
 @Cancelable
 public final class ContractEvent extends Event {
@@ -18,6 +18,15 @@ public final class ContractEvent extends Event {
     private final EntityPlayer player;
     private final World world;
     private final BlockPos pos;
+
+    public ContractEvent(IContractOath oath, ItemStack contractStack, EntityPlayer player, World world, BlockPos pos) {
+
+        this.oath = oath;
+        this.contractStack = contractStack;
+        this.player = player;
+        this.world = world;
+        this.pos = pos;
+    }
 
     public IContractOath getOath() {
         return oath;
@@ -37,14 +46,5 @@ public final class ContractEvent extends Event {
 
     public BlockPos getPos() {
         return pos;
-    }
-
-    public ContractEvent(IContractOath oath, ItemStack contractStack, EntityPlayer player, World world, BlockPos pos) {
-
-        this.oath = oath;
-        this.contractStack = contractStack;
-        this.player = player;
-        this.world = world;
-        this.pos = pos;
     }
 }

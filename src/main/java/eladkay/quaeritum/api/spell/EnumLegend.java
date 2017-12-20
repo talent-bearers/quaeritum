@@ -8,13 +8,11 @@ import javax.annotation.Nullable;
 import java.awt.*;
 
 import static eladkay.quaeritum.api.spell.render.CircleSymbolInstruction.RADIUS_MOD;
-import static eladkay.quaeritum.api.spell.render.LineSymbolInstruction.CIRCLE_EDGE;
-import static eladkay.quaeritum.api.spell.render.LineSymbolInstruction.CIRCLE_EDGE_2;
-import static eladkay.quaeritum.api.spell.render.LineSymbolInstruction.R2O2;
+import static eladkay.quaeritum.api.spell.render.LineSymbolInstruction.*;
 
 /**
  * @author WireSegal
- *         Created at 11:20 PM on 7/1/17.
+ * Created at 11:20 PM on 7/1/17.
  */
 @SuppressWarnings("SpellCheckingInspection")
 public enum EnumLegend implements ISymbolCarrier {
@@ -105,10 +103,9 @@ public enum EnumLegend implements ISymbolCarrier {
             new LineSymbolInstruction(R2O2, 1 - R2O2, 0.5f, 0f),
             new LineSymbolInstruction(1 - R2O2, 1 - R2O2, 0.5f, 0f));
 
+    public final ISymbolInstruction[] symbolInstructions;
     @Nullable
     private final Color color; // null is treated specially, as rainbow.
-
-    public final ISymbolInstruction[] symbolInstructions;
 
     EnumLegend(@Nullable Color color, ISymbolInstruction... symbolInstructions) {
         this.color = color;
@@ -121,7 +118,7 @@ public enum EnumLegend implements ISymbolCarrier {
             return Color.HSBtoRGB((ClientTickHandler.getTicksInGame() * 2L % 360L) / 360.0F, 0.8F, 1.0F);
 
         int c = color.getRGB();
-        int add = (int)(MathHelper.sin(ClientTickHandler.getTicksInGame() * 0.2f) * 24);
+        int add = (int) (MathHelper.sin(ClientTickHandler.getTicksInGame() * 0.2f) * 24);
         int r = (c & (0xff0000)) >> 16;
         int g = (c & (0x00ff00)) >> 8;
         int b = (c & (0x0000ff));
