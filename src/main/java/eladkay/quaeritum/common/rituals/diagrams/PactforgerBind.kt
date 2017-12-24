@@ -7,8 +7,13 @@ import eladkay.quaeritum.api.rituals.PositionedBlock
 import eladkay.quaeritum.api.rituals.PositionedBlockChalk
 import eladkay.quaeritum.common.item.ModItems
 import eladkay.quaeritum.common.item.oath
+import net.minecraft.entity.Entity
+import net.minecraft.entity.item.EntityItem
+import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.EnumDyeColor
+import net.minecraft.item.ItemStack
 import net.minecraft.tileentity.TileEntity
+import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 
@@ -23,7 +28,7 @@ open class PactforgerBind : IDiagram {
     }
 
     override fun run(world: World, pos: BlockPos, tile: TileEntity) {
-        val oathStack = IDiagram.Helper.stacksAroundAltar(tile, 4.0).firstOrNull { it.item == ModItems.scroll && it.itemDamage == 1 } ?: return
+        val oathStack = getOath(tile, 4.0) ?: return
         val id = oathStack.oath
         if (id >= 0 && id <= ContractRegistry.getMaxId()) {
             val oath = ContractRegistry.getOathFromId(id)
@@ -37,12 +42,28 @@ open class PactforgerBind : IDiagram {
         }
     }
 
+    fun getOath(tile: TileEntity, range: Double): ItemStack? {
+        return tile.world.getEntitiesWithinAABB(Entity::class.java, AxisAlignedBB(tile.pos).grow(range))
+                .asSequence()
+                .filter { (it is EntityPlayer || it is EntityItem)
+                        && tile.pos.distanceSq(it.posX, it.posY, it.posZ) < range * range }
+                .sortedBy { it.getDistanceSq(tile.pos) }
+                .map {
+                    if (it is EntityPlayer) {
+                        it.heldItemMainhand
+                    } else
+                        (it as EntityItem).item
+                }.filter {
+            it.item == ModItems.scroll && it.itemDamage == 1
+        }.firstOrNull()
+    }
+
     override fun canRitualRun(world: World?, pos: BlockPos, tile: TileEntity): Boolean {
         return true
     }
 
     override fun hasRequiredItems(world: World?, pos: BlockPos, tile: TileEntity): Boolean {
-        return IDiagram.Helper.stacksAroundAltar(tile, 4.0).any { it.item == ModItems.scroll }
+        return getOath(tile, 4.0) != null
     }
 
     override fun buildChalks(chalks: MutableList<PositionedBlock>) {

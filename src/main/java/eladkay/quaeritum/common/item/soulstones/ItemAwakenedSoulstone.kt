@@ -26,7 +26,8 @@ class ItemAwakenedSoulstone(name: String = LibNames.AWAKENED_SOULSTONE) : ItemMo
     val MAX_ANIMUS = 800
 
     override fun getAnimus(stack: ItemStack) = getAnimusLevel(stack)
-    override fun getAnimusTier(stack: ItemStack) = (this as ISoulstone).getAnimusTier(stack)
+    @Suppress("RedundantOverride")
+    override fun getAnimusTier(stack: ItemStack) = super.getAnimusTier(stack)
 
     override fun drainedStack(stack: ItemStack): ItemStack {
         return ItemStack(ModItems.dormant)

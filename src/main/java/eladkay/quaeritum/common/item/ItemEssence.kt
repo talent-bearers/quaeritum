@@ -40,16 +40,15 @@ class ItemEssence : ItemMod(LibNames.ESSENCE, *NAMES), IAnimusResource, ISpellRe
 
     override fun chargesForElement(stack: ItemStack, element: EnumSpellElement): Int {
         val tier = getAnimusTier(stack)
-        return if (element == tier.elementPrimary) 4 * stack.count
-        else if (element == tier.elementSecondary) 2 * stack.count
-        else -1
+        return when (element) {
+            tier.elementPrimary -> 50 * stack.count
+            tier.elementSecondary -> 20 * stack.count
+            else -> -1
+        }
     }
 
     override fun consumeCharge(stack: ItemStack, element: EnumSpellElement, charges: Int): ActionResult<ItemStack> {
-        val tier = getAnimusTier(stack)
-        val amountPerItem = if (element == tier.elementPrimary) 4
-        else if (element == tier.elementSecondary) 2
-        else return ActionResult(EnumActionResult.PASS, stack)
+        val amountPerItem = chargesForElement(stack, element) / stack.count
 
         val totalAmount = amountPerItem * stack.count
         if (totalAmount < charges)
