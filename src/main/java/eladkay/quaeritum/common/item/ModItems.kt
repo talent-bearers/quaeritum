@@ -15,6 +15,7 @@ object ModItems {
     val dormant = ItemDormantSoulstone()
     val awakened = ItemAwakenedSoulstone()
     val passionate = ItemPassionateSoulstone()
+    val vibrant = ItemVibrantSoulstone()
     val passive = ItemWorldSoulstone()
     val attuned = ItemAttunedSoulstone()
     val fertilizer = ItemFertilizer()

@@ -5,41 +5,48 @@ import eladkay.quaeritum.api.animus.AnimusHelper
 import eladkay.quaeritum.api.animus.EnumAnimusTier
 import eladkay.quaeritum.api.animus.INetworkProvider
 import eladkay.quaeritum.common.lib.LibNames
+import net.minecraft.block.BlockDispenser
 import net.minecraft.client.util.ITooltipFlag
+import net.minecraft.dispenser.IBlockSource
 import net.minecraft.entity.Entity
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.init.Bootstrap
 import net.minecraft.init.SoundEvents
+import net.minecraft.item.ItemDye
 import net.minecraft.item.ItemStack
-import net.minecraft.util.ActionResult
-import net.minecraft.util.EnumActionResult
-import net.minecraft.util.EnumHand
-import net.minecraft.util.SoundCategory
+import net.minecraft.util.*
+import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 
-class ItemPassionateSoulstone : ItemMod(LibNames.PASSIONATE_SOULSTONE), INetworkProvider {
+/**
+ * @author WireSegal
+ * Created at 10:39 AM on 12/25/17.
+ */
+class ItemVibrantSoulstone : ItemMod(LibNames.VIBRANT_SOULSTONE), INetworkProvider {
 
     init {
         setMaxStackSize(1)
-    }
+        BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(this, object : Bootstrap.BehaviorDispenseOptional() {
+            override fun dispenseStack(source: IBlockSource, stack: ItemStack): ItemStack {
+                this.successful = true
+                val world = source.world
+                val pos = source.blockPos.offset(source.blockState.getValue(BlockDispenser.FACING))
+                val oriCount = stack.count
+                if (ItemDye.applyBonemeal(stack, world, pos)) {
+                    if (!world.isRemote) world.playEvent(2005, pos, 0)
+                } else this.successful = false
+                stack.count = oriCount
 
-    override fun getContainerItem(itemStack: ItemStack): ItemStack {
-        if (getPlayer(itemStack) == null) return ItemStack.EMPTY
-        AnimusHelper.Network.addAnimus(getPlayer(itemStack), -4)
-        itemStack.grow(1)
-        val copiedStack = itemStack.copy()
-        itemStack.shrink(1)
-        return copiedStack
+                return stack
+            }
+        })
     }
 
     @SideOnly(Side.CLIENT)
     override fun addInformation(stack: ItemStack, world: World?, tooltip: MutableList<String>, advanced: ITooltipFlag) {
         AnimusHelper.Network.addInformation(stack, tooltip, advanced.isAdvanced)
-    }
-
-    override fun hasContainerItem(itemStack: ItemStack?): Boolean {
-        return true
     }
 
     override fun isProvider(stack: ItemStack): Boolean {
@@ -59,11 +66,6 @@ class ItemPassionateSoulstone : ItemMod(LibNames.PASSIONATE_SOULSTONE), INetwork
             setPlayer(stack, entityIn.uniqueID)
     }
 
-    override fun getItemBurnTime(fuel: ItemStack): Int {
-        return if (AnimusHelper.Network.getAnimus(getPlayer(fuel)) >= 4 &&
-                AnimusHelper.Network.getTier(getPlayer(fuel)).ordinal >= EnumAnimusTier.LUCIS.ordinal) 200 else 0
-    }
-
     override fun onItemRightClick(worldIn: World, playerIn: EntityPlayer, hand: EnumHand): ActionResult<ItemStack> {
         val itemStackIn = playerIn.getHeldItem(hand)
 
@@ -74,5 +76,19 @@ class ItemPassionateSoulstone : ItemMod(LibNames.PASSIONATE_SOULSTONE), INetwork
         }
         return super.onItemRightClick(worldIn, playerIn, hand)
     }
-}
 
+    override fun onItemUse(player: EntityPlayer, worldIn: World, pos: BlockPos, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): EnumActionResult {
+        val stack = player.getHeldItem(hand)
+        val uuid = getPlayer(stack)
+        val oriCount = stack.count
+        if (AnimusHelper.Network.requestAnimus(uuid, 4, EnumAnimusTier.VERDIS, false) &&
+                ItemDye.applyBonemeal(stack, worldIn, pos, player, hand)) {
+            AnimusHelper.Network.requestAnimus(uuid, 4, EnumAnimusTier.VERDIS, true)
+            if (!worldIn.isRemote)
+                worldIn.playEvent(2005, pos, 0)
+            stack.count = oriCount
+            return EnumActionResult.SUCCESS
+        }
+        return EnumActionResult.PASS
+    }
+}

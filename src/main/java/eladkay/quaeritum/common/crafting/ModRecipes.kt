@@ -22,6 +22,8 @@ import net.minecraft.item.crafting.FurnaceRecipes
 import net.minecraft.item.crafting.Ingredient
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.fluids.FluidRegistry
+import net.minecraftforge.fluids.FluidStack
+import net.minecraftforge.fluids.FluidUtil
 import net.minecraftforge.fml.common.Loader
 import net.minecraftforge.oredict.OreDictionary
 import net.minecraftforge.oredict.OreIngredient
@@ -39,6 +41,14 @@ object ModRecipes {
                 'Y', ItemStack(Items.BLAZE_POWDER),
                 'H', ItemStack(Items.LAVA_BUCKET),
                 'X', ItemStack(Items.FIRE_CHARGE),
+                'Z', ItemStack(ModItems.dormant))
+        addOreDictRecipe("vibrant", ItemStack(ModItems.vibrant),
+                "Y Y",
+                "XZX",
+                "YHY",
+                'Y', "essenceVerdis",
+                'H', FluidUtil.getFilledBucket(FluidStack(ModFluids.SWEET.getActual(), 1000)),
+                'X', ItemStack(Items.DYE, 1, EnumDyeColor.WHITE.dyeDamage),
                 'Z', ItemStack(ModItems.dormant))
         for (i in dyeColors.indices)
             addShapelessOreDictRecipe("chalk$i", ItemStack(ModBlocks.chalk, 1, i),
