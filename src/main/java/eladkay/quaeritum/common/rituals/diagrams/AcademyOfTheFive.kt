@@ -10,6 +10,8 @@ import eladkay.quaeritum.api.rituals.IDiagram
 import eladkay.quaeritum.api.rituals.PositionedBlock
 import eladkay.quaeritum.api.rituals.PositionedBlockChalk
 import eladkay.quaeritum.client.lib.LibParticles
+import eladkay.quaeritum.common.block.ModBlocks
+import eladkay.quaeritum.common.block.base.BlockModColored
 import eladkay.quaeritum.common.block.tile.TileEntityBlueprint
 import eladkay.quaeritum.common.core.QuaeritumInternalHandler
 import eladkay.quaeritum.common.networking.MessageAcademyEffect
@@ -41,6 +43,17 @@ class AcademyOfTheFive : IDiagram {
     }
 
     override fun run(world: World, pos: BlockPos, tile: TileEntity) {
+        val blocks = mutableListOf<Int>()
+        for ((x, z) in listOf(1 to 1, -1 to 1, 1 to -1, -1 to -1)) {
+            val state = world.getBlockState(pos.add(x, 0, z))
+            if (state.block == ModBlocks.tempest)
+                blocks.add(Int.MAX_VALUE)
+            else if (state.block == ModBlocks.chalk)
+                blocks.add(state.getValue(BlockModColored.COLOR).colorValue)
+        }
+        blocks.sort()
+        val keyHash = blocks.hashCode()
+
         val data = QuaeritumInternalHandler.getTrueSaveData()
         val hash = data.academies.hashCode()
         data.academies.add(pos)
@@ -51,29 +64,44 @@ class AcademyOfTheFive : IDiagram {
 
         val academiesToSend = mutableSetOf<BlockPos>()
         for (academy in data.academies.sortedBy { it.distanceSq(pos) }) {
-            if (academy != pos)
-                academiesToSend.add(academy)
+            if (academy != pos) {
+                val academyBlocks = mutableListOf<Int>()
+                for ((x, z) in listOf(1 to 1, -1 to 1, 1 to -1, -1 to -1)) {
+                    val state = world.getBlockState(academy.add(x, 0, z))
+                    if (state.block == ModBlocks.tempest)
+                        academyBlocks.add(Int.MAX_VALUE)
+                    else if (state.block == ModBlocks.chalk)
+                        academyBlocks.add(state.getValue(BlockModColored.COLOR).colorValue)
+                }
+                academyBlocks.sort()
+                if (academyBlocks.hashCode() == keyHash)
+                    academiesToSend.add(academy)
+            }
             if (academiesToSend.size >= 4)
                 break
         }
 
-        PacketHandler.NETWORK.sendToAllAround(MessageAcademyEffect(pos, academiesToSend.toTypedArray()),
-                world, Vec3d(pos).addVector(0.5, 0.5, 0.5), 64)
+        if (academiesToSend.isNotEmpty()) {
+            PacketHandler.NETWORK.sendToAllAround(MessageAcademyEffect(pos, academiesToSend.toTypedArray()),
+                    world, Vec3d(pos).addVector(0.5, 0.5, 0.5), 64)
 
-        tile.world.getEntitiesWithinAABB(Entity::class.java, AxisAlignedBB(tile.pos).grow(4.0))
-                .asSequence()
-                .filter { (it is EntityPlayer || it is EntityItem)
-                        && tile.pos.distanceSq(it.posX, it.posY, it.posZ) < 16.0 }
-                .sortedBy { it.getDistanceSq(tile.pos) }
-                .flatMap {
-                    if (it is EntityPlayer) {
-                        sequenceOf(*(0 until it.inventory.inventoryStackLimit).map { stackId -> it.inventory.getStackInSlot(stackId) }.toTypedArray() )
-                    } else
-                        sequenceOf((it as EntityItem).item)
-                }.filter {
-            it.item is ItemStarMap
-        }.forEach {
-            ItemNBTHelper.setList(it, "poses", NBTTagList(academiesToSend.size) { NBTTagLong(academiesToSend.toList()[it].toLong()) })
+            tile.world.getEntitiesWithinAABB(Entity::class.java, AxisAlignedBB(tile.pos).grow(4.0))
+                    .asSequence()
+                    .filter {
+                        (it is EntityPlayer || it is EntityItem)
+                                && tile.pos.distanceSq(it.posX, it.posY, it.posZ) < 16.0
+                    }
+                    .sortedBy { it.getDistanceSq(tile.pos) }
+                    .flatMap {
+                        if (it is EntityPlayer) {
+                            sequenceOf(*(0 until it.inventory.inventoryStackLimit).map { stackId -> it.inventory.getStackInSlot(stackId) }.toTypedArray())
+                        } else
+                            sequenceOf((it as EntityItem).item)
+                    }.filter {
+                it.item is ItemStarMap
+            }.forEach {
+                ItemNBTHelper.setList(it, "poses", NBTTagList(academiesToSend.size) { NBTTagLong(academiesToSend.toList()[it].toLong()) })
+            }
         }
 
         if (data.academies.hashCode() != hash)
