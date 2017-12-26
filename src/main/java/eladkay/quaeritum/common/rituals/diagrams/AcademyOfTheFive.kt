@@ -1,11 +1,17 @@
 package eladkay.quaeritum.common.rituals.diagrams
 
+import com.teamwizardry.librarianlib.features.network.PacketHandler
+import com.teamwizardry.librarianlib.features.network.sendToAllAround
 import eladkay.quaeritum.api.rituals.IDiagram
 import eladkay.quaeritum.api.rituals.PositionedBlock
 import eladkay.quaeritum.api.rituals.PositionedBlockChalk
+import eladkay.quaeritum.common.block.tile.TileEntityBlueprint
+import eladkay.quaeritum.common.core.QuaeritumInternalHandler
+import eladkay.quaeritum.common.networking.MessageAcademyEffect
 import net.minecraft.item.EnumDyeColor
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.Vec3d
 import net.minecraft.world.World
 
 
@@ -19,15 +25,36 @@ class AcademyOfTheFive : IDiagram {
     }
 
     override fun run(world: World, pos: BlockPos, tile: TileEntity) {
-        throw UnsupportedOperationException()
+
+        val data = QuaeritumInternalHandler.getTrueSaveData()
+        val hash = data.academies.hashCode()
+        data.academies.add(pos)
+        data.academies.removeIf {
+            val tileAt = world.getTileEntity(it)
+            it != pos && (tileAt == null || tileAt !is TileEntityBlueprint || tileAt.bestRitual != this)
+        }
+
+        val academiesToSend = mutableSetOf<BlockPos>()
+        for (academy in data.academies.sortedBy { it.distanceSq(pos) }) {
+            if (academy != pos)
+                academiesToSend.add(academy)
+            if (academiesToSend.size >= 4)
+                break
+        }
+
+        PacketHandler.NETWORK.sendToAllAround(MessageAcademyEffect(pos, academiesToSend.toTypedArray()),
+                world, Vec3d(pos).addVector(0.5, 0.5, 0.5), 64)
+
+        if (data.academies.hashCode() != hash)
+            data.markDirty()
     }
 
     override fun canRitualRun(world: World?, pos: BlockPos, tile: TileEntity): Boolean {
-        throw UnsupportedOperationException()
+        return true
     }
 
     override fun hasRequiredItems(world: World?, pos: BlockPos, tile: TileEntity): Boolean {
-        throw UnsupportedOperationException()
+        return true
     }
 
     override fun buildChalks(chalks: MutableList<PositionedBlock>) {

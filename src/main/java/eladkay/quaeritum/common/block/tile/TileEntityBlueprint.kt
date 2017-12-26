@@ -38,7 +38,7 @@ class TileEntityBlueprint : TileModTickable() {
 
     private val mirrorStates = arrayOf(-1, 1)
 
-    private val bestRitual: IDiagram?
+    val bestRitual: IDiagram?
         get() {
             var bestDiagram: IDiagram? = null
             var highestChalks = -1

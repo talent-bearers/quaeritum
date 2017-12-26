@@ -27,13 +27,13 @@ object PositionedBlockHelper {
         var chalks = 0
         for (block in list) {
             val state = world.getBlockState(entity.pos.add(block.pos))
-            val comparables = block.comparables
+            val comparable = block.comparables
 
             if (block.state.block == state.block) {
                 when {
                     block.state.block == ModBlocks.tempest -> chalks++
-                    comparables != null -> {
-                        if (comparables.any { !castCheckValue(it, block.state, state) })
+                    comparable != null -> {
+                        if (comparable.any { !castCheckValue(it, block.state, state) })
                             return -1
                         chalks++
                     }

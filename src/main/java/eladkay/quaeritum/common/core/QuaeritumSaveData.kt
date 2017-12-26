@@ -17,7 +17,7 @@ import java.util.*
 class QuaeritumSaveData : WorldSavedData {
 
     val animusData = HashMap<UUID, NBTTagCompound>()
-    val academies = ArrayList<BlockPos>()
+    val academies = mutableSetOf<BlockPos>()
 
     constructor(id: String) : super(id)
     constructor() : super(LibMisc.MOD_ID)

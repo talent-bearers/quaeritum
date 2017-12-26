@@ -12,6 +12,7 @@ object ModDiagrams {
         RitualRegistry.registerDiagram(CircleOfTheFinalMomentDiagram(), "circleofthefinalmoment")
         RitualRegistry.registerDiagram(PactforgerBind(), "pactforge")
         RitualRegistry.registerDiagram(PactbreakerBind(), "pactbreak")
+        RitualRegistry.registerDiagram(AcademyOfTheFive(), "academy")
 
     }
 
