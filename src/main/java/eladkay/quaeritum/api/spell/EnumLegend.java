@@ -16,7 +16,7 @@ import static eladkay.quaeritum.api.spell.render.LineSymbolInstruction.*;
  */
 @SuppressWarnings("SpellCheckingInspection")
 public enum EnumLegend implements ISymbolCarrier {
-    // The Riftmaker (Wire / Ea, Ancient of Secrets Kept, Archmage of The Rift (Æther))
+    // The Riftmaker (Wire / Ea, Ancient of Secrets Kept, Archmage of the Rift (Æther))
     RIFTMAKER(new Color(0xD592DB), new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
             new HalfCircleSymbolInstruction(R2O2, R2O2, R2O2 * 5 / 4, Math.PI * 7 / 4),
             new HalfCircleSymbolInstruction(1 - R2O2, R2O2, R2O2 * 5 / 4, Math.PI * 1 / 4),
@@ -33,7 +33,7 @@ public enum EnumLegend implements ISymbolCarrier {
             new NGonSymbolInstruction(0.5f, 0.5f, 8, 0.5f),
             new NGonSymbolInstruction(0.5f, 0.5f, 4, 0.5f, Math.PI / 4),
             new CircleSymbolInstruction(0.5f, 0.5f, 0.25f)),
-    // Ancient of Truth (Escapee)
+    // Ancient of Truth (Escapee, Archmage of Truth (Soul))
     TRUTH(new Color(0xC515FF), new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
             new CircleSymbolInstruction(0.5f, 0.5f, 0.2f),
             new LineSymbolInstruction(R2O2, R2O2, 0.5f, 0.3f),
@@ -52,18 +52,18 @@ public enum EnumLegend implements ISymbolCarrier {
             new LineSymbolInstruction(0.5f, 1f, 0.5f, 0.75f),
             new LineSymbolInstruction(0.5f, 0.75f, 0.25f, 0.5f),
             new LineSymbolInstruction(0.5f, 0.75f, 0.75f, 0.5f)),
-    // Ancient of Mysteries (Azanor, Archmage of The Unspeakable (Air))
+    // Ancient of Mysteries (Azanor, Archmage of Answers (Air))
     MYSTERIES(new Color(0xB10078), new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
             new HalfCircleSymbolInstruction(0.5f, 1 - R2O2, 0.5f - R2O2, Math.PI),
             new HalfCircleSymbolInstruction(0.5f, R2O2, 0.5f - R2O2, 0)),
-    // Ancient of Twisted Ways (Elucent (before the Blink, Emoniph), Archmage of Dark Paths (Water))
+    // Ancient of Twisted Ways (Elucent (before the Blink, Emoniph), Archmage of Twisted Paths (Water))
     TWISTED(new Color(0x4EFF93), new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
             new LineSymbolInstruction(0.5f, 0.5f, 0.5f, 0.25f),
             new LineSymbolInstruction(0.5f, 0.25f, 0.25f, 0.5f),
             new LineSymbolInstruction(0.25f, 0.5f, 0.5f, 0.75f),
             new LineSymbolInstruction(0.5f, 0.75f, 0.85f, 0.4f),
             new LineSymbolInstruction(0.85f, 0.4f, 0.5f, 0f)),
-    // Ancient of Ingenuity (King Lemming (before the Blink, AlexIIL), Archmage of Insight (Fire))
+    // Ancient of Ingenuity (King Lemming (before the Blink, AlexIIL), Archmage of Ingenuity (Fire))
     INGENUITY(new Color(0x0A85B1), new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
             new CircleSymbolInstruction(0.5f, 0.5f, 0.25f),
             new CircleSymbolInstruction(0.5f, 0.5f, 0.125f)),
