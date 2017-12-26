@@ -134,9 +134,11 @@ class ItemStarMap : ItemMod("star_map") {
                     val subCent = playerIn.positionVector.addVector(0.0, 0.5, 0.0)
                     val cent = subCent.addVector(0.0, 1.0, 0.0)
                     val position = BlockPos.fromLong((pos as NBTTagLong).long)
-                    val dir = Vec3d(position).subtract(subCent).normalize()
+                    var dir = Vec3d(position).addVector(0.5, 0.5, 0.5).subtract(subCent)
+                    dir = dir.addVector(0.0, -dir.y / 2, 0.0)
+                    dir = dir.normalize()
                     (0 until 10)
-                            .map { cent.add(dir.scale(1 + it / 6.0)) }
+                            .map { cent.add(dir.scale(1.5 + it / 6.0)) }
                             .forEach { vec -> LibParticles.embers(50, 0.5f, vec, colorFromLocation(position), 0.35) }
                 }
             }
