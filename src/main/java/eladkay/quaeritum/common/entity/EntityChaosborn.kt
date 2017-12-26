@@ -1,16 +1,12 @@
 package eladkay.quaeritum.common.entity
 
 import com.google.common.collect.Lists
-import eladkay.quaeritum.common.block.ModBlocks
-import eladkay.quaeritum.common.item.ModItems
 import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.SharedMonsterAttributes
 import net.minecraft.entity.ai.*
 import net.minecraft.entity.monster.EntityMob
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.item.Item
-import net.minecraft.item.ItemStack
 import net.minecraft.potion.Potion
 import net.minecraft.potion.PotionEffect
 import net.minecraft.util.DamageSource
@@ -116,18 +112,6 @@ class EntityChaosborn : EntityMob {
                     quality + 2))
             poorThing.addPotionEffect(PotionEffect(Potion.REGISTRY.getObject(ResourceLocation("minecraft:wither"))!!, 10, quality + 2))
         })
-    }
-
-    //Specifies item drops.
-    override fun getDropItem(): Item? {
-        //And here, the world of Magical flora begins.
-        return Item.getItemFromBlock(ModBlocks.crystal)
-    }
-
-    override fun dropFewItems(wasRecentlyHit: Boolean, lootingModifier: Int) {
-        super.dropFewItems(wasRecentlyHit, lootingModifier)
-        if (wasRecentlyHit)
-            this.entityDropItem(ItemStack(ModItems.riftmakerPart, rand.nextDouble().toInt() * lootingModifier + 1, rand.nextInt(3)), 0f)
     }
 
     override fun attackEntityAsMob(entityIn: Entity): Boolean {

@@ -2,11 +2,12 @@ package eladkay.quaeritum.api.machines;
 
 import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemHandlerHelper;
-import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.OreIngredient;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,9 +19,9 @@ import java.util.List;
  */
 public class BaseCentrifugeRecipe implements ICentrifugeRecipe {
     @NotNull
-    private final List<ItemStack> inputOne;
+    private final Ingredient inputOne;
     @Nullable
-    private final List<ItemStack> inputTwo;
+    private final Ingredient inputTwo;
     @NotNull
     private final ItemStack output;
     private int steamRequired = 2000;
@@ -55,12 +56,13 @@ public class BaseCentrifugeRecipe implements ICentrifugeRecipe {
 
     @NotNull
     public List<ItemStack> getInputOne() {
-        return inputOne;
+        return Lists.newArrayList(inputOne.getMatchingStacks());
     }
 
     @Nullable
     public List<ItemStack> getInputTwo() {
-        return inputTwo;
+        if (inputTwo == null) return null;
+        return Lists.newArrayList(inputTwo.getMatchingStacks());
     }
 
     @NotNull
@@ -68,21 +70,17 @@ public class BaseCentrifugeRecipe implements ICentrifugeRecipe {
         return output;
     }
 
-    private List<ItemStack> convertInputItem(@NotNull Object input) {
-        List<ItemStack> ret = Lists.newArrayList();
+    private Ingredient convertInputItem(@NotNull Object input) {
         if (input instanceof ItemStack)
-            ret.add(ItemHandlerHelper.copyStackWithSize((ItemStack) input, 1));
+            return Ingredient.fromStacks((ItemStack) input);
         else if (input instanceof Item)
-            ret.add(new ItemStack((Item) input));
-        else if (input instanceof Block)
-            ret.add(new ItemStack((Block) input));
+            return Ingredient.fromItem((Item) input);
+        else if (input instanceof Block && Item.getItemFromBlock((Block) input) != Items.AIR)
+            return Ingredient.fromItem(Item.getItemFromBlock((Block) input));
         else if (input instanceof String)
-            OreDictionary.getOres((String) input).stream()
-                    .map(stack -> ItemHandlerHelper.copyStackWithSize(stack, 1))
-                    .forEach(ret::add);
+            return new OreIngredient((String) input);
         else
             throw new RuntimeException("Invalid ore recipe input: " + input);
-        return ret;
     }
 
     @Override
@@ -96,12 +94,8 @@ public class BaseCentrifugeRecipe implements ICentrifugeRecipe {
         return matches(itemOne, inputTwo) && matches(itemTwo, inputOne);
     }
 
-    private boolean matches(@Nullable ItemStack stack, @Nullable List<ItemStack> inputs) {
-        if (stack == null || inputs == null) return false;
-        for (ItemStack ore : inputs)
-            if (OreDictionary.itemMatches(ore, stack, false))
-                return true;
-        return false;
+    private boolean matches(@Nullable ItemStack stack, @Nullable Ingredient inputs) {
+        return inputs != null && stack != null && inputs.apply(stack);
     }
 
     @Override

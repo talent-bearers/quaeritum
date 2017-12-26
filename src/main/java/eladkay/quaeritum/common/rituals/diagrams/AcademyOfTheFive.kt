@@ -81,27 +81,28 @@ class AcademyOfTheFive : IDiagram {
                 break
         }
 
-        if (academiesToSend.isNotEmpty()) {
+        if (academiesToSend.isNotEmpty())
             PacketHandler.NETWORK.sendToAllAround(MessageAcademyEffect(pos, academiesToSend.toTypedArray()),
                     world, Vec3d(pos).addVector(0.5, 0.5, 0.5), 64)
 
-            tile.world.getEntitiesWithinAABB(Entity::class.java, AxisAlignedBB(tile.pos).grow(4.0))
-                    .asSequence()
-                    .filter {
-                        (it is EntityPlayer || it is EntityItem)
-                                && tile.pos.distanceSq(it.posX, it.posY, it.posZ) < 16.0
-                    }
-                    .sortedBy { it.getDistanceSq(tile.pos) }
-                    .flatMap {
-                        if (it is EntityPlayer) {
-                            sequenceOf(*(0 until it.inventory.inventoryStackLimit).map { stackId -> it.inventory.getStackInSlot(stackId) }.toTypedArray())
-                        } else
-                            sequenceOf((it as EntityItem).item)
-                    }.filter {
-                it.item is ItemStarMap
-            }.forEach {
-                ItemNBTHelper.setList(it, "poses", NBTTagList(academiesToSend.size) { NBTTagLong(academiesToSend.toList()[it].toLong()) })
-            }
+        tile.world.getEntitiesWithinAABB(Entity::class.java, AxisAlignedBB(tile.pos).grow(4.0))
+                .asSequence()
+                .filter {
+                    (it is EntityPlayer || it is EntityItem)
+                            && tile.pos.distanceSq(it.posX, it.posY, it.posZ) < 16.0
+                }
+                .sortedBy { it.getDistanceSq(tile.pos) }
+                .flatMap {
+                    if (it is EntityPlayer) {
+                        sequenceOf(*(0 until it.inventory.inventoryStackLimit).map { stackId -> it.inventory.getStackInSlot(stackId) }.toTypedArray())
+                    } else
+                        sequenceOf((it as EntityItem).item)
+                }.filter {
+            it.item is ItemStarMap
+        }.forEach {
+            ItemNBTHelper.setList(it, "poses",
+                    NBTTagList(academiesToSend.size) { NBTTagLong(academiesToSend.toList()[it].toLong()) }
+                            .also { it.appendTag(NBTTagLong(pos.toLong())) })
         }
 
         if (data.academies.hashCode() != hash)

@@ -27,13 +27,21 @@ import net.minecraftforge.fluids.FluidUtil
 import net.minecraftforge.fml.common.Loader
 import net.minecraftforge.oredict.OreDictionary
 import net.minecraftforge.oredict.OreIngredient
+import java.util.*
 
 object ModRecipes {
 
     private val dyeColors = arrayOf("White", "Orange", "Magenta", "LightBlue", "Yellow", "Lime", "Pink", "Gray", "LightGray", "Cyan", "Purple", "Blue", "Brown", "Green", "Red", "Black")
 
     fun init() {
-        addShapelessOreDictRecipe("blueprint", ItemStack(ModBlocks.blueprint), "dyeBlue", ItemStack(Items.PAPER), ItemStack(Blocks.STONE_SLAB), "essenceVerdis")
+        addShapelessOreDictRecipe("blueprint", ItemStack(ModBlocks.blueprint),
+                "dyeBlue", "paper", ItemStack(Blocks.STONE_SLAB), "essenceVerdis")
+        addOreDictRecipe("starmap", ItemStack(ModItems.starMap),
+                " P ",
+                "PVP",
+                " P ",
+                'P', "paper",
+                'V', "essenceVerdis")
         addOreDictRecipe("passion", ItemStack(ModItems.passionate),
                 "Y Y",
                 "XZX",
@@ -51,12 +59,12 @@ object ModRecipes {
                 'X', ItemStack(Items.DYE, 1, EnumDyeColor.WHITE.dyeDamage),
                 'Z', ItemStack(ModItems.dormant))
         for (i in dyeColors.indices)
-            addShapelessOreDictRecipe("chalk$i", ItemStack(ModBlocks.chalk, 1, i),
+            addShapelessOreDictRecipe("chalk_" + dyeColors[i].toLowerCase(Locale.ROOT), ItemStack(ModBlocks.chalk, 1, i),
                     ItemStack(Items.CLAY_BALL),
                     "dye" + dyeColors[i])
 
         addShapelessOreDictRecipe("chalk_tempest", ItemStack(ModBlocks.tempest),
-                "essenceVerdis", "essenceLucis", "essenceFerrus", "essenceArgentus", "essenceAtlas", ItemStack(Items.CLAY_BALL))
+                ItemStack(Items.CLAY_BALL), "essenceVerdis", "essenceLucis", "essenceFerrus", "essenceArgentus", "essenceAtlas")
 
         addOreDictRecipe("jet", ItemStack(ModBlocks.jet),
                 " B ",
@@ -126,12 +134,13 @@ object ModRecipes {
                 'P', "paper")
 
         CentrifugeRecipes.registerRecipe("stone", Items.CLAY_BALL, ItemStack(ModItems.dormant))
-        CentrifugeRecipes.registerRecipe(ItemStack(Items.COAL), null, BITUMEN.stackOf())
+        CentrifugeRecipes.registerRecipe(ItemStack(ModItems.dormant), "essenceArgentus", ItemStack(ModItems.tempestArc))
+        CentrifugeRecipes.registerRecipe(Items.COAL, null, BITUMEN.stackOf())
         CentrifugeRecipes.registerRecipe(ItemStack(Blocks.RED_FLOWER), null, ItemEssence.stackOf(EnumAnimusTier.VERDIS))
-        CentrifugeRecipes.registerRecipe(ItemStack(ModBlocks.flower), null, ItemEssence.stackOf(EnumAnimusTier.LUCIS))
-        CentrifugeRecipes.registerRecipe(ItemStack(ModBlocks.ironheart), null, ItemEssence.stackOf(EnumAnimusTier.FERRUS))
-        CentrifugeRecipes.registerRecipe(PERFECT_MATRIX.stackOf(), null, ItemEssence.stackOf(EnumAnimusTier.ARGENTUS))
-        CentrifugeRecipes.registerRecipe(AWOKEN_BLOSSOM.stackOf(), null, ItemEssence.stackOf(EnumAnimusTier.ATLAS))
+        CentrifugeRecipes.registerRecipe(ModBlocks.flower, null, ItemEssence.stackOf(EnumAnimusTier.LUCIS))
+        CentrifugeRecipes.registerRecipe(ModBlocks.ironheart, null, ItemEssence.stackOf(EnumAnimusTier.FERRUS))
+        CentrifugeRecipes.registerRecipe(PERFECT_MATRIX.oreName, null, ItemEssence.stackOf(EnumAnimusTier.ARGENTUS))
+        CentrifugeRecipes.registerRecipe(AWOKEN_BLOSSOM.oreName, null, ItemEssence.stackOf(EnumAnimusTier.ATLAS))
 
         Desiccations.registerRecipe(ModFluids.BITUMEN.getActual(), BITUMEN.stackOf(2))
         Desiccations.registerRecipe(ModFluids.SWEET.getActual(), ItemStack(Items.SUGAR))
@@ -181,20 +190,14 @@ object ModRecipes {
 
     fun ingredientOf(vararg itemStacks: ItemStack) = ingredientOf(itemStacks)
 
-    fun ingredientOf(any: Any?): Ingredient {
-        if (any is Item)
-            return Ingredient.fromItem(any)
-        else if (any is Block)
-            return Ingredient.fromItem(Item.getItemFromBlock(any))
-        else if (any is ItemStack)
-            return Ingredient.fromStacks(any)
-        else if (any is String)
-            return OreIngredient(any)
-        else if (any is Iterable<*>)
-            return Ingredient.fromStacks(*any.filterIsInstance<ItemStack>().toTypedArray())
-        else if (any is Array<*>)
-            return Ingredient.fromStacks(*any.filterIsInstance<ItemStack>().toTypedArray())
-        return Ingredient.EMPTY
+    fun ingredientOf(any: Any?): Ingredient = when (any) {
+        is Item -> Ingredient.fromItem(any)
+        is Block -> Ingredient.fromItem(Item.getItemFromBlock(any))
+        is ItemStack -> Ingredient.fromStacks(any)
+        is String -> OreIngredient(any)
+        is Iterable<*> -> Ingredient.fromStacks(*any.filterIsInstance<ItemStack>().toTypedArray())
+        is Array<*> -> Ingredient.fromStacks(*any.filterIsInstance<ItemStack>().toTypedArray())
+        else -> Ingredient.EMPTY
     }
 
     private fun addOreDictRecipe(name: String, output: ItemStack, vararg recipe: Any) {

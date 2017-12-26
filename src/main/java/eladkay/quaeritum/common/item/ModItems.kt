@@ -4,7 +4,10 @@ import com.teamwizardry.librarianlib.core.LibrarianLib
 import com.teamwizardry.librarianlib.features.base.item.ItemMod
 import com.teamwizardry.librarianlib.features.base.item.ItemModSeed
 import eladkay.quaeritum.common.block.ModBlocks
-import eladkay.quaeritum.common.item.misc.*
+import eladkay.quaeritum.common.item.misc.ItemFertilizer
+import eladkay.quaeritum.common.item.misc.ItemPicture
+import eladkay.quaeritum.common.item.misc.ItemWorldBlade
+import eladkay.quaeritum.common.item.misc.ItemWorldShield
 import eladkay.quaeritum.common.item.soulstones.*
 import eladkay.quaeritum.common.rituals.diagrams.ItemStarMap
 import net.minecraft.creativetab.CreativeTabs
@@ -20,7 +23,6 @@ object ModItems {
     val passive = ItemWorldSoulstone()
     val attuned = ItemAttunedSoulstone()
     val fertilizer = ItemFertilizer()
-    val riftmakerPart = ItemRiftmakerPart()
     val worldBlade = ItemWorldBlade()
     val picture = ItemPicture()
     val resource = ItemResource()

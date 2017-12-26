@@ -1,0 +1,21 @@
+{
+	"type": "forge:ore_shaped",
+	"pattern": [
+		" P ",
+		"PVP",
+		" P "
+	],
+	"key": {
+		"P": {
+			"type": "forge:ore_dict",
+			"ore": "paper"
+		},
+		"V": {
+			"type": "forge:ore_dict",
+			"ore": "essenceVerdis"
+		}
+	},
+	"result": {
+		"item": "quaeritum:star_map"
+	}
+}

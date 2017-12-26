@@ -2,6 +2,9 @@
 	"type": "forge:ore_shapeless",
 	"ingredients": [
 		{
+			"item": "minecraft:clay_ball"
+		},
+		{
 			"type": "forge:ore_dict",
 			"ore": "essenceVerdis"
 		},
@@ -20,9 +23,6 @@
 		{
 			"type": "forge:ore_dict",
 			"ore": "essenceAtlas"
-		},
-		{
-			"item": "minecraft:clay_ball"
 		}
 	],
 	"result": {
