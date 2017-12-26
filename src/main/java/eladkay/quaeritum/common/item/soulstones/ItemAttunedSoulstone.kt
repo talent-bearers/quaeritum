@@ -34,7 +34,7 @@ class ItemAttunedSoulstone : ItemMod(LibNames.ATTUNED_SOULSTONE), INetworkProvid
     @SideOnly(Side.CLIENT)
     override fun addInformation(stack: ItemStack, world: World?, tooltip: MutableList<String>, advanced: ITooltipFlag) {
         ClientUtils.addInformation(stack, tooltip, advanced.isAdvanced)
-        AnimusHelper.Network.addInformation(stack, tooltip, advanced.isAdvanced)
+        AnimusHelper.Network.addInformation(stack, tooltip)
     }
 
     override fun getEntityLifespan(itemStack: ItemStack?, world: World?): Int {

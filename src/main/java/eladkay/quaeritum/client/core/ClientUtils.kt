@@ -7,8 +7,11 @@ import java.util.*
 
 object ClientUtils {
     fun addInformation(stack: ItemStack, tooltip: MutableList<String>, advanced: Boolean) {
-        tooltip.add(AnimusHelper.getTier(stack).toString().toLowerCase(Locale.ROOT).capitalizeFirst())
-        if (advanced)
-            tooltip.add(AnimusHelper.getAnimus(stack).toString() + "x")
+        val animus = AnimusHelper.getAnimus(stack)
+        if (animus != 0) {
+            tooltip.add(AnimusHelper.getTier(stack).toString().toLowerCase(Locale.ROOT).capitalizeFirst())
+            if (advanced)
+                tooltip.add("${animus}x")
+        }
     }
 }

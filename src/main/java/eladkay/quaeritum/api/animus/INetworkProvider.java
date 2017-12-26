@@ -11,14 +11,13 @@ import java.util.UUID;
 public interface INetworkProvider {
     @Nullable
     default UUID getPlayer(@NotNull ItemStack stack) {
-        String id = ItemNBTHelper.getString(stack, LibNBT.TAG_UUID, null);
-        return id == null ? null : UUID.fromString(id);
+        return ItemNBTHelper.getUUID(stack, LibNBT.TAG_UUID);
     }
 
     @NotNull
     default ItemStack setPlayer(@NotNull ItemStack stack, @Nullable UUID player) {
         if (player == null) ItemNBTHelper.removeEntry(stack, LibNBT.TAG_UUID);
-        else ItemNBTHelper.setString(stack, LibNBT.TAG_UUID, player.toString());
+        else ItemNBTHelper.setUUID(stack, LibNBT.TAG_UUID, player);
         return stack;
     }
 

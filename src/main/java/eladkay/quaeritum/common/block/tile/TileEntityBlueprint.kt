@@ -6,6 +6,7 @@ import eladkay.quaeritum.api.rituals.PositionedBlock
 import eladkay.quaeritum.api.rituals.RitualRegistry
 import eladkay.quaeritum.common.core.PositionedBlockHelper
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.util.EnumFacing
 
 class TileEntityBlueprint : TileModTickable() {
 
@@ -35,19 +36,27 @@ class TileEntityBlueprint : TileModTickable() {
         }
     }
 
+    private val mirrorStates = arrayOf(-1, 1)
+
     private val bestRitual: IDiagram?
         get() {
             var bestDiagram: IDiagram? = null
             var highestChalks = -1
-            for (ritual in RitualRegistry.getDiagramList()) {
-                val foundAll = ritual.hasRequiredItems(world, pos, this)
-                val requirementsMet = ritual.canRitualRun(this.world, pos, this)
-                val blocks = arrayListOf<PositionedBlock>()
-                ritual.buildChalks(blocks)
-                val chalks = PositionedBlockHelper.getChalkPriority(blocks, this)
-                if (foundAll && requirementsMet && highestChalks < chalks) {
-                    bestDiagram = ritual
-                    highestChalks = chalks
+            diagram@ for (ritual in RitualRegistry.getDiagramList()) {
+                for (rotation in EnumFacing.HORIZONTALS) {
+                    for (mirror in mirrorStates) {
+                        val foundAll = ritual.hasRequiredItems(world, pos, this)
+                        val requirementsMet = ritual.canRitualRun(this.world, pos, this)
+                        val blocks = arrayListOf<PositionedBlock>()
+                        ritual.buildChalks(blocks)
+                        PositionedBlockHelper.transform(blocks, rotation, mirror)
+                        val chalks = PositionedBlockHelper.getChalkPriority(blocks, this)
+                        if (foundAll && requirementsMet && highestChalks < chalks) {
+                            bestDiagram = ritual
+                            highestChalks = chalks
+                            continue@diagram
+                        }
+                    }
                 }
             }
             return bestDiagram

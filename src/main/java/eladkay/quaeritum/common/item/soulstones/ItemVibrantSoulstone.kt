@@ -46,7 +46,7 @@ class ItemVibrantSoulstone : ItemMod(LibNames.VIBRANT_SOULSTONE), INetworkProvid
 
     @SideOnly(Side.CLIENT)
     override fun addInformation(stack: ItemStack, world: World?, tooltip: MutableList<String>, advanced: ITooltipFlag) {
-        AnimusHelper.Network.addInformation(stack, tooltip, advanced.isAdvanced)
+        AnimusHelper.Network.addInformation(stack, tooltip)
     }
 
     override fun isProvider(stack: ItemStack): Boolean {
@@ -79,11 +79,10 @@ class ItemVibrantSoulstone : ItemMod(LibNames.VIBRANT_SOULSTONE), INetworkProvid
 
     override fun onItemUse(player: EntityPlayer, worldIn: World, pos: BlockPos, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): EnumActionResult {
         val stack = player.getHeldItem(hand)
-        val uuid = getPlayer(stack)
         val oriCount = stack.count
-        if (AnimusHelper.Network.requestAnimus(uuid, 4, EnumAnimusTier.VERDIS, false) &&
+        if (AnimusHelper.requestAnimus(stack, 4, EnumAnimusTier.VERDIS, false) &&
                 ItemDye.applyBonemeal(stack, worldIn, pos, player, hand)) {
-            AnimusHelper.Network.requestAnimus(uuid, 4, EnumAnimusTier.VERDIS, true)
+            AnimusHelper.requestAnimus(stack, 4, EnumAnimusTier.VERDIS, true)
             if (!worldIn.isRemote)
                 worldIn.playEvent(2005, pos, 0)
             stack.count = oriCount

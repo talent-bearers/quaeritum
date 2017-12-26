@@ -80,6 +80,8 @@ item.quaeritum:vibrant_soulstone.name=Vibrant Soulstone
 item.quaeritum:world_soulstone.name=Stone of the Worldsoul
 item.quaeritum:transducer.name=Transducer
 
+item.quaeritum:tempest_arc.name=Arc of the Tempest
+
 tile.quaeritum:flower_common.name=Common Flower
 tile.quaeritum:flower_common_arcane.name=Rare Flower
 tile.quaeritum:flower_arcane.name=Arcane Flower

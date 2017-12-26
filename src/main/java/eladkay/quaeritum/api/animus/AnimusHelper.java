@@ -1,14 +1,12 @@
 package eladkay.quaeritum.api.animus;
 
 import com.teamwizardry.librarianlib.features.utilities.client.TooltipHelper;
+import eladkay.quaeritum.api.internal.InternalHandler;
 import eladkay.quaeritum.api.lib.LibMisc;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
-import net.minecraft.world.storage.WorldSavedData;
-import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -19,6 +17,16 @@ import java.util.*;
 import java.util.List;
 
 public final class AnimusHelper {
+
+    public static boolean hasMinimum(ItemStack stack, int animus, EnumAnimusTier tier) {
+        return getAnimus(stack) >= animus && getTier(stack).ordinal() >= tier.ordinal();
+    }
+
+    public static boolean requestAnimus(ItemStack stack, int animus, EnumAnimusTier tier, boolean drain) {
+        if (!hasMinimum(stack, animus, tier)) return false;
+        if (drain) addAnimus(stack, -animus);
+        return true;
+    }
 
     public static ItemStack setAnimus(ItemStack stack, int animus) {
         if (stack.getItem() instanceof INetworkProvider && !(stack.getItem() instanceof ISoulstone)) {
@@ -69,9 +77,7 @@ public final class AnimusHelper {
     }
 
     public static final class Network {
-        private static final String KEY_ANIMUS_NETWORK = LibMisc.MOD_ID + "-AnimusNetwork";
         private static final String TAG_ANIMUS_LEVEL = "animusLevel";
-        private static final String TAG_INFUSED = "infused";
         private static final String TAG_ANIMUS_RARITY = "animusRarity";
         private static final String TAG_LAST_KNOWN_USERNAME = "lastUsername";
         private static final Map<UUID, Integer> cachedColors = new HashMap<>();
@@ -88,7 +94,7 @@ public final class AnimusHelper {
             return color;
         }
 
-        public static void addInformation(ItemStack stack, List<String> tooltip, boolean advanced) {
+        public static void addInformation(ItemStack stack, List<String> tooltip) {
             UUID uuid = ((INetworkProvider) stack.getItem()).getPlayer(stack);
             if (uuid != null) {
                 String username = getLastKnownUsername(uuid);
@@ -105,9 +111,10 @@ public final class AnimusHelper {
         }
 
         public static void setAnimus(UUID uuid, int animus) {
+            if (animus == 0)
+                setTier(uuid, EnumAnimusTier.VERDIS);
             getPersistentCompound(uuid).setInteger(TAG_ANIMUS_LEVEL, animus);
-            getSaveData().markDirty();
-
+            InternalHandler.getInternalHandler().markSaveDataDirty();
         }
 
         public static void setTier(EntityPlayer player, EnumAnimusTier tier) {
@@ -115,8 +122,9 @@ public final class AnimusHelper {
         }
 
         public static void setTier(UUID uuid, EnumAnimusTier tier) {
+            if (getAnimus(uuid) == 0) return;
             getPersistentCompound(uuid).setInteger(TAG_ANIMUS_RARITY, tier.ordinal());
-            getSaveData().markDirty();
+            InternalHandler.getInternalHandler().markSaveDataDirty();
         }
 
         public static int getAnimus(EntityPlayer player) {
@@ -166,7 +174,7 @@ public final class AnimusHelper {
             NBTTagCompound compound = getPersistentCompound(player.getUniqueID());
             if (!player.getName().equals(getStringSafe(compound, TAG_LAST_KNOWN_USERNAME, null))) {
                 compound.setString(TAG_LAST_KNOWN_USERNAME, player.getName());
-                getSaveData().markDirty();
+                InternalHandler.getInternalHandler().markSaveDataDirty();
             }
         }
 
@@ -193,56 +201,12 @@ public final class AnimusHelper {
         private static NBTTagCompound getPersistentCompound(UUID uuid) {
             if (uuid == null) return new NBTTagCompound();
 
-            AnimusSaveData saveData = getSaveData();
+            Map<UUID, NBTTagCompound> saveData = InternalHandler.getInternalHandler().getSaveData();
 
-            if (!saveData.animusData.containsKey(uuid))
-                saveData.animusData.put(uuid, new NBTTagCompound());
+            if (!saveData.containsKey(uuid))
+                saveData.put(uuid, new NBTTagCompound());
 
-            return saveData.animusData.get(uuid);
-        }
-
-        @NotNull
-        private static AnimusSaveData getSaveData() {
-            World world = DimensionManager.getWorld(0);
-            if (world == null || world.getMapStorage() == null)
-                return new AnimusSaveData();
-
-            AnimusSaveData saveData = (AnimusSaveData) world.getMapStorage().getOrLoadData(AnimusSaveData.class, KEY_ANIMUS_NETWORK);
-
-            if (saveData == null) {
-                saveData = new AnimusSaveData();
-                world.getMapStorage().setData(KEY_ANIMUS_NETWORK, saveData);
-            }
-
-            return saveData;
-        }
-
-        public static class AnimusSaveData extends WorldSavedData {
-
-            private Map<UUID, NBTTagCompound> animusData = new HashMap<>();
-
-            public AnimusSaveData(String id) {
-                super(id);
-            }
-
-            public AnimusSaveData() {
-                super(KEY_ANIMUS_NETWORK);
-            }
-
-            @Override
-            @NotNull
-            public NBTTagCompound writeToNBT(@NotNull NBTTagCompound compound) {
-                for (UUID key : animusData.keySet())
-                    compound.setTag(key.toString(), animusData.get(key));
-                return compound;
-            }
-
-            @Override
-            public void readFromNBT(@NotNull NBTTagCompound compound) {
-                for (String key : compound.getKeySet()) {
-                    animusData.put(UUID.fromString(key), compound.getCompoundTag(key));
-                }
-            }
+            return saveData.get(uuid);
         }
 
         public static class EventHandler {

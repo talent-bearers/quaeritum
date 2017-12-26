@@ -1,14 +1,16 @@
-package eladkay.quaeritum.common.item.soulstones
+package eladkay.quaeritum.common.item
 
 import com.teamwizardry.librarianlib.features.base.item.ItemMod
 import eladkay.quaeritum.api.animus.AnimusHelper
 import eladkay.quaeritum.api.animus.EnumAnimusTier
 import eladkay.quaeritum.api.animus.INetworkProvider
-import eladkay.quaeritum.common.lib.LibNames
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.entity.Entity
+import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.init.SoundEvents
+import net.minecraft.inventory.EntityEquipmentSlot
 import net.minecraft.item.ItemStack
 import net.minecraft.util.ActionResult
 import net.minecraft.util.EnumActionResult
@@ -18,48 +20,33 @@ import net.minecraft.world.World
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 
-class ItemPassionateSoulstone : ItemMod(LibNames.PASSIONATE_SOULSTONE), INetworkProvider {
-
-    init {
-        setMaxStackSize(1)
-    }
-
-    override fun getContainerItem(itemStack: ItemStack): ItemStack {
-        if (!AnimusHelper.requestAnimus(itemStack, 4, EnumAnimusTier.LUCIS, true)) return ItemStack.EMPTY
-        itemStack.grow(1)
-        val copiedStack = itemStack.copy()
-        itemStack.shrink(1)
-        return copiedStack
-    }
+/**
+ * @author WireSegal
+ * Created at 4:28 PM on 12/25/17.
+ */
+class ItemTempestArc : ItemMod("tempest_arc"), INetworkProvider {
 
     @SideOnly(Side.CLIENT)
     override fun addInformation(stack: ItemStack, world: World?, tooltip: MutableList<String>, advanced: ITooltipFlag) {
         AnimusHelper.Network.addInformation(stack, tooltip)
     }
 
-    override fun hasContainerItem(itemStack: ItemStack?): Boolean {
-        return true
-    }
-
     override fun isProvider(stack: ItemStack): Boolean {
-        return false
+        return true
     }
 
     override fun isReceiver(stack: ItemStack): Boolean {
         return false
     }
 
-    override fun getEntityLifespan(itemStack: ItemStack?, world: World?): Int {
-        return Integer.MAX_VALUE
-    }
-
-    override fun onUpdate(stack: ItemStack, worldIn: World?, entityIn: Entity, itemSlot: Int, isSelected: Boolean) {
+    override fun onUpdate(stack: ItemStack, worldIn: World, entityIn: Entity, itemSlot: Int, isSelected: Boolean) {
         if (getPlayer(stack) == null && entityIn is EntityPlayer)
             setPlayer(stack, entityIn.uniqueID)
-    }
 
-    override fun getItemBurnTime(fuel: ItemStack): Int {
-        return if (AnimusHelper.hasMinimum(fuel, 4, EnumAnimusTier.LUCIS)) 200 else 0
+        if (!worldIn.isRemote && entityIn is EntityLivingBase) EntityEquipmentSlot.values()
+                .map { entityIn.getItemStackFromSlot(it) }
+                .filter { it.isItemDamaged && AnimusHelper.requestAnimus(stack, 10, EnumAnimusTier.ARGENTUS, true) }
+                .forEach { it.attemptDamageItem(-1, worldIn.rand, entityIn as? EntityPlayerMP) }
     }
 
     override fun onItemRightClick(worldIn: World, playerIn: EntityPlayer, hand: EnumHand): ActionResult<ItemStack> {
@@ -73,4 +60,3 @@ class ItemPassionateSoulstone : ItemMod(LibNames.PASSIONATE_SOULSTONE), INetwork
         return super.onItemRightClick(worldIn, playerIn, hand)
     }
 }
-

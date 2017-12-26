@@ -1,7 +1,6 @@
 package eladkay.quaeritum.api.rituals;
 
 import com.google.common.collect.Lists;
-import eladkay.quaeritum.common.block.base.BlockModColored;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.EnumDyeColor;
@@ -14,7 +13,7 @@ public final class PositionedBlockChalk extends PositionedBlock {
     public static Block tempest;
 
     public PositionedBlockChalk(@Nullable EnumDyeColor state, @NotNull BlockPos pos) {
-        super(getStateFromColor(state), pos, state == null ? null : Lists.newArrayList(BlockModColored.Companion.getCOLOR())); // todo don't reference main from api
+        super(getStateFromColor(state), pos, state == null ? null : Lists.newArrayList(chalk.getBlockState().getProperty("color")));
     }
 
     @NotNull

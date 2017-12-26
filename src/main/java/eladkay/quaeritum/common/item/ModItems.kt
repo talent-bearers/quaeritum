@@ -32,6 +32,8 @@ object ModItems {
     val resourceSeed = ItemModSeed("ironheart_seed", ModBlocks.ironCrop).makeSeedBehavior()
     val wakingBlossom = ItemWakingBlossom()
     val opium = ItemOpium()
+    val tempestArc = ItemTempestArc()
+
     val book = ItemMod("book")
     val hiddenBook = object : ItemMod("riftbook") {
         override fun getSubItems(tab: CreativeTabs, subItems: NonNullList<ItemStack>) {

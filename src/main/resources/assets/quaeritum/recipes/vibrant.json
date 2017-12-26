@@ -1,0 +1,29 @@
+{
+	"type": "forge:ore_shaped",
+	"pattern": [
+		"Y Y",
+		"XZX",
+		"YHY"
+	],
+	"key": {
+		"Y": {
+			"type": "forge:ore_dict",
+			"ore": "essenceVerdis"
+		},
+		"H": {
+			"item": "forge:bucketfilled",
+			"nbt": "{FluidName:\"sugar_water\",Amount:1000}",
+			"type": "minecraft:item_nbt"
+		},
+		"X": {
+			"item": "minecraft:dye",
+			"data": 15
+		},
+		"Z": {
+			"item": "quaeritum:dormant_soulstone"
+		}
+	},
+	"result": {
+		"item": "quaeritum:vibrant_soulstone"
+	}
+}
