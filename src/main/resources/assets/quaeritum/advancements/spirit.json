@@ -1,0 +1,22 @@
+{
+  "display": {
+    "icon": {
+      "item": "quaeritum:essence",
+      "data": 4
+    },
+    "title": {
+      "translate": "advancements.quaeritum.spirit.title"
+    },
+    "description": {
+      "translate": "advancements.quaeritum.spirit.desc"
+    },
+    "frame": "challenge",
+    "hidden": true
+  },
+  "parent": "quaeritum:root",
+  "criteria": {
+    "slain_dragons": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "item": "quaeritum:dormant_soulstone"
+    },
+    "title": {
+      "translate": "advancements.quaeritum.soulstone.title"
+    },
+    "description": {
+      "translate": "advancements.quaeritum.soulstone.desc"
+    },
+    "background": "quaeritum:textures/blocks/blueprint_top.png",
+    "show_toast": false,
+    "announce_to_chat": false
+  },
+  "criteria": {
+    "made_dormant": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "quaeritum:dormant_soulstone"
+          }
+        ]
+      }
+    }
+  }
+}

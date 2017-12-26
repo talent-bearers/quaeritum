@@ -280,6 +280,11 @@ item.quaeritum:waking_blossom.name=Waking Blossom
 
 item.quaeritum:star_map.name=Map to the Star Island
 
+advancements.quaeritum.soulstone.title=Secrets of the Soul
+advancements.quaeritum.soulstone.desc=With that stone, you have begun the path of ancient magics. Good luck.
+advancements.quaeritum.spirit.title=Divinity of Spirit
+advancements.quaeritum.spirit.desc=By slaying the Rift's guardian once more, you have proven yourself worthy to become Archmage of Dominance.
+
 quaeritum.hud.fluid=%dx %s
 quaeritum.misc.signed=Signed: %s
 

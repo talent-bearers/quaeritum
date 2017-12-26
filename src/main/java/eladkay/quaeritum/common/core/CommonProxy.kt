@@ -67,6 +67,7 @@ open class CommonProxy {
     open fun init(e: FMLInitializationEvent) {
         ModRecipes.init()
         ChatChanger
+        AdvancementManager
     }
 
     open fun post(e: FMLPostInitializationEvent) {
