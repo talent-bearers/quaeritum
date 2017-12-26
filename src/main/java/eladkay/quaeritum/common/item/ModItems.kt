@@ -6,6 +6,7 @@ import com.teamwizardry.librarianlib.features.base.item.ItemModSeed
 import eladkay.quaeritum.common.block.ModBlocks
 import eladkay.quaeritum.common.item.misc.*
 import eladkay.quaeritum.common.item.soulstones.*
+import eladkay.quaeritum.common.rituals.diagrams.ItemStarMap
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.item.ItemStack
 import net.minecraft.util.NonNullList
@@ -32,6 +33,7 @@ object ModItems {
     val resourceSeed = ItemModSeed("ironheart_seed", ModBlocks.ironCrop).makeSeedBehavior()
     val wakingBlossom = ItemWakingBlossom()
     val opium = ItemOpium()
+    val starMap = ItemStarMap()
     val tempestArc = ItemTempestArc()
 
     val book = ItemMod("book")

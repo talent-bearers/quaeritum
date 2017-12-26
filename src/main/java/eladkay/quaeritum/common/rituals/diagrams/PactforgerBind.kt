@@ -45,17 +45,19 @@ open class PactforgerBind : IDiagram {
     fun getOath(tile: TileEntity, range: Double): ItemStack? {
         return tile.world.getEntitiesWithinAABB(Entity::class.java, AxisAlignedBB(tile.pos).grow(range))
                 .asSequence()
-                .filter { (it is EntityPlayer || it is EntityItem)
-                        && tile.pos.distanceSq(it.posX, it.posY, it.posZ) < range * range }
+                .filter {
+                    (it is EntityPlayer || it is EntityItem)
+                            && tile.pos.distanceSq(it.posX, it.posY, it.posZ) < range * range
+                }
                 .sortedBy { it.getDistanceSq(tile.pos) }
-                .map {
+                .flatMap {
                     if (it is EntityPlayer) {
-                        it.heldItemMainhand
+                        sequenceOf(it.heldItemMainhand, it.heldItemOffhand)
                     } else
-                        (it as EntityItem).item
-                }.filter {
+                        sequenceOf((it as EntityItem).item)
+                }.firstOrNull {
             it.item == ModItems.scroll && it.itemDamage == 1
-        }.firstOrNull()
+        }
     }
 
     override fun canRitualRun(world: World?, pos: BlockPos, tile: TileEntity): Boolean {

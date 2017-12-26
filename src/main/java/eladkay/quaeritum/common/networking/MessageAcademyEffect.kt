@@ -29,8 +29,10 @@ class MessageAcademyEffect(@Save var from: BlockPos = BlockPos.ORIGIN, @Save var
         }
     }
 
-    fun colorFromLocation(pos: BlockPos): Color {
-        val seed = (pos.x xor pos.y xor pos.z) * 255 xor pos.hashCode()
-        return Color(Color.HSBtoRGB(seed * 0.005F, 0.8f, 1f))
+    companion object {
+        fun colorFromLocation(pos: BlockPos): Color {
+            val seed = (pos.x xor pos.y xor pos.z) * 255 xor pos.hashCode()
+            return Color(Color.HSBtoRGB(seed * 0.005F, 0.8f, 1f))
+        }
     }
 }

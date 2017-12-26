@@ -278,6 +278,8 @@ tile.quaeritum:fluid_jet.name=High-Pressure Fluid Jet
 item.quaeritum:awoken_blossom.name=Awoken Blossom
 item.quaeritum:waking_blossom.name=Waking Blossom
 
+item.quaeritum:star_map.name=Map to the Star Island
+
 quaeritum.hud.fluid=%dx %s
 quaeritum.misc.signed=Signed: %s
 

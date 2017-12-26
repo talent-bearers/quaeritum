@@ -1,18 +1,34 @@
 package eladkay.quaeritum.common.rituals.diagrams
 
+import com.teamwizardry.librarianlib.features.base.item.ItemMod
+import com.teamwizardry.librarianlib.features.helpers.ItemNBTHelper
+import com.teamwizardry.librarianlib.features.kotlin.NBTTagList
 import com.teamwizardry.librarianlib.features.network.PacketHandler
 import com.teamwizardry.librarianlib.features.network.sendToAllAround
+import com.teamwizardry.librarianlib.features.utilities.client.ClientRunnable
 import eladkay.quaeritum.api.rituals.IDiagram
 import eladkay.quaeritum.api.rituals.PositionedBlock
 import eladkay.quaeritum.api.rituals.PositionedBlockChalk
+import eladkay.quaeritum.client.lib.LibParticles
 import eladkay.quaeritum.common.block.tile.TileEntityBlueprint
 import eladkay.quaeritum.common.core.QuaeritumInternalHandler
 import eladkay.quaeritum.common.networking.MessageAcademyEffect
+import eladkay.quaeritum.common.networking.MessageAcademyEffect.Companion.colorFromLocation
+import net.minecraft.entity.Entity
+import net.minecraft.entity.item.EntityItem
+import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.EnumDyeColor
+import net.minecraft.item.ItemStack
+import net.minecraft.nbt.NBTTagLong
 import net.minecraft.tileentity.TileEntity
+import net.minecraft.util.ActionResult
+import net.minecraft.util.EnumActionResult
+import net.minecraft.util.EnumHand
+import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Vec3d
 import net.minecraft.world.World
+import net.minecraftforge.common.util.Constants
 
 
 /**
@@ -25,7 +41,6 @@ class AcademyOfTheFive : IDiagram {
     }
 
     override fun run(world: World, pos: BlockPos, tile: TileEntity) {
-
         val data = QuaeritumInternalHandler.getTrueSaveData()
         val hash = data.academies.hashCode()
         data.academies.add(pos)
@@ -44,6 +59,22 @@ class AcademyOfTheFive : IDiagram {
 
         PacketHandler.NETWORK.sendToAllAround(MessageAcademyEffect(pos, academiesToSend.toTypedArray()),
                 world, Vec3d(pos).addVector(0.5, 0.5, 0.5), 64)
+
+        tile.world.getEntitiesWithinAABB(Entity::class.java, AxisAlignedBB(tile.pos).grow(4.0))
+                .asSequence()
+                .filter { (it is EntityPlayer || it is EntityItem)
+                        && tile.pos.distanceSq(it.posX, it.posY, it.posZ) < 16.0 }
+                .sortedBy { it.getDistanceSq(tile.pos) }
+                .flatMap {
+                    if (it is EntityPlayer) {
+                        sequenceOf(*(0 until it.inventory.inventoryStackLimit).map { stackId -> it.inventory.getStackInSlot(stackId) }.toTypedArray() )
+                    } else
+                        sequenceOf((it as EntityItem).item)
+                }.filter {
+            it.item is ItemStarMap
+        }.forEach {
+            ItemNBTHelper.setList(it, "poses", NBTTagList(academiesToSend.size) { NBTTagLong(academiesToSend.toList()[it].toLong()) })
+        }
 
         if (data.academies.hashCode() != hash)
             data.markDirty()
@@ -90,5 +121,27 @@ class AcademyOfTheFive : IDiagram {
         chalks.add(PositionedBlockChalk(EnumDyeColor.BROWN, BlockPos(-1, 0, 3)))
         chalks.add(PositionedBlockChalk(EnumDyeColor.BLUE, BlockPos(0, 0, 3)))
         chalks.add(PositionedBlockChalk(EnumDyeColor.BROWN, BlockPos(1, 0, 3)))
+    }
+}
+
+class ItemStarMap : ItemMod("star_map") {
+    override fun onItemRightClick(worldIn: World, playerIn: EntityPlayer, handIn: EnumHand): ActionResult<ItemStack> {
+        val stack = playerIn.getHeldItem(handIn)
+        if ((ItemNBTHelper.getList(stack, "poses", Constants.NBT.TAG_LONG)?.tagCount() ?: 0) > 0) {
+            if (worldIn.isRemote) ClientRunnable.run {
+                val poses = ItemNBTHelper.getList(stack, "poses", Constants.NBT.TAG_LONG)
+                if (poses != null) for (pos in poses) {
+                    val subCent = playerIn.positionVector.addVector(0.0, 0.5, 0.0)
+                    val cent = subCent.addVector(0.0, 1.0, 0.0)
+                    val position = BlockPos.fromLong((pos as NBTTagLong).long)
+                    val dir = Vec3d(position).subtract(subCent).normalize()
+                    (0 until 10)
+                            .map { cent.add(dir.scale(1 + it / 6.0)) }
+                            .forEach { vec -> LibParticles.embers(50, 0.5f, vec, colorFromLocation(position), 0.35) }
+                }
+            }
+            return ActionResult(EnumActionResult.SUCCESS, stack)
+        }
+        return super.onItemRightClick(worldIn, playerIn, handIn)
     }
 }
