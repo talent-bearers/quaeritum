@@ -5,10 +5,10 @@
       "data": 4
     },
     "title": {
-      "translate": "advancements.quaeritum.spirit.title"
+      "translate": "advancements.quaeritum.connection.title"
     },
     "description": {
-      "translate": "advancements.quaeritum.spirit.desc"
+      "translate": "advancements.quaeritum.connection.desc"
     },
     "frame": "challenge",
     "announce_to_chat": false,
@@ -16,7 +16,7 @@
   },
   "parent": "quaeritum:root",
   "criteria": {
-    "slain_dragons": {
+    "far_traveled": {
       "trigger": "minecraft:impossible"
     }
   }

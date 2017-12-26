@@ -19,17 +19,22 @@ import eladkay.quaeritum.common.networking.MessageAcademyEffect.Companion.colorF
 import net.minecraft.entity.Entity
 import net.minecraft.entity.item.EntityItem
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.item.EnumDyeColor
 import net.minecraft.item.ItemStack
+import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.nbt.NBTTagEnd
 import net.minecraft.nbt.NBTTagLong
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.ActionResult
 import net.minecraft.util.EnumActionResult
 import net.minecraft.util.EnumHand
+import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Vec3d
 import net.minecraft.world.World
+import net.minecraft.world.WorldServer
 import net.minecraftforge.common.util.Constants
 
 
@@ -43,6 +48,8 @@ class AcademyOfTheFive : IDiagram {
     }
 
     override fun run(world: World, pos: BlockPos, tile: TileEntity) {
+        if (world.provider.dimension != 0) return
+
         val blocks = mutableListOf<Int>()
         for ((x, z) in listOf(1 to 1, -1 to 1, 1 to -1, -1 to -1)) {
             val state = world.getBlockState(pos.add(x, 0, z))
@@ -94,15 +101,37 @@ class AcademyOfTheFive : IDiagram {
                 .sortedBy { it.getDistanceSq(tile.pos) }
                 .flatMap {
                     if (it is EntityPlayer) {
-                        sequenceOf(*(0 until it.inventory.inventoryStackLimit).map { stackId -> it.inventory.getStackInSlot(stackId) }.toTypedArray())
+                        sequenceOf(*(0 until it.inventory.inventoryStackLimit).map { stackId -> it.inventory.getStackInSlot(stackId) to it }.toTypedArray())
                     } else
-                        sequenceOf((it as EntityItem).item)
+                        sequenceOf((it as EntityItem).item to null)
                 }.filter {
-            it.item is ItemStarMap
-        }.forEach {
-            ItemNBTHelper.setList(it, "poses",
+            it.first.item is ItemStarMap
+        }.forEach { (stack, player) ->
+            ItemNBTHelper.setList(stack, "poses",
                     NBTTagList(academiesToSend.size) { NBTTagLong(academiesToSend.toList()[it].toLong()) }
                             .also { it.appendTag(NBTTagLong(pos.toLong())) })
+
+
+            if (player != null) {
+                var visited = ItemNBTHelper.getCompound(stack, "visited")
+                if (visited == null) {
+                    visited = NBTTagCompound()
+                    ItemNBTHelper.setCompound(stack, "visited", visited)
+                }
+                if (!visited.hasKey(player.cachedUniqueIdString))
+                    visited.setTag(player.cachedUniqueIdString, NBTTagList(0) { NBTTagEnd() })
+                val comp = visited.getTagList(player.cachedUniqueIdString, Constants.NBT.TAG_LONG)
+                if (comp.none { (it as NBTTagLong).long == pos.toLong() })
+                    comp.appendTag(NBTTagLong(pos.toLong()))
+                comp.removeAll { nbt -> data.academies.none { (nbt as NBTTagLong).long == it.toLong() } }
+
+                if (comp.tagCount() >= 20) {
+                    val connection = (world as WorldServer).advancementManager.getAdvancement(ResourceLocation("quaeritum:connection"))
+                    if (connection != null)
+                        (player as EntityPlayerMP).advancements.grantCriterion(connection, "far_traveled")
+
+                }
+            }
         }
 
         if (data.academies.hashCode() != hash)
