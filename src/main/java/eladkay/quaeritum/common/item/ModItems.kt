@@ -37,6 +37,7 @@ object ModItems {
     val opium = ItemOpium()
     val starMap = ItemStarMap()
     val tempestArc = ItemTempestArc()
+    val passionDrive = ItemPassionDrive()
 
     val book = ItemMod("book")
     val hiddenBook = object : ItemMod("riftbook") {

@@ -46,7 +46,7 @@ object LibParticles {
      * @param scatter 0.4
      */
     @SideOnly(Side.CLIENT)
-    fun embers(lifetime: Int, size: Float, pos: Vec3d, color: Color, scatter: Double) {
+    fun embers(lifetime: Int, size: Float, pos: Vec3d, color: Color, scatter: Double, motion: Vec3d? = null) {
         val builder = ParticleBuilder(lifetime)
         val world = Minecraft.getMinecraft().world
         builder.setRender(LibLocations.PARTICLE_SPARKLE)
@@ -58,6 +58,8 @@ object LibParticles {
         ParticleSpawner.spawn(builder, world, function, 2, 0, { _, particleBuilder ->
             particleBuilder.setAlphaFunction(InterpScale(1f, 0f))
             particleBuilder.setScaleFunction(InterpScale(7 * size, 0.3f * size))
+            if (motion != null)
+                particleBuilder.setMotion(motion)
         })
         if (scatter != 0.0) {
             ParticleSpawner.spawn(builder, world, function, 3, 0, { _, particleBuilder ->
@@ -68,6 +70,11 @@ object LibParticles {
                         RandUtil.nextDouble(-scatter, scatter),
                         RandUtil.nextDouble(-scatter, scatter))
                 particleBuilder.setPositionOffset(offset)
+                if (motion != null) {
+                    particleBuilder.setMotion(motion)
+                    particleBuilder.setDeceleration(Vec3d(0.95, 0.95, 0.95))
+                    particleBuilder.setAcceleration(Vec3d.ZERO)
+                }
             })
             ParticleSpawner.spawn(builder, world, function, 4, 0, { _, particleBuilder ->
                 particleBuilder.setAlphaFunction(InterpScale(1f, 0f))
@@ -77,6 +84,11 @@ object LibParticles {
                         RandUtil.nextDouble(-scatter, scatter),
                         RandUtil.nextDouble(-scatter, scatter))
                 particleBuilder.setPositionOffset(offset)
+                if (motion != null) {
+                    particleBuilder.setMotion(motion)
+                    particleBuilder.setDeceleration(Vec3d(0.95, 0.95, 0.95))
+                    particleBuilder.setAcceleration(Vec3d.ZERO)
+                }
             })
         }
     }

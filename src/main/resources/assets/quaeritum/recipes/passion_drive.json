@@ -1,0 +1,25 @@
+{
+	"type": "forge:ore_shaped",
+	"pattern": [
+		"YYX",
+		"ZHY"
+	],
+	"key": {
+		"Y": {
+			"item": "minecraft:blaze_powder"
+		},
+		"H": {
+			"item": "minecraft:lava_bucket"
+		},
+		"X": {
+			"type": "forge:ore_dict",
+			"ore": "essenceLucis"
+		},
+		"Z": {
+			"item": "quaeritum:dormant_soulstone"
+		}
+	},
+	"result": {
+		"item": "quaeritum:passion_drive"
+	}
+}

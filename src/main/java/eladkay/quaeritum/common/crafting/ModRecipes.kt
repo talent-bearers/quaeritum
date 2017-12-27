@@ -50,6 +50,13 @@ object ModRecipes {
                 'H', ItemStack(Items.LAVA_BUCKET),
                 'X', ItemStack(Items.FIRE_CHARGE),
                 'Z', ItemStack(ModItems.dormant))
+        addOreDictRecipe("passion_drive", ItemStack(ModItems.passionDrive),
+                "YYX",
+                "ZHY",
+                'Y', ItemStack(Items.BLAZE_POWDER),
+                'H', ItemStack(Items.LAVA_BUCKET),
+                'X', "essenceLucis",
+                'Z', ItemStack(ModItems.dormant))
         addOreDictRecipe("vibrant", ItemStack(ModItems.vibrant),
                 "Y Y",
                 "XZX",
