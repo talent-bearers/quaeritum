@@ -44,7 +44,6 @@ class ItemPassionDrive : ItemMod("passion_drive") {
         return super.onItemRightClick(worldIn, playerIn, handIn)
     }
 
-    @Suppress("SENSELESS_COMPARISON")
     override fun onUsingTick(stack: ItemStack, player: EntityLivingBase, count: Int) {
         if (player is EntityPlayer && !player.world.isRemote) {
             if (AnimusHelper.Network.requestAnimus(player, 1, EnumAnimusTier.LUCIS, true)) {

@@ -1,5 +1,7 @@
 package eladkay.quaeritum.client.lib
 
+import com.teamwizardry.librarianlib.features.helpers.vec
+import com.teamwizardry.librarianlib.features.kotlin.plus
 import com.teamwizardry.librarianlib.features.math.interpolate.StaticInterp
 import com.teamwizardry.librarianlib.features.particle.ParticleBuilder
 import com.teamwizardry.librarianlib.features.particle.ParticleSpawner
@@ -15,7 +17,7 @@ import java.awt.Color
 
 object LibParticles {
 
-    private val darkGray = Color(0x1c1c1c)
+    val darkGray = Color(0x1c1c1c)
 
     /**
      * Recommended values:
@@ -25,17 +27,19 @@ object LibParticles {
      * @param horizontalScatter 0.03
      */
     @SideOnly(Side.CLIENT)
-    fun smoke(pos: Vec3d, verticalMin: Double, verticalMax: Double, horizontalScatter: Double) {
+    fun smoke(lifeMin: Int, lifeMax: Int, pos: Vec3d, verticalMin: Double, verticalMax: Double, horizontalScatter: Double, amount: Int, color: Color = darkGray) {
         val builder = ParticleBuilder(30)
         val world = Minecraft.getMinecraft().world
         builder.setRender(LibLocations.PARTICLE_SMOKE)
-        builder.setColor(darkGray)
-        ParticleSpawner.spawn(builder, world, StaticInterp(pos), RandUtil.nextInt(1, 3), 0, { _, particleBuilder ->
+        builder.setColor(color)
+        ParticleSpawner.spawn(builder, world, StaticInterp(pos + vec(0, 0.5, 0)), amount, 0, { _, particleBuilder ->
             particleBuilder.setAlphaFunction(InterpScale(1f, 0f))
-            particleBuilder.setLifetime(RandUtil.nextInt(20, 35))
+            particleBuilder.setLifetime(RandUtil.nextInt(lifeMin, lifeMax))
             particleBuilder.setScale(RandUtil.nextInt(3, 7).toFloat())
             particleBuilder.setRotation(RandUtil.nextFloat())
             particleBuilder.setMotion(Vec3d(RandUtil.nextDouble(-horizontalScatter, horizontalScatter), RandUtil.nextDouble(verticalMin, verticalMax), RandUtil.nextDouble(-horizontalScatter, horizontalScatter)))
+            particleBuilder.setDeceleration(Vec3d(0.975, 0.975, 0.975))
+            particleBuilder.setAcceleration(Vec3d.ZERO)
         })
     }
 

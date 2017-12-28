@@ -6,6 +6,8 @@ import com.teamwizardry.librarianlib.features.base.item.ItemMod
 import com.teamwizardry.librarianlib.features.helpers.ItemNBTHelper
 import com.teamwizardry.librarianlib.features.kotlin.isNotEmpty
 import com.teamwizardry.librarianlib.features.kotlin.sendSpamlessMessage
+import com.teamwizardry.librarianlib.features.network.PacketHandler
+import com.teamwizardry.librarianlib.features.network.sendToAllAround
 import com.teamwizardry.librarianlib.features.utilities.client.TooltipHelper
 import eladkay.quaeritum.api.animus.AnimusHelper
 import eladkay.quaeritum.api.animus.EnumAnimusTier
@@ -16,6 +18,7 @@ import eladkay.quaeritum.api.rituals.IDiagram
 import eladkay.quaeritum.common.block.ModBlocks
 import eladkay.quaeritum.common.block.base.BlockModColored
 import eladkay.quaeritum.common.lib.LibNames
+import eladkay.quaeritum.common.networking.PuffMessage
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.entity.Entity
@@ -42,6 +45,7 @@ import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.oredict.OreIngredient
 import net.minecraftforge.registries.IForgeRegistryEntry
+import java.awt.Color
 
 /**
  * @author WireSegal
@@ -67,8 +71,7 @@ class ItemContractScroll : ItemMod(LibNames.SCROLL, LibNames.SCROLL, LibNames.SE
                             items.forEach {
                                 if (canDelete(it.item)) {
                                     it.setDead()
-                                    (world as WorldServer).spawnParticle(EnumParticleTypes.SMOKE_NORMAL,
-                                            it.posX, it.posY + 0.5, it.posZ, 100, 0.1, 0.0, 0.1, 0.0)
+                                    puff(PuffMessage(it.positionVector, color = Color(0x40FF40), amount = 20), world)
                                 }
                             }
                             val output = EntityItem(world, pos.x + 0.5, pos.y + 1.0, pos.z + 0.5,
@@ -79,8 +82,7 @@ class ItemContractScroll : ItemMod(LibNames.SCROLL, LibNames.SCROLL, LibNames.SE
                             output.motionZ = 0.0
                             output.setNoGravity(true)
                             world.spawnEntity(output)
-                            (world as WorldServer).spawnParticle(EnumParticleTypes.SMOKE_NORMAL,
-                                    output.posX, output.posY + 0.5, output.posZ, 100, 0.1, 0.0, 0.1, 0.0)
+                            puff(PuffMessage(output.positionVector, color = Color(0x808080), amount = 100, verticalMin = 0.04, verticalMax = 0.05), world)
                             player?.sendSpamlessMessage(TextComponentTranslation("quaeritum.oath.innocentia.scream" + (if (rot) "_rot" else ""))
                                     .setStyle(Style().setBold(true).setColor(TextFormatting.DARK_PURPLE)), WORDS_OF_AGES)
                         }
@@ -93,8 +95,7 @@ class ItemContractScroll : ItemMod(LibNames.SCROLL, LibNames.SCROLL, LibNames.SE
                             items.forEach {
                                 if (canDelete(it.item)) {
                                     it.setDead()
-                                    (world as WorldServer).spawnParticle(EnumParticleTypes.SMOKE_NORMAL,
-                                            it.posX, it.posY + 0.5, it.posZ, 100, 0.1, 0.0, 0.1, 0.0)
+                                    puff(PuffMessage(it.positionVector, color = Color(0xF0F040), amount = 20), world)
                                 }
                             }
                             val output = EntityItem(world, pos.x + 0.5, pos.y + 0.25, pos.z + 0.5, ItemResource.Resources.TEMPESTEEL.stackOf())
@@ -103,8 +104,7 @@ class ItemContractScroll : ItemMod(LibNames.SCROLL, LibNames.SCROLL, LibNames.SE
                             output.motionZ = 0.0
                             output.setNoGravity(true)
                             world.spawnEntity(output)
-                            (world as WorldServer).spawnParticle(EnumParticleTypes.SMOKE_NORMAL,
-                                    output.posX, output.posY + 0.5, output.posZ, 100, 0.1, 0.0, 0.1, 0.0)
+                            puff(PuffMessage(output.positionVector, color = Color(0x40F0F0), amount = 100, verticalMin = 0.04, verticalMax = 0.05), world)
                         }
                     })
             ContractRegistry.registerOath("connection", 4, { AnimusHelper.Network.getTier(it).ordinal >= EnumAnimusTier.ARGENTUS.ordinal },
@@ -119,18 +119,17 @@ class ItemContractScroll : ItemMod(LibNames.SCROLL, LibNames.SCROLL, LibNames.SE
                                 val cost = players.filter { it != player && it is EntityLivingBase && it !is EntityArmorStand }.size * 10
                                 if (players.size > 0 && takeAnimusFrom(cost, EnumAnimusTier.ARGENTUS, stack)) {
                                     val shift = target.subtract(pos)
-                                    world as WorldServer
                                     players.forEach {
-                                        world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL,
-                                                it.posX, it.posY + 0.5, it.posZ, 100, 0.1, 0.0, 0.1, 0.0)
+                                        puff(PuffMessage(it.positionVector, amount = 100, color = Color(0x802080), scatter = 0.25), world)
                                         if (it is EntityPlayerMP)
                                             it.connection.setPlayerLocation(it.posX + shift.x, it.posY + shift.y, it.posZ + shift.z, it.rotationYaw, it.rotationPitch)
                                         else
                                             it.setLocationAndAngles(it.posX + shift.x, it.posY + shift.y, it.posZ + shift.z, it.rotationYaw, it.rotationPitch)
-                                        world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL,
-                                                it.posX, it.posY + 0.5, it.posZ, 100, 0.1, 0.0, 0.1, 0.0)
                                     }
-                                    world.spawnParticle(EnumParticleTypes.PORTAL,
+                                    players.forEach {
+                                        puff(PuffMessage(it.positionVector, amount = 100, color = Color(0x802080), scatter = 0.25), world)
+                                    }
+                                    (world as WorldServer).spawnParticle(EnumParticleTypes.PORTAL,
                                             target.x + 0.5, target.y + 0.5, target.z + 0.5, 1000, 0.1, 0.0, 0.1, 1.0)
                                 }
                             }
@@ -144,6 +143,10 @@ class ItemContractScroll : ItemMod(LibNames.SCROLL, LibNames.SCROLL, LibNames.SE
         fun takeAnimusFrom(amount: Int, rarity: EnumAnimusTier, stack: ItemStack): Boolean {
             val player = ItemNBTHelper.getUUID(stack, "uuid")
             return AnimusHelper.Network.requestAnimus(player, amount, rarity, true)
+        }
+
+        fun puff(message: PuffMessage, world: World) {
+            PacketHandler.NETWORK.sendToAllAround(message, world, message.pos, 64)
         }
 
         /*
