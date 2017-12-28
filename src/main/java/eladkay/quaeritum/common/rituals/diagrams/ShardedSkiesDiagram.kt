@@ -6,6 +6,7 @@ import com.teamwizardry.librarianlib.features.network.sendToAllAround
 import eladkay.quaeritum.api.rituals.IDiagram
 import eladkay.quaeritum.api.rituals.PositionedBlock
 import eladkay.quaeritum.api.rituals.PositionedBlockChalk
+import eladkay.quaeritum.api.util.RandUtil
 import eladkay.quaeritum.common.block.ModBlocks
 import eladkay.quaeritum.common.networking.PuffMessage
 import net.minecraft.entity.item.EntityItem
@@ -27,7 +28,7 @@ class ShardedSkiesDiagram : IDiagram {
 
         for (stack in IDiagram.Helper.entitiesAroundAltar(tes, 4.0)) {
             if (!IDiagram.Helper.isEntityItemInList(stack, requiredItems)) continue
-            PacketHandler.NETWORK.sendToAllAround(PuffMessage(stack.positionVector, color = Color(0xFF9D2B)),
+            PacketHandler.NETWORK.sendToAllAround(PuffMessage(stack.positionVector, color = Color(0xFF9D2B), scatter = 0.03, amount = 30, verticalMin = 0.04),
                     world, stack.positionVector, 64)
             stack.item.shrink(1)
             if (stack.item.isEmpty)
@@ -42,7 +43,7 @@ class ShardedSkiesDiagram : IDiagram {
     override fun onPrepUpdate(world: World, pos: BlockPos, tile: TileEntity, ticksRemaining: Int): Boolean {
         for (stack in IDiagram.Helper.entitiesAroundAltar(tile, 4.0)) {
             if (!IDiagram.Helper.isEntityItemInList(stack, requiredItems)) continue
-            PacketHandler.NETWORK.sendToAllAround(PuffMessage(stack.positionVector),
+            PacketHandler.NETWORK.sendToAllAround(PuffMessage(stack.positionVector.addVector(RandUtil.nextDouble(-0.25, 0.25), 0.0, RandUtil.nextDouble(-0.25, 0.25))),
                     world, stack.positionVector, 64)
         }
         return hasRequiredItems(world, pos, tile)
