@@ -67,7 +67,7 @@ object ChatChanger {
 
     private val PATTERN = "(?:${TextFormatting.GOLD}\u00a7([0-9A-Fa-fK-Ok-oRr])${TextFormatting.RESET} {3}${TextFormatting.BOLD}${TextFormatting.RESET})".toRegex()
 
-    val GuiNewChat.lines by MethodHandleHelper.delegateForReadOnly<GuiNewChat, List<ChatLine>>(GuiNewChat::class.java, "h", "field_146252_h", "chatLines")
+    val GuiNewChat.lines by MethodHandleHelper.delegateForReadOnly<GuiNewChat, List<ChatLine>>(GuiNewChat::class.java, "i", "field_146253_i", "drawnChatLines")
     val GuiNewChat.scrollPos by MethodHandleHelper.delegateForReadOnly<GuiNewChat, Int>(GuiNewChat::class.java, "j", "field_146250_j", "scrollPos")
 
 
@@ -81,24 +81,20 @@ object ChatChanger {
             val chatLines = chatGui.lines
 
             val shift = chatGui.scrollPos
-            var totalHeight = -Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT
             var idx = shift
             while (idx < chatLines.size && (idx - shift) < chatGui.lineCount) {
                 val line = chatLines[idx]
-                var timeSinceCreation = updateCounter - line.updatedCounter
-                if (chatGui.chatOpen) timeSinceCreation = 0
+                val text = line.chatComponent.unformattedText
+                val matches = PATTERN.findAll(text)
+                for (match in matches) {
+                    var timeSinceCreation = updateCounter - line.updatedCounter
+                    if (chatGui.chatOpen) timeSinceCreation = 0
+                    if (timeSinceCreation < 200) {
+                        val chatOpacity = Minecraft.getMinecraft().gameSettings.chatOpacity * 0.9f + 0.1f
+                        var fadeOut = MathHelper.clamp((1 - timeSinceCreation / 200.0) * 10, 0.0, 1.0).toFloat()
+                        fadeOut *= fadeOut
+                        val alpha = fadeOut * chatOpacity
 
-                if (timeSinceCreation < 200) {
-                    val text = line.chatComponent.unformattedText
-                    totalHeight += Minecraft.getMinecraft().fontRenderer.getWordWrappedHeight(text, chatGui.chatWidth)
-                    
-                    val chatOpacity = Minecraft.getMinecraft().gameSettings.chatOpacity * 0.9f + 0.1f
-                    var fadeOut = MathHelper.clamp((1 - timeSinceCreation / 200.0) * 10, 0.0, 1.0).toFloat()
-                    fadeOut *= fadeOut
-                    val alpha = fadeOut * chatOpacity
-
-                    val matches = PATTERN.findAll(text)
-                    for (match in matches) {
 
                         val before = text.substring(0 until (match.groups[0]?.range?.first ?: 0))
                         val id = match.groupValues[1]
@@ -106,13 +102,13 @@ object ChatChanger {
                         if (formatting != null && formatting.ordinal < EnumLegend.values().size) {
                             val element = EnumLegend.values()[formatting.ordinal]
                             val x = chatX + 3 + Minecraft.getMinecraft().fontRenderer.getStringWidth(before).toFloat()
-                            val y = chatY - totalHeight
+                            val y = chatY - (Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT) * (idx.toFloat() - shift)
                             GlStateManager.pushMatrix()
                             GlStateManager.scale(0.5, 0.5, 0.5)
-                            GlStateManager.translate(x + 0.5f, y.toFloat(), 0f)
+                            GlStateManager.translate(x + 0.5f, y, 0f)
                             val prevMultiplier = RenderUtil.alphaMultiplier
                             RenderUtil.alphaMultiplier *= alpha
-                            RenderSymbol.renderSymbol(x, y.toFloat(), element)
+                            RenderSymbol.renderSymbol(x, y, element)
                             RenderUtil.alphaMultiplier = prevMultiplier
                             GlStateManager.popMatrix()
                         }
