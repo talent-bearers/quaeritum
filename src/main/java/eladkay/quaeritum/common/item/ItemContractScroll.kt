@@ -15,6 +15,7 @@ import eladkay.quaeritum.api.animus.INetworkProvider
 import eladkay.quaeritum.api.animus.ISoulstone
 import eladkay.quaeritum.api.contract.ContractRegistry
 import eladkay.quaeritum.api.rituals.IDiagram
+import eladkay.quaeritum.client.lib.LibParticles
 import eladkay.quaeritum.common.block.ModBlocks
 import eladkay.quaeritum.common.block.base.BlockModColored
 import eladkay.quaeritum.common.lib.LibNames
@@ -71,7 +72,10 @@ class ItemContractScroll : ItemMod(LibNames.SCROLL, LibNames.SCROLL, LibNames.SE
                             items.forEach {
                                 if (canDelete(it.item)) {
                                     it.setDead()
-                                    puff(PuffMessage(it.positionVector, color = Color(0x40FF40), amount = 20), world)
+                                    val color = if (it.item.item is ItemEssence)
+                                        EnumAnimusTier.fromMeta(it.item.itemDamage).tierColor
+                                    else LibParticles.darkGray
+                                    puff(PuffMessage(it.positionVector, color = color, amount = 20), world)
                                 }
                             }
                             val output = EntityItem(world, pos.x + 0.5, pos.y + 1.0, pos.z + 0.5,
@@ -95,7 +99,10 @@ class ItemContractScroll : ItemMod(LibNames.SCROLL, LibNames.SCROLL, LibNames.SE
                             items.forEach {
                                 if (canDelete(it.item)) {
                                     it.setDead()
-                                    puff(PuffMessage(it.positionVector, color = Color(0xF0F040), amount = 20), world)
+                                    val color = if (OreIngredient("ingotGold").apply(it.item))
+                                        Color(0xF0F040)
+                                    else LibParticles.darkGray
+                                    puff(PuffMessage(it.positionVector, color = color, amount = 20), world)
                                 }
                             }
                             val output = EntityItem(world, pos.x + 0.5, pos.y + 0.25, pos.z + 0.5, ItemResource.Resources.TEMPESTEEL.stackOf())

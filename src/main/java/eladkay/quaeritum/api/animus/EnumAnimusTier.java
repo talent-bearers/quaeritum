@@ -4,6 +4,7 @@ import eladkay.quaeritum.api.spell.EnumSpellElement;
 import net.minecraft.util.IStringSerializable;
 import org.jetbrains.annotations.NotNull;
 
+import java.awt.*;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -14,12 +15,12 @@ import java.util.stream.Collectors;
  */
 public enum EnumAnimusTier implements IStringSerializable {
 
-    VERDIS(.2, EnumSpellElement.WATER, EnumSpellElement.EARTH),
-    LUCIS(.4, EnumSpellElement.FIRE, EnumSpellElement.AIR),
-    FERRUS(.8, EnumSpellElement.METAL, EnumSpellElement.ENTROPY),
-    ARGENTUS(1.6, EnumSpellElement.FORM, EnumSpellElement.FLOW),
-    ATLAS(3.2, EnumSpellElement.CONNECTION, EnumSpellElement.SPIRIT),
-    QUAERITUS(6.4, EnumSpellElement.AETHER, EnumSpellElement.SOUL);
+    VERDIS(.2, EnumSpellElement.WATER, EnumSpellElement.EARTH, new Color(0x40FF40)),
+    LUCIS(.4, EnumSpellElement.FIRE, EnumSpellElement.AIR, new Color(0xFFA030)),
+    FERRUS(.8, EnumSpellElement.METAL, EnumSpellElement.ENTROPY, new Color(0x303030)),
+    ARGENTUS(1.6, EnumSpellElement.FORM, EnumSpellElement.FLOW, new Color(0xFFE020)),
+    ATLAS(3.2, EnumSpellElement.CONNECTION, EnumSpellElement.SPIRIT, new Color(0x2020FF)),
+    QUAERITUS(6.4, EnumSpellElement.AETHER, EnumSpellElement.SOUL, new Color(0xFFFFFF));
 
     public final double awakenedFillPercentage;
     public final String oreName = "essence" + Arrays
@@ -28,11 +29,13 @@ public enum EnumAnimusTier implements IStringSerializable {
             .collect(Collectors.joining());
     private final EnumSpellElement elementPrimary;
     private final EnumSpellElement elementSecondary;
+    public final Color tierColor;
 
-    EnumAnimusTier(double awakenedFillPercentage, EnumSpellElement elementPrimary, EnumSpellElement elementSecondary) {
+    EnumAnimusTier(double awakenedFillPercentage, EnumSpellElement elementPrimary, EnumSpellElement elementSecondary, Color tierColor) {
         this.awakenedFillPercentage = awakenedFillPercentage;
         this.elementPrimary = elementPrimary;
         this.elementSecondary = elementSecondary;
+        this.tierColor = tierColor;
     }
 
     private static String capitalize(final String line) {
