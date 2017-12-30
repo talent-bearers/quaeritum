@@ -288,6 +288,14 @@ advancements.quaeritum.spirit.title=Divinity of Spirit
 advancements.quaeritum.spirit.desc=By slaying the Rift's guardian once more, you have proven yourself worthy to become Archmage of Dominance.
 advancements.quaeritum.connection.title=Divinity of Connection
 advancements.quaeritum.connection.desc=By forging community all across the continent of Fractus, you have proven yourself worthy to become Archmage of Unity.
+advancements.quaeritum.flow.title=Divinity of Flow
+advancements.quaeritum.flow.desc=By using the power of the ravaged Riftborn races to move across the land, you have proven yourself worthy to become Archmage of Chaos.
+advancements.quaeritum.form.title=Divinity of Form
+advancements.quaeritum.form.desc=By creating possibilities from the ether of the world, you have proven yourself worthy to become Archmage of Diagrams.
+advancements.quaeritum.metal.title=Divinity of Metal
+advancements.quaeritum.metal.desc=By tearing the world asunder before your solid resolve, you have proven yourself worthy to become Archmage of Will.
+advancements.quaeritum.entropy.title=Divinity of Entropy
+advancements.quaeritum.entropy.desc=By tearing down the weak that life may flourish, you have proven yourself worthy to become Archmage of Cultivation.
 
 quaeritum.hud.fluid=%dx %s
 quaeritum.misc.signed=Signed: %s

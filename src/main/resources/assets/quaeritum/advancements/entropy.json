@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "item": "quaeritum:essence",
+      "data": 2
+    },
+    "title": {
+      "translate": "advancements.quaeritum.entropy.title"
+    },
+    "description": {
+      "translate": "advancements.quaeritum.entropy.desc"
+    },
+    "frame": "challenge",
+    "announce_to_chat": false,
+    "hidden": true
+  },
+  "parent": "quaeritum:root",
+  "criteria": {
+    "culled_weak": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

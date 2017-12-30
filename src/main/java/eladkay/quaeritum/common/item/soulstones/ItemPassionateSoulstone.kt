@@ -25,10 +25,10 @@ class ItemPassionateSoulstone : ItemMod(LibNames.PASSIONATE_SOULSTONE), INetwork
     }
 
     override fun getContainerItem(itemStack: ItemStack): ItemStack {
-        if (!AnimusHelper.requestAnimus(itemStack, 4, EnumAnimusTier.LUCIS, true)) return ItemStack.EMPTY
         itemStack.grow(1)
         val copiedStack = itemStack.copy()
         itemStack.shrink(1)
+        if (!AnimusHelper.requestAnimus(copiedStack, 4, EnumAnimusTier.LUCIS, true)) return ItemStack.EMPTY
         return copiedStack
     }
 

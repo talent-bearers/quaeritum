@@ -45,7 +45,7 @@ public final class ElementHandler {
                         inventory.setStackInSlot(slot, actionResult.getResult());
 
                     if (actionResult.getType() == SUCCESS)
-                        break main;
+                        return SUCCESS;
                 }
             }
 
