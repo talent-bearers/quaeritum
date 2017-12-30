@@ -24,40 +24,37 @@ object AdvancementManager {
     fun onEntityKilled(e: LivingDeathEvent) {
         val trueSource = e.source.trueSource
         if (trueSource is EntityPlayerMP) {
-            val end = trueSource.serverWorld.advancementManager.getAdvancement(ResourceLocation("end/kill_dragon"))
-            if (end != null && trueSource.advancements.getProgress(end).isDone) {
-                val spirit = trueSource.serverWorld.advancementManager.getAdvancement(ResourceLocation("quaeritum:spirit"))
-                if (spirit != null)
-                    trueSource.advancements.grantCriterion(spirit, "slain_dragons")
-            }
+            val spirit = trueSource.serverWorld.advancementManager.getAdvancement(ResourceLocation("quaeritum:spirit")) ?: return
+
+            val end = trueSource.serverWorld.advancementManager.getAdvancement(ResourceLocation("end/kill_dragon")) ?: return
+            if (!trueSource.advancements.getProgress(spirit).isDone && trueSource.advancements.getProgress(end).isDone)
+                trueSource.advancements.grantCriterion(spirit, "slain_dragons")
         }
     }
 
     fun grant(player: EntityPlayerMP, stat: StatBase?, threshold: Int, name: String, criterion: String) {
         if (stat == null) return
-        val statValue = player.statFile.readStat(stat)
-        if (statValue > threshold) {
-            val flow = player.serverWorld.advancementManager.getAdvancement(ResourceLocation("quaeritum:$name"))
-            if (flow != null)
-                player.advancements.grantCriterion(flow, criterion)
+        val adv = player.serverWorld.advancementManager.getAdvancement(ResourceLocation("quaeritum:$name")) ?: return
+
+        if (!player.advancements.getProgress(adv).isDone) {
+            val statValue = player.statFile.readStat(stat)
+            if (statValue > threshold) player.advancements.grantCriterion(adv, criterion)
         }
     }
 
     fun grant(player: EntityPlayerMP, stat: Array<StatBase>, threshold: Int, name: String, criterion: String) {
-        val statValue = stat.sumBy { player.statFile.readStat(it) }
-        if (statValue > threshold) {
-            val flow = player.serverWorld.advancementManager.getAdvancement(ResourceLocation("quaeritum:$name"))
-            if (flow != null)
-                player.advancements.grantCriterion(flow, criterion)
+        val adv = player.serverWorld.advancementManager.getAdvancement(ResourceLocation("quaeritum:$name")) ?: return
+        if (!player.advancements.getProgress(adv).isDone) {
+            val statValue = stat.sumBy { player.statFile.readStat(it) }
+            if (statValue > threshold) player.advancements.grantCriterion(adv, criterion)
         }
     }
 
     fun grantByTotalAchieved(player: EntityPlayerMP, stat: Array<StatBase?>, threshold: Int, name: String, criterion: String) {
-        val statValue = stat.filterNotNull().sumBy { if (player.statFile.readStat(it) > 0) 1 else 0 }
-        if (statValue > threshold) {
-            val flow = player.serverWorld.advancementManager.getAdvancement(ResourceLocation("quaeritum:$name"))
-            if (flow != null)
-                player.advancements.grantCriterion(flow, criterion)
+        val adv = player.serverWorld.advancementManager.getAdvancement(ResourceLocation("quaeritum:$name")) ?: return
+        if (!player.advancements.getProgress(adv).isDone) {
+            val statValue = stat.filterNotNull().sumBy { if (player.statFile.readStat(it) > 0) 1 else 0 }
+            if (statValue > threshold) player.advancements.grantCriterion(adv, criterion)
         }
     }
 
