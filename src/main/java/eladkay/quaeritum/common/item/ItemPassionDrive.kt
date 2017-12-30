@@ -37,7 +37,7 @@ class ItemPassionDrive : ItemMod("passion_drive") {
 
     override fun onItemRightClick(worldIn: World, playerIn: EntityPlayer, handIn: EnumHand): ActionResult<ItemStack> {
         val stack = playerIn.getHeldItem(handIn)
-        if (AnimusHelper.Network.requestAnimus(playerIn, 10, EnumAnimusTier.LUCIS, true)) {
+        if (AnimusHelper.Network.requestAnimus(playerIn, 10, EnumAnimusTier.LUCIS, !worldIn.isRemote)) {
             playerIn.activeHand = handIn
             return ActionResult(EnumActionResult.SUCCESS, stack)
         }
