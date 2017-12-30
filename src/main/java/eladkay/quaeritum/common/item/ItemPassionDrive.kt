@@ -50,17 +50,19 @@ class ItemPassionDrive : ItemMod("passion_drive") {
                 val from = player.positionVector
                         .addVector(0.0, player.getEyeHeight() * 0.75, 0.0)
                         .add(player.lookVec)
-                val motion = player.lookVec + Vec3d(0.0, player.getEyeHeight() / 80.0, 0.0).scale(0.5).add(player.motionVec).addVector(0.0, 0.08, 0.0)
+
+                val cast = RaycastUtils.raycast(player, 16.0)
+
+                val vec = player.positionVector.addVector(0.0, player.getEyeHeight() / 2.0, 0.0)
+                val dist = if (cast == null || cast.typeOfHit == RayTraceResult.Type.MISS) 16.0 else cast.hitVec.distanceTo(vec)
+
+                val motion = player.lookVec.scale(dist / 16.0) + Vec3d(0.0, player.getEyeHeight() * 0.01, 0.0).scale(0.5).add(player.motionVec).addVector(0.0, 0.08, 0.0)
                 PacketHandler.NETWORK.sendToAllAround(MessagePassionEffect(from, motion),
                         player.world, from, 64)
 
-                if (count % 3 == 0) {
+                if (count % 2 == 0) {
                     val fakeFireball = EntityLargeFireball(player.world, player, 0.0, 0.0, 0.0)
 
-                    val cast = RaycastUtils.raycast(player, 16.0)
-
-                    val vec = player.positionVector.addVector(0.0, player.getEyeHeight() / 2.0, 0.0)
-                    val dist = if (cast == null || cast.typeOfHit == RayTraceResult.Type.MISS) 16.0 else cast.hitVec.distanceTo(vec)
 
                     val to = player.lookVec.scale(dist).add(vec)
 
