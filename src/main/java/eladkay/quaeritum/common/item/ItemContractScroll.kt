@@ -120,8 +120,10 @@ class ItemContractScroll : ItemMod(LibNames.SCROLL, LibNames.SCROLL, LibNames.SE
                             val posCompressed = ItemNBTHelper.getLong(stack, "pos", Long.MIN_VALUE)
                             if (posCompressed != Long.MIN_VALUE) {
                                 val target = BlockPos.fromLong(posCompressed)
+                                val targetIsDiagram = world.getBlockState(target).block == ModBlocks.blueprint
                                 val players = world.getEntitiesWithinAABB(Entity::class.java, AxisAlignedBB(pos).grow(4.0)) {
                                     it != null && it.getDistanceSq(pos) <= 16.0
+                                            && (targetIsDiagram || it !is EntityItem || it.item != stack)
                                 }
                                 val cost = players.filter { it != player && it is EntityLivingBase && it !is EntityArmorStand }.size * 10
                                 if (players.size > 0 && takeAnimusFrom(cost, EnumAnimusTier.ARGENTUS, stack)) {
@@ -139,10 +141,13 @@ class ItemContractScroll : ItemMod(LibNames.SCROLL, LibNames.SCROLL, LibNames.SE
                                     (world as WorldServer).spawnParticle(EnumParticleTypes.PORTAL,
                                             target.x + 0.5, target.y + 0.5, target.z + 0.5, 1000, 0.1, 0.0, 0.1, 1.0)
                                 }
+                                if (targetIsDiagram)
+                                    ItemNBTHelper.setLong(stack, "pos", pos.toLong())
                             }
                             (world as WorldServer).spawnParticle(EnumParticleTypes.PORTAL,
                                     pos.x + 0.5, pos.y + 0.5, pos.z + 0.5, 1000, 0.1, 0.0, 0.1, 1.0)
-                            ItemNBTHelper.setLong(stack, "pos", pos.toLong())
+                            if (!ItemNBTHelper.verifyExistence(stack, "pos"))
+                                ItemNBTHelper.setLong(stack, "pos", pos.toLong())
                         }
                     })
         }
