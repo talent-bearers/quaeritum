@@ -80,7 +80,7 @@ abstract class ItemDrive(name: String, val minTier: EnumAnimusTier) : ItemMod("$
                     }
                 }
             }
-        } else player.stopActiveHand()
+        } else if (!player.world.isRemote) player.stopActiveHand()
     }
 
 

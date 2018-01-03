@@ -2,7 +2,7 @@
 	"type": "forge:ore_shaped",
 	"pattern": [
 		"YYX",
-		"ZHL",
+		"ZFL",
 		"BBE"
 	],
 	"key": {
@@ -13,13 +13,10 @@
 		"B": {
 			"item": "minecraft:blaze_powder"
 		},
-		"H": {
-			"item": "forge:bucketfilled",
-			"nbt": "{FluidName:\"sugar_water\",Amount:1000}",
-			"type": "minecraft:item_nbt"
-		},
 		"L": {
-			"item": "minecraft:lava_bucket"
+			"item": "forge:bucketfilled",
+			"nbt": "{FluidName:\"liquid_light\",Amount:1000}",
+			"type": "minecraft:item_nbt"
 		},
 		"X": {
 			"item": "minecraft:dye",
@@ -28,6 +25,10 @@
 		"E": {
 			"type": "forge:ore_dict",
 			"ore": "essenceLucis"
+		},
+		"F": {
+			"type": "forge:ore_dict",
+			"ore": "essenceFerrus"
 		},
 		"Z": {
 			"item": "quaeritum:dormant_soulstone"
