@@ -3,6 +3,8 @@ package eladkay.quaeritum.common.item
 import com.teamwizardry.librarianlib.core.LibrarianLib
 import com.teamwizardry.librarianlib.features.base.item.ItemMod
 import com.teamwizardry.librarianlib.features.base.item.ItemModSeed
+import eladkay.quaeritum.common.ItemPassionDrive
+import eladkay.quaeritum.common.ItemVibrancyDrive
 import eladkay.quaeritum.common.block.ModBlocks
 import eladkay.quaeritum.common.item.misc.ItemFertilizer
 import eladkay.quaeritum.common.item.misc.ItemPicture
@@ -38,6 +40,7 @@ object ModItems {
     val starMap = ItemStarMap()
     val tempestArc = ItemTempestArc()
     val passionDrive = ItemPassionDrive()
+    val vibrancyDrive = ItemVibrancyDrive()
 
     val book = ItemMod("book")
     val hiddenBook = object : ItemMod("riftbook") {

@@ -15,10 +15,10 @@ import java.awt.Color
  * Created at 9:56 PM on 12/25/17.
  */
 @PacketRegister(Side.CLIENT)
-class MessagePassionEffect(@Save var from: Vec3d = Vec3d.ZERO, @Save var motion: Vec3d = Vec3d.ZERO) : PacketBase() {
+class MessageDriveEffect(@Save var from: Vec3d = Vec3d.ZERO, @Save var motion: Vec3d = Vec3d.ZERO, @Save var color: Color = Color.BLACK) : PacketBase() {
     override fun handle(ctx: MessageContext) {
         ClientRunnable.run {
-            LibParticles.embers(20, 0.5f, from, Color(0x805920), 0.5, motion)
+            LibParticles.embers(20, 0.5f, from, color, 0.5, motion)
         }
     }
 }

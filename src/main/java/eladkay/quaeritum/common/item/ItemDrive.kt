@@ -10,23 +10,26 @@ import com.teamwizardry.librarianlib.features.network.sendToAllAround
 import com.teamwizardry.librarianlib.features.utilities.RaycastUtils
 import eladkay.quaeritum.api.animus.AnimusHelper
 import eladkay.quaeritum.api.animus.EnumAnimusTier
-import eladkay.quaeritum.common.networking.MessagePassionEffect
+import eladkay.quaeritum.common.networking.MessageDriveEffect
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.entity.projectile.EntityLargeFireball
 import net.minecraft.item.EnumAction
 import net.minecraft.item.ItemStack
-import net.minecraft.util.*
+import net.minecraft.util.ActionResult
+import net.minecraft.util.EnumActionResult
+import net.minecraft.util.EnumFacing
+import net.minecraft.util.EnumHand
 import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.RayTraceResult
 import net.minecraft.util.math.Vec3d
 import net.minecraft.world.World
+import java.awt.Color
 
 /**
  * @author WireSegal
  * Created at 6:52 PM on 12/26/17.
  */
-class ItemPassionDrive : ItemMod("passion_drive") {
+abstract class ItemDrive(name: String, val minTier: EnumAnimusTier) : ItemMod("${name}_drive") {
     override fun getMaxItemUseDuration(stack: ItemStack): Int {
         return 72000
     }
@@ -37,7 +40,7 @@ class ItemPassionDrive : ItemMod("passion_drive") {
 
     override fun onItemRightClick(worldIn: World, playerIn: EntityPlayer, handIn: EnumHand): ActionResult<ItemStack> {
         val stack = playerIn.getHeldItem(handIn)
-        if (AnimusHelper.Network.requestAnimus(playerIn, 10, EnumAnimusTier.LUCIS, !worldIn.isRemote)) {
+        if (AnimusHelper.Network.requestAnimus(playerIn, 10, minTier, !worldIn.isRemote)) {
             playerIn.activeHand = handIn
             return ActionResult(EnumActionResult.SUCCESS, stack)
         }
@@ -59,28 +62,28 @@ class ItemPassionDrive : ItemMod("passion_drive") {
                 var motion = player.lookVec.scale(dist / 16.0) + Vec3d(0.0, player.getEyeHeight() * 0.01, 0.0).scale(0.5).add(player.motionVec)
                 if (player.onGround)
                         motion = motion.addVector(0.0, 0.08, 0.0)
-                PacketHandler.NETWORK.sendToAllAround(MessagePassionEffect(from, motion),
+                PacketHandler.NETWORK.sendToAllAround(MessageDriveEffect(from, motion, getColor()),
                         player.world, from, 64)
 
                 if (count % 2 == 0) {
-                    val fakeFireball = EntityLargeFireball(player.world, player, 0.0, 0.0, 0.0)
-
-
                     val to = player.lookVec.scale(dist).add(vec)
 
                     val aabb = AxisAlignedBB(from.x, from.y, from.z, to.x, to.y, to.z)
 
                     player.world.getEntitiesWithinAABB(EntityLivingBase::class.java, aabb.grow(1.0)) {
                         val bb = it?.entityBoundingBox
-                        bb != null && it != player && intersectsBox(from, to, bb.grow(1.0))
+                        bb != null && (it != player || player.rotationPitch == 90F) && intersectsBox(from, to, bb.grow(1.0))
                     }.forEach {
-                        it.attackEntityFrom(DamageSource.causeFireballDamage(fakeFireball, player), 2f)
-                        it.setFire(20)
+                        affectEntity(stack, player, count, it)
                     }
                 }
             } else player.stopActiveHand()
         }
     }
+
+    abstract fun affectEntity(stack: ItemStack, player: EntityPlayer, count: Int, target: EntityLivingBase)
+
+    abstract val color: Color
 
     private var hit = Vec3d.ZERO
 
@@ -128,5 +131,4 @@ class ItemPassionDrive : ItemMod("passion_drive") {
                 || getIntersection(l1.y - b2.y, l2.y - b2.y, l1, l2) && inBox(b1, b2, EnumFacing.Axis.Y)
                 || getIntersection(l1.z - b2.z, l2.z - b2.z, l1, l2) && inBox(b1, b2, EnumFacing.Axis.Z)
     }
-
 }
