@@ -22,6 +22,7 @@ object GreaterSpells {
     // Greater spells are those with three, or four symbols. They don't cost anything extra to have multiples.
 
     fun applyShiftedBuff(potion: Potion, player: EntityLivingBase, trailing: Int, amplifier: Boolean) {
+        if (!player.canBeHitWithPotion()) return
         val potionEffect = player.removeActivePotionEffect(potion) ?: PotionEffect(potion)
         player.addPotionEffect(PotionEffect(potion, Math.max(5 + (trailing * 5), 1) * (if (amplifier) 20 else 25) + potionEffect.duration,
                 if (amplifier) trailing / 2 else 0, true, true))

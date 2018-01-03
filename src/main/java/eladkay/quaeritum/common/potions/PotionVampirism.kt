@@ -3,7 +3,6 @@ package eladkay.quaeritum.common.potions
 import com.teamwizardry.librarianlib.features.base.PotionMod
 import eladkay.quaeritum.common.lib.LibNames
 import net.minecraft.entity.EntityLivingBase
-import net.minecraft.entity.item.EntityArmorStand
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.MobEffects
 import net.minecraft.potion.PotionEffect
@@ -23,7 +22,7 @@ object PotionVampirism : PotionMod(LibNames.VAMPIRISM, false, 0xB22018) {
             if (healthRemaining == 0f && entity is EntityPlayer)
                 healthRemaining = Math.min(20 - entity.foodStats.foodLevel.toFloat(), 5f)
             entity.world.getEntitiesWithinAABB(EntityLivingBase::class.java, entity.entityBoundingBox.grow(7.0)) {
-                it != null && it != entity && it !is EntityArmorStand && it.getDistanceSqToEntity(entity) <= 25.0
+                it != null && it != entity && it.canBeHitWithPotion() && it.getDistanceSqToEntity(entity) <= 25.0
             }.forEach {
                 if (it.health > 0.5) {
                     if (healthRemaining != 0f) {

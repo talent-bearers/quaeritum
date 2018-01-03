@@ -1,0 +1,39 @@
+{
+	"type": "forge:ore_shaped",
+	"pattern": [
+		"YYX",
+		"ZHL",
+		"BBE"
+	],
+	"key": {
+		"Y": {
+			"type": "forge:ore_dict",
+			"ore": "essenceVerdis"
+		},
+		"B": {
+			"item": "minecraft:blaze_powder"
+		},
+		"H": {
+			"item": "forge:bucketfilled",
+			"nbt": "{FluidName:\"sugar_water\",Amount:1000}",
+			"type": "minecraft:item_nbt"
+		},
+		"L": {
+			"item": "minecraft:lava_bucket"
+		},
+		"X": {
+			"item": "minecraft:dye",
+			"data": 15
+		},
+		"E": {
+			"type": "forge:ore_dict",
+			"ore": "essenceLucis"
+		},
+		"Z": {
+			"item": "quaeritum:dormant_soulstone"
+		}
+	},
+	"result": {
+		"item": "quaeritum:twin_drive"
+	}
+}

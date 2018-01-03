@@ -25,7 +25,7 @@ import net.minecraft.util.math.RayTraceResult
 object ComplexSpells {
     fun applyBuffToOther(potion: Potion, player: EntityPlayer, trailing: Int, total: Int, amplifier: Boolean) {
         val entity = RaycastUtils.getEntityLookedAt(player)
-        if (entity != null && entity is EntityLivingBase)
+        if (entity != null && entity is EntityLivingBase && entity.canBeHitWithPotion())
             BasicSpells.applyPotionBuff(potion, entity, trailing, total, amplifier)
     }
 
@@ -47,7 +47,7 @@ object ComplexSpells {
                         entity.addPotionEffect(PotionEffect(MobEffects.HUNGER, total * 20, total * 2))
                     }
                 } else entity.heal(trailing * 3f + 2f)
-                if (total > 3) entity.addPotionEffect(PotionEffect(MobEffects.SLOWNESS, 500, total - 2))
+                if (entity.canBeHitWithPotion() && total > 3) entity.addPotionEffect(PotionEffect(MobEffects.SLOWNESS, 500, total - 2))
             }
         }
 

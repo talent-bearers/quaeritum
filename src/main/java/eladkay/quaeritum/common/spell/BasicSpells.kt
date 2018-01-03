@@ -29,6 +29,7 @@ import java.util.*
  */
 object BasicSpells {
     fun applyPotionBuff(potion: Potion, player: EntityLivingBase, trailing: Int, total: Int, amplifier: Boolean) {
+        if (!player.canBeHitWithPotion()) return
         val potionEffect = player.removeActivePotionEffect(potion) ?: PotionEffect(potion)
         player.addPotionEffect(PotionEffect(potion, Math.max(5 + (trailing * 2) / total, 1) * (if (amplifier) 10 else 20) + potionEffect.duration,
                 if (amplifier) trailing / 2 else 0, true, true))

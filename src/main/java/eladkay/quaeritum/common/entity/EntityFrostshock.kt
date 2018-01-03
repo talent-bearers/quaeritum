@@ -23,7 +23,7 @@ class EntityFrostshock : EntityBaseProjectile {
 
     override fun onImpactEntity(entity: Entity, successful: Boolean) {
         super.onImpactEntity(entity, successful)
-        if (entity is EntityLivingBase)
+        if (entity is EntityLivingBase && entity.canBeHitWithPotion())
             entity.addPotionEffect(PotionEffect(MobEffects.SLOWNESS, 200, 1))
     }
 

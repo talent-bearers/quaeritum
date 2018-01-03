@@ -61,9 +61,11 @@ abstract class ItemDrive(name: String, val minTier: EnumAnimusTier) : ItemMod("$
 
                 var motion = player.lookVec.scale(dist / 16.0) + Vec3d(0.0, player.getEyeHeight() * 0.01, 0.0).scale(0.5).add(player.motionVec)
                 if (player.onGround)
-                        motion = motion.addVector(0.0, 0.08, 0.0)
-                PacketHandler.NETWORK.sendToAllAround(MessageDriveEffect(from, motion, color),
-                        player.world, from, 64)
+                    motion = motion.addVector(0.0, 0.08, 0.0)
+                colors.forEach {
+                    PacketHandler.NETWORK.sendToAllAround(MessageDriveEffect(from, motion, it),
+                            player.world, from, 64)
+                }
 
                 if (count % 2 == 0) {
                     val to = player.lookVec.scale(dist).add(vec)
@@ -77,13 +79,14 @@ abstract class ItemDrive(name: String, val minTier: EnumAnimusTier) : ItemMod("$
                         affectEntity(stack, player, count, it)
                     }
                 }
-            } else player.stopActiveHand()
-        }
+            }
+        } else player.stopActiveHand()
     }
+
 
     abstract fun affectEntity(stack: ItemStack, player: EntityPlayer, count: Int, target: EntityLivingBase)
 
-    abstract val color: Color
+    abstract val colors: Iterable<Color>
 
     private var hit = Vec3d.ZERO
 

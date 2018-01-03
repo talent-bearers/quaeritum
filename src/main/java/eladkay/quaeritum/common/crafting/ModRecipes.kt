@@ -72,6 +72,17 @@ object ModRecipes {
                 'H', FluidUtil.getFilledBucket(FluidStack(ModFluids.SWEET.getActual(), 1000)),
                 'X', ItemStack(Items.DYE, 1, EnumDyeColor.WHITE.dyeDamage),
                 'Z', ItemStack(ModItems.dormant))
+        addOreDictRecipe("twinsoul_drive", ItemStack(ModItems.twinDrive),
+                "YYX",
+                "ZHL",
+                "BBE",
+                'Y', "essenceVerdis",
+                'B', ItemStack(Items.BLAZE_POWDER),
+                'H', FluidUtil.getFilledBucket(FluidStack(ModFluids.SWEET.getActual(), 1000)),
+                'L', ItemStack(Items.LAVA_BUCKET),
+                'X', ItemStack(Items.DYE, 1, EnumDyeColor.WHITE.dyeDamage),
+                'E', "essenceLucis",
+                'Z', ItemStack(ModItems.dormant))
         for (i in dyeColors.indices)
             addShapelessOreDictRecipe("chalk_" + dyeColors[i].toLowerCase(Locale.ROOT), ItemStack(ModBlocks.chalk, 1, i),
                     ItemStack(Items.CLAY_BALL),
