@@ -29,5 +29,5 @@ class ItemVibrancyDrive : ItemDrive("vibrancy", EnumAnimusTier.VERDIS) {
         (target as? EntityPlayer)?.foodStats?.addStats(1, 0.5f)
     }
 
-    override val color = Color(0x208058)
+    override val color = Color(0x588020)
 }
