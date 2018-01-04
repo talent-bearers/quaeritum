@@ -37,10 +37,10 @@ class ItemVibrancyDrive : ItemDrive("vibrancy", EnumAnimusTier.VERDIS) {
 class ItemTwinDrive : ItemDrive("twin", EnumAnimusTier.FERRUS) {
     override fun affectEntity(stack: ItemStack, player: EntityPlayer, count: Int, target: EntityLivingBase) {
         if (target.canBeHitWithPotion()) {
-            target.addPotionEffect(PotionEffect(MobEffects.STRENGTH, 20, 1))
-            target.addPotionEffect(PotionEffect(MobEffects.RESISTANCE, 20))
-            target.addPotionEffect(PotionEffect(MobEffects.FIRE_RESISTANCE, 20))
-            target.addPotionEffect(PotionEffect(MobEffects.REGENERATION, 20))
+            target.addPotionEffect(PotionEffect(MobEffects.STRENGTH, 20, 1, true, true))
+            target.addPotionEffect(PotionEffect(MobEffects.RESISTANCE, 20, 0, true, true))
+            target.addPotionEffect(PotionEffect(MobEffects.FIRE_RESISTANCE, 20, 0, true, true))
+            target.addPotionEffect(PotionEffect(MobEffects.REGENERATION, 20, 0, true, true))
         }
     }
 
