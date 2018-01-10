@@ -7,10 +7,7 @@ import eladkay.quaeritum.common.ItemPassionDrive
 import eladkay.quaeritum.common.ItemTwinDrive
 import eladkay.quaeritum.common.ItemVibrancyDrive
 import eladkay.quaeritum.common.block.ModBlocks
-import eladkay.quaeritum.common.item.misc.ItemFertilizer
-import eladkay.quaeritum.common.item.misc.ItemPicture
-import eladkay.quaeritum.common.item.misc.ItemWorldBlade
-import eladkay.quaeritum.common.item.misc.ItemWorldShield
+import eladkay.quaeritum.common.item.misc.*
 import eladkay.quaeritum.common.item.soulstones.*
 import eladkay.quaeritum.common.rituals.diagrams.ItemStarMap
 import net.minecraft.creativetab.CreativeTabs
@@ -43,6 +40,7 @@ object ModItems {
     val passionDrive = ItemPassionDrive()
     val vibrancyDrive = ItemVibrancyDrive()
     val twinDrive = ItemTwinDrive()
+    val oathScar = ItemOathScar()
 
     val book = ItemMod("book")
     val hiddenBook = object : ItemMod("riftbook") {

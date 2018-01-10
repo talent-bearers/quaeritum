@@ -26,6 +26,10 @@ import net.minecraftforge.fml.relauncher.SideOnly
  */
 class ItemTempestArc : ItemMod("tempest_arc"), INetworkProvider {
 
+    init {
+        setMaxStackSize(1)
+    }
+
     @SideOnly(Side.CLIENT)
     override fun addInformation(stack: ItemStack, world: World?, tooltip: MutableList<String>, advanced: ITooltipFlag) {
         AnimusHelper.Network.addInformation(stack, tooltip)

@@ -120,7 +120,7 @@ class ItemContractScroll : ItemMod(LibNames.SCROLL, LibNames.SCROLL, LibNames.SE
                             val posCompressed = ItemNBTHelper.getLong(stack, "pos", Long.MIN_VALUE)
                             if (posCompressed != Long.MIN_VALUE) {
                                 val target = BlockPos.fromLong(posCompressed)
-                                val targetIsDiagram = world.getBlockState(target).block == ModBlocks.blueprint
+                                val targetIsDiagram = world.getBlockState(target).block == ModBlocks.blueprint && world.getBlockState(pos).block == ModBlocks.blueprint
                                 val players = world.getEntitiesWithinAABB(Entity::class.java, AxisAlignedBB(pos).grow(4.0)) {
                                     it != null && it.getDistanceSq(pos) <= 16.0
                                             && (targetIsDiagram || it !is EntityItem || it.item != stack)

@@ -183,6 +183,11 @@ class AcademyOfTheFive : IDiagram {
 }
 
 class ItemStarMap : ItemMod("star_map") {
+
+    init {
+        setMaxStackSize(1)
+    }
+
     override fun onItemRightClick(worldIn: World, playerIn: EntityPlayer, handIn: EnumHand): ActionResult<ItemStack> {
         val stack = playerIn.getHeldItem(handIn)
         if (worldIn.provider.dimension == 0 && (ItemNBTHelper.getList(stack, "poses", Constants.NBT.TAG_LONG)?.tagCount() ?: 0) > 0) {

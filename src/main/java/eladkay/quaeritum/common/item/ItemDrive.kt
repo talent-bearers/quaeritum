@@ -29,7 +29,12 @@ import java.awt.Color
  * @author WireSegal
  * Created at 6:52 PM on 12/26/17.
  */
+@Suppress("LeakingThis")
 abstract class ItemDrive(name: String, val minTier: EnumAnimusTier) : ItemMod("${name}_drive") {
+    init {
+        setMaxStackSize(1)
+    }
+
     override fun getMaxItemUseDuration(stack: ItemStack): Int {
         return 72000
     }
