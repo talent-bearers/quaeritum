@@ -11,6 +11,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.util.*;
@@ -18,17 +19,18 @@ import java.util.List;
 
 public final class AnimusHelper {
 
-    public static boolean hasMinimum(ItemStack stack, int animus, EnumAnimusTier tier) {
+    public static boolean hasMinimum(@NotNull ItemStack stack, int animus, @NotNull EnumAnimusTier tier) {
         return getAnimus(stack) >= animus && getTier(stack).ordinal() >= tier.ordinal();
     }
 
-    public static boolean requestAnimus(ItemStack stack, int animus, EnumAnimusTier tier, boolean drain) {
+    public static boolean requestAnimus(@NotNull ItemStack stack, int animus, @NotNull EnumAnimusTier tier, boolean drain) {
         if (!hasMinimum(stack, animus, tier)) return false;
         if (drain) addAnimus(stack, -animus);
         return true;
     }
 
-    public static ItemStack setAnimus(ItemStack stack, int animus) {
+    @NotNull
+    public static ItemStack setAnimus(@NotNull ItemStack stack, int animus) {
         if (stack.getItem() instanceof INetworkProvider && !(stack.getItem() instanceof ISoulstone)) {
             Network.setAnimus(((INetworkProvider) stack.getItem()).getPlayer(stack), animus);
             return stack;
@@ -39,7 +41,8 @@ public final class AnimusHelper {
         return stack;
     }
 
-    public static ItemStack setTier(ItemStack stack, EnumAnimusTier tier) {
+    @NotNull
+    public static ItemStack setTier(@NotNull ItemStack stack, @NotNull EnumAnimusTier tier) {
         if (stack.getItem() instanceof INetworkProvider && !(stack.getItem() instanceof ISoulstone)) {
             Network.setTier(((INetworkProvider) stack.getItem()).getPlayer(stack), tier);
             return stack;
@@ -50,25 +53,27 @@ public final class AnimusHelper {
         return stack;
     }
 
-    public static ItemStack addAnimus(ItemStack stack, int animus) {
+    @NotNull
+    public static ItemStack addAnimus(@NotNull ItemStack stack, int animus) {
         return setAnimus(stack, getAnimus(stack) + animus);
     }
 
-    public static EnumAnimusTier getTier(ItemStack stack) {
+    @NotNull
+    public static EnumAnimusTier getTier(@NotNull ItemStack stack) {
         if (stack.getItem() instanceof INetworkProvider && !(stack.getItem() instanceof ISoulstone))
             return Network.getTier(((INetworkProvider) stack.getItem()).getPlayer(stack));
         if (!(stack.getItem() instanceof ISoulstone)) return EnumAnimusTier.VERDIS;
         return ((ISoulstone) stack.getItem()).getAnimusTier(stack);
     }
 
-    public static int getAnimus(ItemStack stack) {
+    public static int getAnimus(@NotNull ItemStack stack) {
         if (stack.getItem() instanceof INetworkProvider && !(stack.getItem() instanceof ISoulstone))
             return Network.getAnimus(((INetworkProvider) stack.getItem()).getPlayer(stack));
         if (!(stack.getItem() instanceof ISoulstone)) return 0;
         return ((ISoulstone) stack.getItem()).getAnimusLevel(stack);
     }
 
-    public static void damageItem(ItemStack stack, int damageToApply, EntityLivingBase entity, int animusPerDamage, EnumAnimusTier tier) {
+    public static void damageItem(@NotNull ItemStack stack, int damageToApply, @NotNull EntityLivingBase entity, int animusPerDamage, @NotNull EnumAnimusTier tier) {
         int animusToDrain = damageToApply * animusPerDamage;
         if (entity instanceof EntityPlayer && ((EntityPlayer) entity).capabilities.isCreativeMode) return;
         boolean shouldDamage = !(entity instanceof EntityPlayer) || !Network.requestAnimus((EntityPlayer) entity, animusToDrain, tier, true);
@@ -82,11 +87,11 @@ public final class AnimusHelper {
         private static final String TAG_LAST_KNOWN_USERNAME = "lastUsername";
         private static final Map<UUID, Integer> cachedColors = new HashMap<>();
 
-        public static int getAnimusColor(EntityPlayer player) {
+        public static int getAnimusColor(@NotNull EntityPlayer player) {
             return getAnimusColor(player.getUniqueID());
         }
 
-        public static int getAnimusColor(UUID uuid) {
+        public static int getAnimusColor(@Nullable UUID uuid) {
             if (cachedColors.containsKey(uuid)) return cachedColors.get(uuid);
             Random random = new Random(uuid.getLeastSignificantBits() ^ (uuid.getMostSignificantBits() * 31));
             int color = Color.HSBtoRGB(random.nextFloat(), (random.nextFloat() / 2) + 0.5f, 1f);
@@ -94,7 +99,7 @@ public final class AnimusHelper {
             return color;
         }
 
-        public static void addInformation(ItemStack stack, List<String> tooltip) {
+        public static void addInformation(@NotNull ItemStack stack, @NotNull List<String> tooltip) {
             UUID uuid = ((INetworkProvider) stack.getItem()).getPlayer(stack);
             if (uuid != null) {
                 String username = getLastKnownUsername(uuid);
@@ -106,71 +111,73 @@ public final class AnimusHelper {
                 TooltipHelper.addToTooltip(tooltip, "misc." + LibMisc.MOD_ID + ".not_bound");
         }
 
-        public static void setAnimus(EntityPlayer player, int animus) {
+        public static void setAnimus(@NotNull EntityPlayer player, int animus) {
             setAnimus(player.getUniqueID(), animus);
         }
 
-        public static void setAnimus(UUID uuid, int animus) {
+        public static void setAnimus(@Nullable UUID uuid, int animus) {
             if (animus == 0)
                 setTier(uuid, EnumAnimusTier.VERDIS);
             getPersistentCompound(uuid).setInteger(TAG_ANIMUS_LEVEL, animus);
             InternalHandler.getInternalHandler().markSaveDataDirty();
         }
 
-        public static void setTier(EntityPlayer player, EnumAnimusTier tier) {
+        public static void setTier(@NotNull EntityPlayer player, @NotNull EnumAnimusTier tier) {
             setTier(player.getUniqueID(), tier);
         }
 
-        public static void setTier(UUID uuid, EnumAnimusTier tier) {
+        public static void setTier(@Nullable UUID uuid, @NotNull EnumAnimusTier tier) {
             if (getAnimus(uuid) == 0) return;
             getPersistentCompound(uuid).setInteger(TAG_ANIMUS_RARITY, tier.ordinal());
             InternalHandler.getInternalHandler().markSaveDataDirty();
         }
 
-        public static int getAnimus(EntityPlayer player) {
+        public static int getAnimus(@NotNull EntityPlayer player) {
             return getAnimus(player.getUniqueID());
         }
 
-        public static int getAnimus(UUID uuid) {
+        public static int getAnimus(@Nullable UUID uuid) {
             return getIntegerSafe(getPersistentCompound(uuid), TAG_ANIMUS_LEVEL, 0);
         }
 
-        public static EnumAnimusTier getTier(EntityPlayer player) {
+        @NotNull
+        public static EnumAnimusTier getTier(@NotNull EntityPlayer player) {
             return getTier(player.getUniqueID());
         }
 
-        public static EnumAnimusTier getTier(UUID uuid) {
+        @NotNull
+        public static EnumAnimusTier getTier(@Nullable UUID uuid) {
             return EnumAnimusTier.fromMeta(getIntegerSafe(getPersistentCompound(uuid), TAG_ANIMUS_RARITY, 0));
         }
 
-        public static void addAnimus(EntityPlayer player, int animus) {
+        public static void addAnimus(@NotNull EntityPlayer player, int animus) {
             addAnimus(player.getUniqueID(), animus);
         }
 
-        public static void addAnimus(UUID uuid, int animus) {
+        public static void addAnimus(@Nullable UUID uuid, int animus) {
             setAnimus(uuid, animus + getAnimus(uuid));
         }
 
-        public static void addTier(EntityPlayer player, EnumAnimusTier tier) {
+        public static void addTier(@NotNull EntityPlayer player, @NotNull EnumAnimusTier tier) {
             addTier(player.getUniqueID(), tier);
         }
 
-        public static void addTier(UUID uuid, EnumAnimusTier tier) {
+        public static void addTier(@Nullable UUID uuid, @NotNull EnumAnimusTier tier) {
             setTier(uuid, EnumAnimusTier.fromMeta(Math.max(tier.ordinal(), getTier(uuid).ordinal())));
         }
 
-        public static boolean requestAnimus(EntityPlayer player, int animus, EnumAnimusTier tier, boolean drain) {
+        public static boolean requestAnimus(@NotNull EntityPlayer player, int animus, @NotNull EnumAnimusTier tier, boolean drain) {
             return requestAnimus(player.getUniqueID(), animus, tier, drain);
         }
 
-        public static boolean requestAnimus(UUID uuid, int animus, EnumAnimusTier tier, boolean drain) {
+        public static boolean requestAnimus(@Nullable UUID uuid, int animus, @NotNull EnumAnimusTier tier, boolean drain) {
             if (getAnimus(uuid) < animus) return false;
             if (getTier(uuid).ordinal() < tier.ordinal()) return false;
             if (drain) addAnimus(uuid, -animus);
             return true;
         }
 
-        public static void updatePlayerName(EntityPlayer player) {
+        public static void updatePlayerName(@NotNull EntityPlayer player) {
             NBTTagCompound compound = getPersistentCompound(player.getUniqueID());
             if (!player.getName().equals(getStringSafe(compound, TAG_LAST_KNOWN_USERNAME, null))) {
                 compound.setString(TAG_LAST_KNOWN_USERNAME, player.getName());
@@ -178,27 +185,29 @@ public final class AnimusHelper {
             }
         }
 
-        public static String getLastKnownUsername(UUID uuid) {
+        @Nullable
+        public static String getLastKnownUsername(@Nullable UUID uuid) {
             return getStringSafe(getPersistentCompound(uuid), TAG_LAST_KNOWN_USERNAME, null);
         }
 
-        private static boolean getBooleanSafe(NBTTagCompound compound, String tag, boolean fallback) {
+        private static boolean getBooleanSafe(@NotNull NBTTagCompound compound, @NotNull String tag, boolean fallback) {
             if (!compound.hasKey(tag)) return fallback;
             return compound.getBoolean(tag);
         }
 
-        private static int getIntegerSafe(NBTTagCompound compound, String tag, int fallback) {
+        private static int getIntegerSafe(@NotNull NBTTagCompound compound, @NotNull String tag, int fallback) {
             if (!compound.hasKey(tag, 3)) return fallback;
             return compound.getInteger(tag);
         }
 
-        private static String getStringSafe(NBTTagCompound compound, String tag, String fallback) {
+        @Nullable
+        private static String getStringSafe(@NotNull NBTTagCompound compound, @NotNull String tag, @Nullable String fallback) {
             if (!compound.hasKey(tag, 8)) return fallback;
             return compound.getString(tag);
         }
 
         @NotNull
-        private static NBTTagCompound getPersistentCompound(UUID uuid) {
+        private static NBTTagCompound getPersistentCompound(@Nullable UUID uuid) {
             if (uuid == null) return new NBTTagCompound();
 
             Map<UUID, NBTTagCompound> saveData = InternalHandler.getInternalHandler().getSaveData();

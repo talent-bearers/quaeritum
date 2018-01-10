@@ -118,34 +118,39 @@ class ItemContractScroll : ItemMod(LibNames.SCROLL, LibNames.SCROLL, LibNames.SE
                     { player, stack, world, pos ->
                         if (world.provider.dimension == 0) {
                             val posCompressed = ItemNBTHelper.getLong(stack, "pos", Long.MIN_VALUE)
+                            val fromScar = world.getBlockState(pos).block != ModBlocks.blueprint
+                            val shouldTpOthers = !fromScar || player == null || !player.isSneaking
                             if (posCompressed != Long.MIN_VALUE) {
                                 val target = BlockPos.fromLong(posCompressed)
-                                val targetIsDiagram = world.getBlockState(target).block == ModBlocks.blueprint && world.getBlockState(pos).block == ModBlocks.blueprint
+                                val targetIsDiagram = world.getBlockState(target).block == ModBlocks.blueprint || fromScar
                                 val players = world.getEntitiesWithinAABB(Entity::class.java, AxisAlignedBB(pos).grow(4.0)) {
                                     it != null && it.getDistanceSq(pos) <= 16.0
                                             && (targetIsDiagram || it !is EntityItem || it.item != stack)
+                                            && (shouldTpOthers || it == player)
                                 }
                                 val cost = players.filter { it != player && it is EntityLivingBase && it !is EntityArmorStand }.size * 10
                                 if (players.size > 0 && takeAnimusFrom(cost, EnumAnimusTier.ARGENTUS, stack)) {
                                     val shift = target.subtract(pos)
                                     players.forEach {
-                                        puff(PuffMessage(it.positionVector, amount = 100, color = Color(0x802080), scatter = 0.25), world)
+                                        puff(PuffMessage(it.positionVector, amount = 100, color = if (fromScar) Color(0x3030BF) else Color(0x802080), scatter = 0.25), world)
                                         if (it is EntityPlayerMP)
                                             it.connection.setPlayerLocation(it.posX + shift.x, it.posY + shift.y, it.posZ + shift.z, it.rotationYaw, it.rotationPitch)
                                         else
                                             it.setLocationAndAngles(it.posX + shift.x, it.posY + shift.y, it.posZ + shift.z, it.rotationYaw, it.rotationPitch)
                                     }
                                     players.forEach {
-                                        puff(PuffMessage(it.positionVector, amount = 100, color = Color(0x802080), scatter = 0.25), world)
+                                        puff(PuffMessage(it.positionVector, amount = 100, color = if (fromScar) Color(0x3030BF) else Color(0x802080), scatter = 0.25), world)
                                     }
-                                    (world as WorldServer).spawnParticle(EnumParticleTypes.PORTAL,
-                                            target.x + 0.5, target.y + 0.5, target.z + 0.5, 1000, 0.1, 0.0, 0.1, 1.0)
+                                    if (!fromScar)
+                                        (world as WorldServer).spawnParticle(EnumParticleTypes.PORTAL,
+                                                target.x + 0.5, target.y + 0.5, target.z + 0.5, 1000, 0.1, 0.0, 0.1, 1.0)
                                 }
                                 if (targetIsDiagram)
                                     ItemNBTHelper.setLong(stack, "pos", pos.toLong())
                             }
-                            (world as WorldServer).spawnParticle(EnumParticleTypes.PORTAL,
-                                    pos.x + 0.5, pos.y + 0.5, pos.z + 0.5, 1000, 0.1, 0.0, 0.1, 1.0)
+                            if (!fromScar)
+                                (world as WorldServer).spawnParticle(EnumParticleTypes.PORTAL,
+                                        pos.x + 0.5, pos.y + 0.5, pos.z + 0.5, 1000, 0.1, 0.0, 0.1, 1.0)
                             if (!ItemNBTHelper.verifyExistence(stack, "pos"))
                                 ItemNBTHelper.setLong(stack, "pos", pos.toLong())
                         }

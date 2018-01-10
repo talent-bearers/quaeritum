@@ -23,6 +23,10 @@ class ItemHollower : ItemMod(LibNames.HOLLOWER) {
         setMaxStackSize(1)
     }
 
+    override fun canDestroyBlockInCreative(world: World?, pos: BlockPos?, stack: ItemStack?, player: EntityPlayer?): Boolean {
+        return false
+    }
+
     override fun onBlockStartBreak(stack: ItemStack, pos: BlockPos, player: EntityPlayer): Boolean {
         ItemNBTHelper.setLong(stack, LibNBT.CORNER1, pos.toLong())
         if (!player.world.isRemote)
