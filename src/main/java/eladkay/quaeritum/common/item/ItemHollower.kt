@@ -27,19 +27,13 @@ class ItemHollower : ItemMod(LibNames.HOLLOWER) {
         return false
     }
 
-    override fun onBlockStartBreak(stack: ItemStack, pos: BlockPos, player: EntityPlayer): Boolean {
-        ItemNBTHelper.setLong(stack, LibNBT.CORNER1, pos.toLong())
-        if (!player.world.isRemote)
-            player.sendMessage(TextComponentString(TextFormatting.GREEN + "First corner set to: " + pos))
-        return true
-    }
-
     override fun onItemUse(playerIn: EntityPlayer, worldIn: World, pos: BlockPos, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): EnumActionResult {
         val stack = playerIn.getHeldItem(hand)
-        ItemNBTHelper.setLong(stack, LibNBT.CORNER2, pos.toLong())
+        val tag = if (playerIn.isSneaking) LibNBT.CORNER2 else LibNBT.CORNER1
+        ItemNBTHelper.setLong(stack, tag, pos.toLong())
         if (!worldIn.isRemote)
-            playerIn.sendMessage(TextComponentString(TextFormatting.GREEN + "Second corner set to: " + pos))
-        return EnumActionResult.PASS
+            playerIn.sendMessage(TextComponentString(TextFormatting.GREEN + "$tag set to: " + pos))
+        return EnumActionResult.SUCCESS
     }
 
     override fun onItemRightClick(worldIn: World, playerIn: EntityPlayer, hand: EnumHand): ActionResult<ItemStack> {
