@@ -162,6 +162,7 @@ class ItemOathScar : ItemModSword("oath_scar", LibMaterials.SCAR) {
                     world.playEvent(2001, pos, Block.getStateId(state))
 
                     world.setBlockState(setPosAt, state)
+                    world.neighborChanged(setPosAt, state.block, setPosAt)
                     val tile = world.getTileEntity(setPosAt)
                     if (tileData != null && tile != null) {
                         val data = tile.writeToNBT(NBTTagCompound())
