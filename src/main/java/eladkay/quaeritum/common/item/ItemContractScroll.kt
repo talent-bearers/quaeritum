@@ -143,9 +143,9 @@ class ItemContractScroll : ItemMod(LibNames.SCROLL, LibNames.SCROLL, LibNames.SE
                                         }
                                         val shift = targetHere.subtract(pos)
                                         if (it is EntityPlayerMP)
-                                            it.connection.setPlayerLocation(it.posX + shift.x, it.posY + shift.y, it.posZ + shift.z, it.rotationYaw, it.rotationPitch)
+                                            it.connection.setPlayerLocation(it.posX + shift.x, Math.round(it.posY + shift.y).toDouble(), it.posZ + shift.z, it.rotationYaw, it.rotationPitch)
                                         else
-                                            it.setLocationAndAngles(it.posX + shift.x, it.posY + shift.y, it.posZ + shift.z, it.rotationYaw, it.rotationPitch)
+                                            it.setLocationAndAngles(it.posX + shift.x, Math.round(it.posY + shift.y).toDouble(), it.posZ + shift.z, it.rotationYaw, it.rotationPitch)
                                     }
                                     players.forEach {
                                         puff(PuffMessage(it.positionVector, amount = 100, color = if (fromScar) Color(0x3030BF) else Color(0x802080), scatter = 0.25), world)
