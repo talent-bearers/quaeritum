@@ -114,28 +114,29 @@ class ItemOathScar : ItemModSword("oath_scar", LibMaterials.SCAR) {
         if (world.totalWorldTime - time < 2) return
 
         val stored = getStored(stack)
-        if (!world.isRemote && AnimusHelper.Network.requestAnimus(player, 10, EnumAnimusTier.ATLAS, false)) {
+        if (!world.isRemote) {
             if (stored == null) {
-                val blockState = world.getBlockState(pos)
+                if (AnimusHelper.Network.requestAnimus(player, 1, EnumAnimusTier.ATLAS, true)) {
+                    val blockState = world.getBlockState(pos)
 
-                if (!world.isBlockLoaded(pos) || !world.isBlockModifiable(player, pos) ||
-                        blockState.block.getPlayerRelativeBlockHardness(blockState, player, world, pos) <= 0 ||
-                        MinecraftForge.EVENT_BUS.post(BlockEvent.BreakEvent(world, pos, blockState, player)))
-                    return
+                    if (!world.isBlockLoaded(pos) || !world.isBlockModifiable(player, pos) ||
+                            blockState.block.getPlayerRelativeBlockHardness(blockState, player, world, pos) <= 0 ||
+                            MinecraftForge.EVENT_BUS.post(BlockEvent.BreakEvent(world, pos, blockState, player)))
+                        return
 
-                val tile = player.world.getTileEntity(pos)
-                val tileData = tile?.writeToNBT(NBTTagCompound())
-                setStored(stack, player.world.totalWorldTime, blockState, tileData)
-                ItemContractScroll.puff(PuffMessage(Vec3d(pos).addVector(0.5, 0.0, 0.5), scatter = 0.25, amount = 50, color = Color(0x3030BF)), world)
+                    val tile = player.world.getTileEntity(pos)
+                    val tileData = tile?.writeToNBT(NBTTagCompound())
+                    setStored(stack, player.world.totalWorldTime, blockState, tileData)
+                    ItemContractScroll.puff(PuffMessage(Vec3d(pos).addVector(0.5, 0.0, 0.5), scatter = 0.25, amount = 50, color = Color(0x3030BF)), world)
 
-                val prevLock = lockedWorld
-                lockedWorld = world
-                if (tile != null) world.removeTileEntity(pos)
-                world.destroyBlock(pos, false)
-                lockedWorld = prevLock
+                    val prevLock = lockedWorld
+                    lockedWorld = world
+                    if (tile != null) world.removeTileEntity(pos)
+                    world.destroyBlock(pos, false)
+                    lockedWorld = prevLock
 
-                world.playSound(null, pos, SoundEvents.ENTITY_ENDERMEN_TELEPORT, SoundCategory.PLAYERS, 1f, 1f)
-                AnimusHelper.Network.requestAnimus(player, 10, EnumAnimusTier.ATLAS, true)
+                    world.playSound(null, pos, SoundEvents.ENTITY_ENDERMEN_TELEPORT, SoundCategory.PLAYERS, 1f, 1f)
+                }
             } else {
                 var setPosAt = pos
                 val stateAt = world.getBlockState(pos)
@@ -151,9 +152,8 @@ class ItemOathScar : ItemModSword("oath_scar", LibMaterials.SCAR) {
 
                 if (!block.isReplaceable(world, pos)) setPosAt = pos.offset(facing)
 
-                if (player.canPlayerEdit(setPosAt, facing, stack) && world.mayPlace(block, setPosAt, false, facing, player)) {
+                if (player.canPlayerEdit(setPosAt, facing, stack) && world.mayPlace(block, setPosAt, false, facing, null)) {
                     world.playSound(null, setPosAt, SoundEvents.ENTITY_ENDERMEN_TELEPORT, SoundCategory.PLAYERS, 1f, 0.75f)
-                    AnimusHelper.Network.requestAnimus(player, 10, EnumAnimusTier.ATLAS, true)
                     ItemContractScroll.puff(PuffMessage(Vec3d(setPosAt).addVector(0.5, 0.0, 0.5), scatter = 0.25, amount = 50, color = Color(0x3030BF)), world)
 
                     val state = stored.first
