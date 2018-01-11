@@ -20,6 +20,7 @@ import eladkay.quaeritum.common.block.ModBlocks
 import eladkay.quaeritum.common.block.base.BlockModColored
 import eladkay.quaeritum.common.lib.LibNames
 import eladkay.quaeritum.common.networking.PuffMessage
+import net.minecraft.block.material.Material
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.entity.Entity
@@ -130,9 +131,17 @@ class ItemContractScroll : ItemMod(LibNames.SCROLL, LibNames.SCROLL, LibNames.SE
                                 }
                                 val cost = players.filter { it != player && it is EntityLivingBase && it !is EntityArmorStand }.size * 10
                                 if (players.size > 0 && takeAnimusFrom(cost, EnumAnimusTier.ARGENTUS, stack)) {
-                                    val shift = target.subtract(pos)
                                     players.forEach {
                                         puff(PuffMessage(it.positionVector, amount = 100, color = if (fromScar) Color(0x3030BF) else Color(0x802080), scatter = 0.25), world)
+                                        var targetHere = target
+                                        if (world.getBlockState(targetHere).material.let { it != Material.AIR && !it.isLiquid && it != Material.FIRE }) {
+                                            targetHere = targetHere.down()
+                                            while (world.getBlockState(targetHere.up()).material.let { it != Material.AIR && !it.isLiquid && it != Material.FIRE }) {
+                                                targetHere = targetHere.up()
+                                            }
+                                            targetHere = targetHere.up()
+                                        }
+                                        val shift = targetHere.subtract(pos)
                                         if (it is EntityPlayerMP)
                                             it.connection.setPlayerLocation(it.posX + shift.x, it.posY + shift.y, it.posZ + shift.z, it.rotationYaw, it.rotationPitch)
                                         else
