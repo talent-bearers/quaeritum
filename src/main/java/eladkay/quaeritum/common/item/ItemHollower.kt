@@ -38,20 +38,23 @@ class ItemHollower : ItemMod(LibNames.HOLLOWER) {
 
     override fun onItemRightClick(worldIn: World, playerIn: EntityPlayer, hand: EnumHand): ActionResult<ItemStack> {
         val stack = playerIn.getHeldItem(hand)
-        val pos1 = ItemNBTHelper.getLong(stack, LibNBT.CORNER1, -1)
-        val pos2 = ItemNBTHelper.getLong(stack, LibNBT.CORNER2, -1)
-        var flag = 0
-        val poses = Lists.newArrayList<BlockPos>()
-        if (pos1 == -1L || pos2 == -1L) return ActionResult.newResult(EnumActionResult.FAIL, stack)
-        for (pos in BlockPos.getAllInBox(BlockPos.fromLong(pos1), BlockPos.fromLong(pos2))) {
-            if (EnumFacing.values().none { worldIn.getBlockState(pos.offset(it)).block === Blocks.AIR }) {
-                poses.add(pos)
-                flag++
-            }
-        }
-        poses.forEach { worldIn.setBlockToAir(it) }
 
-        playerIn.sendMessage(TextComponentString(TextFormatting.GREEN + "Done! Blocks affected: " + flag))
-        return ActionResult.newResult(EnumActionResult.PASS, stack)
+        if (!worldIn.isRemote) {
+            val pos1 = ItemNBTHelper.getLong(stack, LibNBT.CORNER1, -1)
+            val pos2 = ItemNBTHelper.getLong(stack, LibNBT.CORNER2, -1)
+            var flag = 0
+            val poses = Lists.newArrayList<BlockPos>()
+            if (pos1 == -1L || pos2 == -1L) return ActionResult.newResult(EnumActionResult.FAIL, stack)
+            for (pos in BlockPos.getAllInBox(BlockPos.fromLong(pos1), BlockPos.fromLong(pos2))) {
+                if (EnumFacing.values().none { worldIn.getBlockState(pos.offset(it)).block === Blocks.AIR }) {
+                    poses.add(pos)
+                    flag++
+                }
+            }
+            poses.forEach { worldIn.setBlockToAir(it) }
+
+            playerIn.sendMessage(TextComponentString(TextFormatting.GREEN + "Done! Blocks affected: " + flag))
+        }
+        return ActionResult.newResult(EnumActionResult.SUCCESS, stack)
     }
 }
