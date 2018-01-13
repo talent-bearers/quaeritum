@@ -137,7 +137,7 @@ class TheTwistedTower : IDiagram {
             for (item in items)
                 if (item !in itemsFound && itemEquals(stack.item, item))
                     itemsFound[item] = stack
-        
+
         if (player.entityData.getLong("quaeritum-tower") != pos.toLong() &&
                 items.none { itemsFound[it] == null } &&
                 IDiagram.Helper.consumeAnimusForRitual(tile, true, 1000, EnumAnimusTier.ARGENTUS)) {
@@ -146,6 +146,13 @@ class TheTwistedTower : IDiagram {
                     world, player.positionVector, 64)
 
             for ((_, item) in itemsFound) {
+                if (item.item.item == Items.GHAST_TEAR)
+                    PacketHandler.NETWORK.sendToAllAround(PuffMessage(item.positionVector, color = Color(0xA0A0A0), amount = 100, verticalMin = 0.04, verticalMax = 0.05),
+                            world, item.positionVector, 64)
+                else
+                    PacketHandler.NETWORK.sendToAllAround(PuffMessage(item.positionVector, color = Color(0xF0F040), amount = 100, verticalMin = 0.04, verticalMax = 0.05),
+                            world, item.positionVector, 64)
+
                 item.item.shrink(1)
                 if (item.item.isEmpty)
                     item.setDead()
@@ -174,6 +181,7 @@ class TheTwistedTower : IDiagram {
             it is EntityPlayer && !it.isSpectator && it.entityData.hasKey("quaeritum-prospective") &&
                     it.entityData.getLong("quaeritum-prospective") == pos.toLong()
         } ?: return false
+
         player.addPotionEffect(PotionEffect(PotionRooted, 10, 0, true, true))
         val posVec = Vec3d(pos).addVector(0.5, 0.125, 0.5)
         PacketHandler.NETWORK.sendToAllAround(MessageTowerEffect(posVec, player.positionVector.addVector(0.0, player.getEyeHeight() * 1.5, 0.0)),
