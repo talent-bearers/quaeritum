@@ -45,13 +45,11 @@ class TileEntityBlueprint : TileModTickable() {
             diagram@ for (ritual in RitualRegistry.getDiagramList()) {
                 for (rotation in EnumFacing.HORIZONTALS) {
                     for (mirror in mirrorStates) {
-                        val foundAll = ritual.hasRequiredItems(world, pos, this)
-                        val requirementsMet = ritual.canRitualRun(this.world, pos, this)
                         val blocks = arrayListOf<PositionedBlock>()
                         ritual.buildChalks(blocks)
                         PositionedBlockHelper.transform(blocks, rotation, mirror)
                         val chalks = PositionedBlockHelper.getChalkPriority(blocks, this)
-                        if (foundAll && requirementsMet && highestChalks < chalks) {
+                        if (highestChalks < chalks) {
                             bestDiagram = ritual
                             highestChalks = chalks
                             continue@diagram
@@ -70,23 +68,30 @@ class TileEntityBlueprint : TileModTickable() {
     }
 
     fun onBlockActivated(): Boolean {
-        if (currentDiagram == null)
-            runRitual(bestRitual)
+        if (currentDiagram == null) {
+            val best = bestRitual
+            if (best != null) {
+                val foundAll = best.hasRequiredItems(world, pos, this)
+                val requirementsMet = best.canRitualRun(this.world, pos, this)
+                if (foundAll && requirementsMet)
+                    runRitual(bestRitual)
+            }
+        }
         return true
     }
 
-    override fun writeCustomNBT(compound: NBTTagCompound, sync: Boolean) {
-        compound.setInteger("Stage", stage.ordinal)
+    override fun writeCustomNBT(cmp: NBTTagCompound, sync: Boolean) {
+        cmp.setInteger("Stage", stage.ordinal)
         val diagramName = RitualRegistry.getDiagramName(currentDiagram)
-        compound.setString("Diagram", diagramName ?: "")
-        compound.setInteger("StageTicks", stageTicks)
+        cmp.setString("Diagram", diagramName ?: "")
+        cmp.setInteger("StageTicks", stageTicks)
     }
 
-    override fun readCustomNBT(compound: NBTTagCompound) {
-        stage = RitualStage.values()[compound.getInteger("Stage")]
-        val diagramName = compound.getString("Diagram")
+    override fun readCustomNBT(cmp: NBTTagCompound) {
+        stage = RitualStage.values()[cmp.getInteger("Stage")]
+        val diagramName = cmp.getString("Diagram")
         currentDiagram = if (diagramName == "") null else RitualRegistry.getDiagramByName(diagramName)
-        stageTicks = compound.getInteger("StageTicks")
+        stageTicks = cmp.getInteger("StageTicks")
     }
 
     enum class RitualStage {

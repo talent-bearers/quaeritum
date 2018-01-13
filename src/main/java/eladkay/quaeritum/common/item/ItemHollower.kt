@@ -94,9 +94,9 @@ class ItemHollower : ItemMod(LibNames.HOLLOWER) {
     }
 
     fun inShell(minX: Int, maxX: Int, minY: Int, maxY: Int, minZ: Int, maxZ: Int, x: Int, y: Int, z: Int): Boolean {
-        return (x == minX || x == maxX) ||
+        return ((x == minX || x == maxX) ||
                 (y == minY || y == maxY) ||
-                (z == minZ || z == maxZ)
+                (z == minZ || z == maxZ)) && inBox(minX, maxX, minY, maxY, minZ, maxZ, x, y, z)
     }
 
     fun inBox(minX: Int, maxX: Int, minY: Int, maxY: Int, minZ: Int, maxZ: Int, x: Int, y: Int, z: Int): Boolean {

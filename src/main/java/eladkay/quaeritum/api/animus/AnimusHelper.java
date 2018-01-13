@@ -92,6 +92,8 @@ public final class AnimusHelper {
         }
 
         public static int getAnimusColor(@Nullable UUID uuid) {
+            if (uuid == null)
+                return -1;
             if (cachedColors.containsKey(uuid)) return cachedColors.get(uuid);
             Random random = new Random(uuid.getLeastSignificantBits() ^ (uuid.getMostSignificantBits() * 31));
             int color = Color.HSBtoRGB(random.nextFloat(), (random.nextFloat() / 2) + 0.5f, 1f);

@@ -13,6 +13,7 @@ object ModDiagrams {
         RitualRegistry.registerDiagram(PactforgerBind(), "pactforge")
         RitualRegistry.registerDiagram(PactbreakerBind(), "pactbreak")
         RitualRegistry.registerDiagram(AcademyOfTheFive(), "academy")
+        RitualRegistry.registerDiagram(TheTwistedTower(), "tower")
 
     }
 

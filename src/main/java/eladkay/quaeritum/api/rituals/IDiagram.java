@@ -12,6 +12,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.OreIngredient;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -66,7 +67,7 @@ public interface IDiagram {
             return ret.value;
         }
 
-        public static boolean isEntityItemInList(EntityItem item, List<ItemStack> stacks) {
+        public static boolean isEntityItemInList(EntityItem item, List<?> stacks) {
             MutableObject<Boolean> flag = new MutableObject<>(false);
             stacks.forEach((stack) -> {
                 if (itemEquals(item.getItem(), stack)) flag.value = true;
@@ -74,9 +75,9 @@ public interface IDiagram {
             return flag.value;
         }
 
-        public static boolean isStackInList(ItemStack stack, List<ItemStack> stacks) {
-            for (ItemStack stack1 : stacks) {
-                if (itemEquals(stack1, stack)) return true;
+        public static boolean isStackInList(ItemStack stack, List<?> stacks) {
+            for (Object stack1 : stacks) {
+                if (itemEquals(stack, stack1)) return true;
             }
             return false;
         }
@@ -162,15 +163,11 @@ public interface IDiagram {
 
         public static boolean itemEquals(ItemStack stack, Object stack2) {
             if (stack2 instanceof String)
-                for (ItemStack orestack : OreDictionary.getOres((String) stack2)) {
-                    if (OreDictionary.itemMatches(stack, orestack, false))
-                        return true;
-                }
+                return new OreIngredient((String) stack2).apply(stack);
             else if (stack2 instanceof Ingredient)
                 return ((Ingredient) stack2).apply(stack);
             else
                 return stack2 instanceof ItemStack && OreDictionary.itemMatches(stack, (ItemStack) stack2, false);
-            return false;
         }
 
         public static class MutableObject<T> {
