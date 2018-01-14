@@ -220,7 +220,7 @@ object EvocationRecipe : IForgeRegistryEntry.Impl<IRecipe>(), IRecipe {
         return true
     }
 
-    override fun isHidden(): Boolean {
+    override fun isDynamic(): Boolean {
         return true
     }
 

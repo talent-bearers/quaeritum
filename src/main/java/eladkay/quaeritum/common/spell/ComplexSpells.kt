@@ -99,7 +99,7 @@ object ComplexSpells {
         SpellParser.registerSpell(arrayOf(SOUL, SPIRIT), ALTERATION, "fear") { player, trailing, total ->
             var i = Math.max(2 + trailing - total / 2, 1)
             player.world.getEntitiesInAABBexcluding(player, player.entityBoundingBox.grow(5.0)) {
-                it != null && it !is EntityPlayer && it.getDistanceSqToEntity(player) < 25.0
+                it != null && it !is EntityPlayer && it.getDistanceSq(player) < 25.0
             }.forEach {
                 if (it is EntityLivingBase && i-- != 0)
                     it.addPotionEffect(PotionEffect(PotionRooted, 200))

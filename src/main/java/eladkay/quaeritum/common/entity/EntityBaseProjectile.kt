@@ -61,14 +61,14 @@ abstract class EntityBaseProjectile(worldIn: World) : Entity(worldIn), IProjecti
         val xHeading = -MathHelper.sin(yaw * Math.PI.toFloat() / 180) * MathHelper.cos(pitch * Math.PI.toFloat() / 180)
         val yHeading = -MathHelper.sin(pitch * Math.PI.toFloat() / 180)
         val zHeading = MathHelper.cos(yaw * Math.PI.toFloat() / 180) * MathHelper.cos(pitch * Math.PI.toFloat() / 180)
-        setThrowableHeading(xHeading.toDouble(), yHeading.toDouble(), zHeading.toDouble(), velocity, inaccuracy)
+        shoot(xHeading.toDouble(), yHeading.toDouble(), zHeading.toDouble(), velocity, inaccuracy)
         motionX += shooter.motionX
         motionZ += shooter.motionZ
 
         if (!shooter.onGround) motionY += shooter.motionY
     }
 
-    override fun setThrowableHeading(xOrig: Double, yOrig: Double, zOrig: Double, velocity: Float, inaccuracy: Float) {
+    override fun shoot(xOrig: Double, yOrig: Double, zOrig: Double, velocity: Float, inaccuracy: Float) {
         var x = xOrig
         var y = yOrig
         var z = zOrig

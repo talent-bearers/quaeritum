@@ -30,7 +30,7 @@ object EpicSpells {
     init {
         SpellParser.registerSpell(arrayOf(CONNECTION, FIRE, SPIRIT, SOUL, WATER, EARTH), RESTORATION, "save_them_all") { player, trailing, _ ->
             player.world.getEntitiesWithinAABB(EntityPlayer::class.java, player.entityBoundingBox.grow(25.0)) {
-                it != null && it != player && it.getDistanceSqToEntity(player) < 625.0
+                it != null && it != player && it.getDistanceSq(player) < 625.0
             }.forEach {
                 it.heal(trailing * 5f + 5f)
                 applyShiftedBuff(MobEffects.SPEED, player, trailing + 4, true)
@@ -79,7 +79,7 @@ object EpicSpells {
                 val parser = SpellParser(evocation)
                 if (parser.spells.none { it.spell == hope })
                     player.world.getEntitiesWithinAABB(EntityPlayer::class.java, player.entityBoundingBox.grow(25.0)) {
-                        it != null && it != player && it.getDistanceSqToEntity(player) < 625.0
+                        it != null && it != player && it.getDistanceSq(player) < 625.0
                     }.forEach {
                         ElementHandler.setReagents(player, *evocation)
                     }

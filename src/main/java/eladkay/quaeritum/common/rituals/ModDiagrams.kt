@@ -14,6 +14,8 @@ object ModDiagrams {
         RitualRegistry.registerDiagram(PactbreakerBind(), "pactbreak")
         RitualRegistry.registerDiagram(AcademyOfTheFive(), "academy")
         RitualRegistry.registerDiagram(TheTwistedTower(), "tower")
+        RitualRegistry.registerDiagram(DesignBornOfPassion(), "passion")
+        RitualRegistry.registerDiagram(SealOfTheFive(), "eaeye")
 
     }
 

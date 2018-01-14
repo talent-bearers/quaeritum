@@ -49,7 +49,7 @@ class RecipeAwakenedSoulstone : IForgeRegistryEntry.Impl<IRecipe>(), IRecipe {
         return ItemStack.EMPTY
     }
 
-    override fun isHidden(): Boolean {
+    override fun isDynamic(): Boolean {
         return true
     }
 
