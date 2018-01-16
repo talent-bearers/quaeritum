@@ -97,6 +97,24 @@ item.quaeritum:debug.name=Debug Item
 item.quaeritum:hollower.name=Hollower
 item.quaeritum:devplacer.name=DevPlacer
 
+
+tile.quaeritum:pipe_white.name=Pressurized Pipe
+tile.quaeritum:pipe_orange.name=Orange Pressurized Pipe
+tile.quaeritum:pipe_magenta.name=Magenta Pressurized Pipe
+tile.quaeritum:pipe_light_blue.name=Light Blue Pressurized Pipe
+tile.quaeritum:pipe_yellow.name=Yellow Pressurized Pipe
+tile.quaeritum:pipe_lime.name=Lime Pressurized Pipe
+tile.quaeritum:pipe_pink.name=Pink Pressurized Pipe
+tile.quaeritum:pipe_gray.name=Gray Pressurized Pipe
+tile.quaeritum:pipe_silver.name=Light Gray Pressurized Pipe
+tile.quaeritum:pipe_cyan.name=Cyan Pressurized Pipe
+tile.quaeritum:pipe_purple.name=Purple Pressurized Pipe
+tile.quaeritum:pipe_blue.name=Blue Pressurized Pipe
+tile.quaeritum:pipe_brown.name=Brown Pressurized Pipe
+tile.quaeritum:pipe_green.name=Green Pressurized Pipe
+tile.quaeritum:pipe_red.name=Red Pressurized Pipe
+tile.quaeritum:pipe_black.name=Black Pressurized Pipe
+
 quaeritum.potion.rooted=Rooted
 quaeritum.potion.ironskin=Ironskin
 quaeritum.potion.soulgaze=Soulgaze

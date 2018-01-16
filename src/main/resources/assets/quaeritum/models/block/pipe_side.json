@@ -1,0 +1,34 @@
+{
+	"__comment": "Designed by Wire Segal with Cubik Studio - https://cubik.studio",
+	"textures": {
+		"particle": "quaeritum:blocks/pipe",
+		"texture": "quaeritum:blocks/pipe",
+		"overlay": "quaeritum:blocks/pipe_overlay"
+	},
+	"elements": [ 	 
+		{
+			"__comment": "Pipe",
+			"from": [ 5, 11, 5 ],
+			"to": [ 11, 16, 11 ],
+			"faces": {
+				"up": { "uv": [ 5, 5, 11, 11 ], "texture": "#texture", "cullface": "up" },
+				"north": { "uv": [ 5, 0, 11, 5 ], "texture": "#texture" },
+				"south": { "uv": [ 5, 0, 11, 5 ], "texture": "#texture" },
+				"west": { "uv": [ 5, 0, 11, 5 ], "texture": "#texture" },
+				"east": { "uv": [ 5, 0, 11, 5 ], "texture": "#texture" }
+			}
+		},
+		{
+			"__comment": "Overlay",
+			"from": [ 5, 11, 5 ],
+			"to": [ 11, 16, 11 ],
+			"faces": {
+				"up": { "uv": [ 5, 5, 11, 11 ], "texture": "#overlay", "tintindex": 1, "cullface": "up" },
+				"north": { "uv": [ 5, 0, 11, 5 ], "texture": "#overlay", "tintindex": 1 },
+				"south": { "uv": [ 5, 0, 11, 5 ], "texture": "#overlay", "tintindex": 1 },
+				"west": { "uv": [ 5, 0, 11, 5 ], "texture": "#overlay", "tintindex": 1 },
+				"east": { "uv": [ 5, 0, 11, 5 ], "texture": "#overlay", "tintindex": 1 }
+			}
+		}
+	]
+}

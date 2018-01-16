@@ -1,6 +1,5 @@
 package eladkay.quaeritum.common.block
 
-import eladkay.quaeritum.api.lib.LibMisc
 import eladkay.quaeritum.api.rituals.PositionedBlockChalk
 import eladkay.quaeritum.common.block.chalk.BlockChalk
 import eladkay.quaeritum.common.block.chalk.BlockChalkTempest
@@ -8,11 +7,7 @@ import eladkay.quaeritum.common.block.flowers.BlockFiresoulFlower
 import eladkay.quaeritum.common.block.flowers.BlockIronheartCrop
 import eladkay.quaeritum.common.block.flowers.BlockIronheartFlower
 import eladkay.quaeritum.common.block.machine.*
-import eladkay.quaeritum.common.block.tile.TileEntityBlueprint
-import eladkay.quaeritum.common.block.tile.TileEntityFoundationStone
 import eladkay.quaeritum.common.lib.LibNames
-import net.minecraft.util.ResourceLocation
-import net.minecraftforge.fml.common.registry.GameRegistry
 
 /**
  * @author WireSegal
@@ -36,10 +31,9 @@ object ModBlocks {
     val ironCrop = BlockIronheartCrop()
     val ironheart = BlockIronheartFlower()
 
-    init {
-        GameRegistry.registerTileEntity(TileEntityBlueprint::class.java, ResourceLocation(LibMisc.MOD_ID, LibNames.BLUEPRINT).toString())
-        GameRegistry.registerTileEntity(TileEntityFoundationStone::class.java, ResourceLocation(LibMisc.MOD_ID, LibNames.FOUNDATION).toString())
+    val pipe = BlockItemPipe()
 
+    init {
         PositionedBlockChalk.chalk = chalk
         PositionedBlockChalk.tempest = tempest
     }

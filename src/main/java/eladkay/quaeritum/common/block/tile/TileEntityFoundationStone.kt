@@ -1,5 +1,6 @@
 package eladkay.quaeritum.common.block.tile
 
+import com.teamwizardry.librarianlib.features.autoregister.TileRegister
 import com.teamwizardry.librarianlib.features.base.block.tile.TileModTickable
 import eladkay.quaeritum.api.rituals.IWork
 import eladkay.quaeritum.api.rituals.PositionedBlock
@@ -8,6 +9,7 @@ import eladkay.quaeritum.common.core.PositionedBlockHelper
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.nbt.NBTTagCompound
 
+@TileRegister("foundation")
 class TileEntityFoundationStone : TileModTickable() {
     var stage = RitualStage.IDLE
     var ticksExisted: Long = 0
