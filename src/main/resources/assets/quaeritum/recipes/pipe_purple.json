@@ -1,0 +1,17 @@
+{
+	"type": "forge:ore_shapeless",
+	"ingredients": [
+		{
+			"item": "quaeritum:pipe",
+			"data": 0
+		},
+		{
+			"type": "forge:ore_dict",
+			"ore": "dyePurple"
+		}
+	],
+	"result": {
+		"item": "quaeritum:pipe",
+		"data": 10
+	}
+}

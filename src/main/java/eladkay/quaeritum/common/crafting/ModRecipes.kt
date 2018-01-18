@@ -158,6 +158,26 @@ object ModRecipes {
                 'I', "dyeBlack",
                 'P', "paper")
 
+        addOreDictRecipe("pipe", ItemStack(ModBlocks.pipe, 16),
+                "BBB",
+                "RWR",
+                "BBB",
+                'B', "bitumen",
+                'R', "dustRedstone",
+                'W', ItemStack(Blocks.WOOL, 1, OreDictionary.WILDCARD_VALUE))
+
+        for (i in dyeColors.indices.toList().takeLast(dyeColors.size - 1)) {
+            addShapelessOreDictRecipe("pipe_" + dyeColors[i].toLowerCase(Locale.ROOT), ItemStack(ModBlocks.pipe, 1, i),
+                    ItemStack(ModBlocks.pipe),
+                    "dye" + dyeColors[i])
+            addOreDictRecipe("pipe_8x_" + dyeColors[i].toLowerCase(Locale.ROOT), ItemStack(ModBlocks.pipe, 8, i),
+                    "PPP",
+                    "PDP",
+                    "PPP",
+                    'P', ItemStack(ModBlocks.pipe),
+                    'D', "dye" + dyeColors[i])
+        }
+
         CentrifugeRecipes.registerRecipe("stone", Items.CLAY_BALL, ItemStack(ModItems.dormant))
         CentrifugeRecipes.registerRecipe(ItemStack(ModItems.dormant), "essenceArgentus", ItemStack(ModItems.tempestArc))
         CentrifugeRecipes.registerRecipe(Items.COAL, null, BITUMEN.stackOf())

@@ -1,0 +1,23 @@
+{
+	"type": "forge:ore_shaped",
+	"pattern": [
+		"PPP",
+		"PDP",
+		"PPP"
+	],
+	"key": {
+		"P": {
+			"item": "quaeritum:pipe",
+			"data": 0
+		},
+		"D": {
+			"type": "forge:ore_dict",
+			"ore": "dyeLime"
+		}
+	},
+	"result": {
+		"item": "quaeritum:pipe",
+		"data": 5,
+		"count": 8
+	}
+}

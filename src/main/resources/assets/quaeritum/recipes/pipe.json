@@ -1,0 +1,27 @@
+{
+	"type": "forge:ore_shaped",
+	"pattern": [
+		"BBB",
+		"RWR",
+		"BBB"
+	],
+	"key": {
+		"B": {
+			"type": "forge:ore_dict",
+			"ore": "bitumen"
+		},
+		"R": {
+			"type": "forge:ore_dict",
+			"ore": "dustRedstone"
+		},
+		"W": {
+			"item": "minecraft:wool",
+			"data": 32767
+		}
+	},
+	"result": {
+		"item": "quaeritum:pipe",
+		"data": 0,
+		"count": 16
+	}
+}

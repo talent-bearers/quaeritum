@@ -1,0 +1,26 @@
+{
+	"__comment": "Designed by Wire Segal with Cubik Studio - https://cubik.studio",
+	"textures": {
+		"particle": "quaeritum:blocks/pipe",
+		"texture": "quaeritum:blocks/pipe",
+		"overlay": "quaeritum:blocks/pipe_overlay"
+	},
+	"elements": [ 	 
+		{
+			"__comment": "Pipe",
+			"from": [ 5, 11, 5 ],
+			"to": [ 11, 11, 11 ],
+			"faces": {
+				"up": { "uv": [ 5, 5, 11, 11 ], "texture": "#texture" }
+			}
+		},
+		{
+			"__comment": "Overlay",
+			"from": [ 5, 11, 5 ],
+			"to": [ 11, 11, 11 ],
+			"faces": {
+				"up": { "uv": [ 5, 5, 11, 11 ], "texture": "#overlay", "tintindex": 1 }
+			}
+		}
+	]
+}

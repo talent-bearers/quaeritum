@@ -1,0 +1,17 @@
+{
+	"multipart": [
+		{ "when": { "up": "true" }, "apply": { "model": "quaeritum:pipe_side" } },
+		{ "when": { "down": "true" }, "apply": { "model": "quaeritum:pipe_side", "x": 180 } },
+		{ "when": { "north": "true" }, "apply": { "model": "quaeritum:pipe_side", "x": 90 } },
+		{ "when": { "south": "true" }, "apply": { "model": "quaeritum:pipe_side", "x": 270 } },
+		{ "when": { "east": "true" }, "apply": { "model": "quaeritum:pipe_side", "x": 90, "y": 90 } },
+		{ "when": { "west": "true" }, "apply": { "model": "quaeritum:pipe_side", "x": 90, "y": 270 } },
+
+		{ "when": { "up": "false" }, "apply": { "model": "quaeritum:pipe_noside" } },
+		{ "when": { "down": "false" }, "apply": { "model": "quaeritum:pipe_noside", "x": 180 } },
+		{ "when": { "north": "false" }, "apply": { "model": "quaeritum:pipe_noside", "x": 90 } },
+		{ "when": { "south": "false" }, "apply": { "model": "quaeritum:pipe_noside", "x": 270 } },
+		{ "when": { "east": "false" }, "apply": { "model": "quaeritum:pipe_noside", "x": 90, "y": 90 } },
+		{ "when": { "west": "false" }, "apply": { "model": "quaeritum:pipe_noside", "x": 90, "y": 270 } }
+	]
+}
