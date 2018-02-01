@@ -8,17 +8,17 @@ import com.teamwizardry.librarianlib.features.kotlin.times
 import com.teamwizardry.librarianlib.features.network.PacketHandler
 import com.teamwizardry.librarianlib.features.network.sendToAllAround
 import com.teamwizardry.librarianlib.features.utilities.RaycastUtils
+import com.teamwizardry.librarianlib.features.utilities.client.ClientRunnable
 import eladkay.quaeritum.api.animus.AnimusHelper
 import eladkay.quaeritum.api.animus.EnumAnimusTier
+import eladkay.quaeritum.api.lib.LibMisc
 import eladkay.quaeritum.common.networking.MessageDriveEffect
+import net.minecraft.client.Minecraft
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.EnumAction
 import net.minecraft.item.ItemStack
-import net.minecraft.util.ActionResult
-import net.minecraft.util.EnumActionResult
-import net.minecraft.util.EnumFacing
-import net.minecraft.util.EnumHand
+import net.minecraft.util.*
 import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.RayTraceResult
 import net.minecraft.util.math.Vec3d
@@ -33,6 +33,17 @@ import java.awt.Color
 abstract class ItemDrive(name: String, val minTier: EnumAnimusTier) : ItemMod("${name}_drive") {
     init {
         setMaxStackSize(1)
+        addPropertyOverride(ResourceLocation(LibMisc.MOD_ID, "left")) { stack, _, entity ->
+            val default: EnumHandSide
+                    = ClientRunnable.produce { Minecraft.getMinecraft().player }?.primaryHand ?: EnumHandSide.RIGHT
+            val hand = if (entity != null) when {
+                entity.heldItemMainhand === stack -> entity.primaryHand
+                entity.heldItemOffhand === stack -> entity.primaryHand.opposite()
+                else -> default
+            } else default
+
+            if (hand == EnumHandSide.LEFT) 1f else 0f
+        }
     }
 
     override fun getMaxItemUseDuration(stack: ItemStack): Int {

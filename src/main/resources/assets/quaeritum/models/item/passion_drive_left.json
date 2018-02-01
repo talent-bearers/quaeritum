@@ -1,0 +1,6 @@
+{
+	"parent": "quaeritum:item/drive_left",
+	"textures": {
+		"texture": "quaeritum:items/passion_drive"
+	}
+}

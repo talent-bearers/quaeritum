@@ -1,6 +1,12 @@
 {
-	"parent": "item/generated",
+	"parent": "quaeritum:item/drive",
 	"textures": {
-		"layer0": "quaeritum:items/vibrancy_drive"
-	}
+		"texture": "quaeritum:items/vibrancy_drive"
+	},
+	"overrides": [{
+		"predicate": {
+			"quaeritum:left": 1
+		},
+		"model": "quaeritum:item/vibrancy_drive_left"
+	}]
 }

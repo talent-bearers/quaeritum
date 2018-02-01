@@ -1,6 +1,12 @@
 {
-	"parent": "item/generated",
+	"parent": "quaeritum:item/drive",
 	"textures": {
-		"layer0": "quaeritum:items/passion_drive"
-	}
+		"texture": "quaeritum:items/passion_drive"
+	},
+	"overrides": [{
+		"predicate": {
+			"quaeritum:left": 1
+		},
+		"model": "quaeritum:item/passion_drive_left"
+	}]
 }
