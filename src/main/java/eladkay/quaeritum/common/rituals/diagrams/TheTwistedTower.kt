@@ -194,7 +194,7 @@ class TheTwistedTower : IDiagram {
         return true
     }
 
-    override fun canRitualRun(world: World?, pos: BlockPos, tile: TileEntity): Boolean {
+    override fun canRitualRun(world: World, pos: BlockPos, tile: TileEntity): Boolean {
         return tile.world.provider.dimension == 0 &&
                 IDiagram.Helper.consumeAnimusForRitual(tile, false, 1000, EnumAnimusTier.ARGENTUS)
     }
@@ -204,7 +204,7 @@ class TheTwistedTower : IDiagram {
             ItemStack(Items.GHAST_TEAR)
     )
 
-    override fun hasRequiredItems(world: World?, pos: BlockPos, tile: TileEntity): Boolean {
+    override fun hasRequiredItems(world: World, pos: BlockPos, tile: TileEntity): Boolean {
         return IDiagram.Helper.matches(IDiagram.Helper.stacksAroundAltar(tile, 4.0), items)
     }
 

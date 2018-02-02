@@ -32,11 +32,11 @@ class ShardedSkiesTier2Diagram : IDiagram {
         }
     }
 
-    override fun canRitualRun(world: World?, pos: BlockPos, tile: TileEntity): Boolean {
+    override fun canRitualRun(world: World, pos: BlockPos, tile: TileEntity): Boolean {
         return true
     }
 
-    override fun hasRequiredItems(world: World?, pos: BlockPos, tile: TileEntity): Boolean {
+    override fun hasRequiredItems(world: World, pos: BlockPos, tile: TileEntity): Boolean {
         return IDiagram.Helper.matches(IDiagram.Helper.stacksAroundAltar(tile, 4.0), requiredItems)
     }
 
@@ -45,17 +45,7 @@ class ShardedSkiesTier2Diagram : IDiagram {
     }
 
     override fun onPrepUpdate(world: World, pos: BlockPos, tile: TileEntity, ticksRemaining: Int): Boolean {
-        val flag = true
-        for (stack in requiredItems)
-            if (!IDiagram.Helper.isStackInList(stack, IDiagram.Helper.stacksAroundAltar(tile, 4.0))) return false
-        /*for(EntityItem stack : Helper.entitiesAroundAltar(tile, 4)) {
-            if (!Helper.isEntityItemInList(stack, getRequiredItems())) {
-                flag = false;
-                System.out.println("hi");
-            } else
-                NetworkHelper.tellEveryoneAround(new FancyParticlePacket(pos.getX(), pos.getY(), pos.getZ(), 50), world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 16);
-        }*/
-        return true
+        return requiredItems.all { IDiagram.Helper.isStackInList(it, IDiagram.Helper.stacksAroundAltar(tile, 4.0)) }
     }
 
     val requiredItems: ArrayList<ItemStack>

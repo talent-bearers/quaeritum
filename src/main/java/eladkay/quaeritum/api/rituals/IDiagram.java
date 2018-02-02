@@ -14,7 +14,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.OreIngredient;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +26,9 @@ public interface IDiagram {
 
     void run(@NotNull World world, @NotNull BlockPos pos, @NotNull TileEntity tile);
 
-    boolean canRitualRun(@Nullable World world, @NotNull BlockPos pos, @NotNull TileEntity tile);
+    boolean canRitualRun(@NotNull World world, @NotNull BlockPos pos, @NotNull TileEntity tile);
 
-    boolean hasRequiredItems(@Nullable World world, @NotNull BlockPos pos, @NotNull TileEntity tile);
+    boolean hasRequiredItems(@NotNull World world, @NotNull BlockPos pos, @NotNull TileEntity tile);
 
     default int getPrepTime(@NotNull World world, @NotNull BlockPos pos, @NotNull TileEntity tile) {
         return 0;

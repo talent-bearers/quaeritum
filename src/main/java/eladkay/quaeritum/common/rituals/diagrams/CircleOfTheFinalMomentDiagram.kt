@@ -28,11 +28,11 @@ class CircleOfTheFinalMomentDiagram : IDiagram {
         return true
     }
 
-    override fun canRitualRun(world: World?, pos: BlockPos, tile: TileEntity): Boolean {
+    override fun canRitualRun(world: World, pos: BlockPos, tile: TileEntity): Boolean {
         return true
     }
 
-    override fun hasRequiredItems(world: World?, pos: BlockPos, tile: TileEntity): Boolean {
+    override fun hasRequiredItems(world: World, pos: BlockPos, tile: TileEntity): Boolean {
         return true
     }
 

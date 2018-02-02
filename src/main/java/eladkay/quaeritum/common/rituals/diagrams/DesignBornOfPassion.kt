@@ -20,6 +20,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Vec3d
 import net.minecraft.world.World
 import net.minecraftforge.oredict.OreDictionary
+import java.awt.Color
 import java.util.*
 
 
@@ -89,10 +90,9 @@ class DesignBornOfPassion : IDiagram {
         return "ninebynine"
     }
 
-    override fun hasRequiredItems(world: World?, pos: BlockPos, tile: TileEntity): Boolean {
+    override fun hasRequiredItems(world: World, pos: BlockPos, tile: TileEntity): Boolean {
         return IDiagram.Helper.consumeAnimusForRitual(tile, false, 500, EnumAnimusTier.FERRUS)
     }
-
 
     private val RANGE = 4
     private val RANGE_Y = 3
@@ -139,13 +139,24 @@ class DesignBornOfPassion : IDiagram {
 
                     IDiagram.Helper.consumeAnimusForRitual(te, true, 500, EnumAnimusTier.FERRUS)
                 }
+            } else {
+                val targetPos = Vec3d(pos).addVector(0.5, 0.0, 0.5)
+                PacketHandler.NETWORK.sendToAllAround(PuffMessage(targetPos, color = Color(0xFF4040),
+                        amount = 20, verticalMin = 0.04, verticalMax = 0.07, lifetimeMax = 50, lifetimeMin = 40, scatter = 0.1),
+                        world, targetPos, 64)
             }
         }
     }
 
 
-    override fun canRitualRun(world: World?, pos: BlockPos, tile: TileEntity): Boolean {
-        return true
+    override fun canRitualRun(world: World, pos: BlockPos, tile: TileEntity): Boolean {
+        for (orePos in BlockPos.getAllInBox(pos.add(-RANGE, -RANGE_Y, -RANGE), pos.add(RANGE, RANGE_Y, RANGE))) {
+            val state = tile.world.getBlockState(orePos)
+            if (state.block.isReplaceableOreGen(state, world, orePos) { it != null && (it.block == Blocks.STONE || it.block == Blocks.NETHERRACK) })
+                return true
+        }
+
+        return false
     }
 
     override fun buildChalks(chalks: MutableList<PositionedBlock>) {

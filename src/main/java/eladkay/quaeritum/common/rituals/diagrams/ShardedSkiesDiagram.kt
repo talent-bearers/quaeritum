@@ -53,11 +53,11 @@ class ShardedSkiesDiagram : IDiagram {
         return 50
     }
 
-    override fun hasRequiredItems(world: World?, pos: BlockPos, tile: TileEntity): Boolean {
+    override fun hasRequiredItems(world: World, pos: BlockPos, tile: TileEntity): Boolean {
         return IDiagram.Helper.matches(IDiagram.Helper.stacksAroundAltar(tile, 4.0), requiredItems)
     }
 
-    override fun canRitualRun(world: World?, pos: BlockPos, tile: TileEntity): Boolean {
+    override fun canRitualRun(world: World, pos: BlockPos, tile: TileEntity): Boolean {
         return true
     }
 

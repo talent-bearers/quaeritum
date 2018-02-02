@@ -63,11 +63,11 @@ abstract class CraftingDiagramBase : IDiagram {
         world.spawnEntity(item)
     }
 
-    override fun canRitualRun(world: World?, pos: BlockPos, tile: TileEntity): Boolean {
+    override fun canRitualRun(world: World, pos: BlockPos, tile: TileEntity): Boolean {
         return !requiress || if (onPlayers) IDiagram.Helper.consumeAnimusForRitual(tile, false, animus, rarity) else IDiagram.Helper.takeAnimus(animus, rarity, tile, 4.0, false)
     }
 
-    override fun hasRequiredItems(world: World?, pos: BlockPos, tile: TileEntity): Boolean {
+    override fun hasRequiredItems(world: World, pos: BlockPos, tile: TileEntity): Boolean {
         return IDiagram.Helper.matches(IDiagram.Helper.stacksAroundAltar(tile, 4.0), input)
     }
 }

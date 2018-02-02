@@ -25,7 +25,7 @@ class AltarOfTheFallingStarDiagram : IDiagram {
         return "rituals.quaeritum.altarofthefallingstar"
     }
 
-    override fun hasRequiredItems(world: World?, pos: BlockPos, tile: TileEntity): Boolean {
+    override fun hasRequiredItems(world: World, pos: BlockPos, tile: TileEntity): Boolean {
         val stacks = IDiagram.Helper.stacksAroundAltar(tile, 4.0)
         for (stack in stacks) {
             if (stack.item is ISoulstone) return true
@@ -79,7 +79,7 @@ class AltarOfTheFallingStarDiagram : IDiagram {
     }
 
 
-    override fun canRitualRun(world: World?, pos: BlockPos, tile: TileEntity): Boolean {
+    override fun canRitualRun(world: World, pos: BlockPos, tile: TileEntity): Boolean {
         val entities = IDiagram.Helper.entitiesAroundAltar(tile, 4.0)
         for (entity in entities) {
             val stack = entity.item

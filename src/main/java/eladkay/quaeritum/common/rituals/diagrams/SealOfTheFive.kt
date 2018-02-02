@@ -20,7 +20,7 @@ class SealOfTheFive : IDiagram {
         return "eaeye"
     }
 
-    override fun hasRequiredItems(world: World?, pos: BlockPos, tile: TileEntity): Boolean {
+    override fun hasRequiredItems(world: World, pos: BlockPos, tile: TileEntity): Boolean {
         return true
     }
 
@@ -38,7 +38,7 @@ class SealOfTheFive : IDiagram {
     }
 
 
-    override fun canRitualRun(world: World?, pos: BlockPos, tile: TileEntity): Boolean {
+    override fun canRitualRun(world: World, pos: BlockPos, tile: TileEntity): Boolean {
         return true
     }
 
