@@ -8,6 +8,7 @@ import eladkay.quaeritum.common.block.tile.TileEntityBlueprint
 import eladkay.quaeritum.common.lib.LibLocations
 import net.minecraft.block.Block
 import net.minecraft.block.material.Material
+import net.minecraft.block.properties.IProperty
 import net.minecraft.block.properties.PropertyBool
 import net.minecraft.block.state.BlockStateContainer
 import net.minecraft.block.state.IBlockState
@@ -56,6 +57,9 @@ class BlockBlueprint(name: String) : BlockModContainer(name, Material.PISTON) {
                 worldIn.setBlockState(pos, state.withProperty(POWERED, power))
         }
     }
+
+    override val ignoredProperties: Array<IProperty<*>>?
+        get() = arrayOf(POWERED)
 
     override fun onBlockActivated(worldIn: World, pos: BlockPos, state: IBlockState, playerIn: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
         val tile = worldIn.getTileEntity(pos)
