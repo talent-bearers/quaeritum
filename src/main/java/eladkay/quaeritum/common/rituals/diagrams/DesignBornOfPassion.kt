@@ -6,6 +6,7 @@ import eladkay.quaeritum.api.animus.EnumAnimusTier
 import eladkay.quaeritum.api.rituals.IDiagram
 import eladkay.quaeritum.api.rituals.PositionedBlock
 import eladkay.quaeritum.api.rituals.PositionedBlockChalk
+import eladkay.quaeritum.client.lib.LibParticles
 import eladkay.quaeritum.common.networking.PuffMessage
 import net.minecraft.block.Block
 import net.minecraft.init.Blocks
@@ -134,7 +135,8 @@ class DesignBornOfPassion : IDiagram {
                     world.playEvent(2001, target, Block.getIdFromBlock(block) + (meta shl 12))
                     world.playSound(null, target, SoundEvents.BLOCK_STONE_BREAK, SoundCategory.BLOCKS, 2f, 1f)
                     val targetPos = Vec3d(target).addVector(0.5, 0.5, 0.5)
-                    PacketHandler.NETWORK.sendToAllAround(PuffMessage(targetPos, amount = 100, verticalMin = 0.04, verticalMax = 0.07, lifetimeMax = 50, lifetimeMin = 40, scatter = 0.02),
+                    val color = if (stone) LibParticles.darkGray else Color(0x804020)
+                    PacketHandler.NETWORK.sendToAllAround(PuffMessage(targetPos, color = color, amount = 100, verticalMin = 0.04, verticalMax = 0.07, lifetimeMax = 50, lifetimeMin = 40, scatter = 0.02),
                             world, targetPos, 64)
 
                     IDiagram.Helper.consumeAnimusForRitual(te, true, 500, EnumAnimusTier.FERRUS)
