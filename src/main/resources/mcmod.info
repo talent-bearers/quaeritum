@@ -1,7 +1,7 @@
 [
 {
-  "modid": "quartium",
-  "name": "Quartium",
+  "modid": "quaertium",
+  "name": "Quaertium",
   "description": "An immersive mod about manipulating the Flow.",
   "version": "${version}",
   "mcversion": "${mcversion}",

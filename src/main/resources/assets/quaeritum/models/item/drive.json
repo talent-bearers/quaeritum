@@ -206,7 +206,7 @@
 				},
 				"west": {
 					"uv": [0.016, 0.016, 1.984, 1.984],
-					"texture": "#missing"
+					"texture": "#texture"
 				},
 				"up": {
 					"uv": [4.516, 10.516, 5.484, 11.484],
@@ -403,12 +403,12 @@
 	],
 	"display": {
 		"thirdperson_righthand": {
-			"scale": [1, 1, 1],
+			"scale": [1.01, 1.01, 1.01],
 			"rotation": [90, 0, 0],
 			"translation": [0, -2, 5]
 		},
 		"thirdperson_lefthand": {
-			"scale": [1, 1, 1],
+			"scale": [1.01, 1.01, 1.01],
 			"rotation": [90, 0, 0],
 			"translation": [0, -2, 5]
 		},

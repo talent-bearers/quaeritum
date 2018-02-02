@@ -155,7 +155,7 @@
 				"down": {
 					"uv": [2.484, 12.016, 0.516, 12.984],
 					"texture": "#texture",
-					"rotation": 270
+					"rotation": 90
 				}
 			},
 			"type": "cube"
@@ -203,7 +203,7 @@
 				},
 				"east": {
 					"uv": [1.984, 0.016, 0.016, 1.984],
-					"texture": "#missing"
+					"texture": "#texture"
 				},
 				"west": {
 					"uv": [5.484, 10.516, 4.516, 11.484],
