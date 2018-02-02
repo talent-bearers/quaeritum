@@ -1,9 +1,12 @@
 package eladkay.quaeritum.common.rituals.diagrams
 
+import com.teamwizardry.librarianlib.features.network.PacketHandler
+import com.teamwizardry.librarianlib.features.network.sendToAllAround
 import eladkay.quaeritum.api.animus.EnumAnimusTier
 import eladkay.quaeritum.api.rituals.IDiagram
 import eladkay.quaeritum.api.rituals.PositionedBlock
 import eladkay.quaeritum.api.rituals.PositionedBlockChalk
+import eladkay.quaeritum.common.networking.PuffMessage
 import net.minecraft.block.Block
 import net.minecraft.init.Blocks
 import net.minecraft.init.SoundEvents
@@ -14,6 +17,7 @@ import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.SoundCategory
 import net.minecraft.util.WeightedRandom
 import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.Vec3d
 import net.minecraft.world.World
 import net.minecraftforge.oredict.OreDictionary
 import java.util.*
@@ -97,6 +101,16 @@ class DesignBornOfPassion : IDiagram {
         return 100
     }
 
+    override fun onPrepUpdate(world: World, pos: BlockPos, tile: TileEntity, ticksRemaining: Int): Boolean {
+        if (!IDiagram.Helper.consumeAnimusForRitual(tile, false, 500, EnumAnimusTier.FERRUS)) return false
+
+        val targetPos = Vec3d(pos).addVector(0.5, 0.0, 0.5)
+        PacketHandler.NETWORK.sendToAllAround(PuffMessage(targetPos),
+                world, targetPos, 64)
+
+        return true
+    }
+
     override fun run(world: World, pos: BlockPos, te: TileEntity) {
         if (IDiagram.Helper.consumeAnimusForRitual(te, false, 500, EnumAnimusTier.FERRUS)) {
             val possibleCoords = ArrayList<BlockPos>()
@@ -115,9 +129,13 @@ class DesignBornOfPassion : IDiagram {
                 if (!stack.isEmpty) {
                     val block = Block.getBlockFromItem(stack.item)
                     val meta = stack.itemDamage
+                    @Suppress("DEPRECATION")
                     world.setBlockState(target, block.getStateFromMeta(meta))
                     world.playEvent(2001, target, Block.getIdFromBlock(block) + (meta shl 12))
                     world.playSound(null, target, SoundEvents.BLOCK_STONE_BREAK, SoundCategory.BLOCKS, 2f, 1f)
+                    val targetPos = Vec3d(target).addVector(0.5, 0.5, 0.5)
+                    PacketHandler.NETWORK.sendToAllAround(PuffMessage(targetPos, amount = 100, verticalMin = 0.04, verticalMax = 0.07, lifetimeMax = 50, lifetimeMin = 40, scatter = 0.02),
+                            world, targetPos, 64)
 
                     IDiagram.Helper.consumeAnimusForRitual(te, true, 500, EnumAnimusTier.FERRUS)
                 }
