@@ -1,0 +1,16 @@
+{
+	"spritesheet":{
+		"textureWidth":300,
+		"textureHeight":300,
+		"sprites":{
+			"book":[0, 0, 146, 180],
+			"arrow_next":[0, 180, 18, 10],
+			"arrow_next_pressed":[18, 180, 18, 10],
+			"arrow_back":[0, 190, 18, 10],
+			"arrow_back_pressed":[18, 190, 18, 10],
+			"arrow_home": [36, 189, 18, 9],
+			"arrow_home_pressed": [36, 180, 18, 9],
+			"banner": [0, 200, 140, 31]
+		}
+	}
+}

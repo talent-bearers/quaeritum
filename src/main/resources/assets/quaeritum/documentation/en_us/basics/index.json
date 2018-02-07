@@ -1,0 +1,42 @@
+{
+  "title": "Basics",
+  "type": "index",
+  "content": [
+    {
+      "icon": "quaeritum:textures/items/alloy_matrix.png",
+      "title": "Welcome",
+      "link": "/basics/welcome.json",
+      "desc": "Welcome To Wizardry."
+    },
+    {
+      "icon": "quaeritum:textures/items/argentus.png",
+      "title": "Mana",
+      "link": "/basics/mana.json",
+      "desc": "Learn about what mana is and why you want it so badly."
+    },
+    {
+      "item": "quaeritum:scroll",
+      "title": "Wisdom",
+      "link": "/basics/wisdom.json",
+      "desc": "Learn about wisdom wood, nacre liquid, devil dust, etc..."
+    },
+    {
+      "item": "quaeritum:attuned_soulstone",
+      "title": "Spell Forging",
+      "link": "/basics/spell_forging.json",
+      "desc": "Learn how to make your very first spell"
+    },
+    {
+      "item": "quaeritum:tempest_arc",
+      "title": "Mana Shaping",
+      "link": "/basics/mana_shaping.json",
+      "desc": "Learn about the structures that will enable you to build your spells."
+    },
+    {
+      "item": "quaeritum:waking_blossom",
+      "title": "Wizard Garbs",
+      "link": "/basics/garbs.json",
+      "desc": "Learn about capes and halos."
+    }
+  ]
+}
