@@ -1,6 +1,15 @@
 {
 	"variants": {
-		"normal": {
+      "facing=north": {
+        "model": "quaeritum:centrifuge"
+      },
+      "facing=south": {
+        "model": "quaeritum:centrifuge"
+      },
+      "facing=west": {
+        "model": "quaeritum:centrifuge"
+      },
+      "facing=east": {
 			"model": "quaeritum:centrifuge"
 		}
 	}

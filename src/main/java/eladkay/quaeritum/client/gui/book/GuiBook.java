@@ -6,6 +6,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.teamwizardry.librarianlib.core.LibrarianLib;
 import com.teamwizardry.librarianlib.core.client.ClientTickHandler;
+import com.teamwizardry.librarianlib.features.animator.Animator;
+import com.teamwizardry.librarianlib.features.animator.Easing;
+import com.teamwizardry.librarianlib.features.animator.animations.BasicAnimation;
 import com.teamwizardry.librarianlib.features.gui.GuiBase;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponentEvents;
@@ -17,8 +20,13 @@ import com.teamwizardry.librarianlib.features.sprite.Sprite;
 import com.teamwizardry.librarianlib.features.sprite.Texture;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
+import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nullable;
 import java.awt.*;
@@ -33,6 +41,8 @@ import static eladkay.quaeritum.api.lib.LibMisc.MOD_ID;
 
 public class GuiBook extends GuiBase {
 
+	static Sprite BOOKMARK_LONG = GUIDE_BOOK_SHEET.getSprite("bookmark_long", 226, 22);
+
 	static Texture GUIDE_BOOK_SHEET = new Texture(new ResourceLocation(MOD_ID, "textures/gui/book/guide_book.png"));
 	static Sprite BOOK = GUIDE_BOOK_SHEET.getSprite("book", 146, 180);
 	static Sprite ARROW_NEXT = GUIDE_BOOK_SHEET.getSprite("arrow_next", 18, 10);
@@ -42,6 +52,8 @@ public class GuiBook extends GuiBase {
 	static Sprite ARROW_HOME = GUIDE_BOOK_SHEET.getSprite("arrow_home", 18, 9);
 	static Sprite ARROW_HOME_PRESSED = GUIDE_BOOK_SHEET.getSprite("arrow_home_pressed", 18, 9);
 	static Sprite BANNER = GUIDE_BOOK_SHEET.getSprite("banner", 140, 31);
+	static Sprite BOOKMARK_SHORT = GUIDE_BOOK_SHEET.getSprite("bookmark_short", 177, 22);
+	private static Animator animator = new Animator();
 
 	static ComponentSprite COMPONENT_BOOK;
 	static ComponentVoid MAIN_INDEX;
@@ -86,7 +98,7 @@ public class GuiBook extends GuiBase {
 				path = "documentation/en_us";
 			}
 
-			ArrayList<ComponentVoid> indexComponents = new ArrayList<>();
+			ArrayList<GuiComponent> indexComponents = new ArrayList<>();
 			if (stream1 != null) {
 				InputStreamReader reader = new InputStreamReader(stream1, Charset.forName("UTF-8"));
 				JsonElement json = new JsonParser().parse(reader);
@@ -106,7 +118,7 @@ public class GuiBook extends GuiBase {
 							String link = path + chunk.getAsJsonPrimitive("link").getAsString();
 							String text = chunk.getAsJsonPrimitive("text").getAsString();
 
-							ComponentVoid button = new ComponentVoid(0, 0, 24, 24);
+							ComponentAnimatableVoid button = new ComponentAnimatableVoid(0, 0, 24, 24);
 
 							String finalPath = path;
 							button.BUS.hook(GuiComponentEvents.MouseClickEvent.class, (event) -> {
@@ -138,20 +150,89 @@ public class GuiBook extends GuiBase {
 								}
 							});
 
+							button.clipping.setClipToBounds(true);
+							button.clipping.setCustomClipping(() -> {
+
+								Tessellator tessellator = Tessellator.getInstance();
+								BufferBuilder buffer = tessellator.getBuffer();
+								buffer.begin(GL11.GL_TRIANGLE_FAN, DefaultVertexFormats.POSITION_COLOR);
+								buffer.pos(0, 0, 0).color(0f, 1f, 1f, 1f).endVertex();
+								for (int i = 0; i <= 20; i++) {
+									float angle = (float) (i * Math.PI * 2 / 20);
+
+									float x1 = 12 + MathHelper.cos(angle) * 24;
+									float y1 = 12 + MathHelper.sin(angle) * 24;
+
+									buffer.pos(x1, y1, 100).color(0f, 1f, 1f, 1f).endVertex();
+								}
+								tessellator.draw();
+
+								return null;
+							});
 							button.BUS.hook(GuiComponentEvents.PostDrawEvent.class, (event) -> {
 								GlStateManager.pushMatrix();
 								GlStateManager.color(1, 1, 1, 1);
 								GlStateManager.enableAlpha();
 								GlStateManager.enableBlend();
+								GlStateManager.disableCull();
 
-								if (!event.component.getMouseOver()) GlStateManager.color(0, 0, 0);
-								else GlStateManager.color(1, 0f, 0.5f);
+								if (!event.component.getMouseOver()) {
+									if (event.component.hasTag("over")) {
+										event.component.removeTag("over");
 
+										button.x = 0;
+										BasicAnimation anim = new BasicAnimation<>(button, "x");
+										anim.setDuration(20);
+										anim.setEasing(Easing.easeOutCubic);
+										anim.setFrom(24);
+										anim.setTo(0);
+										//animator.add(anim);
+									}
+									//GlStateManager.color(0, 0, 0);
+								} else {
+									if (!event.component.hasTag("over")) {
+										event.component.addTag("over");
+
+										button.x = 24;
+										BasicAnimation anim = new BasicAnimation<>(button, "x");
+										anim.setDuration(20);
+										anim.setEasing(Easing.easeOutCubic);
+										anim.setFrom(0);
+										anim.setTo(24);
+										//animator.add(anim);
+									}
+									//GlStateManager.color(1, 0f, 0.5f);
+								}
+
+								GlStateManager.color(0, 0, 0);
 								icon.getTex().bind();
 								icon.draw((int) ClientTickHandler.getPartialTicks(), 0, 0, button.getSize().getXi(), button.getSize().getYi());
 
 								GlStateManager.popMatrix();
 							});
+
+							button.BUS.hook(GuiComponentEvents.MouseInEvent.class, event -> {
+
+
+							});
+							button.BUS.hook(GuiComponentEvents.MouseOutEvent.class, event -> {
+
+							});
+
+							//button.BUS.hook(GuiComponentEvents.PostDrawEvent.class, (event) -> {
+							//	GlStateManager.pushMatrix();
+							//	GlStateManager.color(1, 1, 1, 1);
+							//	GlStateManager.enableAlpha();
+							//	GlStateManager.enableBlend();
+//
+							//	if (!event.component.getMouseOver()) GlStateManager.color(0, 0, 0);
+							//	else GlStateManager.color(1, 0f, 0.5f);
+//
+							//	icon.getTex().bind();
+							//	icon.draw((int) ClientTickHandler.getPartialTicks(), 0, 0, button.getSize().getXi(), button.getSize().getYi());
+//
+							//	GlStateManager.popMatrix();
+							//});
 
 							button.render.getTooltip().func((Function<GuiComponent, List<String>>) guiComponent -> {
 								List<String> list = new ArrayList<>();
@@ -171,7 +252,7 @@ public class GuiBook extends GuiBase {
 			int marginX = 28;
 			int marginY = 45;
 			int itemsPerRow = 3;
-			for (ComponentVoid button : indexComponents) {
+			for (GuiComponent button : indexComponents) {
 
 				button.setPos(new Vec2d(
 						marginX + (column * button.getSize().getXi()) + (column * buffer),

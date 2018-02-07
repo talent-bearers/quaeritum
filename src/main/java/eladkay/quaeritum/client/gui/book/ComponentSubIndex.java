@@ -34,7 +34,7 @@ public class ComponentSubIndex extends GuiComponent {
 		add(pageComponent);
 		currentActive = pageComponent;
 
-		int itemsPerPage = 3;
+		int itemsPerPage = 6;
 		int page = 0;
 		int count = 0;
 		for (int i = 0; i < contentArray.size(); i++) {

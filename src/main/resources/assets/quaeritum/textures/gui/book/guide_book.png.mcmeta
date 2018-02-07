@@ -10,7 +10,9 @@
 			"arrow_back_pressed":[18, 190, 18, 10],
 			"arrow_home": [36, 189, 18, 9],
 			"arrow_home_pressed": [36, 180, 18, 9],
-			"banner": [0, 200, 140, 31]
+			"banner": [0, 200, 140, 31],
+			"bookmark_short": [147, 488, 177, 22],
+			"bookmark_long": [147, 518, 226, 22]
 		}
 	}
 }

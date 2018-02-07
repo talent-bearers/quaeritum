@@ -25,7 +25,7 @@ public class ComponentNavBar extends GuiComponent {
 		ComponentSprite next = new ComponentSprite(ARROW_NEXT, (int) (getSize().getX() - ARROW_NEXT.getWidth()), (int) ((getSize().getY() / 2.0) - (ARROW_BACK.getHeight() / 2.0)));
 		add(back, next, home);
 
-		if (maxPages > 1) {
+		if (maxPages >= 1) {
 			ComponentText pageStringComponent = new ComponentText(0, 0, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.MIDDLE);
 			pageStringComponent.getUnicode().setValue(false);
 
