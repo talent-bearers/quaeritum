@@ -3,22 +3,22 @@
     {
       "icon": "quaeritum:textures/gui/book/icons/pointy_hat.png",
       "text": "Basics",
-      "link": "/basics/index.json"
+      "link": "documentation/%LANG%/basics/index.json"
     },
     {
       "icon": "quaeritum:textures/gui/book/icons/fangs.png",
       "text": "Mobs",
-      "link": "/mobs/index.json"
+      "link": "documentation/%LANG%/mobs/index.json"
     },
     {
       "icon": "quaeritum:textures/gui/book/icons/magic_potion.png",
       "text": "Potato",
-      "link": "/basics/index.json"
+      "link": "documentation/%LANG%/basics/index.json"
     },
     {
       "icon": "quaeritum:textures/gui/book/icons/hot_spices.png",
       "text": "Muffins",
-      "link": "/basics/index.json"
+      "link": "documentation/%LANG%/basics/index.json"
     }
   ]
 }

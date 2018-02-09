@@ -18,6 +18,7 @@ import com.teamwizardry.librarianlib.features.gui.components.ComponentVoid;
 import com.teamwizardry.librarianlib.features.math.Vec2d;
 import com.teamwizardry.librarianlib.features.sprite.Sprite;
 import com.teamwizardry.librarianlib.features.sprite.Texture;
+import kotlin.Unit;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -38,10 +39,9 @@ import java.util.List;
 import java.util.function.Function;
 
 import static eladkay.quaeritum.api.lib.LibMisc.MOD_ID;
+import static org.lwjgl.opengl.GL11.GL_POLYGON_SMOOTH;
 
 public class GuiBook extends GuiBase {
-
-	static Sprite BOOKMARK_LONG = GUIDE_BOOK_SHEET.getSprite("bookmark_long", 226, 22);
 
 	static Texture GUIDE_BOOK_SHEET = new Texture(new ResourceLocation(MOD_ID, "textures/gui/book/guide_book.png"));
 	static Sprite BOOK = GUIDE_BOOK_SHEET.getSprite("book", 146, 180);
@@ -53,10 +53,16 @@ public class GuiBook extends GuiBase {
 	static Sprite ARROW_HOME_PRESSED = GUIDE_BOOK_SHEET.getSprite("arrow_home_pressed", 18, 9);
 	static Sprite BANNER = GUIDE_BOOK_SHEET.getSprite("banner", 140, 31);
 	static Sprite BOOKMARK_SHORT = GUIDE_BOOK_SHEET.getSprite("bookmark_short", 177, 22);
+	static Sprite BOOKMARK_LONG = GUIDE_BOOK_SHEET.getSprite("bookmark_long", 226, 22);
+	static Sprite ERROR = new Sprite(new ResourceLocation(MOD_ID, "textures/gui/book/error/error.png"));
+	static Sprite FOF = new Sprite(new ResourceLocation(MOD_ID, "textures/gui/book/error/fof.png"));
+
 	private static Animator animator = new Animator();
 
 	static ComponentSprite COMPONENT_BOOK;
 	static ComponentVoid MAIN_INDEX;
+
+	static String langname;
 
 	public GuiBook() {
 		super(146, 180);
@@ -89,19 +95,12 @@ public class GuiBook extends GuiBase {
 
 		// --------- MAIN INDEX --------- //
 		{
-			String langname = Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage().getLanguageCode().toLowerCase();
-			String path = "documentation/" + langname;
-
-			InputStream stream1 = LibrarianLib.PROXY.getResource(MOD_ID, path + "/index.json");
-			if (stream1 == null) {
-				stream1 = LibrarianLib.PROXY.getResource(MOD_ID, "documentation/en_us/index.json");
-				path = "documentation/en_us";
-			}
+			langname = Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage().getLanguageCode().toLowerCase();
 
 			ArrayList<GuiComponent> indexComponents = new ArrayList<>();
-			if (stream1 != null) {
-				InputStreamReader reader = new InputStreamReader(stream1, Charset.forName("UTF-8"));
-				JsonElement json = new JsonParser().parse(reader);
+
+			JsonElement json = getJsonFromLink("documentation/%LANG%/index.json");
+			if (json != null) {
 				if (json.isJsonObject() && json.getAsJsonObject().has("index")) {
 
 					JsonArray array = json.getAsJsonObject().getAsJsonArray("index");
@@ -115,21 +114,28 @@ public class GuiBook extends GuiBase {
 
 							Sprite icon = new Sprite(new ResourceLocation(chunk.getAsJsonPrimitive("icon").getAsString()));
 
-							String link = path + chunk.getAsJsonPrimitive("link").getAsString();
+							String link = chunk.getAsJsonPrimitive("link").getAsString();
 							String text = chunk.getAsJsonPrimitive("text").getAsString();
 
-							ComponentAnimatableVoid button = new ComponentAnimatableVoid(0, 0, 24, 24);
+							ComponentVoid button = new ComponentVoid(0, 0, 24, 24);
 
-							String finalPath = path;
+							button.BUS.hook(GuiComponentEvents.PostDrawEvent.class, (GuiComponentEvents.PostDrawEvent event) -> {
+								GlStateManager.pushMatrix();
+								GlStateManager.enableAlpha();
+								GlStateManager.enableBlend();
+								GlStateManager.disableCull();
+
+								GlStateManager.color(0, 0, 0);
+								icon.getTex().bind();
+								icon.draw((int) ClientTickHandler.getPartialTicks(), 0, 0, button.getSize().getXi(), button.getSize().getYi());
+
+								GlStateManager.enableCull();
+								GlStateManager.popMatrix();
+							});
+
 							button.BUS.hook(GuiComponentEvents.MouseClickEvent.class, (event) -> {
-								InputStream inputStream = LibrarianLib.PROXY.getResource(MOD_ID, link);
-								if (inputStream == null)
-									inputStream = LibrarianLib.PROXY.getResource(MOD_ID, link.replace(langname, "en_us"));
-								if (inputStream == null) return;
-
-								InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-								JsonElement jsonElement = new JsonParser().parse(inputStreamReader);
-								if (!jsonElement.isJsonObject()) return;
+								JsonElement jsonElement = getJsonFromLink(link);
+								if (jsonElement == null || !jsonElement.isJsonObject()) return;
 
 								JsonObject object = jsonElement.getAsJsonObject();
 								if (object.has("type") && object.get("type").isJsonPrimitive()
@@ -139,7 +145,7 @@ public class GuiBook extends GuiBase {
 									String type = object.getAsJsonPrimitive("type").getAsString();
 									if (type.equals("index")) {
 
-										ComponentSubIndex index = new ComponentSubIndex(finalPath, object.getAsJsonArray("content"));
+										ComponentSubIndex index = new ComponentSubIndex(link, object.getAsJsonArray("content"));
 
 										COMPONENT_BOOK.add(index);
 										MAIN_INDEX.setVisible(false);
@@ -150,96 +156,79 @@ public class GuiBook extends GuiBase {
 								}
 							});
 
-							button.clipping.setClipToBounds(true);
-							button.clipping.setCustomClipping(() -> {
+							button.render.getTooltip().func((Function<GuiComponent, java.util.List<String>>) guiComponent -> {
+								List<String> list = new ArrayList<>();
+								list.add(text);
+								return list;
+							});
 
+							ComponentAnimatableVoid circleWipe = new ComponentAnimatableVoid(0, 0, 24, 24);
+							button.add(circleWipe);
+							circleWipe.getTransform().setTranslateZ(100);
+
+							circleWipe.clipping.setClipToBounds(true);
+							circleWipe.clipping.setCustomClipping(() -> {
+
+								GlStateManager.disableTexture2D();
+								GlStateManager.disableCull();
 								Tessellator tessellator = Tessellator.getInstance();
 								BufferBuilder buffer = tessellator.getBuffer();
 								buffer.begin(GL11.GL_TRIANGLE_FAN, DefaultVertexFormats.POSITION_COLOR);
-								buffer.pos(0, 0, 0).color(0f, 1f, 1f, 1f).endVertex();
-								for (int i = 0; i <= 20; i++) {
-									float angle = (float) (i * Math.PI * 2 / 20);
-
-									float x1 = 12 + MathHelper.cos(angle) * 24;
-									float y1 = 12 + MathHelper.sin(angle) * 24;
-
+								for (int i = 0; i <= 10; i++) {
+									float angle = (float) (i * Math.PI * 2 / 10);
+									float x1 = (float) (12 + MathHelper.cos(angle) * circleWipe.x);
+									float y1 = (float) (12 + MathHelper.sin(angle) * circleWipe.x);
 									buffer.pos(x1, y1, 100).color(0f, 1f, 1f, 1f).endVertex();
 								}
 								tessellator.draw();
 
-								return null;
+								return Unit.INSTANCE;
 							});
-							button.BUS.hook(GuiComponentEvents.PostDrawEvent.class, (event) -> {
+
+							final double radius = 16;
+
+							circleWipe.BUS.hook(GuiComponentEvents.MouseInEvent.class, event -> {
+
+								BasicAnimation mouseInAnim = new BasicAnimation<>(circleWipe, "x");
+								mouseInAnim.setDuration(10);
+								mouseInAnim.setEasing(Easing.easeOutQuint);
+								mouseInAnim.setTo(radius);
+								animator.add(mouseInAnim);
+							});
+
+							circleWipe.BUS.hook(GuiComponentEvents.MouseOutEvent.class, event -> {
+
+								BasicAnimation mouseOutAnim = new BasicAnimation<>(circleWipe, "x");
+								mouseOutAnim.setDuration(10);
+								mouseOutAnim.setEasing(Easing.easeOutQuint);
+								mouseOutAnim.setTo(0);
+								animator.add(mouseOutAnim);
+							});
+
+							circleWipe.BUS.hook(GuiComponentEvents.ComponentTickEvent.class, event -> {
+								if (circleWipe.x != 0 && !event.component.getMouseOver()) {
+
+								}
+							});
+
+							circleWipe.BUS.hook(GuiComponentEvents.PostDrawEvent.class, (GuiComponentEvents.PostDrawEvent event) -> {
 								GlStateManager.pushMatrix();
 								GlStateManager.color(1, 1, 1, 1);
 								GlStateManager.enableAlpha();
 								GlStateManager.enableBlend();
 								GlStateManager.disableCull();
 
-								if (!event.component.getMouseOver()) {
-									if (event.component.hasTag("over")) {
-										event.component.removeTag("over");
+								GL11.glEnable(GL_POLYGON_SMOOTH);
 
-										button.x = 0;
-										BasicAnimation anim = new BasicAnimation<>(button, "x");
-										anim.setDuration(20);
-										anim.setEasing(Easing.easeOutCubic);
-										anim.setFrom(24);
-										anim.setTo(0);
-										//animator.add(anim);
-									}
-									//GlStateManager.color(0, 0, 0);
-								} else {
-									if (!event.component.hasTag("over")) {
-										event.component.addTag("over");
-
-										button.x = 24;
-										BasicAnimation anim = new BasicAnimation<>(button, "x");
-										anim.setDuration(20);
-										anim.setEasing(Easing.easeOutCubic);
-										anim.setFrom(0);
-										anim.setTo(24);
-										//animator.add(anim);
-									}
-									//GlStateManager.color(1, 0f, 0.5f);
-								}
-
-								GlStateManager.color(0, 0, 0);
+								GlStateManager.color(0, 1, 1);
 								icon.getTex().bind();
-								icon.draw((int) ClientTickHandler.getPartialTicks(), 0, 0, button.getSize().getXi(), button.getSize().getYi());
+								icon.draw((int) ClientTickHandler.getPartialTicks(), 0, 0, circleWipe.getSize().getXi(), circleWipe.getSize().getYi());
 
+								GL11.glDisable(GL_POLYGON_SMOOTH);
+
+								GlStateManager.enableCull();
 								GlStateManager.popMatrix();
 							});
-
-							button.BUS.hook(GuiComponentEvents.MouseInEvent.class, event -> {
-
-
-							});
-							button.BUS.hook(GuiComponentEvents.MouseOutEvent.class, event -> {
-
-							});
-
-							//button.BUS.hook(GuiComponentEvents.PostDrawEvent.class, (event) -> {
-							//	GlStateManager.pushMatrix();
-							//	GlStateManager.color(1, 1, 1, 1);
-							//	GlStateManager.enableAlpha();
-							//	GlStateManager.enableBlend();
-//
-							//	if (!event.component.getMouseOver()) GlStateManager.color(0, 0, 0);
-							//	else GlStateManager.color(1, 0f, 0.5f);
-//
-							//	icon.getTex().bind();
-							//	icon.draw((int) ClientTickHandler.getPartialTicks(), 0, 0, button.getSize().getXi(), button.getSize().getYi());
-//
-							//	GlStateManager.popMatrix();
-							//});
-
-							button.render.getTooltip().func((Function<GuiComponent, List<String>>) guiComponent -> {
-								List<String> list = new ArrayList<>();
-								list.add(text);
-								return list;
-							});
-
 							indexComponents.add(button);
 						}
 					}
@@ -269,6 +258,20 @@ public class GuiBook extends GuiBase {
 			}
 		}
 		// --------- MAIN INDEX --------- //
+	}
+
+	@Nullable
+	static JsonElement getJsonFromLink(String link) {
+		String updatedString = link;
+		if (link.contains("%LANG%")) updatedString = link.replace("%LANG%", langname);
+
+		InputStream stream = LibrarianLib.PROXY.getResource(MOD_ID, updatedString);
+
+		if (stream == null && !updatedString.equals(link)) stream = LibrarianLib.PROXY.getResource(MOD_ID, link);
+		if (stream == null) return null;
+
+		InputStreamReader reader = new InputStreamReader(stream, Charset.forName("UTF-8"));
+		return new JsonParser().parse(reader);
 	}
 
 	public static class IndexItem {

@@ -21,6 +21,8 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import java.util.HashMap;
 
+import static eladkay.quaeritum.client.gui.book.GuiBook.getJsonFromLink;
+
 public class ComponentSubIndex extends GuiComponent {
 
 	private HashMap<Integer, GuiComponent> pages = new HashMap<>();
@@ -48,7 +50,7 @@ public class ComponentSubIndex extends GuiComponent {
 					&& subIndex.has("desc") && subIndex.get("desc").isJsonPrimitive()) {
 
 				String title = subIndex.getAsJsonPrimitive("title").getAsString();
-				String link = path + subIndex.getAsJsonPrimitive("link").getAsString();
+				String link = subIndex.getAsJsonPrimitive("link").getAsString();
 				String desc = subIndex.getAsJsonPrimitive("desc").getAsString();
 
 				Sprite icon = null;
@@ -70,6 +72,24 @@ public class ComponentSubIndex extends GuiComponent {
 				textComponent.getText().setValue(title);
 				subIndexComponent.add(textComponent);
 
+				subIndexComponent.BUS.hook(GuiComponentEvents.MouseClickEvent.class, event -> {
+					JsonElement jsonElement = getJsonFromLink(link);
+					if (jsonElement == null || !jsonElement.isJsonObject()) return;
+
+					JsonObject object = jsonElement.getAsJsonObject();
+					if (object.has("type") && object.get("type").isJsonPrimitive()
+							&& object.has("title") && object.get("title").isJsonPrimitive()
+							&& object.has("content") && object.get("content").isJsonArray()) {
+
+						String type = object.getAsJsonPrimitive("type").getAsString();
+						if (type.equals("content")) {
+							ComponentContent componentContent = new ComponentContent(link, object.getAsJsonArray("content"));
+							GuiBook.COMPONENT_BOOK.add(componentContent);
+							setVisible(false);
+						}
+					}
+				});
+
 				subIndexComponent.BUS.hook(GuiComponentEvents.MouseInEvent.class, (event) -> {
 					textComponent.getText().setValue(" " + TextFormatting.ITALIC.toString() + title);
 				});
@@ -81,28 +101,44 @@ public class ComponentSubIndex extends GuiComponent {
 				Sprite finalIcon = icon;
 				ItemStack finalStack = stack;
 				subIndexComponent.BUS.hook(GuiComponentEvents.PostDrawEvent.class, (event) -> {
-					GlStateManager.pushMatrix();
-					GlStateManager.color(1, 1, 1, 1);
-					GlStateManager.enableAlpha();
-					GlStateManager.enableBlend();
-
 					if (finalIcon != null) {
-						finalIcon.getTex().bind();
-						finalIcon.draw((int) ClientTickHandler.getPartialTicks(), 0, 0, 16, 16);
-					} else if (!finalStack.isEmpty()) {
-						RenderHelper.enableGUIStandardItemLighting();
-						GlStateManager.enableRescaleNormal();
 
-						RenderItem itemRender = Minecraft.getMinecraft().getRenderItem();
-						itemRender.zLevel = 200.0f;
-						itemRender.renderItemAndEffectIntoGUI(finalStack, 0, 0);
-						itemRender.zLevel = 0.0f;
-
+						GlStateManager.pushMatrix();
+						GlStateManager.color(1, 1, 1, 1);
+						GlStateManager.enableAlpha();
+						GlStateManager.enableBlend();
 						GlStateManager.disableRescaleNormal();
 						RenderHelper.disableStandardItemLighting();
-					}
+						GlStateManager.disableLighting();
 
-					GlStateManager.popMatrix();
+						finalIcon.getTex().bind();
+						finalIcon.draw((int) ClientTickHandler.getPartialTicks(), 0, 0, 16, 16);
+
+						GlStateManager.enableLighting();
+						GlStateManager.enableDepth();
+						RenderHelper.enableStandardItemLighting();
+						GlStateManager.enableRescaleNormal();
+						GlStateManager.popMatrix();
+
+					} else if (!finalStack.isEmpty()) {
+
+						GlStateManager.pushMatrix();
+						GlStateManager.enableAlpha();
+						GlStateManager.enableBlend();
+						GlStateManager.disableRescaleNormal();
+						RenderHelper.disableStandardItemLighting();
+						GlStateManager.disableLighting();
+
+						RenderItem itemRender = Minecraft.getMinecraft().getRenderItem();
+						itemRender.renderItemAndEffectIntoGUI(finalStack, 0, 0);
+
+						GlStateManager.enableLighting();
+						GlStateManager.enableDepth();
+						RenderHelper.enableStandardItemLighting();
+						GlStateManager.enableRescaleNormal();
+
+						GlStateManager.popMatrix();
+					}
 				});
 
 				pageComponent.add(subIndexComponent);
