@@ -1,12 +1,12 @@
 package eladkay.quaeritum.client.gui.book;
 
+import com.google.common.collect.HashBiMap;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.teamwizardry.librarianlib.core.LibrarianLib;
 import com.teamwizardry.librarianlib.core.client.ClientTickHandler;
-import com.teamwizardry.librarianlib.features.animator.Animator;
 import com.teamwizardry.librarianlib.features.animator.Easing;
 import com.teamwizardry.librarianlib.features.animator.animations.BasicAnimation;
 import com.teamwizardry.librarianlib.features.gui.GuiBase;
@@ -52,17 +52,18 @@ public class GuiBook extends GuiBase {
 	static Sprite ARROW_HOME = GUIDE_BOOK_SHEET.getSprite("arrow_home", 18, 9);
 	static Sprite ARROW_HOME_PRESSED = GUIDE_BOOK_SHEET.getSprite("arrow_home_pressed", 18, 9);
 	static Sprite BANNER = GUIDE_BOOK_SHEET.getSprite("banner", 140, 31);
-	static Sprite BOOKMARK_SHORT = GUIDE_BOOK_SHEET.getSprite("bookmark_short", 177, 22);
-	static Sprite BOOKMARK_LONG = GUIDE_BOOK_SHEET.getSprite("bookmark_long", 226, 22);
+	static Sprite BOOKMARK_SHORT = GUIDE_BOOK_SHEET.getSprite("bookmark_short", 47, 9);
+	static Sprite BOOKMARK_LONG = GUIDE_BOOK_SHEET.getSprite("bookmark_long", 82, 9);
 	static Sprite ERROR = new Sprite(new ResourceLocation(MOD_ID, "textures/gui/book/error/error.png"));
 	static Sprite FOF = new Sprite(new ResourceLocation(MOD_ID, "textures/gui/book/error/fof.png"));
 
-	private static Animator animator = new Animator();
-
-	static ComponentSprite COMPONENT_BOOK;
-	static ComponentVoid MAIN_INDEX;
+	public ComponentSprite COMPONENT_BOOK;
+	public ComponentVoid MAIN_INDEX;
 
 	static String langname;
+
+	public HashBiMap<GuiComponent, String> contentCache = HashBiMap.create();
+	public HashBiMap<GuiComponent, GuiComponent> pageLinks = HashBiMap.create();
 
 	public GuiBook() {
 		super(146, 180);
@@ -93,6 +94,13 @@ public class GuiBook extends GuiBase {
 		}
 		// --------- BANNER --------- //
 
+		// --------- SEARCH BAR --------- //
+		{
+			ComponentSearchBar bar = new ComponentSearchBar(this, 0);
+			COMPONENT_BOOK.add(bar);
+		}
+		// --------- SEARCH BAR --------- //
+
 		// --------- MAIN INDEX --------- //
 		{
 			langname = Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage().getLanguageCode().toLowerCase();
@@ -119,23 +127,10 @@ public class GuiBook extends GuiBase {
 
 							ComponentVoid button = new ComponentVoid(0, 0, 24, 24);
 
-							button.BUS.hook(GuiComponentEvents.PostDrawEvent.class, (GuiComponentEvents.PostDrawEvent event) -> {
-								GlStateManager.pushMatrix();
-								GlStateManager.enableAlpha();
-								GlStateManager.enableBlend();
-								GlStateManager.disableCull();
-
-								GlStateManager.color(0, 0, 0);
-								icon.getTex().bind();
-								icon.draw((int) ClientTickHandler.getPartialTicks(), 0, 0, button.getSize().getXi(), button.getSize().getYi());
-
-								GlStateManager.enableCull();
-								GlStateManager.popMatrix();
-							});
-
-							button.BUS.hook(GuiComponentEvents.MouseClickEvent.class, (event) -> {
+							// SUB INDEX CACHING
+							{
 								JsonElement jsonElement = getJsonFromLink(link);
-								if (jsonElement == null || !jsonElement.isJsonObject()) return;
+								if (jsonElement == null || !jsonElement.isJsonObject()) continue;
 
 								JsonObject object = jsonElement.getAsJsonObject();
 								if (object.has("type") && object.get("type").isJsonPrimitive()
@@ -145,91 +140,117 @@ public class GuiBook extends GuiBase {
 									String type = object.getAsJsonPrimitive("type").getAsString();
 									if (type.equals("index")) {
 
-										ComponentSubIndex index = new ComponentSubIndex(link, object.getAsJsonArray("content"));
-
+										ComponentIndex index = new ComponentIndex(this, MAIN_INDEX, object.getAsJsonArray("content"));
+										index.makeInvisible();
 										COMPONENT_BOOK.add(index);
-										MAIN_INDEX.setVisible(false);
 
+										pageLinks.put(button, index);
 									} else if (type.equals("content")) {
+										ComponentContent content = new ComponentContent(this, MAIN_INDEX, object.getAsJsonArray("content"));
+										content.makeInvisible();
+										COMPONENT_BOOK.add(content);
 
+										pageLinks.put(button, content);
 									}
 								}
-							});
+								indexComponents.add(button);
 
-							button.render.getTooltip().func((Function<GuiComponent, java.util.List<String>>) guiComponent -> {
-								List<String> list = new ArrayList<>();
-								list.add(text);
-								return list;
-							});
+								button.BUS.hook(GuiComponentEvents.MouseClickEvent.class, (event) -> {
+									if (pageLinks.containsKey(event.component)) {
+										GuiComponent component = pageLinks.get(event.component);
+										if (component != null) {
+											if (component instanceof BookGuiComponent)
+												((BookGuiComponent) component).makeVisible();
+											else component.setVisible(true);
+										}
+										MAIN_INDEX.setVisible(false);
+									}
+								});
+							}
+							// BUTTON RENDERING AND ANIMATION
+							{
+								button.BUS.hook(GuiComponentEvents.PostDrawEvent.class, (GuiComponentEvents.PostDrawEvent event) -> {
+									GlStateManager.pushMatrix();
+									GlStateManager.enableAlpha();
+									GlStateManager.enableBlend();
+									GlStateManager.disableCull();
 
-							ComponentAnimatableVoid circleWipe = new ComponentAnimatableVoid(0, 0, 24, 24);
-							button.add(circleWipe);
-							circleWipe.getTransform().setTranslateZ(100);
+									GlStateManager.color(0, 0, 0);
+									icon.getTex().bind();
+									icon.draw((int) ClientTickHandler.getPartialTicks(), 0, 0, button.getSize().getXi(), button.getSize().getYi());
 
-							circleWipe.clipping.setClipToBounds(true);
-							circleWipe.clipping.setCustomClipping(() -> {
+									GlStateManager.enableCull();
+									GlStateManager.popMatrix();
+								});
 
-								GlStateManager.disableTexture2D();
-								GlStateManager.disableCull();
-								Tessellator tessellator = Tessellator.getInstance();
-								BufferBuilder buffer = tessellator.getBuffer();
-								buffer.begin(GL11.GL_TRIANGLE_FAN, DefaultVertexFormats.POSITION_COLOR);
-								for (int i = 0; i <= 10; i++) {
-									float angle = (float) (i * Math.PI * 2 / 10);
-									float x1 = (float) (12 + MathHelper.cos(angle) * circleWipe.x);
-									float y1 = (float) (12 + MathHelper.sin(angle) * circleWipe.x);
-									buffer.pos(x1, y1, 100).color(0f, 1f, 1f, 1f).endVertex();
-								}
-								tessellator.draw();
+								button.render.getTooltip().func((Function<GuiComponent, List<String>>) guiComponent -> {
+									List<String> list = new ArrayList<>();
+									list.add(text);
+									return list;
+								});
 
-								return Unit.INSTANCE;
-							});
+								ComponentAnimatableVoid circleWipe = new ComponentAnimatableVoid(0, 0, 24, 24);
+								button.add(circleWipe);
+								circleWipe.getTransform().setTranslateZ(100);
 
-							final double radius = 16;
+								circleWipe.clipping.setClipToBounds(true);
+								circleWipe.clipping.setCustomClipping(() -> {
 
-							circleWipe.BUS.hook(GuiComponentEvents.MouseInEvent.class, event -> {
+									GlStateManager.disableTexture2D();
+									GlStateManager.disableCull();
+									Tessellator tessellator = Tessellator.getInstance();
+									BufferBuilder buffer = tessellator.getBuffer();
+									buffer.begin(GL11.GL_TRIANGLE_FAN, DefaultVertexFormats.POSITION_COLOR);
+									for (int i = 0; i <= 10; i++) {
+										float angle = (float) (i * Math.PI * 2 / 10);
+										float x1 = (float) (12 + MathHelper.cos(angle) * circleWipe.x);
+										float y1 = (float) (12 + MathHelper.sin(angle) * circleWipe.x);
+										buffer.pos(x1, y1, 100).color(0f, 1f, 1f, 1f).endVertex();
+									}
+									tessellator.draw();
 
-								BasicAnimation mouseInAnim = new BasicAnimation<>(circleWipe, "x");
-								mouseInAnim.setDuration(10);
-								mouseInAnim.setEasing(Easing.easeOutQuint);
-								mouseInAnim.setTo(radius);
-								animator.add(mouseInAnim);
-							});
+									return Unit.INSTANCE;
+								});
 
-							circleWipe.BUS.hook(GuiComponentEvents.MouseOutEvent.class, event -> {
+								final double radius = 16;
 
-								BasicAnimation mouseOutAnim = new BasicAnimation<>(circleWipe, "x");
-								mouseOutAnim.setDuration(10);
-								mouseOutAnim.setEasing(Easing.easeOutQuint);
-								mouseOutAnim.setTo(0);
-								animator.add(mouseOutAnim);
-							});
+								circleWipe.BUS.hook(GuiComponentEvents.MouseInEvent.class, event -> {
 
-							circleWipe.BUS.hook(GuiComponentEvents.ComponentTickEvent.class, event -> {
-								if (circleWipe.x != 0 && !event.component.getMouseOver()) {
+									BasicAnimation mouseInAnim = new BasicAnimation<>(circleWipe, "x");
+									mouseInAnim.setDuration(10);
+									mouseInAnim.setEasing(Easing.easeOutQuint);
+									mouseInAnim.setTo(radius);
+									event.component.add(mouseInAnim);
+								});
 
-								}
-							});
+								circleWipe.BUS.hook(GuiComponentEvents.MouseOutEvent.class, event -> {
 
-							circleWipe.BUS.hook(GuiComponentEvents.PostDrawEvent.class, (GuiComponentEvents.PostDrawEvent event) -> {
-								GlStateManager.pushMatrix();
-								GlStateManager.color(1, 1, 1, 1);
-								GlStateManager.enableAlpha();
-								GlStateManager.enableBlend();
-								GlStateManager.disableCull();
+									BasicAnimation mouseOutAnim = new BasicAnimation<>(circleWipe, "x");
+									mouseOutAnim.setDuration(10);
+									mouseOutAnim.setEasing(Easing.easeOutQuint);
+									mouseOutAnim.setTo(0);
+									event.component.add(mouseOutAnim);
+								});
 
-								GL11.glEnable(GL_POLYGON_SMOOTH);
+								circleWipe.BUS.hook(GuiComponentEvents.PostDrawEvent.class, (GuiComponentEvents.PostDrawEvent event) -> {
+									GlStateManager.pushMatrix();
+									GlStateManager.color(1, 1, 1, 1);
+									GlStateManager.enableAlpha();
+									GlStateManager.enableBlend();
+									GlStateManager.disableCull();
 
-								GlStateManager.color(0, 1, 1);
-								icon.getTex().bind();
-								icon.draw((int) ClientTickHandler.getPartialTicks(), 0, 0, circleWipe.getSize().getXi(), circleWipe.getSize().getYi());
+									GL11.glEnable(GL_POLYGON_SMOOTH);
 
-								GL11.glDisable(GL_POLYGON_SMOOTH);
+									GlStateManager.color(0, 1, 1);
+									icon.getTex().bind();
+									icon.draw((int) ClientTickHandler.getPartialTicks(), 0, 0, circleWipe.getSize().getXi(), circleWipe.getSize().getYi());
 
-								GlStateManager.enableCull();
-								GlStateManager.popMatrix();
-							});
-							indexComponents.add(button);
+									GL11.glDisable(GL_POLYGON_SMOOTH);
+
+									GlStateManager.enableCull();
+									GlStateManager.popMatrix();
+								});
+							}
 						}
 					}
 				}

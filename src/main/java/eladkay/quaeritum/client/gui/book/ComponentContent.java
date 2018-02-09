@@ -9,19 +9,24 @@ import eladkay.quaeritum.api.structure.StructureCacheRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 
+import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.List;
 
-public class ComponentContent extends GuiComponent {
+public class ComponentContent extends BookGuiComponent {
 
 	private HashMap<Integer, GuiComponent> pages = new HashMap<>();
 
 	private GuiComponent currentActive;
 
-	public ComponentContent(String path, JsonArray contentArray) {
-		super(16, 16, GuiBook.COMPONENT_BOOK.getSize().getXi() - 32, GuiBook.COMPONENT_BOOK.getSize().getYi() - 32);
+	private ComponentNavBar navBar;
+
+	public ComponentContent(GuiBook book, @Nonnull GuiComponent parent, JsonArray contentArray) {
+		super(16, 16, book.COMPONENT_BOOK.getSize().getXi() - 32, book.COMPONENT_BOOK.getSize().getYi() - 32);
 
 		FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+
+		StringBuilder textCache = new StringBuilder();
 
 		int itemsPerPage = 6;
 		int page = 0;
@@ -31,6 +36,8 @@ public class ComponentContent extends GuiComponent {
 
 			if (element.isJsonPrimitive()) {
 				String text = element.getAsJsonPrimitive().getAsString();
+
+				textCache.append(text).append("\n");
 
 				List<String> list = fontRenderer.listFormattedStringToWidth(text, 2200);
 
@@ -69,7 +76,6 @@ public class ComponentContent extends GuiComponent {
 								structure.setVisible(false);
 							}
 
-
 							add(structure);
 							pages.put(page++, structure);
 						}
@@ -78,14 +84,28 @@ public class ComponentContent extends GuiComponent {
 			}
 		}
 
-		ComponentNavBar navBar = new ComponentNavBar((getSize().getXi() / 2) - 35, getSize().getYi() + 16, 70, pages.size() - 1);
+		if (!book.contentCache.containsKey(this) && !book.contentCache.containsValue(textCache.toString()))
+			book.contentCache.put(this, textCache.toString());
+
+		navBar = new ComponentNavBar(book, this, parent, (getSize().getXi() / 2) - 35, getSize().getYi() + 16, 70, pages.size() - 1);
 		add(navBar);
 
 		navBar.BUS.hook(EventNavBarChange.class, (navBarChange) -> {
-			GuiComponent section = pages.get(navBarChange.getPage());
-			section.setVisible(true);
-			currentActive.setVisible(false);
-			currentActive = section;
+			makeVisible();
 		});
+	}
+
+	@Override
+	public void makeVisible() {
+		super.makeVisible();
+		currentActive.setVisible(false);
+
+		GuiComponent section = pages.get(navBar.getPage());
+		if (section != null) {
+			if (section instanceof BookGuiComponent)
+				((BookGuiComponent) section).makeVisible();
+			else section.setVisible(true);
+		}
+		currentActive = section;
 	}
 }

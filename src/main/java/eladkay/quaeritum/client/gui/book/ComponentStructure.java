@@ -1,6 +1,7 @@
 package eladkay.quaeritum.client.gui.book;
 
-import com.teamwizardry.librarianlib.features.animator.Animator;
+import com.teamwizardry.librarianlib.features.animator.Easing;
+import com.teamwizardry.librarianlib.features.animator.animations.BasicAnimation;
 import com.teamwizardry.librarianlib.features.gui.EnumMouseButton;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponentEvents;
@@ -13,7 +14,6 @@ import net.minecraft.util.math.MathHelper;
 
 public class ComponentStructure extends GuiComponent {
 
-	private static Animator animator = new Animator();
 	public double zoom = 0;
 	private boolean dragging = false;
 	private Vec2d prevPos = Vec2d.ZERO;
@@ -35,11 +35,11 @@ public class ComponentStructure extends GuiComponent {
 
 			this.zoom = MathHelper.clamp(zoom, 1, 30);
 
-			//BasicAnimation mouseOutAnim = new BasicAnimation<>(this, "zoom");
-			//mouseOutAnim.setDuration(10);
-			//mouseOutAnim.setEasing(Easing.easeOutExpo);
-			//mouseOutAnim.setTo(zoom);
-			//animator.add(mouseOutAnim);
+			BasicAnimation<ComponentStructure> mouseOutAnim = new BasicAnimation<>(this, "zoom");
+			mouseOutAnim.setDuration(10);
+			mouseOutAnim.setEasing(Easing.easeOutExpo);
+			mouseOutAnim.setTo(zoom);
+			add(mouseOutAnim);
 		});
 
 		BUS.hook(GuiComponentEvents.MouseDragEvent.class, event -> {

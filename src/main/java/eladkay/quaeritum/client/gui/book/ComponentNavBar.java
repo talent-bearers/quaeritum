@@ -8,6 +8,7 @@ import com.teamwizardry.librarianlib.features.math.Vec2d;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.MathHelper;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,11 @@ public class ComponentNavBar extends GuiComponent {
 
 	private int page = 0;
 
-	public ComponentNavBar(int posX, int posY, int width, int maxPages) {
+	/**
+	 * @param parent       The parent of the component that's holding this nav bar
+	 * @param parentParent The parent of the component that's holding this nav bar
+	 */
+	public ComponentNavBar(GuiBook book, @Nonnull GuiComponent parent, @Nonnull GuiComponent parentParent, int posX, int posY, int width, int maxPages) {
 		super(posX, posY, width, 20);
 
 		ComponentSprite back = new ComponentSprite(ARROW_BACK, 0, (int) ((getSize().getY() / 2.0) - (ARROW_NEXT.getHeight() / 2.0)));
@@ -50,13 +55,18 @@ public class ComponentNavBar extends GuiComponent {
 		home.BUS.hook(GuiComponentEvents.MouseClickEvent.class, event -> {
 			if (!event.component.getMouseOver()) return;
 
-			if (getParent() != null)
-				getParent().setVisible(false);
+			// Make visible the parent of the holder of the nav bar or the main index if shifting
+			if (GuiBook.isShiftKeyDown()) {
+				book.MAIN_INDEX.setVisible(true);
+			} else {
+				if (parentParent instanceof BookGuiComponent)
+					((BookGuiComponent) parentParent).makeVisible();
+				else parentParent.setVisible(true);
+			}
 
-			GuiBook.MAIN_INDEX.setVisible(true);
+			// Make the holder of the nav bar invisible
+			parent.setVisible(false);
 
-			EventNavBarChange eventNavBarChange = new EventNavBarChange(page);
-			BUS.fire(eventNavBarChange);
 		});
 
 		back.BUS.hook(GuiComponentEvents.ComponentTickEvent.class, event -> {
