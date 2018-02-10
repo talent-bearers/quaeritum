@@ -41,6 +41,10 @@ import java.util.function.Function;
 import static eladkay.quaeritum.api.lib.LibMisc.MOD_ID;
 import static org.lwjgl.opengl.GL11.GL_POLYGON_SMOOTH;
 
+/**
+ * Property of Demoniaque.
+ * All rights reserved.
+ */
 public class GuiBook extends GuiBase {
 
 	static Texture GUIDE_BOOK_SHEET = new Texture(new ResourceLocation(MOD_ID, "textures/gui/book/guide_book.png"));
@@ -52,8 +56,9 @@ public class GuiBook extends GuiBase {
 	static Sprite ARROW_HOME = GUIDE_BOOK_SHEET.getSprite("arrow_home", 18, 9);
 	static Sprite ARROW_HOME_PRESSED = GUIDE_BOOK_SHEET.getSprite("arrow_home_pressed", 18, 9);
 	static Sprite BANNER = GUIDE_BOOK_SHEET.getSprite("banner", 140, 31);
-	static Sprite BOOKMARK_SHORT = GUIDE_BOOK_SHEET.getSprite("bookmark_short", 47, 9);
-	static Sprite BOOKMARK_LONG = GUIDE_BOOK_SHEET.getSprite("bookmark_long", 82, 9);
+	static Sprite BOOKMARK = GUIDE_BOOK_SHEET.getSprite("bookmark", 133, 13);
+	static Sprite MAGNIFIER = GUIDE_BOOK_SHEET.getSprite("magnifier", 12, 12);
+	static Sprite TEXT_CURSOR = GUIDE_BOOK_SHEET.getSprite("text_cursor", 3, 9);
 	static Sprite ERROR = new Sprite(new ResourceLocation(MOD_ID, "textures/gui/book/error/error.png"));
 	static Sprite FOF = new Sprite(new ResourceLocation(MOD_ID, "textures/gui/book/error/fof.png"));
 

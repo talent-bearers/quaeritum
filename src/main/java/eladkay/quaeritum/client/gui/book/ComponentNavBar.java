@@ -14,6 +14,10 @@ import java.util.List;
 
 import static eladkay.quaeritum.client.gui.book.GuiBook.*;
 
+/**
+ * Property of Demoniaque.
+ * All rights reserved.
+ */
 public class ComponentNavBar extends GuiComponent {
 
 	private int page = 0;

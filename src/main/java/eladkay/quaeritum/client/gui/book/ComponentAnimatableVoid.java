@@ -2,6 +2,10 @@ package eladkay.quaeritum.client.gui.book;
 
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
 
+/**
+ * Property of Demoniaque.
+ * All rights reserved.
+ */
 public class ComponentAnimatableVoid extends GuiComponent {
 
 	public double x;

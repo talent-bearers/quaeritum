@@ -24,6 +24,10 @@ import java.util.HashMap;
 
 import static eladkay.quaeritum.client.gui.book.GuiBook.getJsonFromLink;
 
+/**
+ * Property of Demoniaque.
+ * All rights reserved.
+ */
 public class ComponentIndex extends BookGuiComponent {
 
 	private HashMap<Integer, GuiComponent> pages = new HashMap<>();

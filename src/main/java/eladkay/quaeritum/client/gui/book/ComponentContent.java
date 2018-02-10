@@ -13,6 +13,10 @@ import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Property of Demoniaque.
+ * All rights reserved.
+ */
 public class ComponentContent extends BookGuiComponent {
 
 	private HashMap<Integer, GuiComponent> pages = new HashMap<>();

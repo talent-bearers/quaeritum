@@ -12,6 +12,10 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.math.MathHelper;
 
+/**
+ * Property of Demoniaque.
+ * All rights reserved.
+ */
 public class ComponentStructure extends GuiComponent {
 
 	public double zoom = 0;

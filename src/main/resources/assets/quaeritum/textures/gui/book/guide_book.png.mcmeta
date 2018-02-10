@@ -11,8 +11,9 @@
 			"arrow_home": [36, 189, 18, 9],
 			"arrow_home_pressed": [36, 180, 18, 9],
 			"banner": [0, 200, 140, 31],
-			"bookmark_short": [54, 180, 47, 9],
-			"bookmark_long": [54, 191, 82, 9]
+			"bookmark": [0, 231, 133, 13],
+			"magnifier": [54, 180, 12, 12],
+			"text_cursor": [66, 180, 3, 9]
 		}
 	}
 }
