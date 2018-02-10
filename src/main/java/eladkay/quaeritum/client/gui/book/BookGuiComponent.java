@@ -94,7 +94,6 @@ public abstract class BookGuiComponent extends GuiComponent {
 					GlStateManager.pushMatrix();
 					GlStateManager.color(1, 1, 1, 1);
 					GlStateManager.enableBlend();
-					GlStateManager.enableRescaleNormal();
 
 					finalIconSprite.getTex().bind();
 					finalIconSprite.draw((int) ClientTickHandler.getPartialTicks(), 0, 0, 16, 16);
@@ -112,6 +111,7 @@ public abstract class BookGuiComponent extends GuiComponent {
 					itemRender.renderItemAndEffectIntoGUI(finalStackIcon, 0, 0);
 					itemRender.renderItemOverlays(Minecraft.getMinecraft().fontRenderer, finalStackIcon, 0, 0);
 
+					GlStateManager.enableAlpha();
 					RenderHelper.disableStandardItemLighting();
 					GlStateManager.popMatrix();
 				}
