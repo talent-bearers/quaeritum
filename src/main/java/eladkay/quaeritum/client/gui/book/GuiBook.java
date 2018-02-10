@@ -108,7 +108,6 @@ public class GuiBook extends GuiBase {
 							// ----- SEARCH TITLES ----- //
 							{
 								if (keyword.contains(title) || title.contains(keyword)) {
-									Minecraft.getMinecraft().player.sendChatMessage(title + " -> " + keyword);
 									for (SearchResultItem resultItem : results) {
 										if (resultItem.getResultComponent() == cachedComponent) {
 											resultItem.addKeywordMatched(keyword);
@@ -173,7 +172,6 @@ public class GuiBook extends GuiBase {
 					FOCUSED_COMPONENT.setVisible(false);
 					FOCUSED_COMPONENT = resultsComponent;
 				}
-
 			});
 			COMPONENT_BOOK.add(bar);
 		}

@@ -56,7 +56,7 @@ public class ComponentCategory extends GuiComponent {
 			}
 
 			BUS.hook(GuiComponentEvents.MouseClickEvent.class, (event) -> {
-				if (book.pageLinks.containsKey(event.component)) {
+				if (book.pageLinks.containsKey(this)) {
 					GuiComponent component = book.pageLinks.get(event.component);
 					if (component != null) {
 						component.setVisible(true);
