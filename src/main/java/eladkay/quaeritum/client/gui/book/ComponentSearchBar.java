@@ -1,9 +1,9 @@
 package eladkay.quaeritum.client.gui.book;
 
-import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponentEvents;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentSprite;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentText;
+import com.teamwizardry.librarianlib.features.math.Vec2d;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
@@ -16,6 +16,7 @@ import net.minecraft.util.math.MathHelper;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
+import java.util.function.Consumer;
 
 import static eladkay.quaeritum.client.gui.book.GuiBook.BOOKMARK;
 import static eladkay.quaeritum.client.gui.book.GuiBook.MAGNIFIER;
@@ -24,14 +25,11 @@ import static eladkay.quaeritum.client.gui.book.GuiBook.MAGNIFIER;
  * Property of Demoniaque.
  * All rights reserved.
  */
-public class ComponentSearchBar extends GuiComponent {
-
-	public double bookmarkAnimX;
+public class ComponentSearchBar extends ComponentBookMark {
 
 	private int cursor = 0;
 	private int selectionCursor = -1;
 	private int cursorRenderFlashingCooldown = 0;
-	private int cursorTextOffset = 0;
 
 	private String input = "";
 	private String select = "";
@@ -41,14 +39,13 @@ public class ComponentSearchBar extends GuiComponent {
 	private ComponentSprite magnifier;
 	private ComponentText text;
 
-	public ComponentSearchBar(GuiBook book, int id) {
-		super(book.COMPONENT_BOOK.getSize().getXi() - 10, 20 + 5 * id + BOOKMARK.getHeight() * id, BOOKMARK.getWidth(), BOOKMARK.getHeight());
+	public ComponentSearchBar(GuiBook book, int id, Consumer<String> onSearch) {
+		super(book, id, false);
 
 		clipping.setClipToBounds(true);
 
-		bookmarkAnimX = -BOOKMARK.getWidth() + 20;
-
-		magnifier = new ComponentSprite(MAGNIFIER, 0, 0);
+		magnifier = new ComponentSprite(MAGNIFIER, 1, 1);
+		magnifier.getTransform().setTranslateZ(120);
 		add(magnifier);
 
 		text = new ComponentText(2, 2, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.TOP);
@@ -197,7 +194,7 @@ public class ComponentSearchBar extends GuiComponent {
 					case 28:
 					case 156:
 						if (!input.isEmpty()) {
-							// TODO: SEARCH HERE
+							onSearch.accept(input.toLowerCase().trim());
 							input = "";
 
 							cursor = selectionCursor = 0;
@@ -207,7 +204,7 @@ public class ComponentSearchBar extends GuiComponent {
 						}
 						break;
 					default:
-						if (!select.isEmpty()) {
+						if (!select.isEmpty() && ChatAllowedCharacters.isAllowedCharacter(keyDownEvent.getKey())) {
 
 							StringBuilder builder = new StringBuilder(input);
 							builder.replace(Math.min(cursor, selectionCursor), Math.max(cursor, selectionCursor), Character.toString(keyDownEvent.getKey()));
@@ -238,9 +235,9 @@ public class ComponentSearchBar extends GuiComponent {
 			//mouseInAnim.setTo(0);
 			//add(mouseInAnim);
 
-			bookmarkAnimX = cursorTextOffset;
+			slideOut();
 			text.setVisible(true);
-			magnifier.setVisible(false);
+			magnifier.setPos(new Vec2d(getSize().getX() - magnifier.getSize().getX() - 8, magnifier.getPos().getY()));
 		});
 
 		BUS.hook(GuiComponentEvents.MouseOutEvent.class, event -> {
@@ -252,9 +249,9 @@ public class ComponentSearchBar extends GuiComponent {
 			//add(mouseOutAnim);
 
 			if (!focused) {
-				bookmarkAnimX = -BOOKMARK.getWidth() + 20;
+				slideIn();
 				text.setVisible(false);
-				magnifier.setVisible(true);
+				magnifier.setPos(new Vec2d(1, magnifier.getPos().getY()));
 			}
 		});
 
@@ -334,13 +331,13 @@ public class ComponentSearchBar extends GuiComponent {
 
 	public void updateState() {
 		if (focused) {
-			bookmarkAnimX = 0;
+			slideOut();
 			text.setVisible(true);
-			magnifier.setVisible(false);
+			magnifier.setPos(new Vec2d(getSize().getX() - magnifier.getSize().getX() - 8, magnifier.getPos().getY()));
 		} else {
-			bookmarkAnimX = -BOOKMARK.getWidth() + 20;
+			slideIn();
 			text.setVisible(false);
-			magnifier.setVisible(true);
+			magnifier.setPos(new Vec2d(1, magnifier.getPos().getY()));
 		}
 	}
 }

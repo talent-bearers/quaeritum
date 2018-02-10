@@ -63,9 +63,7 @@ public class ComponentNavBar extends GuiComponent {
 			if (GuiBook.isShiftKeyDown()) {
 				book.MAIN_INDEX.setVisible(true);
 			} else {
-				if (parentParent instanceof BookGuiComponent)
-					((BookGuiComponent) parentParent).makeVisible();
-				else parentParent.setVisible(true);
+				parentParent.setVisible(true);
 			}
 
 			// Make the holder of the nav bar invisible

@@ -1,6 +1,8 @@
 {
   "title": "Spell Forging",
-  "type": "content",
+  "icon": "quaeritum:attuned_soulstone",
+  "description": "Learn how to make your very first spell",
+  "type": "entry",
   "content": [
     "No wizard would be complete without their arsenal of magic. And the ways we use, unlike many, give you much finer control over the patterns in your spells. ",
     "Using the Magician\u0027s Worktable, you can write a spell\u0027s pattern. The powers you can access are listed off to the left side of the paper on the table. You can slide these powers to the paper, and connect them to create the effect. A simple spell, for example, would be the \"self\" shape, and the \"leap\" effect. Then, hold down your starting shape, and connect it to your effect. Using these symbols, and modifiers placed around the symbols, the world of power that wizards access will open up. You only have to be smart enough to use it... and so I\u0027d recommend you to stick to the basics. This book has a section for scribing spell patterns, and will help with finding reagent patterns for the spell. You can see that section easily within this Codex.",

@@ -1,33 +1,22 @@
 package eladkay.quaeritum.client.gui.book;
 
 import com.google.common.collect.HashBiMap;
-import com.google.gson.JsonArray;
+import com.google.common.collect.HashMultimap;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.teamwizardry.librarianlib.core.LibrarianLib;
-import com.teamwizardry.librarianlib.core.client.ClientTickHandler;
-import com.teamwizardry.librarianlib.features.animator.Easing;
-import com.teamwizardry.librarianlib.features.animator.animations.BasicAnimation;
 import com.teamwizardry.librarianlib.features.gui.GuiBase;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
-import com.teamwizardry.librarianlib.features.gui.component.GuiComponentEvents;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentSprite;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentText;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentVoid;
 import com.teamwizardry.librarianlib.features.math.Vec2d;
 import com.teamwizardry.librarianlib.features.sprite.Sprite;
 import com.teamwizardry.librarianlib.features.sprite.Texture;
-import kotlin.Unit;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
-import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nullable;
 import java.awt.*;
@@ -35,11 +24,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Function;
+import java.util.HashSet;
+import java.util.Set;
 
 import static eladkay.quaeritum.api.lib.LibMisc.MOD_ID;
-import static org.lwjgl.opengl.GL11.GL_POLYGON_SMOOTH;
 
 /**
  * Property of Demoniaque.
@@ -58,16 +46,17 @@ public class GuiBook extends GuiBase {
 	static Sprite BANNER = GUIDE_BOOK_SHEET.getSprite("banner", 140, 31);
 	static Sprite BOOKMARK = GUIDE_BOOK_SHEET.getSprite("bookmark", 133, 13);
 	static Sprite MAGNIFIER = GUIDE_BOOK_SHEET.getSprite("magnifier", 12, 12);
-	static Sprite TEXT_CURSOR = GUIDE_BOOK_SHEET.getSprite("text_cursor", 3, 9);
+	static Sprite SEARCH_BOX = GUIDE_BOOK_SHEET.getSprite("search_box", 133, 114);
 	static Sprite ERROR = new Sprite(new ResourceLocation(MOD_ID, "textures/gui/book/error/error.png"));
 	static Sprite FOF = new Sprite(new ResourceLocation(MOD_ID, "textures/gui/book/error/fof.png"));
 
 	public ComponentSprite COMPONENT_BOOK;
 	public ComponentVoid MAIN_INDEX;
+	public GuiComponent FOCUSED_COMPONENT;
 
 	static String langname;
 
-	public HashBiMap<GuiComponent, String> contentCache = HashBiMap.create();
+	public HashMultimap<GuiComponent, String> contentCache = HashMultimap.create();
 	public HashBiMap<GuiComponent, GuiComponent> pageLinks = HashBiMap.create();
 
 	public GuiBook() {
@@ -76,7 +65,7 @@ public class GuiBook extends GuiBase {
 		COMPONENT_BOOK = new ComponentSprite(BOOK, 0, 0);
 		getMainComponents().add(COMPONENT_BOOK);
 
-		MAIN_INDEX = new ComponentVoid(0, 0, COMPONENT_BOOK.getSize().getXi(), COMPONENT_BOOK.getSize().getYi());
+		FOCUSED_COMPONENT = MAIN_INDEX = new ComponentVoid(0, 0, COMPONENT_BOOK.getSize().getXi(), COMPONENT_BOOK.getSize().getYi());
 		COMPONENT_BOOK.add(MAIN_INDEX);
 
 		// --------- BANNER --------- //
@@ -101,7 +90,91 @@ public class GuiBook extends GuiBase {
 
 		// --------- SEARCH BAR --------- //
 		{
-			ComponentSearchBar bar = new ComponentSearchBar(this, 0);
+			ComponentSearchBar bar = new ComponentSearchBar(this, 0, search -> {
+
+				String query = search.replace("'", "").toLowerCase();
+				String[] keywords = query.split(" ");
+
+				Set<SearchResultItem> results = new HashSet<>();
+
+				for (GuiComponent cachedComponent : contentCache.keySet()) {
+					if (cachedComponent instanceof BookGuiComponent) {
+						String title = ((BookGuiComponent) cachedComponent).getTitle().toLowerCase();
+						String description = ((BookGuiComponent) cachedComponent).getDescription().toLowerCase();
+
+						keywordLoop:
+						for (String keyword : keywords) {
+
+							// ----- SEARCH TITLES ----- //
+							{
+								if (keyword.contains(title) || title.contains(keyword)) {
+									Minecraft.getMinecraft().player.sendChatMessage(title + " -> " + keyword);
+									for (SearchResultItem resultItem : results) {
+										if (resultItem.getResultComponent() == cachedComponent) {
+											resultItem.addKeywordMatched(keyword);
+											break keywordLoop;
+										}
+									}
+
+									SearchResultItem resultItem = new SearchResultItem(cachedComponent);
+									resultItem.addKeywordMatched(keyword);
+									results.add(resultItem);
+								}
+							}
+							// ----- SEARCH TITLES ----- //
+
+							// ----- SEARCH DESCRIPTIONS ----- //
+							{
+								if (keyword.contains(description) || description.contains(keyword)) {
+									for (SearchResultItem resultItem : results) {
+										if (resultItem.getResultComponent() == cachedComponent) {
+											resultItem.addKeywordMatched(keyword);
+											break keywordLoop;
+										}
+									}
+
+									SearchResultItem resultItem = new SearchResultItem(cachedComponent);
+									resultItem.addKeywordMatched(keyword);
+									results.add(resultItem);
+								}
+							}
+							// ----- SEARCH DESCRIPTIONS ----- //
+						}
+					}
+
+					// ----- SEARCH CONTENT TEXT ----- //
+					Set<String> cachedStrings = contentCache.get(cachedComponent);
+					for (String cachedString : cachedStrings) {
+						if (cachedString == null) continue;
+
+						keywordLoop:
+						for (String keyword : keywords) {
+							if (cachedString.contains(keyword) || keyword.contains(cachedString)) {
+
+								for (SearchResultItem resultItem : results) {
+									if (resultItem.getResultComponent() == cachedComponent) {
+										resultItem.addKeywordMatched(keyword);
+										break keywordLoop;
+									}
+								}
+
+								SearchResultItem resultItem = new SearchResultItem(cachedComponent);
+								resultItem.addKeywordMatched(keyword);
+							}
+						}
+					}
+					// ----- SEARCH CONTENT TEXT ----- //
+				}
+
+				if (!results.isEmpty()) {
+					ComponentSearchResults resultsComponent = new ComponentSearchResults(this, FOCUSED_COMPONENT, results);
+
+					COMPONENT_BOOK.add(resultsComponent);
+					FOCUSED_COMPONENT.setVisible(false);
+					FOCUSED_COMPONENT = resultsComponent;
+				}
+
+			});
 			COMPONENT_BOOK.add(bar);
 		}
 		// --------- SEARCH BAR --------- //
@@ -110,154 +183,22 @@ public class GuiBook extends GuiBase {
 		{
 			langname = Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage().getLanguageCode().toLowerCase();
 
-			ArrayList<GuiComponent> indexComponents = new ArrayList<>();
+			ArrayList<GuiComponent> categories = new ArrayList<>();
 
-			JsonElement json = getJsonFromLink("documentation/%LANG%/index.json");
-			if (json != null) {
-				if (json.isJsonObject() && json.getAsJsonObject().has("index")) {
+			JsonElement json = getJsonFromLink("documentation/%LANG%/categories.json");
+			if (json != null && json.isJsonArray()) {
 
-					JsonArray array = json.getAsJsonObject().getAsJsonArray("index");
-					for (JsonElement element : array) {
-						if (!element.isJsonObject()) continue;
+				for (JsonElement element : json.getAsJsonArray()) {
+					if (!element.isJsonPrimitive()) continue;
 
-						JsonObject chunk = element.getAsJsonObject();
-						if (chunk.has("text") && chunk.has("link")
-								&& chunk.get("text").isJsonPrimitive() && chunk.get("link").isJsonPrimitive()
-								&& chunk.get("icon").isJsonPrimitive() && chunk.get("icon").isJsonPrimitive()) {
+					JsonElement indexElement = getJsonFromLink(element.getAsJsonPrimitive().getAsString());
+					if (indexElement == null || !indexElement.isJsonObject()) continue;
 
-							Sprite icon = new Sprite(new ResourceLocation(chunk.getAsJsonPrimitive("icon").getAsString()));
+					JsonObject cateogryObject = indexElement.getAsJsonObject();
 
-							String link = chunk.getAsJsonPrimitive("link").getAsString();
-							String text = chunk.getAsJsonPrimitive("text").getAsString();
-
-							ComponentVoid button = new ComponentVoid(0, 0, 24, 24);
-
-							// SUB INDEX CACHING
-							{
-								JsonElement jsonElement = getJsonFromLink(link);
-								if (jsonElement == null || !jsonElement.isJsonObject()) continue;
-
-								JsonObject object = jsonElement.getAsJsonObject();
-								if (object.has("type") && object.get("type").isJsonPrimitive()
-										&& object.has("title") && object.get("title").isJsonPrimitive()
-										&& object.has("content") && object.get("content").isJsonArray()) {
-
-									String type = object.getAsJsonPrimitive("type").getAsString();
-									if (type.equals("index")) {
-
-										ComponentIndex index = new ComponentIndex(this, MAIN_INDEX, object.getAsJsonArray("content"));
-										index.makeInvisible();
-										COMPONENT_BOOK.add(index);
-
-										pageLinks.put(button, index);
-									} else if (type.equals("content")) {
-										ComponentContent content = new ComponentContent(this, MAIN_INDEX, object.getAsJsonArray("content"));
-										content.makeInvisible();
-										COMPONENT_BOOK.add(content);
-
-										pageLinks.put(button, content);
-									}
-								}
-								indexComponents.add(button);
-
-								button.BUS.hook(GuiComponentEvents.MouseClickEvent.class, (event) -> {
-									if (pageLinks.containsKey(event.component)) {
-										GuiComponent component = pageLinks.get(event.component);
-										if (component != null) {
-											if (component instanceof BookGuiComponent)
-												((BookGuiComponent) component).makeVisible();
-											else component.setVisible(true);
-										}
-										MAIN_INDEX.setVisible(false);
-									}
-								});
-							}
-							// BUTTON RENDERING AND ANIMATION
-							{
-								button.BUS.hook(GuiComponentEvents.PostDrawEvent.class, (GuiComponentEvents.PostDrawEvent event) -> {
-									GlStateManager.pushMatrix();
-									GlStateManager.enableAlpha();
-									GlStateManager.enableBlend();
-									GlStateManager.disableCull();
-
-									GlStateManager.color(0, 0, 0);
-									icon.getTex().bind();
-									icon.draw((int) ClientTickHandler.getPartialTicks(), 0, 0, button.getSize().getXi(), button.getSize().getYi());
-
-									GlStateManager.enableCull();
-									GlStateManager.popMatrix();
-								});
-
-								button.render.getTooltip().func((Function<GuiComponent, List<String>>) guiComponent -> {
-									List<String> list = new ArrayList<>();
-									list.add(text);
-									return list;
-								});
-
-								ComponentAnimatableVoid circleWipe = new ComponentAnimatableVoid(0, 0, 24, 24);
-								button.add(circleWipe);
-								circleWipe.getTransform().setTranslateZ(100);
-
-								circleWipe.clipping.setClipToBounds(true);
-								circleWipe.clipping.setCustomClipping(() -> {
-
-									GlStateManager.disableTexture2D();
-									GlStateManager.disableCull();
-									Tessellator tessellator = Tessellator.getInstance();
-									BufferBuilder buffer = tessellator.getBuffer();
-									buffer.begin(GL11.GL_TRIANGLE_FAN, DefaultVertexFormats.POSITION_COLOR);
-									for (int i = 0; i <= 10; i++) {
-										float angle = (float) (i * Math.PI * 2 / 10);
-										float x1 = (float) (12 + MathHelper.cos(angle) * circleWipe.x);
-										float y1 = (float) (12 + MathHelper.sin(angle) * circleWipe.x);
-										buffer.pos(x1, y1, 100).color(0f, 1f, 1f, 1f).endVertex();
-									}
-									tessellator.draw();
-
-									return Unit.INSTANCE;
-								});
-
-								final double radius = 16;
-
-								circleWipe.BUS.hook(GuiComponentEvents.MouseInEvent.class, event -> {
-
-									BasicAnimation mouseInAnim = new BasicAnimation<>(circleWipe, "x");
-									mouseInAnim.setDuration(10);
-									mouseInAnim.setEasing(Easing.easeOutQuint);
-									mouseInAnim.setTo(radius);
-									event.component.add(mouseInAnim);
-								});
-
-								circleWipe.BUS.hook(GuiComponentEvents.MouseOutEvent.class, event -> {
-
-									BasicAnimation mouseOutAnim = new BasicAnimation<>(circleWipe, "x");
-									mouseOutAnim.setDuration(10);
-									mouseOutAnim.setEasing(Easing.easeOutQuint);
-									mouseOutAnim.setTo(0);
-									event.component.add(mouseOutAnim);
-								});
-
-								circleWipe.BUS.hook(GuiComponentEvents.PostDrawEvent.class, (GuiComponentEvents.PostDrawEvent event) -> {
-									GlStateManager.pushMatrix();
-									GlStateManager.color(1, 1, 1, 1);
-									GlStateManager.enableAlpha();
-									GlStateManager.enableBlend();
-									GlStateManager.disableCull();
-
-									GL11.glEnable(GL_POLYGON_SMOOTH);
-
-									GlStateManager.color(0, 1, 1);
-									icon.getTex().bind();
-									icon.draw((int) ClientTickHandler.getPartialTicks(), 0, 0, circleWipe.getSize().getXi(), circleWipe.getSize().getYi());
-
-									GL11.glDisable(GL_POLYGON_SMOOTH);
-
-									GlStateManager.enableCull();
-									GlStateManager.popMatrix();
-								});
-							}
-						}
-					}
+					ComponentCategory categoryComponent = new ComponentCategory(0, 0, 24, 24, this, cateogryObject);
+					MAIN_INDEX.add(categoryComponent);
+					categories.add(categoryComponent);
 				}
 			}
 
@@ -267,13 +208,11 @@ public class GuiBook extends GuiBase {
 			int marginX = 28;
 			int marginY = 45;
 			int itemsPerRow = 3;
-			for (GuiComponent button : indexComponents) {
+			for (GuiComponent button : categories) {
 
 				button.setPos(new Vec2d(
 						marginX + (column * button.getSize().getXi()) + (column * buffer),
 						marginY + (row * button.getSize().getY()) + (row * buffer)));
-
-				MAIN_INDEX.add(button);
 
 				column++;
 
@@ -300,16 +239,29 @@ public class GuiBook extends GuiBase {
 		return new JsonParser().parse(reader);
 	}
 
-	public static class IndexItem {
+	public static class SearchResultItem {
 
-		public final Sprite icon;
-		public final String text;
-		public final String link;
+		private final GuiComponent resultComponent;
+		private final Set<String> keywordsMatched = new HashSet<>();
 
-		public IndexItem(String text, String link, @Nullable Sprite icon) {
-			this.text = text;
-			this.icon = icon;
-			this.link = link;
+		public SearchResultItem(GuiComponent resultComponent) {
+			this.resultComponent = resultComponent;
+		}
+
+		public void addKeywordMatched(String keyword) {
+			keywordsMatched.add(keyword);
+		}
+
+		public GuiComponent getResultComponent() {
+			return resultComponent;
+		}
+
+		public Set<String> getKeywordsMatched() {
+			return keywordsMatched;
+		}
+
+		public int getAmountOfMatches() {
+			return keywordsMatched.size();
 		}
 	}
 }

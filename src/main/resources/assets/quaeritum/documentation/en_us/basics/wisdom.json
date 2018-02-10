@@ -1,6 +1,9 @@
 {
   "title": "Wisdom",
-  "type": "content",
+  "icon": "quaeritum:scroll",
+  "link": "documentation/%LANG%/basics/wisdom.json",
+  "description": "Learn about wisdom wood, nacre liquid, devil dust, etc...",
+  "type": "entry",
   "content": [
     "The presence of raw mana provides a wonderful environment for certain things to grow, and certain things to crystallize. Life forms immune to overloading on mana, and materials which channel power. This is known as Wisdom. Through years of breeding, the power from the life forms known as Wisdom Wood lies in the common trees of the world as well. Many other interesting Wisdom materials exist, among them Nacre, which allows spellcasting, and Devil Dust, a powerful source of chaotic energy.",
     "Activating the Wisdom in trees is simple. Throwing the wood into mana will awaken the power lying within, turning wood of any compatible shape, such as slabs or logs, into Wisdom Wood. Mind you, this doesn\u0027t work for humans. A problem like yours is far more dire than any tree\u0027s stupidity.",
