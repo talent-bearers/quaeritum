@@ -1,31 +1,25 @@
 package eladkay.quaeritum.client.gui.book;
 
-import com.google.common.collect.HashBiMap;
-import com.google.common.collect.HashMultimap;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.teamwizardry.librarianlib.core.LibrarianLib;
 import com.teamwizardry.librarianlib.features.gui.GuiBase;
-import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentSprite;
-import com.teamwizardry.librarianlib.features.gui.components.ComponentText;
-import com.teamwizardry.librarianlib.features.gui.components.ComponentVoid;
-import com.teamwizardry.librarianlib.features.math.Vec2d;
 import com.teamwizardry.librarianlib.features.sprite.Sprite;
 import com.teamwizardry.librarianlib.features.sprite.Texture;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.ResourceLocation;
+import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
-import java.awt.*;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Consumer;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static eladkay.quaeritum.api.lib.LibMisc.MOD_ID;
 
@@ -51,176 +45,21 @@ public class GuiBook extends GuiBase {
 	static Sprite FOF = new Sprite(new ResourceLocation(MOD_ID, "textures/gui/book/error/fof.png"));
 
 	public ComponentSprite COMPONENT_BOOK;
-	public ComponentVoid MAIN_INDEX;
-	public GuiComponent FOCUSED_COMPONENT;
-
-	static String langname;
-
-	public HashMultimap<GuiComponent, String> contentCache = HashMultimap.create();
-	public HashBiMap<GuiComponent, GuiComponent> pageLinks = HashBiMap.create();
+	private static String langname;
+	public BookGuiComponent MAIN_INDEX;
+	public BookGuiComponent FOCUSED_COMPONENT;
+	public HashMap<BookGuiComponent, String> contentCache = new HashMap<>();
 
 	public GuiBook() {
 		super(146, 180);
 
+		langname = Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage().getLanguageCode().toLowerCase();
+
 		COMPONENT_BOOK = new ComponentSprite(BOOK, 0, 0);
 		getMainComponents().add(COMPONENT_BOOK);
 
-		FOCUSED_COMPONENT = MAIN_INDEX = new ComponentVoid(0, 0, COMPONENT_BOOK.getSize().getXi(), COMPONENT_BOOK.getSize().getYi());
+		FOCUSED_COMPONENT = MAIN_INDEX = new ComponentMainIndex(0, 0, COMPONENT_BOOK.getSize().getXi(), COMPONENT_BOOK.getSize().getYi(), this, null);
 		COMPONENT_BOOK.add(MAIN_INDEX);
-
-		// --------- BANNER --------- //
-		{
-			ComponentSprite componentBanner = new ComponentSprite(BANNER, -8, 12);
-			MAIN_INDEX.add(componentBanner);
-
-			FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-			ComponentText componentBannerText = new ComponentText(20, 5, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.TOP);
-			componentBannerText.getText().setValue("Lexica Demoniaqa");
-			componentBannerText.getColor().setValue(Color.CYAN);
-
-			String subText = "- By Demoniaque";
-			ComponentText componentBannerSubText = new ComponentText(componentBanner.getSize().getXi() - 10, 2 + fontRenderer.FONT_HEIGHT, ComponentText.TextAlignH.RIGHT, ComponentText.TextAlignV.TOP);
-			componentBannerSubText.getText().setValue(subText);
-			componentBannerSubText.getUnicode().setValue(true);
-			componentBannerSubText.getColor().setValue(Color.CYAN);
-
-			componentBanner.add(componentBannerText, componentBannerSubText);
-		}
-		// --------- BANNER --------- //
-
-		// --------- SEARCH BAR --------- //
-		{
-			ComponentSearchBar bar = new ComponentSearchBar(this, 0, search -> {
-
-				String query = search.replace("'", "").toLowerCase();
-				String[] keywords = query.split(" ");
-
-				Set<SearchResultItem> results = new HashSet<>();
-
-				for (GuiComponent cachedComponent : contentCache.keySet()) {
-					if (cachedComponent instanceof BookGuiComponent) {
-						String title = ((BookGuiComponent) cachedComponent).getTitle().toLowerCase();
-						String description = ((BookGuiComponent) cachedComponent).getDescription().toLowerCase();
-
-						keywordLoop:
-						for (String keyword : keywords) {
-
-							// ----- SEARCH TITLES ----- //
-							{
-								if (keyword.contains(title) || title.contains(keyword)) {
-									for (SearchResultItem resultItem : results) {
-										if (resultItem.getResultComponent() == cachedComponent) {
-											resultItem.addKeywordMatched(keyword);
-											break keywordLoop;
-										}
-									}
-
-									SearchResultItem resultItem = new SearchResultItem(cachedComponent);
-									resultItem.addKeywordMatched(keyword);
-									results.add(resultItem);
-								}
-							}
-							// ----- SEARCH TITLES ----- //
-
-							// ----- SEARCH DESCRIPTIONS ----- //
-							{
-								if (keyword.contains(description) || description.contains(keyword)) {
-									for (SearchResultItem resultItem : results) {
-										if (resultItem.getResultComponent() == cachedComponent) {
-											resultItem.addKeywordMatched(keyword);
-											break keywordLoop;
-										}
-									}
-
-									SearchResultItem resultItem = new SearchResultItem(cachedComponent);
-									resultItem.addKeywordMatched(keyword);
-									results.add(resultItem);
-								}
-							}
-							// ----- SEARCH DESCRIPTIONS ----- //
-						}
-					}
-
-					// ----- SEARCH CONTENT TEXT ----- //
-					Set<String> cachedStrings = contentCache.get(cachedComponent);
-					for (String cachedString : cachedStrings) {
-						if (cachedString == null) continue;
-
-						keywordLoop:
-						for (String keyword : keywords) {
-							if (cachedString.contains(keyword) || keyword.contains(cachedString)) {
-
-								for (SearchResultItem resultItem : results) {
-									if (resultItem.getResultComponent() == cachedComponent) {
-										resultItem.addKeywordMatched(keyword);
-										break keywordLoop;
-									}
-								}
-
-								SearchResultItem resultItem = new SearchResultItem(cachedComponent);
-								resultItem.addKeywordMatched(keyword);
-							}
-						}
-					}
-					// ----- SEARCH CONTENT TEXT ----- //
-				}
-
-				if (!results.isEmpty()) {
-					ComponentSearchResults resultsComponent = new ComponentSearchResults(this, FOCUSED_COMPONENT, results);
-
-					COMPONENT_BOOK.add(resultsComponent);
-					FOCUSED_COMPONENT.setVisible(false);
-					FOCUSED_COMPONENT = resultsComponent;
-				}
-			});
-			COMPONENT_BOOK.add(bar);
-		}
-		// --------- SEARCH BAR --------- //
-
-		// --------- MAIN INDEX --------- //
-		{
-			langname = Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage().getLanguageCode().toLowerCase();
-
-			ArrayList<GuiComponent> categories = new ArrayList<>();
-
-			JsonElement json = getJsonFromLink("documentation/%LANG%/categories.json");
-			if (json != null && json.isJsonArray()) {
-
-				for (JsonElement element : json.getAsJsonArray()) {
-					if (!element.isJsonPrimitive()) continue;
-
-					JsonElement indexElement = getJsonFromLink(element.getAsJsonPrimitive().getAsString());
-					if (indexElement == null || !indexElement.isJsonObject()) continue;
-
-					JsonObject cateogryObject = indexElement.getAsJsonObject();
-
-					ComponentCategory categoryComponent = new ComponentCategory(0, 0, 24, 24, this, cateogryObject);
-					MAIN_INDEX.add(categoryComponent);
-					categories.add(categoryComponent);
-				}
-			}
-
-			int row = 0;
-			int column = 0;
-			int buffer = 8;
-			int marginX = 28;
-			int marginY = 45;
-			int itemsPerRow = 3;
-			for (GuiComponent button : categories) {
-
-				button.setPos(new Vec2d(
-						marginX + (column * button.getSize().getXi()) + (column * buffer),
-						marginY + (row * button.getSize().getY()) + (row * buffer)));
-
-				column++;
-
-				if (column >= itemsPerRow) {
-					row++;
-					column = 0;
-				}
-			}
-		}
-		// --------- MAIN INDEX --------- //
 	}
 
 	@Nullable
@@ -237,29 +76,145 @@ public class GuiBook extends GuiBase {
 		return new JsonParser().parse(reader);
 	}
 
-	public static class SearchResultItem {
+	Consumer<String> defaultSearchImpl(ComponentSearchResults searchResultsComponent) {
+		return type -> {
 
-		private final GuiComponent resultComponent;
-		private final Set<String> keywordsMatched = new HashSet<>();
+			if (FOCUSED_COMPONENT != searchResultsComponent)
+				searchResultsComponent.setLinkingParent(FOCUSED_COMPONENT);
 
-		public SearchResultItem(GuiComponent resultComponent) {
+			String query = type.replace("'", "").toLowerCase(Locale.ROOT);
+			String[] keywords = query.split(" ");
+
+			ArrayList<TfidfSearchResult> unfilteredTfidfResults = new ArrayList<>();
+			ArrayList<MatchCountSearchResult> matchCountSearchResults = new ArrayList<>();
+
+			final int nbOfDocuments = contentCache.size();
+			for (BookGuiComponent cachedComponent : contentCache.keySet()) {
+				String cachedDocument = contentCache.get(cachedComponent).toLowerCase(Locale.ROOT);
+
+				List<String> words = Arrays.asList(cachedDocument.split("\\s+"));
+				long mostRepeatedWord =
+						words.stream()
+								.collect(Collectors.groupingBy(w -> w, Collectors.counting()))
+								.entrySet()
+								.stream()
+								.max(Comparator.comparing(Map.Entry::getValue))
+								.get().getValue();
+
+				double documentTfidf = 0;
+				for (String keyword : keywords) {
+					long keywordOccurance = Pattern.compile("\\b" + keyword).splitAsStream(cachedDocument).count() - 1;
+					double termFrequency = 0.5 + (0.5 * keywordOccurance / mostRepeatedWord);
+
+					int keywordDocumentOccurance = 0;
+					for (BookGuiComponent documentComponent : contentCache.keySet()) {
+						String documentContent = contentCache.get(documentComponent).toLowerCase(Locale.ROOT);
+						if (documentContent.contains(keyword)) {
+							keywordDocumentOccurance++;
+						}
+					}
+					keywordDocumentOccurance = keywordDocumentOccurance == 0 ? keywordDocumentOccurance + 1 : keywordDocumentOccurance;
+
+					double inverseDocumentFrequency = Math.log(nbOfDocuments / (keywordDocumentOccurance));
+
+					double keywordTfidf = termFrequency * inverseDocumentFrequency;
+
+					documentTfidf += keywordTfidf;
+				}
+
+
+				unfilteredTfidfResults.add(new TfidfSearchResult(cachedComponent, documentTfidf));
+			}
+
+			ArrayList<TfidfSearchResult> filteredTfidfResults = new ArrayList<>();
+
+			double largestTFIDF = 0, smallestTFIDF = Integer.MAX_VALUE;
+			for (TfidfSearchResult resultItem2 : unfilteredTfidfResults) {
+				largestTFIDF = resultItem2.getTfidfrequency() > largestTFIDF ? resultItem2.getTfidfrequency() : largestTFIDF;
+				smallestTFIDF = resultItem2.getTfidfrequency() < smallestTFIDF ? resultItem2.getTfidfrequency() : smallestTFIDF;
+			}
+
+			for (TfidfSearchResult resultItem : unfilteredTfidfResults) {
+				double matchPercentage = Math.round((resultItem.getTfidfrequency() - smallestTFIDF) / (largestTFIDF - smallestTFIDF) * 100);
+				if (matchPercentage < 5 || Double.isNaN(matchPercentage)) continue;
+
+				filteredTfidfResults.add(resultItem);
+			}
+
+			if (!filteredTfidfResults.isEmpty()) {
+				searchResultsComponent.updateTfidfSearches(filteredTfidfResults);
+			} else {
+				for (BookGuiComponent cachedComponent : contentCache.keySet()) {
+					String cachedDocument = contentCache.get(cachedComponent);
+
+					int mostMatches = 0;
+					for (String keyword : keywords) {
+						int keywordOccurances = StringUtils.countMatches(cachedDocument, keyword);
+						mostMatches += keywordOccurances;
+					}
+
+					if (mostMatches > 0)
+						matchCountSearchResults.add(new MatchCountSearchResult(cachedComponent, mostMatches));
+				}
+
+				if (!matchCountSearchResults.isEmpty()) {
+					searchResultsComponent.updateMatchCountSearches(matchCountSearchResults);
+				} else {
+					searchResultsComponent.setAsBadSearch();
+				}
+			}
+
+			FOCUSED_COMPONENT.setVisible(false);
+			FOCUSED_COMPONENT = searchResultsComponent;
+			FOCUSED_COMPONENT.setVisible(true);
+		};
+	}
+
+	public static class TfidfSearchResult implements Comparable<TfidfSearchResult> {
+
+		private final BookGuiComponent resultComponent;
+		private final double tfidfrequency;
+
+		public TfidfSearchResult(BookGuiComponent resultComponent, double tfidfrequency) {
 			this.resultComponent = resultComponent;
+			this.tfidfrequency = tfidfrequency;
 		}
 
-		public void addKeywordMatched(String keyword) {
-			keywordsMatched.add(keyword);
-		}
-
-		public GuiComponent getResultComponent() {
+		public BookGuiComponent getResultComponent() {
 			return resultComponent;
 		}
 
-		public Set<String> getKeywordsMatched() {
-			return keywordsMatched;
+		public double getTfidfrequency() {
+			return tfidfrequency;
 		}
 
-		public int getAmountOfMatches() {
-			return keywordsMatched.size();
+		@Override
+		public int compareTo(@NotNull GuiBook.TfidfSearchResult o) {
+			return Double.compare(o.getTfidfrequency(), getTfidfrequency());
+		}
+	}
+
+	public static class MatchCountSearchResult implements Comparable<MatchCountSearchResult> {
+
+		private final BookGuiComponent resultComponent;
+		private final int nbOfMatches;
+
+		public MatchCountSearchResult(BookGuiComponent resultComponent, int nbOfMatches) {
+			this.resultComponent = resultComponent;
+			this.nbOfMatches = nbOfMatches;
+		}
+
+		public BookGuiComponent getResultComponent() {
+			return resultComponent;
+		}
+
+		public int getMatchCount() {
+			return nbOfMatches;
+		}
+
+		@Override
+		public int compareTo(@NotNull GuiBook.MatchCountSearchResult o) {
+			return Double.compare(o.getMatchCount(), getMatchCount());
 		}
 	}
 }

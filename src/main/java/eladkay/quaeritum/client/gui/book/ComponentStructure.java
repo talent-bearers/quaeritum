@@ -3,7 +3,6 @@ package eladkay.quaeritum.client.gui.book;
 import com.teamwizardry.librarianlib.features.animator.Easing;
 import com.teamwizardry.librarianlib.features.animator.animations.BasicAnimation;
 import com.teamwizardry.librarianlib.features.gui.EnumMouseButton;
-import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponentEvents;
 import com.teamwizardry.librarianlib.features.math.Vec2d;
 import eladkay.quaeritum.api.structure.CachedStructure;
@@ -16,7 +15,7 @@ import net.minecraft.util.math.MathHelper;
  * Property of Demoniaque.
  * All rights reserved.
  */
-public class ComponentStructure extends GuiComponent {
+public class ComponentStructure extends ComponentAnimatableVoid {
 
 	public double zoom = 0;
 	private boolean dragging = false;
@@ -33,16 +32,16 @@ public class ComponentStructure extends GuiComponent {
 
 		BUS.hook(GuiComponentEvents.MouseWheelEvent.class, event -> {
 			if (event.component.hasTag("switched") || !event.component.isVisible()) return;
-			double zoom = this.zoom;
-			if (event.getDirection() == GuiComponentEvents.MouseWheelDirection.UP) zoom += 3;
-			else zoom -= 3;
+			double tmpZoom = this.animX;
+			if (event.getDirection() == GuiComponentEvents.MouseWheelDirection.UP) tmpZoom += 3;
+			else tmpZoom -= 3;
 
-			this.zoom = MathHelper.clamp(zoom, 1, 30);
+			tmpZoom = MathHelper.clamp(tmpZoom, 1, 30);
 
-			BasicAnimation<ComponentStructure> mouseOutAnim = new BasicAnimation<>(this, "zoom");
-			mouseOutAnim.setDuration(10);
-			mouseOutAnim.setEasing(Easing.easeOutExpo);
-			mouseOutAnim.setTo(zoom);
+			BasicAnimation mouseOutAnim = new BasicAnimation<>(this, "animX");
+			mouseOutAnim.setDuration(4);
+			mouseOutAnim.setEasing(Easing.easeOutQuart);
+			mouseOutAnim.setTo(tmpZoom);
 			add(mouseOutAnim);
 		});
 
@@ -97,7 +96,7 @@ public class ComponentStructure extends GuiComponent {
 			GlStateManager.translate(panVec.getX(), panVec.getY(), 0);
 			GlStateManager.rotate((float) (35 + rotVec.getY()), -1, 0, 0);
 			GlStateManager.rotate((float) ((45 + rotVec.getX())), 0, 1, 0);
-			GlStateManager.scale(5 + zoom, -5 - zoom, 5 + zoom);
+			GlStateManager.scale(5 + this.animX, -5 - this.animX, 5 + this.animX);
 			GlStateManager.translate(-structure.perfectCenter.x - 0.5, -structure.perfectCenter.y - 0.5, -structure.perfectCenter.z - 0.5);
 
 			Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);

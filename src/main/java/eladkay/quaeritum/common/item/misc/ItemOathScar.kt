@@ -70,7 +70,7 @@ class ItemOathScar : ItemModSword("oath_scar", LibMaterials.SCAR) {
 
         if (tile != null) {
             tile.removeTag("id")
-            tile.removeTag("x")
+            tile.removeTag("animX")
             tile.removeTag("y")
             tile.removeTag("z")
         }

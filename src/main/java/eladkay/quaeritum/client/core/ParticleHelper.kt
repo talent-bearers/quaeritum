@@ -28,21 +28,21 @@ object ParticleHelper {
     }
 
     /*
-         public void doRender(EntityDragon entity, double x, double y, double z, float entityYaw, float partialTicks)
+         public void doRender(EntityDragon entity, double animX, double y, double z, float entityYaw, float partialTicks)
     {
-        super.doRender(entity, x, y, z, entityYaw, partialTicks);
+        super.doRender(entity, animX, y, z, entityYaw, partialTicks);
 
         if (entity.healingEnderCrystal != null)
         {
             this.bindTexture(ENDERCRYSTAL_BEAM_TEXTURES);
             float f = MathHelper.sin(((float)entity.healingEnderCrystal.ticksExisted + partialTicks) * 0.2F) / 2.0F + 0.5F;
             f = (f * f + f) * 0.2F;
-            renderCrystalBeams(x, y, z, partialTicks, entity.posX + (entity.prevPosX - entity.posX) * (double)(1.0F - partialTicks), entity.posY + (entity.prevPosY - entity.posY) * (double)(1.0F - partialTicks), entity.posZ + (entity.prevPosZ - entity.posZ) * (double)(1.0F - partialTicks), entity.ticksExisted, entity.healingEnderCrystal.posX, (double)f + entity.healingEnderCrystal.posY, entity.healingEnderCrystal.posZ);
+            renderCrystalBeams(animX, y, z, partialTicks, entity.posX + (entity.prevPosX - entity.posX) * (double)(1.0F - partialTicks), entity.posY + (entity.prevPosY - entity.posY) * (double)(1.0F - partialTicks), entity.posZ + (entity.prevPosZ - entity.posZ) * (double)(1.0F - partialTicks), entity.ticksExisted, entity.healingEnderCrystal.posX, (double)f + entity.healingEnderCrystal.posY, entity.healingEnderCrystal.posZ);
         }
     }
 
      */
-    //Player x, y, z, partial ticks (Use 1 for now), TE x, y, z, total ticks (use world time), Item x, y, z
+    //Player animX, y, z, partial ticks (Use 1 for now), TE animX, y, z, total ticks (use world time), Item animX, y, z
     fun renderBeam(x: Double, y: Double, z: Double,
                    partialTicks: Float,
                    entityPosX: Double, entityPosY: Double, entityPosZ: Double,

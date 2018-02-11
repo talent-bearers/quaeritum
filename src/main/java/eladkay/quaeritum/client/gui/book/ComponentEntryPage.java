@@ -20,8 +20,8 @@ import java.util.List;
  */
 public class ComponentEntryPage extends BookGuiComponent {
 
-	private final GuiBook book;
 	private final HashMap<Integer, GuiComponent> pages = new HashMap<>();
+	private final JsonObject entryObject;
 	@Nullable
 	private String icon;
 	private String title;
@@ -31,9 +31,9 @@ public class ComponentEntryPage extends BookGuiComponent {
 
 	private ComponentNavBar navBar;
 
-	public ComponentEntryPage(GuiBook book, @Nonnull GuiComponent parent, JsonObject entryObject) {
-		super(16, 16, book.COMPONENT_BOOK.getSize().getXi() - 32, book.COMPONENT_BOOK.getSize().getYi() - 32);
-		this.book = book;
+	public ComponentEntryPage(GuiBook book, BookGuiComponent parent, JsonObject entryObject) {
+		super(16, 16, book.COMPONENT_BOOK.getSize().getXi() - 32, book.COMPONENT_BOOK.getSize().getYi() - 32, book, parent);
+		this.entryObject = entryObject;
 
 		if (entryObject.has("type") && entryObject.get("type").isJsonPrimitive()
 				&& entryObject.has("title") && entryObject.get("title").isJsonPrimitive()
@@ -53,8 +53,7 @@ public class ComponentEntryPage extends BookGuiComponent {
 			this.description = description;
 			this.icon = icon;
 
-			book.contentCache.put(this, title);
-			book.contentCache.put(this, description);
+			StringBuilder contentCache = new StringBuilder(title + "\n" + description);
 
 			FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
 
@@ -82,7 +81,7 @@ public class ComponentEntryPage extends BookGuiComponent {
 						add(sectionComponent);
 						pages.put(page++, sectionComponent);
 
-						book.contentCache.put(this, section);
+						contentCache.append("\n").append(section);
 					}
 				} else if (element.isJsonObject()) {
 					JsonObject object = element.getAsJsonObject();
@@ -113,16 +112,16 @@ public class ComponentEntryPage extends BookGuiComponent {
 					}
 				}
 			}
+
+			book.contentCache.put(this, contentCache.toString());
 		}
 
-		navBar = new ComponentNavBar(book, this, parent, (getSize().getXi() / 2) - 35, getSize().getYi() + 16, 70, pages.size() - 1);
+
+		navBar = new ComponentNavBar(book, this, (getSize().getXi() / 2) - 35, getSize().getYi() + 16, 70, pages.size() - 1);
 		add(navBar);
 
 		navBar.BUS.hook(EventNavBarChange.class, (navBarChange) -> {
-			if (currentActive != null) currentActive.setVisible(false);
-
-			currentActive = pages.get(navBar.getPage());
-			currentActive.setVisible(true);
+			update();
 		});
 	}
 
@@ -136,12 +135,6 @@ public class ComponentEntryPage extends BookGuiComponent {
 		return description;
 	}
 
-	@Nonnull
-	@Override
-	public GuiBook getBook() {
-		return book;
-	}
-
 	@Nullable
 	@Override
 	public String getIcon() {
@@ -150,6 +143,16 @@ public class ComponentEntryPage extends BookGuiComponent {
 
 	@Override
 	public void update() {
-		navBar.BUS.fire(new EventNavBarChange(navBar.getPage()));
+		if (currentActive != null) currentActive.setVisible(false);
+
+		currentActive = pages.get(navBar.getPage());
+
+		if (currentActive != null) currentActive.setVisible(true);
+	}
+
+	@Nonnull
+	@Override
+	public BookGuiComponent clone() {
+		return new ComponentEntryPage(getBook(), getLinkingParent(), entryObject);
 	}
 }

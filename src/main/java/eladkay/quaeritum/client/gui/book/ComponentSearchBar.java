@@ -1,9 +1,10 @@
 package eladkay.quaeritum.client.gui.book;
 
+import com.teamwizardry.librarianlib.features.animator.Easing;
+import com.teamwizardry.librarianlib.features.animator.animations.BasicAnimation;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponentEvents;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentSprite;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentText;
-import com.teamwizardry.librarianlib.features.math.Vec2d;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
@@ -15,6 +16,7 @@ import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.math.MathHelper;
 import org.lwjgl.opengl.GL11;
 
+import javax.annotation.Nullable;
 import java.awt.*;
 import java.util.function.Consumer;
 
@@ -39,7 +41,7 @@ public class ComponentSearchBar extends ComponentBookMark {
 	private ComponentSprite magnifier;
 	private ComponentText text;
 
-	public ComponentSearchBar(GuiBook book, int id, Consumer<String> onSearch) {
+	public ComponentSearchBar(GuiBook book, int id, @Nullable Consumer<String> onType, @Nullable Consumer<String> onSearch) {
 		super(book, id, false);
 
 		clipping.setClipToBounds(true);
@@ -86,7 +88,6 @@ public class ComponentSearchBar extends ComponentBookMark {
 
 					cursorRenderFlashingCooldown = cursorCooldown;
 				}
-				Minecraft.getMinecraft().player.sendChatMessage("cursor: " + cursor + " | tempCursor: " + selectionCursor);
 
 			} else if (keyDownEvent.getKeyCode() == 205) {
 				if (cursor != selectionCursor) {
@@ -133,6 +134,8 @@ public class ComponentSearchBar extends ComponentBookMark {
 
 					text.getText().setValue(input);
 					cursorRenderFlashingCooldown = cursorCooldown;
+
+					if (onType != null) onType.accept(input);
 				}
 
 			} else if (GuiScreen.isKeyComboCtrlC(keyDownEvent.getKeyCode())) {
@@ -166,6 +169,7 @@ public class ComponentSearchBar extends ComponentBookMark {
 					cursorRenderFlashingCooldown = cursorCooldown;
 				}
 
+				if (onType != null) onType.accept(input);
 			} else {
 				switch (keyDownEvent.getKeyCode()) {
 
@@ -188,19 +192,27 @@ public class ComponentSearchBar extends ComponentBookMark {
 						cursorRenderFlashingCooldown = cursorCooldown;
 
 						text.getText().setValue(input);
+
+						if (onType != null) onType.accept(input);
 						break;
 
 					// ENTER
 					case 28:
 					case 156:
 						if (!input.isEmpty()) {
-							onSearch.accept(input.toLowerCase().trim());
+							if (onSearch != null) onSearch.accept(input.toLowerCase().trim());
 							input = "";
 
 							cursor = selectionCursor = 0;
 							cursorRenderFlashingCooldown = cursorCooldown;
 
 							text.getText().setValue(input);
+
+							slideIn();
+							text.setVisible(false);
+
+							focused = false;
+							updateState();
 						}
 						break;
 					default:
@@ -214,6 +226,8 @@ public class ComponentSearchBar extends ComponentBookMark {
 							cursor = selectionCursor = MathHelper.clamp(selectionCursor + 1, 0, input.length());
 
 							text.getText().setValue(input);
+
+							if (onType != null) onType.accept(input);
 						} else if (input.length() < 20 && ChatAllowedCharacters.isAllowedCharacter(keyDownEvent.getKey())) {
 							select = "";
 							this.input += Character.toString(keyDownEvent.getKey());
@@ -222,6 +236,8 @@ public class ComponentSearchBar extends ComponentBookMark {
 							cursorRenderFlashingCooldown = cursorCooldown;
 
 							text.getText().setValue(input);
+
+							if (onType != null) onType.accept(input);
 						}
 				}
 			}
@@ -229,29 +245,29 @@ public class ComponentSearchBar extends ComponentBookMark {
 
 		BUS.hook(GuiComponentEvents.MouseInEvent.class, event -> {
 
-			//BasicAnimation<ComponentSearchBar> mouseInAnim = new BasicAnimation<>(this, "bookmarkAnimX");
-			//mouseInAnim.setDuration(20);
-			//mouseInAnim.setEasing(Easing.easeOutQuint);
-			//mouseInAnim.setTo(0);
-			//add(mouseInAnim);
+			if (!focused) {
+				slideOutShort();
+				text.setVisible(true);
 
-			slideOut();
-			text.setVisible(true);
-			magnifier.setPos(new Vec2d(getSize().getX() - magnifier.getSize().getX() - 8, magnifier.getPos().getY()));
+				BasicAnimation mouseOutAnim = new BasicAnimation<>(magnifier, "pos.x");
+				mouseOutAnim.setDuration(10);
+				mouseOutAnim.setEasing(Easing.easeOutQuart);
+				mouseOutAnim.setTo(getSize().getX() - magnifier.getSize().getX() - 48);
+				magnifier.add(mouseOutAnim);
+			}
 		});
 
 		BUS.hook(GuiComponentEvents.MouseOutEvent.class, event -> {
 
-			//BasicAnimation<ComponentSearchBar> mouseOutAnim = new BasicAnimation<>(this, "bookmarkAnimX");
-			//mouseOutAnim.setDuration(20);
-			//mouseOutAnim.setEasing(Easing.easeOutQuint);
-			//mouseOutAnim.setTo(-BOOKMARK.getWidth() + 20);
-			//add(mouseOutAnim);
-
 			if (!focused) {
 				slideIn();
 				text.setVisible(false);
-				magnifier.setPos(new Vec2d(1, magnifier.getPos().getY()));
+
+				BasicAnimation mouseOutAnim = new BasicAnimation<>(magnifier, "pos.x");
+				mouseOutAnim.setDuration(10);
+				mouseOutAnim.setEasing(Easing.easeOutQuart);
+				mouseOutAnim.setTo(1);
+				magnifier.add(mouseOutAnim);
 			}
 		});
 
@@ -263,7 +279,7 @@ public class ComponentSearchBar extends ComponentBookMark {
 				GlStateManager.color(1, 1, 1, 1);
 
 				BOOKMARK.bind();
-				BOOKMARK.draw((int) event.getPartialTicks(), (float) bookmarkAnimX, 0);
+				BOOKMARK.draw((int) event.getPartialTicks(), (float) animX, 0);
 
 				GlStateManager.popMatrix();
 			}
@@ -331,13 +347,25 @@ public class ComponentSearchBar extends ComponentBookMark {
 
 	public void updateState() {
 		if (focused) {
-			slideOut();
+			slideOutLong();
 			text.setVisible(true);
-			magnifier.setPos(new Vec2d(getSize().getX() - magnifier.getSize().getX() - 8, magnifier.getPos().getY()));
+
+			BasicAnimation mouseOutAnim = new BasicAnimation<>(magnifier, "pos.x");
+			mouseOutAnim.setDuration(10);
+			mouseOutAnim.setEasing(Easing.easeOutQuart);
+			mouseOutAnim.setTo(getSize().getX() - magnifier.getSize().getX() - 8);
+			magnifier.add(mouseOutAnim);
+
 		} else {
+
 			slideIn();
 			text.setVisible(false);
-			magnifier.setPos(new Vec2d(1, magnifier.getPos().getY()));
+
+			BasicAnimation mouseOutAnim = new BasicAnimation<>(magnifier, "pos.x");
+			mouseOutAnim.setDuration(10);
+			mouseOutAnim.setEasing(Easing.easeOutQuart);
+			mouseOutAnim.setTo(1);
+			magnifier.add(mouseOutAnim);
 		}
 	}
 }

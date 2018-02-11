@@ -18,6 +18,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.function.Consumer;
 
 /**
  * Property of Demoniaque.
@@ -25,16 +26,15 @@ import javax.annotation.Nullable;
  */
 public abstract class BookGuiComponent extends GuiComponent {
 
-	public BookGuiComponent(int posX, int posY, int width, int height) {
+	@Nonnull
+	private final GuiBook book;
+	@Nullable
+	private BookGuiComponent parent;
+
+	public BookGuiComponent(int posX, int posY, int width, int height, @Nonnull GuiBook book, @Nullable BookGuiComponent parent) {
 		super(posX, posY, width, height);
-	}
-
-	public BookGuiComponent(int posX, int posY, int width) {
-		super(posX, posY, width);
-	}
-
-	public BookGuiComponent(int posX, int posY) {
-		super(posX, posY);
+		this.book = book;
+		this.parent = parent;
 	}
 
 	public abstract String getTitle();
@@ -42,21 +42,37 @@ public abstract class BookGuiComponent extends GuiComponent {
 	public abstract String getDescription();
 
 	@Nonnull
-	public abstract GuiBook getBook();
+	public GuiBook getBook() {
+		return book;
+	}
 
 	@Nullable
 	public abstract String getIcon();
 
+	@Nullable
+	public BookGuiComponent getLinkingParent() {
+		return parent == null ? book.MAIN_INDEX : parent;
+	}
+
+	public void setLinkingParent(@Nonnull BookGuiComponent component) {
+		this.parent = component;
+	}
+
 	public abstract void update();
 
-	public GuiComponent getOrMakeIndexButton(int indexID, GuiBook book, GuiComponent caller) {
+	@Nonnull
+	public abstract BookGuiComponent clone();
+
+	public GuiComponent getOrMakeIndexButton(int indexID, GuiBook book, @Nullable Consumer<GuiComponent> extra) {
 		ComponentVoid indexButton = new ComponentVoid(0, 16 * indexID, getSize().getXi(), 16);
 
+		if (extra != null) extra.accept(indexButton);
+
 		indexButton.BUS.hook(GuiComponentEvents.MouseClickEvent.class, event -> {
-			setVisible(true);
-			update();
-			caller.setVisible(false);
+			book.FOCUSED_COMPONENT.setVisible(false);
 			book.FOCUSED_COMPONENT = this;
+			book.FOCUSED_COMPONENT.setVisible(true);
+			update();
 		});
 
 		// SUB INDEX PLATE RENDERING

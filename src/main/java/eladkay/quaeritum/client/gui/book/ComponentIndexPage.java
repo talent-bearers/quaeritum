@@ -20,6 +20,7 @@ public class ComponentIndexPage extends BookGuiComponent {
 
 	private final GuiBook book;
 	private final HashMap<Integer, GuiComponent> pages = new HashMap<>();
+	private final JsonObject indexObject;
 	private String description;
 	private String title;
 	@Nullable
@@ -28,9 +29,10 @@ public class ComponentIndexPage extends BookGuiComponent {
 	private GuiComponent currentActive;
 	private ComponentNavBar navBar;
 
-	public ComponentIndexPage(GuiBook book, @Nonnull GuiComponent parent, JsonObject indexObject) {
-		super(16, 16, book.COMPONENT_BOOK.getSize().getXi() - 32, book.COMPONENT_BOOK.getSize().getYi() - 32);
+	public ComponentIndexPage(GuiBook book, BookGuiComponent parent, JsonObject indexObject) {
+		super(16, 16, book.COMPONENT_BOOK.getSize().getXi() - 32, book.COMPONENT_BOOK.getSize().getYi() - 32, book, parent);
 		this.book = book;
+		this.indexObject = indexObject;
 
 		if (indexObject.has("title") && indexObject.get("title").isJsonPrimitive()
 				&& indexObject.has("icon") && indexObject.get("icon").isJsonPrimitive()
@@ -50,14 +52,11 @@ public class ComponentIndexPage extends BookGuiComponent {
 			this.description = description;
 			this.icon = icon;
 
-			book.contentCache.put(this, title);
-			book.contentCache.put(this, description);
-
 			ComponentVoid pageComponent = new ComponentVoid(0, 0, getSize().getXi(), getSize().getYi());
 			add(pageComponent);
 			currentActive = pageComponent;
 
-			int itemsPerPage = 6;
+			int itemsPerPage = 9;
 			int page = 0;
 			int count = 0;
 			for (JsonElement element : contentArray) {
@@ -88,11 +87,8 @@ public class ComponentIndexPage extends BookGuiComponent {
 						contentComponent.setVisible(false);
 						book.COMPONENT_BOOK.add(contentComponent);
 
-						GuiComponent indexButton = contentComponent.getOrMakeIndexButton(count, book, this);
-
-						book.pageLinks.put(this, contentComponent);
+						GuiComponent indexButton = contentComponent.getOrMakeIndexButton(count, book, null);
 						pageComponent.add(indexButton);
-
 						indexButton.setVisible(page == 0);
 
 						count++;
@@ -108,14 +104,11 @@ public class ComponentIndexPage extends BookGuiComponent {
 			}
 		}
 
-		navBar = new ComponentNavBar(book, this, parent, (getSize().getXi() / 2) - 35, getSize().getYi() + 16, 70, pages.size() - 1);
+		navBar = new ComponentNavBar(book, this, (getSize().getXi() / 2) - 35, getSize().getYi() + 16, 70, pages.size() - 1);
 		add(navBar);
 
 		navBar.BUS.hook(EventNavBarChange.class, (navBarChange) -> {
-			if (currentActive != null) currentActive.setVisible(false);
-
-			currentActive = pages.get(navBar.getPage());
-			currentActive.setVisible(true);
+			update();
 		});
 	}
 
@@ -130,12 +123,6 @@ public class ComponentIndexPage extends BookGuiComponent {
 		return description;
 	}
 
-	@Nonnull
-	@Override
-	public GuiBook getBook() {
-		return book;
-	}
-
 	@Nullable
 	@Override
 	public String getIcon() {
@@ -144,6 +131,16 @@ public class ComponentIndexPage extends BookGuiComponent {
 
 	@Override
 	public void update() {
-		navBar.BUS.fire(new EventNavBarChange(navBar.getPage()));
+		if (currentActive != null) currentActive.setVisible(false);
+
+		currentActive = pages.get(navBar.getPage());
+
+		if (currentActive != null) currentActive.setVisible(true);
+	}
+
+	@Nonnull
+	@Override
+	public BookGuiComponent clone() {
+		return new ComponentIndexPage(getBook(), getLinkingParent(), indexObject);
 	}
 }

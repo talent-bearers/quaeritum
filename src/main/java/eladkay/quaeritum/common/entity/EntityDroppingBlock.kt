@@ -78,7 +78,7 @@ class EntityDroppingBlock : Entity {
     }
 
     /**
-     * Called to update the entity's position/logic.
+     * Called to updateTfidfSearches the entity's position/logic.
      */
     override fun onUpdate() {
         val block = this.block.block
