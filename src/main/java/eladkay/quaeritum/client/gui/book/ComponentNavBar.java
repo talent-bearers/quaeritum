@@ -32,7 +32,7 @@ public class ComponentNavBar extends GuiComponent {
 		ComponentSprite next = new ComponentSprite(ARROW_NEXT, (int) (getSize().getX() - ARROW_NEXT.getWidth()), (int) ((getSize().getY() / 2.0) - (ARROW_BACK.getHeight() / 2.0)));
 		add(back, next, home);
 
-		if (maxPages >= 1) {
+		if (maxPages > 1) {
 			ComponentText pageStringComponent = new ComponentText(0, 0, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.MIDDLE);
 			pageStringComponent.getUnicode().setValue(false);
 
@@ -55,16 +55,19 @@ public class ComponentNavBar extends GuiComponent {
 		home.render.getTooltip().setValue(homeTooltip);
 
 		home.BUS.hook(GuiComponentEvents.MouseClickEvent.class, event -> {
-			// Make the holder of the nav bar invisible
-			navBarHolder.setVisible(false);
-
 			// Make visible the parent of the holder of the nav bar or the main index if shifting
 			if (GuiBook.isShiftKeyDown()) {
 				book.MAIN_INDEX.setVisible(true);
 				book.FOCUSED_COMPONENT = book.MAIN_INDEX;
+
+				// Make the holder of the nav bar invisible
+				navBarHolder.setVisible(false);
 			} else if (navBarHolder.getLinkingParent() != null) {
 				navBarHolder.getLinkingParent().setVisible(true);
 				book.FOCUSED_COMPONENT = navBarHolder.getLinkingParent();
+
+				// Make the holder of the nav bar invisible
+				navBarHolder.setVisible(false);
 			}
 		});
 

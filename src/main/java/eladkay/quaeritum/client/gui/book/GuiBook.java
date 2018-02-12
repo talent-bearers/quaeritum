@@ -90,7 +90,10 @@ public class GuiBook extends GuiBase {
 
 			final int nbOfDocuments = contentCache.size();
 			for (BookGuiComponent cachedComponent : contentCache.keySet()) {
-				String cachedDocument = contentCache.get(cachedComponent).toLowerCase(Locale.ROOT);
+				String cachedDocument = contentCache
+						.get(cachedComponent)
+						.toLowerCase(Locale.ROOT)
+						.replace("'", "");
 
 				List<String> words = Arrays.asList(cachedDocument.split("\\s+"));
 				long mostRepeatedWord =
@@ -122,7 +125,6 @@ public class GuiBook extends GuiBase {
 					documentTfidf += keywordTfidf;
 				}
 
-
 				unfilteredTfidfResults.add(new TfidfSearchResult(cachedComponent, documentTfidf));
 			}
 
@@ -145,7 +147,10 @@ public class GuiBook extends GuiBase {
 				searchResultsComponent.updateTfidfSearches(filteredTfidfResults);
 			} else {
 				for (BookGuiComponent cachedComponent : contentCache.keySet()) {
-					String cachedDocument = contentCache.get(cachedComponent);
+					String cachedDocument = contentCache
+							.get(cachedComponent)
+							.toLowerCase(Locale.ROOT)
+							.replace("'", "");
 
 					int mostMatches = 0;
 					for (String keyword : keywords) {

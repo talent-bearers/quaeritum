@@ -31,7 +31,7 @@ public class ComponentEntryPage extends BookGuiComponent {
 
 	private ComponentNavBar navBar;
 
-	public ComponentEntryPage(GuiBook book, BookGuiComponent parent, JsonObject entryObject) {
+	public ComponentEntryPage(GuiBook book, BookGuiComponent parent, JsonObject entryObject, boolean cache) {
 		super(16, 16, book.COMPONENT_BOOK.getSize().getXi() - 32, book.COMPONENT_BOOK.getSize().getYi() - 32, book, parent);
 		this.entryObject = entryObject;
 
@@ -67,6 +67,8 @@ public class ComponentEntryPage extends BookGuiComponent {
 					List<String> list = fontRenderer.listFormattedStringToWidth(text, 2200);
 
 					for (String section : list) {
+						if (section.trim().isEmpty()) continue;
+
 						ComponentText sectionComponent = new ComponentText(0, 0, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.TOP);
 						sectionComponent.getText().setValue(section);
 						sectionComponent.getWrap().setValue(getSize().getXi());
@@ -81,7 +83,7 @@ public class ComponentEntryPage extends BookGuiComponent {
 						add(sectionComponent);
 						pages.put(page++, sectionComponent);
 
-						contentCache.append("\n").append(section);
+						if (cache) contentCache.append("\n").append(section);
 					}
 				} else if (element.isJsonObject()) {
 					JsonObject object = element.getAsJsonObject();
@@ -95,7 +97,7 @@ public class ComponentEntryPage extends BookGuiComponent {
 
 								String name = object.getAsJsonPrimitive("name").getAsString();
 
-								book.contentCache.put(this, name.replace("_", " "));
+								if (cache) contentCache.append("\n").append(name.replace("_", " "));
 
 								ComponentStructure structure = new ComponentStructure(0, 0, getSize().getXi(), getSize().getYi(), StructureCacheRegistry.INSTANCE.getStructureOrAdd(name));
 
@@ -113,11 +115,10 @@ public class ComponentEntryPage extends BookGuiComponent {
 				}
 			}
 
-			book.contentCache.put(this, contentCache.toString());
+			if (cache) book.contentCache.put(this, contentCache.toString());
 		}
 
-
-		navBar = new ComponentNavBar(book, this, (getSize().getXi() / 2) - 35, getSize().getYi() + 16, 70, pages.size() - 1);
+		navBar = new ComponentNavBar(book, this, (getSize().getXi() / 2) - 35, getSize().getYi() + 16, 70, pages.size());
 		add(navBar);
 
 		navBar.BUS.hook(EventNavBarChange.class, (navBarChange) -> {
@@ -153,6 +154,6 @@ public class ComponentEntryPage extends BookGuiComponent {
 	@Nonnull
 	@Override
 	public BookGuiComponent clone() {
-		return new ComponentEntryPage(getBook(), getLinkingParent(), entryObject);
+		return new ComponentEntryPage(getBook(), getLinkingParent(), entryObject, false);
 	}
 }

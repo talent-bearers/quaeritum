@@ -18,7 +18,6 @@ import static eladkay.quaeritum.client.gui.book.GuiBook.getJsonFromLink;
  */
 public class ComponentIndexPage extends BookGuiComponent {
 
-	private final GuiBook book;
 	private final HashMap<Integer, GuiComponent> pages = new HashMap<>();
 	private final JsonObject indexObject;
 	private String description;
@@ -31,7 +30,6 @@ public class ComponentIndexPage extends BookGuiComponent {
 
 	public ComponentIndexPage(GuiBook book, BookGuiComponent parent, JsonObject indexObject) {
 		super(16, 16, book.COMPONENT_BOOK.getSize().getXi() - 32, book.COMPONENT_BOOK.getSize().getYi() - 32, book, parent);
-		this.book = book;
 		this.indexObject = indexObject;
 
 		if (indexObject.has("title") && indexObject.get("title").isJsonPrimitive()
@@ -80,14 +78,15 @@ public class ComponentIndexPage extends BookGuiComponent {
 					if (contentType.equals("index")) {
 						contentComponent = new ComponentIndexPage(book, this, contentObject);
 					} else if (contentType.equals("entry")) {
-						contentComponent = new ComponentEntryPage(book, this, contentObject);
+						contentComponent = new ComponentEntryPage(book, this, contentObject, true);
 					}
 
 					if (contentComponent != null) {
+						contentComponent.setLinkingParent(this);
 						contentComponent.setVisible(false);
 						book.COMPONENT_BOOK.add(contentComponent);
 
-						GuiComponent indexButton = contentComponent.getOrMakeIndexButton(count, book, null);
+						GuiComponent indexButton = contentComponent.createIndexButton(count, book, null);
 						pageComponent.add(indexButton);
 						indexButton.setVisible(page == 0);
 
@@ -104,7 +103,7 @@ public class ComponentIndexPage extends BookGuiComponent {
 			}
 		}
 
-		navBar = new ComponentNavBar(book, this, (getSize().getXi() / 2) - 35, getSize().getYi() + 16, 70, pages.size() - 1);
+		navBar = new ComponentNavBar(book, this, (getSize().getXi() / 2) - 35, getSize().getYi() + 16, 70, pages.size());
 		add(navBar);
 
 		navBar.BUS.hook(EventNavBarChange.class, (navBarChange) -> {

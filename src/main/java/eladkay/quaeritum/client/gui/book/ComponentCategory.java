@@ -48,7 +48,7 @@ public class ComponentCategory extends BookGuiComponent {
 			if (type.equals("index")) {
 				linkComponent = new ComponentIndexPage(book, book.MAIN_INDEX, object);
 			} else if (type.equals("entry")) {
-				linkComponent = new ComponentEntryPage(book, book.MAIN_INDEX, object);
+				linkComponent = new ComponentEntryPage(book, book.MAIN_INDEX, object, true);
 			}
 
 			if (linkComponent != null) {
@@ -56,11 +56,12 @@ public class ComponentCategory extends BookGuiComponent {
 				linkComponent.setVisible(false);
 			}
 
-			BookGuiComponent finalLinkComponent = linkComponent;
+			BookGuiComponent indexComponent = linkComponent;
 			BUS.hook(GuiComponentEvents.MouseClickEvent.class, (event) -> {
-				if (finalLinkComponent != null) {
+				if (indexComponent != null && getLinkingParent() != null) {
+					indexComponent.setLinkingParent(getLinkingParent());
 					book.FOCUSED_COMPONENT.setVisible(false);
-					book.FOCUSED_COMPONENT = finalLinkComponent;
+					book.FOCUSED_COMPONENT = indexComponent;
 					book.FOCUSED_COMPONENT.setVisible(true);
 				}
 			});

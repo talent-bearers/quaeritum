@@ -63,7 +63,7 @@ public abstract class BookGuiComponent extends GuiComponent {
 	@Nonnull
 	public abstract BookGuiComponent clone();
 
-	public GuiComponent getOrMakeIndexButton(int indexID, GuiBook book, @Nullable Consumer<GuiComponent> extra) {
+	public GuiComponent createIndexButton(int indexID, GuiBook book, @Nullable Consumer<GuiComponent> extra) {
 		ComponentVoid indexButton = new ComponentVoid(0, 16 * indexID, getSize().getXi(), 16);
 
 		if (extra != null) extra.accept(indexButton);

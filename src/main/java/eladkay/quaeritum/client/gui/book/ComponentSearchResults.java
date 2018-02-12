@@ -23,6 +23,8 @@ public class ComponentSearchResults extends BookGuiComponent {
 	private ComponentText pageHeader;
 	private ComponentVoid resultSection;
 
+	private final int margin = 16;
+
 	public ComponentSearchResults(GuiBook book, BookGuiComponent parent) {
 		super(16, 16, book.COMPONENT_BOOK.getSize().getXi() - 32, book.COMPONENT_BOOK.getSize().getYi() - 32, book, parent);
 
@@ -32,7 +34,6 @@ public class ComponentSearchResults extends BookGuiComponent {
 		pageHeader.getWrap().setValue(getSize().getXi());
 		add(pageHeader);
 
-		int margin = 16;
 		resultSection = new ComponentVoid(0, margin, getSize().getXi(), getSize().getYi() - margin);
 		add(resultSection);
 	}
@@ -53,7 +54,7 @@ public class ComponentSearchResults extends BookGuiComponent {
 			smallestTFIDF = resultItem2.getTfidfrequency() < smallestTFIDF ? resultItem2.getTfidfrequency() : smallestTFIDF;
 		}
 
-		int itemsPerPage = 9;
+		int itemsPerPage = 8;
 		int page = 0;
 		int count = 0;
 		for (GuiBook.TfidfSearchResult resultItem : results) {
@@ -66,7 +67,7 @@ public class ComponentSearchResults extends BookGuiComponent {
 
 			ComponentText textComponent = new ComponentText(25, Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT + 2, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.TOP);
 
-			GuiComponent indexButton = resultComponent.getOrMakeIndexButton(count, getBook(), plate -> plate.add(textComponent));
+			GuiComponent indexButton = resultComponent.createIndexButton(count, getBook(), plate -> plate.add(textComponent));
 			pageComponent.add(indexButton);
 
 			// --------- HANDLE EXTRA TEXT COMPONENT --------- //
@@ -98,10 +99,6 @@ public class ComponentSearchResults extends BookGuiComponent {
 			}
 			// --------- HANDLE EXTRA TEXT COMPONENT --------- //
 
-			if (page != 0) {
-				indexButton.setVisible(false);
-			}
-
 			count++;
 			if (count >= itemsPerPage) {
 				pages.put(page++, pageComponent);
@@ -110,12 +107,9 @@ public class ComponentSearchResults extends BookGuiComponent {
 				pageComponent.setVisible(false);
 				count = 0;
 			}
-
 		}
 
-		if (getParent() == null) return;
-
-		navBar = new ComponentNavBar(getBook(), this, (getSize().getXi() / 2) - 35, getSize().getYi() + 16, 70, pages.size() - 1);
+		navBar = new ComponentNavBar(getBook(), this, (getSize().getXi() / 2) - 35, getSize().getYi() + 16, 70, pages.size());
 		add(navBar);
 
 		navBar.BUS.hook(EventNavBarChange.class, (navBarChange) -> {
@@ -143,7 +137,7 @@ public class ComponentSearchResults extends BookGuiComponent {
 
 			ComponentText textComponent = new ComponentText(25, Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT + 2, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.TOP);
 
-			GuiComponent indexButton = resultComponent.getOrMakeIndexButton(count, getBook(), plate -> plate.add(textComponent));
+			GuiComponent indexButton = resultComponent.createIndexButton(count, getBook(), plate -> plate.add(textComponent));
 			pageComponent.add(indexButton);
 
 			// --------- HANDLE EXTRA TEXT COMPONENT --------- //
@@ -162,10 +156,6 @@ public class ComponentSearchResults extends BookGuiComponent {
 			}
 			// --------- HANDLE EXTRA TEXT COMPONENT --------- //
 
-			if (page != 0) {
-				indexButton.setVisible(false);
-			}
-
 			count++;
 			if (count >= itemsPerPage) {
 				pages.put(page++, pageComponent);
@@ -177,9 +167,7 @@ public class ComponentSearchResults extends BookGuiComponent {
 
 		}
 
-		if (getParent() == null) return;
-
-		navBar = new ComponentNavBar(getBook(), this, (getSize().getXi() / 2) - 35, getSize().getYi() + 16, 70, pages.size() - 1);
+		navBar = new ComponentNavBar(getBook(), this, (getSize().getXi() / 2) - 35, getSize().getYi() + 16, 70, pages.size());
 		add(navBar);
 
 		navBar.BUS.hook(EventNavBarChange.class, (navBarChange) -> {
@@ -191,21 +179,18 @@ public class ComponentSearchResults extends BookGuiComponent {
 		reset();
 		pageHeader.getText().setValue("No results found!");
 
-		if (getParent() == null) return;
-
-		navBar = new ComponentNavBar(getBook(), this, (getSize().getXi() / 2) - 35, getSize().getYi() + 16, 70, pages.size() - 1);
+		navBar = new ComponentNavBar(getBook(), this, (getSize().getXi() / 2) - 35, getSize().getYi() + 16, 70, pages.size());
 		add(navBar);
 
 		navBar.BUS.hook(EventNavBarChange.class, (navBarChange) -> {
 			update();
 		});
-
 	}
 
 	private void reset() {
-		for (GuiComponent child : resultSection.getChildren()) {
-			child.invalidate();
-		}
+		resultSection.invalidate();
+		resultSection = new ComponentVoid(0, margin, getSize().getXi(), getSize().getYi() - margin);
+		add(resultSection);
 		pages.clear();
 		if (navBar != null) navBar.invalidate();
 	}
