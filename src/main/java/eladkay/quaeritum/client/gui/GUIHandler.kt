@@ -7,6 +7,7 @@ import net.minecraft.item.ItemBlock
 import net.minecraft.item.ItemStack
 import net.minecraft.world.World
 import net.minecraftforge.fml.common.network.IGuiHandler
+import java.awt.Color
 
 /**
  * @author WireSegal
@@ -24,7 +25,7 @@ object GUIHandler : IGuiHandler {
         } else if (ID == GUI_CODEX) {
             return GuiCodex()
         } else if (ID == GUI_BOOK)
-            return GuiBook()
+            return GuiBook(Color(0xff548f), Color.CYAN)
         return null
     }
 

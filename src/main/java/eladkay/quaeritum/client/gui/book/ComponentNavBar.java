@@ -8,6 +8,7 @@ import com.teamwizardry.librarianlib.features.math.Vec2d;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.MathHelper;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,9 +47,11 @@ public class ComponentNavBar extends GuiComponent {
 
 		home.BUS.hook(GuiComponentEvents.MouseInEvent.class, event -> {
 			home.setSprite(ARROW_HOME_PRESSED);
+			home.getColor().setValue(book.mainColor);
 		});
 		home.BUS.hook(GuiComponentEvents.MouseOutEvent.class, event -> {
 			home.setSprite(ARROW_HOME);
+			home.getColor().setValue(Color.WHITE);
 		});
 		List<String> homeTooltip = new ArrayList<>();
 		homeTooltip.add("Index");
@@ -80,8 +83,10 @@ public class ComponentNavBar extends GuiComponent {
 
 			if (event.component.getMouseOver()) {
 				back.setSprite(ARROW_BACK_PRESSED);
+				back.getColor().setValue(book.mainColor);
 			} else {
 				back.setSprite(ARROW_BACK);
+				back.getColor().setValue(Color.WHITE);
 			}
 		});
 		back.BUS.hook(GuiComponentEvents.MouseClickEvent.class, event -> {
@@ -106,8 +111,10 @@ public class ComponentNavBar extends GuiComponent {
 
 			if (event.component.getMouseOver()) {
 				next.setSprite(ARROW_NEXT_PRESSED);
+				next.getColor().setValue(book.mainColor);
 			} else {
 				next.setSprite(ARROW_NEXT);
+				next.getColor().setValue(Color.WHITE);
 			}
 		});
 		next.BUS.hook(GuiComponentEvents.MouseClickEvent.class, event -> {

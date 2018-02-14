@@ -13,10 +13,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
+import java.awt.*;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.*;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -31,6 +33,7 @@ public class GuiBook extends GuiBase {
 
 	static Texture GUIDE_BOOK_SHEET = new Texture(new ResourceLocation(MOD_ID, "textures/gui/book/guide_book.png"));
 	static Sprite BOOK = GUIDE_BOOK_SHEET.getSprite("book", 146, 180);
+	static Sprite BOOK_FILLING = GUIDE_BOOK_SHEET.getSprite("book_filling", 146, 180);
 	static Sprite ARROW_NEXT = GUIDE_BOOK_SHEET.getSprite("arrow_next", 18, 10);
 	static Sprite ARROW_NEXT_PRESSED = GUIDE_BOOK_SHEET.getSprite("arrow_next_pressed", 18, 10);
 	static Sprite ARROW_BACK = GUIDE_BOOK_SHEET.getSprite("arrow_back", 18, 10);
@@ -40,9 +43,11 @@ public class GuiBook extends GuiBase {
 	static Sprite BANNER = GUIDE_BOOK_SHEET.getSprite("banner", 140, 31);
 	static Sprite BOOKMARK = GUIDE_BOOK_SHEET.getSprite("bookmark", 133, 13);
 	static Sprite MAGNIFIER = GUIDE_BOOK_SHEET.getSprite("magnifier", 12, 12);
-	static Sprite SEARCH_BOX = GUIDE_BOOK_SHEET.getSprite("search_box", 133, 114);
+	static Sprite TITLE_BAR = GUIDE_BOOK_SHEET.getSprite("title_bar", 86, 11);
 	static Sprite ERROR = new Sprite(new ResourceLocation(MOD_ID, "textures/gui/book/error/error.png"));
 	static Sprite FOF = new Sprite(new ResourceLocation(MOD_ID, "textures/gui/book/error/fof.png"));
+	public final Color mainColor;
+	public final Color highlightColor;
 
 	public ComponentSprite COMPONENT_BOOK;
 	private static String langname;
@@ -50,12 +55,29 @@ public class GuiBook extends GuiBase {
 	public BookGuiComponent FOCUSED_COMPONENT;
 	public HashMap<BookGuiComponent, String> contentCache = new HashMap<>();
 
-	public GuiBook() {
+	public GuiBook(Color mainColor, Color highlightColor) {
 		super(146, 180);
+		this.mainColor = mainColor;
+		this.highlightColor = highlightColor;
 
 		langname = Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage().getLanguageCode().toLowerCase();
 
 		COMPONENT_BOOK = new ComponentSprite(BOOK, 0, 0);
+		COMPONENT_BOOK.getColor().setValue(mainColor.darker());
+
+		ComponentSprite bookFilling = new ComponentSprite(BOOK_FILLING, 0, 0);
+		COMPONENT_BOOK.add(bookFilling);
+
+		//COMPONENT_BOOK.BUS.hook(GuiComponentEvents.PostDrawEvent.class, event -> {
+		//	GlStateManager.pushMatrix();
+		//	GlStateManager.color(mainColor.getRed(), mainColor.getGreen(), mainColor.getBlue());
+//
+		//	BOOK.bind();
+		//	BOOK.draw(0, 0, 0);
+//
+		//	GlStateManager.popMatrix();
+		//});
+
 		getMainComponents().add(COMPONENT_BOOK);
 
 		FOCUSED_COMPONENT = MAIN_INDEX = new ComponentMainIndex(0, 0, COMPONENT_BOOK.getSize().getXi(), COMPONENT_BOOK.getSize().getYi(), this, null);

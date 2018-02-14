@@ -11,7 +11,6 @@ import net.minecraft.client.gui.FontRenderer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.awt.*;
 import java.util.ArrayList;
 
 import static eladkay.quaeritum.client.gui.book.GuiBook.BANNER;
@@ -25,18 +24,19 @@ public class ComponentMainIndex extends BookGuiComponent {
 		// --------- BANNER --------- //
 		{
 			ComponentSprite componentBanner = new ComponentSprite(BANNER, -8, 12);
+			componentBanner.getColor().setValue(book.mainColor);
 			add(componentBanner);
 
 			FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
 			ComponentText componentBannerText = new ComponentText(20, 5, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.TOP);
 			componentBannerText.getText().setValue("Lexica Demoniaqa");
-			componentBannerText.getColor().setValue(Color.CYAN);
+			componentBannerText.getColor().setValue(book.highlightColor);
 
 			String subText = "- By Demoniaque";
 			ComponentText componentBannerSubText = new ComponentText(componentBanner.getSize().getXi() - 10, 2 + fontRenderer.FONT_HEIGHT, ComponentText.TextAlignH.RIGHT, ComponentText.TextAlignV.TOP);
 			componentBannerSubText.getText().setValue(subText);
 			componentBannerSubText.getUnicode().setValue(true);
-			componentBannerSubText.getColor().setValue(Color.CYAN);
+			componentBannerSubText.getColor().setValue(book.highlightColor);
 
 			componentBanner.add(componentBannerText, componentBannerSubText);
 		}

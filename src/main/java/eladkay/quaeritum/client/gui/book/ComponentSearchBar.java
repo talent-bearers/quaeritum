@@ -1,9 +1,6 @@
 package eladkay.quaeritum.client.gui.book;
 
-import com.teamwizardry.librarianlib.features.animator.Easing;
-import com.teamwizardry.librarianlib.features.animator.animations.BasicAnimation;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponentEvents;
-import com.teamwizardry.librarianlib.features.gui.components.ComponentSprite;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentText;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -38,17 +35,12 @@ public class ComponentSearchBar extends ComponentBookMark {
 
 	private boolean focused = false;
 
-	private ComponentSprite magnifier;
 	private ComponentText text;
 
 	public ComponentSearchBar(GuiBook book, int id, @Nullable Consumer<String> onType, @Nullable Consumer<String> onSearch) {
-		super(book, id, false);
+		super(book, MAGNIFIER, id);
 
 		clipping.setClipToBounds(true);
-
-		magnifier = new ComponentSprite(MAGNIFIER, 1, 1);
-		magnifier.getTransform().setTranslateZ(120);
-		add(magnifier);
 
 		text = new ComponentText(2, 2, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.TOP);
 		text.getText().setValue("");
@@ -248,12 +240,6 @@ public class ComponentSearchBar extends ComponentBookMark {
 			if (!focused) {
 				slideOutShort();
 				text.setVisible(true);
-
-				BasicAnimation mouseOutAnim = new BasicAnimation<>(magnifier, "pos.x");
-				mouseOutAnim.setDuration(10);
-				mouseOutAnim.setEasing(Easing.easeOutQuart);
-				mouseOutAnim.setTo(getSize().getX() - magnifier.getSize().getX() - 48);
-				magnifier.add(mouseOutAnim);
 			}
 		});
 
@@ -262,12 +248,6 @@ public class ComponentSearchBar extends ComponentBookMark {
 			if (!focused) {
 				slideIn();
 				text.setVisible(false);
-
-				BasicAnimation mouseOutAnim = new BasicAnimation<>(magnifier, "pos.x");
-				mouseOutAnim.setDuration(10);
-				mouseOutAnim.setEasing(Easing.easeOutQuart);
-				mouseOutAnim.setTo(1);
-				magnifier.add(mouseOutAnim);
 			}
 		});
 
@@ -275,13 +255,13 @@ public class ComponentSearchBar extends ComponentBookMark {
 
 			// RENDER THE TEXT BOX ITSELF
 			{
-				GlStateManager.pushMatrix();
-				GlStateManager.color(1, 1, 1, 1);
-
-				BOOKMARK.bind();
-				BOOKMARK.draw((int) event.getPartialTicks(), (float) animX, 0);
-
-				GlStateManager.popMatrix();
+				//GlStateManager.pushMatrix();
+				//GlStateManager.color(getBook().mainColor.getRed(), getBook().mainColor.getGreen(), getBook().mainColor.getBlue());
+//
+				//BOOKMARK.bind();
+				//BOOKMARK.draw((int) event.getPartialTicks(), (float) animX, 0);
+//
+				//GlStateManager.popMatrix();
 			}
 
 			FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
@@ -326,7 +306,7 @@ public class ComponentSearchBar extends ComponentBookMark {
 					int indexStart = fontRenderer.getStringWidth(input.substring(0, Math.min(cursor, selectionCursor))) + text.getPos().getXi();
 					int indexEnd = fontRenderer.getStringWidth(input.substring(0, Math.max(cursor, selectionCursor))) + text.getPos().getXi();
 
-					Color color = Color.CYAN;
+					Color color = getBook().highlightColor;
 
 					Tessellator tessellator = Tessellator.getInstance();
 					BufferBuilder buffer = tessellator.getBuffer();
@@ -349,23 +329,9 @@ public class ComponentSearchBar extends ComponentBookMark {
 		if (focused) {
 			slideOutLong();
 			text.setVisible(true);
-
-			BasicAnimation mouseOutAnim = new BasicAnimation<>(magnifier, "pos.x");
-			mouseOutAnim.setDuration(10);
-			mouseOutAnim.setEasing(Easing.easeOutQuart);
-			mouseOutAnim.setTo(getSize().getX() - magnifier.getSize().getX() - 8);
-			magnifier.add(mouseOutAnim);
-
 		} else {
-
 			slideIn();
 			text.setVisible(false);
-
-			BasicAnimation mouseOutAnim = new BasicAnimation<>(magnifier, "pos.x");
-			mouseOutAnim.setDuration(10);
-			mouseOutAnim.setEasing(Easing.easeOutQuart);
-			mouseOutAnim.setTo(1);
-			magnifier.add(mouseOutAnim);
 		}
 	}
 }

@@ -2,16 +2,14 @@ package eladkay.quaeritum.client.gui.book;
 
 import com.teamwizardry.librarianlib.features.animator.Easing;
 import com.teamwizardry.librarianlib.features.animator.animations.BasicAnimation;
-import com.teamwizardry.librarianlib.features.gui.component.GuiComponentEvents;
+import com.teamwizardry.librarianlib.features.gui.components.ComponentSprite;
 import com.teamwizardry.librarianlib.features.sprite.Sprite;
-import net.minecraft.client.renderer.GlStateManager;
 
 import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Set;
 
 import static eladkay.quaeritum.client.gui.book.GuiBook.BOOKMARK;
-import static eladkay.quaeritum.client.gui.book.GuiBook.SEARCH_BOX;
 
 /**
  * Property of Demoniaque.
@@ -23,36 +21,29 @@ public class ComponentBookMark extends ComponentAnimatableVoid {
 
 	private final GuiBook book;
 	private final int id;
-	private final boolean largeBox;
 	private final Sprite box;
 
-	public ComponentBookMark(GuiBook book, int id, boolean largeBox) {
-		super(book.COMPONENT_BOOK.getSize().getXi() - 10, 20 + 5 * id + (largeBox ? SEARCH_BOX.getHeight() : BOOKMARK.getHeight()) * id, (largeBox ? SEARCH_BOX.getWidth() : BOOKMARK.getWidth()), (largeBox ? SEARCH_BOX.getHeight() : BOOKMARK.getHeight()));
+	private ComponentSprite bar;
+
+	public ComponentBookMark(GuiBook book, Sprite icon, int id) {
+		super(book.COMPONENT_BOOK.getSize().getXi() - 10, 20 + 5 * id + BOOKMARK.getHeight() * id, BOOKMARK.getWidth(), BOOKMARK.getHeight());
 		this.book = book;
 		this.id = id;
-		this.largeBox = largeBox;
 
 		bookMarks.add(this);
 
-		box = (largeBox ? SEARCH_BOX : BOOKMARK);
+		box = BOOKMARK;
 
 		clipping.setClipToBounds(true);
 
 		animX = -box.getWidth() + 20;
 
-		BUS.hook(GuiComponentEvents.PostDrawEvent.class, event -> {
+		bar = new ComponentSprite(BOOKMARK, -box.getWidth() + 20, 0);
+		bar.getColor().setValue(book.mainColor);
+		add(bar);
 
-			// RENDER THE TEXT BOX ITSELF
-			{
-				GlStateManager.pushMatrix();
-				GlStateManager.color(1, 1, 1, 1);
-
-				box.bind();
-				box.draw((int) event.getPartialTicks(), (float) animX, 0);
-
-				GlStateManager.popMatrix();
-			}
-		});
+		ComponentSprite iconComponent = new ComponentSprite(icon, getSize().getXi() - icon.getWidth() - 8, 1);
+		bar.add(iconComponent);
 	}
 
 	@Nullable
@@ -74,31 +65,27 @@ public class ComponentBookMark extends ComponentAnimatableVoid {
 	}
 
 	public void slideOutShort() {
-		BasicAnimation mouseOutAnim = new BasicAnimation<>(this, "animX");
+		BasicAnimation mouseOutAnim = new BasicAnimation<>(bar, "pos.x");
 		mouseOutAnim.setDuration(10);
 		mouseOutAnim.setEasing(Easing.easeOutQuart);
 		mouseOutAnim.setTo(-40);
-		add(mouseOutAnim);
+		bar.add(mouseOutAnim);
 	}
 
 	public void slideOutLong() {
-		BasicAnimation mouseOutAnim = new BasicAnimation<>(this, "animX");
+		BasicAnimation mouseOutAnim = new BasicAnimation<>(bar, "pos.x");
 		mouseOutAnim.setDuration(10);
 		mouseOutAnim.setEasing(Easing.easeOutQuart);
 		mouseOutAnim.setTo(0);
-		add(mouseOutAnim);
+		bar.add(mouseOutAnim);
 	}
 
 	public void slideIn() {
-		BasicAnimation mouseOutAnim = new BasicAnimation<>(this, "animX");
+		BasicAnimation mouseOutAnim = new BasicAnimation<>(bar, "pos.x");
 		mouseOutAnim.setDuration(10);
 		mouseOutAnim.setEasing(Easing.easeOutQuart);
 		mouseOutAnim.setTo(-box.getWidth() + 20);
-		add(mouseOutAnim);
-	}
-
-	public boolean isLargeBox() {
-		return largeBox;
+		bar.add(mouseOutAnim);
 	}
 
 	public int getId() {

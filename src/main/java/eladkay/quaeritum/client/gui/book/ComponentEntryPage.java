@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
+import com.teamwizardry.librarianlib.features.gui.components.ComponentSprite;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentText;
 import eladkay.quaeritum.api.structure.StructureCacheRegistry;
 import net.minecraft.client.Minecraft;
@@ -13,6 +14,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
+
+import static eladkay.quaeritum.client.gui.book.GuiBook.TITLE_BAR;
 
 /**
  * Property of Demoniaque.
@@ -52,10 +55,19 @@ public class ComponentEntryPage extends BookGuiComponent {
 			this.title = title;
 			this.description = description;
 			this.icon = icon;
+			FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+
+			ComponentSprite titleBar = new ComponentSprite(TITLE_BAR,
+					(int) ((getSize().getX() / 2.0) - (TITLE_BAR.getWidth() / 2.0)),
+					-getPos().getXi() - 15);
+			titleBar.getColor().setValue(book.mainColor);
+			add(titleBar);
+
+			ComponentText titleText = new ComponentText((int) (TITLE_BAR.getWidth() / 2.0), (int) (titleBar.getSize().getY() / 2.0) + 1, ComponentText.TextAlignH.CENTER, ComponentText.TextAlignV.MIDDLE);
+			titleText.getText().setValue(title);
+			titleBar.add(titleText);
 
 			StringBuilder contentCache = new StringBuilder(title + "\n" + description);
-
-			FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
 
 			int page = 0;
 			for (int i = 0; i < entryContentArray.size(); i++) {
@@ -118,7 +130,7 @@ public class ComponentEntryPage extends BookGuiComponent {
 			if (cache) book.contentCache.put(this, contentCache.toString());
 		}
 
-		navBar = new ComponentNavBar(book, this, (getSize().getXi() / 2) - 35, getSize().getYi() + 16, 70, pages.size());
+		navBar = new ComponentNavBar(book, this, (getSize().getXi() / 2) - 35, getSize().getYi() + 16, 70, pages.size() - 1);
 		add(navBar);
 
 		navBar.BUS.hook(EventNavBarChange.class, (navBarChange) -> {

@@ -4,6 +4,7 @@
 		"textureHeight":300,
 		"sprites":{
 			"book":[0, 0, 146, 180],
+			"book_filling": [146, 0, 146, 180],
 			"arrow_next":[0, 180, 18, 10],
 			"arrow_next_pressed":[18, 180, 18, 10],
 			"arrow_back":[0, 190, 18, 10],
@@ -14,7 +15,8 @@
 			"bookmark": [0, 231, 133, 13],
 			"magnifier": [54, 180, 12, 12],
 			"text_cursor": [66, 180, 3, 9],
-			"result_box": [146, 0, 133, 114]
+			"result_box": [146, 0, 133, 114],
+			"title_bar": [0, 246, 86, 11]
 		}
 	}
 }

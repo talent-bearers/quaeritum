@@ -142,7 +142,7 @@ public class ComponentCategory extends BookGuiComponent {
 
 					GL11.glEnable(GL_POLYGON_SMOOTH);
 
-					GlStateManager.color(0, 1, 1);
+					GlStateManager.color(book.highlightColor.getRed(), book.highlightColor.getGreen(), book.highlightColor.getBlue());
 					iconSprite.getTex().bind();
 					iconSprite.draw((int) ClientTickHandler.getPartialTicks(), 0, 0, circleWipe.getSize().getXi(), circleWipe.getSize().getYi());
 
