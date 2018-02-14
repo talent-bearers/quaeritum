@@ -23,7 +23,7 @@ class ShardedSkiesTier2Diagram : IDiagram {
     }
 
     override fun run(world: World, pos: BlockPos, te: TileEntity) {
-//        val item = EntityItem(world, pos.x.toDouble(), (pos.y + 2).toDouble(), pos.z.toDouble(), ItemStack(ModBlocks.flower, 1, BlockFiresoulFlower.Variants.IRONHEART.ordinal))
+//        val item = EntityItem(world, pos.animX.toDouble(), (pos.y + 2).toDouble(), pos.z.toDouble(), ItemStack(ModBlocks.flower, 1, BlockFiresoulFlower.Variants.IRONHEART.ordinal))
 //        world.spawnEntity(item)
         for (stack in IDiagram.Helper.entitiesAroundAltar(te, 4.0)) {
             val server = te.world as WorldServer
