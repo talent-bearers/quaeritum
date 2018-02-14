@@ -23,7 +23,7 @@ import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.item.EnumDyeColor
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.nbt.NBTTagEnd
+import net.minecraft.nbt.NBTTagList
 import net.minecraft.nbt.NBTTagLong
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.ActionResult
@@ -119,7 +119,7 @@ class AcademyOfTheFive : IDiagram {
                     ItemNBTHelper.setCompound(stack, "visited", visited)
                 }
                 if (!visited.hasKey(player.cachedUniqueIdString))
-                    visited.setTag(player.cachedUniqueIdString, NBTTagList(0) { NBTTagEnd() })
+                    visited.setTag(player.cachedUniqueIdString, NBTTagList())
                 val comp = visited.getTagList(player.cachedUniqueIdString, Constants.NBT.TAG_LONG)
                 if (comp.none { (it as NBTTagLong).long == pos.toLong() })
                     comp.appendTag(NBTTagLong(pos.toLong()))
