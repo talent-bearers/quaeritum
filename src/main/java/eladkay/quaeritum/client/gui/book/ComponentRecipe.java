@@ -94,67 +94,43 @@ public class ComponentRecipe extends GuiComponent {
 
 			GlStateManager.translate(x - (bandWidth / 2.0), y, 500);
 
-			Color color = book.highlightColor;
+			Color color = book.mainColor.darker().darker();
 			Color fadeOff = new Color(color.getRed(), color.getGreen(), color.getBlue(), 20);
 
 			Tessellator tessellator = Tessellator.getInstance();
 			BufferBuilder buffer = tessellator.getBuffer();
 
-			buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-			buffer.pos(16 + bandWidth, 0 - excess, 200).color(fadeOff.getRed(), fadeOff.getGreen(), fadeOff.getBlue(), fadeOff.getAlpha()).endVertex();
-			buffer.pos(16, 0 - excess, 200).color(fadeOff.getRed(), fadeOff.getGreen(), fadeOff.getBlue(), fadeOff.getAlpha()).endVertex();
-			buffer.pos(16, 24, 200).color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha()).endVertex();
-			buffer.pos(16 + bandWidth, 24, 200).color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha()).endVertex();
-			tessellator.draw();
+			for (int i = 1; i < 3; i++) {
+				buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+				buffer.pos((i * 16) + bandWidth, 0 - excess, 200).color(fadeOff.getRed(), fadeOff.getGreen(), fadeOff.getBlue(), fadeOff.getAlpha()).endVertex();
+				buffer.pos((i * 16), 0 - excess, 200).color(fadeOff.getRed(), fadeOff.getGreen(), fadeOff.getBlue(), fadeOff.getAlpha()).endVertex();
+				buffer.pos((i * 16), 24, 200).color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha()).endVertex();
+				buffer.pos((i * 16) + bandWidth, 24, 200).color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha()).endVertex();
+				tessellator.draw();
 
-			buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-			buffer.pos(16 + bandWidth, 48 + excess, 200).color(fadeOff.getRed(), fadeOff.getGreen(), fadeOff.getBlue(), fadeOff.getAlpha()).endVertex();
-			buffer.pos(16, 48 + excess, 200).color(fadeOff.getRed(), fadeOff.getGreen(), fadeOff.getBlue(), fadeOff.getAlpha()).endVertex();
-			buffer.pos(16, 24, 200).color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha()).endVertex();
-			buffer.pos(16 + bandWidth, 24, 200).color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha()).endVertex();
-			tessellator.draw();
+				buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+				buffer.pos((i * 16) + bandWidth, 48 + excess, 200).color(fadeOff.getRed(), fadeOff.getGreen(), fadeOff.getBlue(), fadeOff.getAlpha()).endVertex();
+				buffer.pos((i * 16), 48 + excess, 200).color(fadeOff.getRed(), fadeOff.getGreen(), fadeOff.getBlue(), fadeOff.getAlpha()).endVertex();
+				buffer.pos((i * 16), 24, 200).color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha()).endVertex();
+				buffer.pos((i * 16) + bandWidth, 24, 200).color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha()).endVertex();
+				tessellator.draw();
+			}
 
-			buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-			buffer.pos(32 + bandWidth, 0 - excess, 200).color(fadeOff.getRed(), fadeOff.getGreen(), fadeOff.getBlue(), fadeOff.getAlpha()).endVertex();
-			buffer.pos(32, 0 - excess, 200).color(fadeOff.getRed(), fadeOff.getGreen(), fadeOff.getBlue(), fadeOff.getAlpha()).endVertex();
-			buffer.pos(32, 24, 200).color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha()).endVertex();
-			buffer.pos(32 + bandWidth, 24, 200).color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha()).endVertex();
-			tessellator.draw();
+			for (int i = 1; i < 3; i++) {
+				buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+				buffer.pos(0 - excess, (i * 16) + bandWidth, 200).color(fadeOff.getRed(), fadeOff.getGreen(), fadeOff.getBlue(), fadeOff.getAlpha()).endVertex();
+				buffer.pos(0 - excess, (i * 16), 200).color(fadeOff.getRed(), fadeOff.getGreen(), fadeOff.getBlue(), fadeOff.getAlpha()).endVertex();
+				buffer.pos(24, (i * 16), 200).color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha()).endVertex();
+				buffer.pos(24, (i * 16) + bandWidth, 200).color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha()).endVertex();
+				tessellator.draw();
 
-			buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-			buffer.pos(32 + bandWidth, 48 + excess, 200).color(fadeOff.getRed(), fadeOff.getGreen(), fadeOff.getBlue(), fadeOff.getAlpha()).endVertex();
-			buffer.pos(32, 48 + excess, 200).color(fadeOff.getRed(), fadeOff.getGreen(), fadeOff.getBlue(), fadeOff.getAlpha()).endVertex();
-			buffer.pos(32, 24, 200).color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha()).endVertex();
-			buffer.pos(32 + bandWidth, 24, 200).color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha()).endVertex();
-			tessellator.draw();
-
-			buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-			buffer.pos(0 - excess, 16 + bandWidth, 200).color(fadeOff.getRed(), fadeOff.getGreen(), fadeOff.getBlue(), fadeOff.getAlpha()).endVertex();
-			buffer.pos(0 - excess, 16, 200).color(fadeOff.getRed(), fadeOff.getGreen(), fadeOff.getBlue(), fadeOff.getAlpha()).endVertex();
-			buffer.pos(24, 16, 200).color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha()).endVertex();
-			buffer.pos(24, 16 + bandWidth, 200).color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha()).endVertex();
-			tessellator.draw();
-
-			buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-			buffer.pos(48 + excess, 16 + bandWidth, 200).color(fadeOff.getRed(), fadeOff.getGreen(), fadeOff.getBlue(), fadeOff.getAlpha()).endVertex();
-			buffer.pos(48 + excess, 16, 200).color(fadeOff.getRed(), fadeOff.getGreen(), fadeOff.getBlue(), fadeOff.getAlpha()).endVertex();
-			buffer.pos(24, 16, 200).color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha()).endVertex();
-			buffer.pos(24, 16 + bandWidth, 200).color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha()).endVertex();
-			tessellator.draw();
-
-			buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-			buffer.pos(0 - excess, 32 + bandWidth, 200).color(fadeOff.getRed(), fadeOff.getGreen(), fadeOff.getBlue(), fadeOff.getAlpha()).endVertex();
-			buffer.pos(0 - excess, 32, 200).color(fadeOff.getRed(), fadeOff.getGreen(), fadeOff.getBlue(), fadeOff.getAlpha()).endVertex();
-			buffer.pos(24, 32, 200).color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha()).endVertex();
-			buffer.pos(24, 32 + bandWidth, 200).color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha()).endVertex();
-			tessellator.draw();
-
-			buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-			buffer.pos(48 + excess, 32 + bandWidth, 200).color(fadeOff.getRed(), fadeOff.getGreen(), fadeOff.getBlue(), fadeOff.getAlpha()).endVertex();
-			buffer.pos(48 + excess, 32, 200).color(fadeOff.getRed(), fadeOff.getGreen(), fadeOff.getBlue(), fadeOff.getAlpha()).endVertex();
-			buffer.pos(24, 32, 200).color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha()).endVertex();
-			buffer.pos(24, 32 + bandWidth, 200).color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha()).endVertex();
-			tessellator.draw();
+				buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+				buffer.pos(48 + excess, (i * 16) + bandWidth, 200).color(fadeOff.getRed(), fadeOff.getGreen(), fadeOff.getBlue(), fadeOff.getAlpha()).endVertex();
+				buffer.pos(48 + excess, (i * 16), 200).color(fadeOff.getRed(), fadeOff.getGreen(), fadeOff.getBlue(), fadeOff.getAlpha()).endVertex();
+				buffer.pos(24, (i * 16), 200).color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha()).endVertex();
+				buffer.pos(24, (i * 16) + bandWidth, 200).color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha()).endVertex();
+				tessellator.draw();
+			}
 
 			GlStateManager.popMatrix();
 
