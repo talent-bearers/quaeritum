@@ -47,7 +47,7 @@ public class ComponentNavBar extends GuiComponent {
 
 		home.BUS.hook(GuiComponentEvents.MouseInEvent.class, event -> {
 			home.setSprite(ARROW_HOME_PRESSED);
-			home.getColor().setValue(book.mainColor);
+			home.getColor().setValue(book.mainColor.brighter());
 		});
 		home.BUS.hook(GuiComponentEvents.MouseOutEvent.class, event -> {
 			home.setSprite(ARROW_HOME);
@@ -83,7 +83,7 @@ public class ComponentNavBar extends GuiComponent {
 
 			if (event.component.getMouseOver()) {
 				back.setSprite(ARROW_BACK_PRESSED);
-				back.getColor().setValue(book.mainColor);
+				back.getColor().setValue(book.mainColor.brighter());
 			} else {
 				back.setSprite(ARROW_BACK);
 				back.getColor().setValue(Color.WHITE);
@@ -111,7 +111,7 @@ public class ComponentNavBar extends GuiComponent {
 
 			if (event.component.getMouseOver()) {
 				next.setSprite(ARROW_NEXT_PRESSED);
-				next.getColor().setValue(book.mainColor);
+				next.getColor().setValue(book.mainColor.brighter());
 			} else {
 				next.setSprite(ARROW_NEXT);
 				next.getColor().setValue(Color.WHITE);

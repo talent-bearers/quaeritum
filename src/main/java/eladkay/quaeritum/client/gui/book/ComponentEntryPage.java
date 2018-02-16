@@ -122,6 +122,22 @@ public class ComponentEntryPage extends BookGuiComponent {
 								add(structure);
 								pages.put(page++, structure);
 							}
+						} else if (sectionType.equalsIgnoreCase("recipe")) {
+							if (object.has("item") && object.get("item").isJsonPrimitive()) {
+								if (cache)
+									contentCache.append("\n").append(object.getAsJsonPrimitive("item").getAsString().replace("_", " "));
+
+								ComponentRecipe recipe = new ComponentRecipe(0, 0, getSize().getXi(), getSize().getYi(), getBook(), object.getAsJsonPrimitive("item").getAsString());
+
+								if (page == 0) {
+									currentActive = recipe;
+								} else {
+									recipe.setVisible(false);
+								}
+
+								add(recipe);
+								pages.put(page++, recipe);
+							}
 						}
 					}
 				}

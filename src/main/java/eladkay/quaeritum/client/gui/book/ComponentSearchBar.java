@@ -302,6 +302,7 @@ public class ComponentSearchBar extends ComponentBookMark {
 					GlStateManager.enableBlend();
 					GlStateManager.disableLighting();
 					GlStateManager.disableCull();
+					GlStateManager.enableAlpha();
 
 					int indexStart = fontRenderer.getStringWidth(input.substring(0, Math.min(cursor, selectionCursor))) + text.getPos().getXi();
 					int indexEnd = fontRenderer.getStringWidth(input.substring(0, Math.max(cursor, selectionCursor))) + text.getPos().getXi();
@@ -319,6 +320,7 @@ public class ComponentSearchBar extends ComponentBookMark {
 
 					tessellator.draw();
 
+					GlStateManager.enableAlpha();
 					GlStateManager.popMatrix();
 				}
 			}
