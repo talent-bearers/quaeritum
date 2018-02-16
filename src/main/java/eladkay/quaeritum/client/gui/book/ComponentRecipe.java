@@ -16,11 +16,13 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.crafting.IShapedRecipe;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import org.jetbrains.annotations.Nullable;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Consumer;
 
 import static eladkay.quaeritum.client.gui.book.GuiBook.ARROW_HOME_PRESSED;
 import static org.lwjgl.opengl.GL11.GL_SMOOTH;
@@ -29,9 +31,22 @@ public class ComponentRecipe extends GuiComponent {
 
 	private final GuiBook book;
 
-	public ComponentRecipe(int posX, int posY, int width, int height, GuiBook book, String item) {
+	/**
+	 * Will render a default recipe grid if item is not null.
+	 * If item is null, use the lambda and deal with recipes yourself.
+	 * HAVE FUN WITH THAT.
+	 *
+	 * @param item                 The item string like "some_mod:some_item"
+	 * @param manualRecipeHandling Handle all the shit yourself. Will not override regular crafting if item is not null
+	 */
+	public ComponentRecipe(int posX, int posY, int width, int height, GuiBook book, @Nullable String item, @Nullable Consumer<ComponentRecipe> manualRecipeHandling) {
 		super(posX, posY, width, height);
 		this.book = book;
+
+		if (item == null) {
+			if (manualRecipeHandling != null) manualRecipeHandling.accept(this);
+			return;
+		}
 
 		IRecipe recipe = ForgeRegistries.RECIPES.getValue(new ResourceLocation(item));
 
