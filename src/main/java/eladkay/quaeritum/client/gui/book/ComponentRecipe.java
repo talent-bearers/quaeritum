@@ -29,8 +29,6 @@ import static org.lwjgl.opengl.GL11.GL_SMOOTH;
 
 public class ComponentRecipe extends GuiComponent {
 
-	private final GuiBook book;
-
 	/**
 	 * Will render a default recipe grid if item is not null.
 	 * If item is null, use the lambda and deal with recipes yourself.
@@ -39,9 +37,8 @@ public class ComponentRecipe extends GuiComponent {
 	 * @param item                 The item string like "some_mod:some_item"
 	 * @param manualRecipeHandling Handle all the shit yourself. Will not override regular crafting if item is not null
 	 */
-	public ComponentRecipe(int posX, int posY, int width, int height, GuiBook book, @Nullable String item, @Nullable Consumer<ComponentRecipe> manualRecipeHandling) {
+	public ComponentRecipe(int posX, int posY, int width, int height, Color mainColor, @Nullable String item, @Nullable Consumer<ComponentRecipe> manualRecipeHandling) {
 		super(posX, posY, width, height);
-		this.book = book;
 
 		if (item == null) {
 			if (manualRecipeHandling != null) manualRecipeHandling.accept(this);
@@ -54,7 +51,7 @@ public class ComponentRecipe extends GuiComponent {
 		GhostRecipe ghostRecipe = createGhostRecipe(recipe, Minecraft.getMinecraft().player.openContainer.inventorySlots);
 
 		ComponentStack output = new ComponentStack(
-				(int) ((book.COMPONENT_BOOK.getSize().getX()) - 60), (int) ((book.COMPONENT_BOOK.getSize().getY() / 2.0) - 32));
+				(int) (getSize().getX() - 60), (int) ((getSize().getY() / 2.0) - 32));
 		output.getStack().setValue(recipe.getRecipeOutput());
 		output.getTransform().setScale(1.25);
 		add(output);
@@ -63,8 +60,8 @@ public class ComponentRecipe extends GuiComponent {
 		for (int i = 1; i < recipe.getIngredients().size() + 1; i++) {
 			GhostRecipe.GhostIngredient ingredient = ghostRecipe.get(i);
 
-			int x = (int) ((book.COMPONENT_BOOK.getSize().getX()) - 60 - (16 * 3) - 32);
-			int y = (int) ((book.COMPONENT_BOOK.getSize().getY() / 2.0) - 32 - 16);
+			int x = (int) ((getSize().getX()) - 60 - (16 * 3) - 32);
+			int y = (int) ((getSize().getY() / 2.0) - 32 - 16);
 			ComponentStack stack = new ComponentStack(x + row * 16, y + column * 16);
 			stack.getStack().setValue(ingredient.getItem());
 			add(stack);
@@ -85,9 +82,8 @@ public class ComponentRecipe extends GuiComponent {
 			GlStateManager.pushMatrix();
 			GlStateManager.enableBlend();
 			GlStateManager.enableAlpha();
-			GlStateManager.translate((int) ((book.COMPONENT_BOOK.getSize().getX()) - 60 - 8), (int) ((book.COMPONENT_BOOK.getSize().getY() / 2.0) - 16), 0);
+			GlStateManager.translate((int) ((getSize().getX()) - 60 - 8), (int) ((getSize().getY() / 2.0) - 16), 0);
 			GlStateManager.rotate(180, 0, 0, 1);
-			Color highlight = book.highlightColor.brighter();
 			GlStateManager.color(1f, 0.5f, 1f, 1f);
 			ARROW_HOME_PRESSED.bind();
 			ARROW_HOME_PRESSED.draw((int) event.getPartialTicks(), 0, 0);
@@ -102,14 +98,14 @@ public class ComponentRecipe extends GuiComponent {
 			GlStateManager.disableTexture2D();
 			GlStateManager.shadeModel(GL_SMOOTH);
 
-			int x = (int) ((book.COMPONENT_BOOK.getSize().getX()) - 60 - (16 * 3) - 32);
-			int y = (int) ((book.COMPONENT_BOOK.getSize().getY() / 2.0) - 32 - 16);
+			int x = (int) ((getSize().getX()) - 60 - (16 * 3) - 32);
+			int y = (int) ((getSize().getY() / 2.0) - 32 - 16);
 			int bandWidth = 1;
 			int excess = 6;
 
 			GlStateManager.translate(x - (bandWidth / 2.0), y, 500);
 
-			Color color = book.mainColor.darker().darker();
+			Color color = mainColor.darker().darker();
 			Color fadeOff = new Color(color.getRed(), color.getGreen(), color.getBlue(), 20);
 
 			Tessellator tessellator = Tessellator.getInstance();
@@ -157,7 +153,7 @@ public class ComponentRecipe extends GuiComponent {
 		ItemStack itemstack = recipe.getRecipeOutput();
 		ghostRecipe.setRecipe(recipe);
 		ghostRecipe.addIngredient(Ingredient.fromStacks(itemstack),
-				(int) ((book.COMPONENT_BOOK.getSize().getX()) - 60), (int) ((book.COMPONENT_BOOK.getSize().getY() / 2.0) - 32));
+				(int) ((getSize().getX()) - 60), (int) ((getSize().getY() / 2.0) - 32));
 		int i = 3;
 		int j = 3;
 		int k = recipe instanceof IShapedRecipe ? ((IShapedRecipe) recipe).getRecipeWidth() : i;

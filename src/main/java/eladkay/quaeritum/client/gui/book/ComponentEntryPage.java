@@ -6,6 +6,9 @@ import com.google.gson.JsonObject;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentSprite;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentText;
+import eladkay.quaeritum.api.book.pageinstance.PageInstance;
+import eladkay.quaeritum.api.book.pageinstance.PageInstanceFactory;
+import eladkay.quaeritum.api.book.pageinstance.PageText;
 import eladkay.quaeritum.api.structure.StructureCacheRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -74,35 +77,23 @@ public class ComponentEntryPage extends BookGuiComponent {
 				JsonElement element = entryContentArray.get(i);
 
 				if (element.isJsonPrimitive()) {
-					String text = element.getAsJsonPrimitive().getAsString();
 
-					List<String> list = fontRenderer.listFormattedStringToWidth(text, 2200);
+					PageText pageText = new PageText(element);
+					List<GuiComponent> pageComponents = pageText.createBookComponents(getSize());
+					for (GuiComponent pageComponent : pageComponents)
+						pages.put(page++, pageComponent);
 
-					for (String section : list) {
-						if (section.trim().isEmpty()) continue;
-
-						ComponentText sectionComponent = new ComponentText(0, 0, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.TOP);
-						sectionComponent.getText().setValue(section);
-						sectionComponent.getWrap().setValue(getSize().getXi());
-						sectionComponent.getUnicode().setValue(true);
-
-						if (page == 0) {
-							currentActive = sectionComponent;
-						} else {
-							sectionComponent.setVisible(false);
-						}
-
-						add(sectionComponent);
-						pages.put(page++, sectionComponent);
-
-						if (cache) contentCache.append("\n").append(section);
-					}
 				} else if (element.isJsonObject()) {
 					JsonObject object = element.getAsJsonObject();
 
 					if (object.has("type") && object.get("type").isJsonPrimitive()) {
-
 						String sectionType = object.getAsJsonPrimitive("type").getAsString();
+
+						for (PageInstance pageInstance : PageInstanceFactory.INSTANCE.pageInstanceSet) {
+							if (pageInstance.getType().equals(sectionType)) {
+
+							}
+						}
 
 						if (sectionType.equalsIgnoreCase("structure")) {
 							if (object.has("name") && object.get("name").isJsonPrimitive()) {
@@ -127,7 +118,7 @@ public class ComponentEntryPage extends BookGuiComponent {
 								if (cache)
 									contentCache.append("\n").append(object.getAsJsonPrimitive("item").getAsString().replace("_", " "));
 
-								ComponentRecipe recipe = new ComponentRecipe(0, 0, getSize().getXi(), getSize().getYi(), getBook(), object.getAsJsonPrimitive("item").getAsString());
+								ComponentRecipe recipe = new ComponentRecipe(0, 0, getSize().getXi(), getSize().getYi(), getBook(), object.getAsJsonPrimitive("item").getAsString(), null);
 
 								if (page == 0) {
 									currentActive = recipe;
