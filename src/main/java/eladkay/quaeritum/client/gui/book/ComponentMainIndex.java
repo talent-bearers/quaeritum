@@ -18,8 +18,11 @@ import static eladkay.quaeritum.client.gui.book.GuiBook.getJsonFromLink;
 
 public class ComponentMainIndex extends BookGuiComponent {
 
-	public ComponentMainIndex(int posX, int posY, int width, int height, @Nonnull GuiBook book, @Nullable BookGuiComponent parent) {
+	private final String location;
+
+	public ComponentMainIndex(int posX, int posY, String location, int width, int height, @Nonnull GuiBook book, @Nullable BookGuiComponent parent) {
 		super(posX, posY, width, height, book, parent);
+		this.location = location;
 
 		// --------- BANNER --------- //
 		{
@@ -58,7 +61,7 @@ public class ComponentMainIndex extends BookGuiComponent {
 
 			ArrayList<GuiComponent> categories = new ArrayList<>();
 
-			JsonElement json = getJsonFromLink("documentation/%LANG%/categories.json");
+			JsonElement json = getJsonFromLink(location);
 			if (json != null && json.isJsonArray()) {
 
 				for (JsonElement element : json.getAsJsonArray()) {
@@ -122,6 +125,6 @@ public class ComponentMainIndex extends BookGuiComponent {
 	@Nonnull
 	@Override
 	public BookGuiComponent clone() {
-		return new ComponentMainIndex(getPos().getXi(), getPos().getYi(), getSize().getXi(), getSize().getYi(), getBook(), getLinkingParent());
+		return new ComponentMainIndex(getPos().getXi(), getPos().getYi(), location, getSize().getXi(), getSize().getYi(), getBook(), getLinkingParent());
 	}
 }

@@ -55,7 +55,7 @@ public class GuiBook extends GuiBase {
 	public BookGuiComponent FOCUSED_COMPONENT;
 	public HashMap<BookGuiComponent, String> contentCache = new HashMap<>();
 
-	public GuiBook(Color mainColor, Color highlightColor) {
+	public GuiBook(String location, Color mainColor, Color highlightColor) {
 		super(146, 180);
 		this.mainColor = mainColor;
 		this.highlightColor = highlightColor;
@@ -80,7 +80,7 @@ public class GuiBook extends GuiBase {
 
 		getMainComponents().add(COMPONENT_BOOK);
 
-		FOCUSED_COMPONENT = MAIN_INDEX = new ComponentMainIndex(0, 0, COMPONENT_BOOK.getSize().getXi(), COMPONENT_BOOK.getSize().getYi(), this, null);
+		FOCUSED_COMPONENT = MAIN_INDEX = new ComponentMainIndex(0, 0, location, COMPONENT_BOOK.getSize().getXi(), COMPONENT_BOOK.getSize().getYi(), this, null);
 		COMPONENT_BOOK.add(MAIN_INDEX);
 	}
 

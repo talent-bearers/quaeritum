@@ -5,14 +5,9 @@ import com.google.gson.JsonObject;
 import eladkay.quaeritum.api.book.provider.PageProvider;
 import eladkay.quaeritum.api.book.provider.PageProviderRegistry;
 
-import java.util.HashSet;
-import java.util.Set;
-
 public class PageInstanceFactory {
 
 	public static PageInstanceFactory INSTANCE = new PageInstanceFactory();
-
-	public Set<PageInstance> pageInstanceSet = new HashSet<>();
 
 	private PageInstanceFactory() {
 	}

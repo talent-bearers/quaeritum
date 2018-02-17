@@ -8,16 +8,22 @@
     "As I have illustrated in this Codex on the following page, the first step to shaping mana is to collect it. This task is best accomplished by a structure reminiscent of an electrical capacitor, called a Mana Battery, obviously. As any wizard will quickly learn, this is the center of your powers. The Mana Battery\u0027s core can absorb this mystic substance far more than any other method of storage. To fill it, feed the battery from Mana Orbs. It will discharge its power to orbs outside of the battery\u0027s circle, allowing for transfer out of the battery.",
     {
       "type": "recipe",
-      "item": "minecraft:cake"
+      "data": {
+        "item": "minecraft:cake"
+      }
     },
     {
       "type": "structure",
-      "name": "mana_battery"
+      "data": {
+        "name": "mana_battery"
+      }
     },
     "The arguably more important structure, the Crafting Altar, is a consumer of mana. It takes mana out of orbs on its structure, and directs it. Batteries can then be used to refill these orbs. By directing the power through reagents, you can infuse complex patterns into iridescent Nacre pearls, creating §lSpells§r. However, these reagents and patterns are far too complex to explain here, especially for you, and it would cheapen their importance. I will elaborate in further entries.",
     {
       "type": "structure",
-      "name": "mana_pool"
+      "data": {
+        "name": "mana_pool"
+      }
     }
   ]
 }

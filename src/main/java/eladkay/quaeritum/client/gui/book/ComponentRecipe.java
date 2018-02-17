@@ -51,17 +51,17 @@ public class ComponentRecipe extends GuiComponent {
 		GhostRecipe ghostRecipe = createGhostRecipe(recipe, Minecraft.getMinecraft().player.openContainer.inventorySlots);
 
 		ComponentStack output = new ComponentStack(
-				(int) (getSize().getX() - 60), (int) ((getSize().getY() / 2.0) - 32));
+				(int) ((getSize().getX() / 2.0) - (16 * 1.25 / 2.0) + 40), (int) ((getSize().getY() / 2.0) - (16 * 1.25 / 2.0)));
 		output.getStack().setValue(recipe.getRecipeOutput());
 		output.getTransform().setScale(1.25);
 		add(output);
 
-		int row = 0, column = 0;
+		int row = -1, column = -1;
 		for (int i = 1; i < recipe.getIngredients().size() + 1; i++) {
 			GhostRecipe.GhostIngredient ingredient = ghostRecipe.get(i);
 
-			int x = (int) ((getSize().getX()) - 60 - (16 * 3) - 32);
-			int y = (int) ((getSize().getY() / 2.0) - 32 - 16);
+			int x = (int) (-8 + (getSize().getX() / 2.0) - 24);
+			int y = (int) (-8 + (getSize().getY() / 2.0));
 			ComponentStack stack = new ComponentStack(x + row * 16, y + column * 16);
 			stack.getStack().setValue(ingredient.getItem());
 			add(stack);
@@ -71,18 +71,18 @@ public class ComponentRecipe extends GuiComponent {
 				}
 			});
 
-			if (++row >= 3) {
+			if (++row >= 2) {
 				column++;
-				row = 0;
+				row = -1;
 			}
-
 		}
 
 		BUS.hook(GuiComponentEvents.PostDrawEvent.class, event -> {
 			GlStateManager.pushMatrix();
 			GlStateManager.enableBlend();
 			GlStateManager.enableAlpha();
-			GlStateManager.translate((int) ((getSize().getX()) - 60 - 8), (int) ((getSize().getY() / 2.0) - 16), 0);
+			GlStateManager.translate(
+					(int) ((getSize().getX() / 2.0) + (ARROW_HOME_PRESSED.getWidth() / 2.0) + 16), (int) ((getSize().getY() / 2.0) + (ARROW_HOME_PRESSED.getHeight() / 2.0)), 0);
 			GlStateManager.rotate(180, 0, 0, 1);
 			GlStateManager.color(1f, 0.5f, 1f, 1f);
 			ARROW_HOME_PRESSED.bind();
@@ -98,8 +98,8 @@ public class ComponentRecipe extends GuiComponent {
 			GlStateManager.disableTexture2D();
 			GlStateManager.shadeModel(GL_SMOOTH);
 
-			int x = (int) ((getSize().getX()) - 60 - (16 * 3) - 32);
-			int y = (int) ((getSize().getY() / 2.0) - 32 - 16);
+			int x = (int) (-8 + (getSize().getX() / 2.0) - 24 - (16));
+			int y = (int) (-8 + (getSize().getY() / 2.0) - (16));
 			int bandWidth = 1;
 			int excess = 6;
 
