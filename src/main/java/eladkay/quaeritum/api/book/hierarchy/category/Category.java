@@ -30,6 +30,10 @@ public class Category {
         this.icon = icon;
     }
 
+    public boolean isSingleEntry() {
+        return entries.size() == 1;
+    }
+
     @Nullable
     public static Category fromJson(String modId, JsonObject json) {
         try {
@@ -45,6 +49,8 @@ public class Category {
                 if (entry != null)
                     entries.add(entry);
             }
+            if (entries.isEmpty())
+                return null;
             return new Category(modId, entries, title, desc, icon);
         } catch (Exception exception) {
             exception.printStackTrace();

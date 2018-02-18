@@ -36,7 +36,9 @@ public class ComponentCategory extends BookGuiComponent {
         String title = I18n.format(category.titleKey);
         String description = I18n.format(category.descKey);
 
-        BookGuiComponent linkComponent = new ComponentIndexPage(book, book.centralIndex, category);
+        BookGuiComponent linkComponent = category.isSingleEntry()
+                ? new ComponentEntryPage(book, book.centralIndex, category.entries.get(0), true)
+                : new ComponentIndexPage(book, book.centralIndex, category);
 
         book.bookComponent.add(linkComponent);
         linkComponent.setVisible(false);
