@@ -127,7 +127,7 @@ public class ComponentSearchResults extends BookGuiComponent {
 		ComponentVoid pageComponent = new ComponentVoid(0, 0, getSize().getXi(), getSize().getYi());
 		resultSection.add(pageComponent);
 
-		int itemsPerPage = 9;
+		int itemsPerPage = 8;
 		int page = 0;
 		int count = 0;
 		for (GuiBook.MatchCountSearchResult resultItem : results) {

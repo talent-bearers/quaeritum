@@ -176,7 +176,7 @@ public class ComponentSearchBar extends ComponentBookMark {
 							cursor = selectionCursor = MathHelper.clamp(selectionCursor + 1, 0, input.length());
 						} else if (!input.isEmpty()) {
 							StringBuilder builder = new StringBuilder(input);
-							builder.deleteCharAt(cursor - 1);
+							builder.deleteCharAt(Math.max(cursor - 1, 0));
 							input = builder.toString();
 						}
 
@@ -274,6 +274,7 @@ public class ComponentSearchBar extends ComponentBookMark {
 					GlStateManager.enableBlend();
 					GlStateManager.disableLighting();
 					GlStateManager.disableCull();
+					GlStateManager.disableTexture2D();
 
 					int width = input.isEmpty() ? 0 : fontRenderer.getStringWidth(input.substring(0, cursor)) - 1 + text.getPos().getXi();
 					int cursorWidth = 1;
@@ -290,6 +291,7 @@ public class ComponentSearchBar extends ComponentBookMark {
 
 					tessellator.draw();
 
+					GlStateManager.enableTexture2D();
 					GlStateManager.popMatrix();
 				}
 			}
@@ -303,6 +305,7 @@ public class ComponentSearchBar extends ComponentBookMark {
 					GlStateManager.disableLighting();
 					GlStateManager.disableCull();
 					GlStateManager.enableAlpha();
+					GlStateManager.disableTexture2D();
 
 					int indexStart = fontRenderer.getStringWidth(input.substring(0, Math.min(cursor, selectionCursor))) + text.getPos().getXi();
 					int indexEnd = fontRenderer.getStringWidth(input.substring(0, Math.max(cursor, selectionCursor))) + text.getPos().getXi();
@@ -320,6 +323,7 @@ public class ComponentSearchBar extends ComponentBookMark {
 
 					tessellator.draw();
 
+					GlStateManager.enableTexture2D();
 					GlStateManager.enableAlpha();
 					GlStateManager.popMatrix();
 				}
