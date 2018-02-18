@@ -7,6 +7,7 @@ import com.teamwizardry.librarianlib.features.gui.components.ComponentText;
 import com.teamwizardry.librarianlib.features.math.Vec2d;
 import eladkay.quaeritum.client.gui.book.GuiBook;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.NotNull;
@@ -16,10 +17,10 @@ import java.util.List;
 
 public class PageText implements Page {
 
-	private String text;
+	private String key;
 
 	public PageText(JsonObject jsonElement) {
-		text = jsonElement.getAsJsonPrimitive("text").toString();
+		key = jsonElement.getAsJsonPrimitive("key").toString();
 	}
 
 	@NotNull
@@ -30,14 +31,15 @@ public class PageText implements Page {
 
 	@Override
 	public List<String> getSearchableKeys() {
-		return Lists.newArrayList();
+		return Lists.newArrayList(key);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public List<GuiComponent> createBookComponents(GuiBook book, Vec2d size) {
 		List<GuiComponent> pages = new ArrayList<>();
-		if (text == null) return pages;
+
+		String text = I18n.format(key);
 
 		List<String> list = Minecraft.getMinecraft().fontRenderer.listFormattedStringToWidth(text, 2200);
 

@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.function.Function;
 
-public class PageProviderRegistry {
+public class PageTypes {
 
 	private static final HashMap<String, Function<JsonObject, Page>> pageProviders = new HashMap<>();
 

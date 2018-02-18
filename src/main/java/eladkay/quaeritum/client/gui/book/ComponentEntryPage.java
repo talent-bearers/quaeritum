@@ -7,7 +7,6 @@ import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentSprite;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentText;
 import eladkay.quaeritum.api.book.hierarchy.page.Page;
-import eladkay.quaeritum.api.book.hierarchy.page.PageInstanceFactory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -70,7 +69,7 @@ public class ComponentEntryPage extends BookGuiComponent {
 			for (int i = 0; i < entryContentArray.size(); i++) {
 				JsonElement element = entryContentArray.get(i);
 
-				Page pageInstance = PageInstanceFactory.getPage(element);
+				Page pageInstance = PageGenerator.getPage(element);
 
 				if (pageInstance == null) continue;
 

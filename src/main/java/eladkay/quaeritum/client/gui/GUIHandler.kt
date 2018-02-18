@@ -25,7 +25,7 @@ object GUIHandler : IGuiHandler {
         } else if (ID == GUI_CODEX) {
             return GuiCodex()
         } else if (ID == GUI_BOOK)
-            return GuiBook("documentation/categories.json", Color(0xff548f), Color.CYAN)
+            return GuiBook("book/categories.json", Color(0xff548f), Color.CYAN)
         return null
     }
 
