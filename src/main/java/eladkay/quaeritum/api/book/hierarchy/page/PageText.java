@@ -1,6 +1,7 @@
-package eladkay.quaeritum.api.book.pageinstance;
+package eladkay.quaeritum.api.book.hierarchy.page;
 
-import com.google.gson.JsonElement;
+import com.google.common.collect.Lists;
+import com.google.gson.JsonObject;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentText;
 import com.teamwizardry.librarianlib.features.math.Vec2d;
@@ -8,30 +9,28 @@ import eladkay.quaeritum.client.gui.book.GuiBook;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PageText extends PageInstance {
+public class PageText implements Page {
 
 	private String text;
 
-	public PageText(JsonElement jsonElement) {
-		super(jsonElement);
-
-		if (!jsonElement.isJsonPrimitive()) return;
-
-		text = jsonElement.getAsJsonPrimitive().getAsString();
+	public PageText(JsonObject jsonElement) {
+		text = jsonElement.getAsJsonPrimitive("text").toString();
 	}
 
+	@NotNull
 	@Override
 	public String getType() {
 		return "text";
 	}
 
 	@Override
-	public String getCachableString() {
-		return text;
+	public List<String> getSearchableKeys() {
+		return Lists.newArrayList();
 	}
 
 	@Override
@@ -51,8 +50,6 @@ public class PageText extends PageInstance {
 			sectionComponent.getUnicode().setValue(true);
 
 			pages.add(sectionComponent);
-
-			//if (cache) contentCache.append("\n").append(section);
 		}
 		return pages;
 	}

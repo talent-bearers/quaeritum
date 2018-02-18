@@ -1,4 +1,4 @@
-package eladkay.quaeritum.api.structure;
+package eladkay.quaeritum.api.book.structure;
 
 import com.google.common.collect.HashMultimap;
 import com.teamwizardry.librarianlib.features.kotlin.ClientUtilMethods;

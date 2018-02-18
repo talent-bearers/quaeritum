@@ -16,13 +16,12 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.crafting.IShapedRecipe;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.util.Iterator;
 import java.util.List;
-import java.util.function.Consumer;
 
 import static eladkay.quaeritum.client.gui.book.GuiBook.ARROW_HOME_PRESSED;
 import static org.lwjgl.opengl.GL11.GL_SMOOTH;
@@ -30,22 +29,14 @@ import static org.lwjgl.opengl.GL11.GL_SMOOTH;
 public class ComponentRecipe extends GuiComponent {
 
 	/**
-	 * Will render a default recipe grid if item is not null.
-	 * If item is null, use the lambda and deal with recipes yourself.
-	 * HAVE FUN WITH THAT.
+	 * Will render a default recipe grid.
 	 *
-	 * @param item                 The item string like "some_mod:some_item"
-	 * @param manualRecipeHandling Handle all the shit yourself. Will not override regular crafting if item is not null
+	 * @param key                 The recipe name.
 	 */
-	public ComponentRecipe(int posX, int posY, int width, int height, Color mainColor, @Nullable String item, @Nullable Consumer<ComponentRecipe> manualRecipeHandling) {
+	public ComponentRecipe(int posX, int posY, int width, int height, Color mainColor, @NotNull ResourceLocation key) {
 		super(posX, posY, width, height);
 
-		if (item == null) {
-			if (manualRecipeHandling != null) manualRecipeHandling.accept(this);
-			return;
-		}
-
-		IRecipe recipe = ForgeRegistries.RECIPES.getValue(new ResourceLocation(item));
+		IRecipe recipe = ForgeRegistries.RECIPES.getValue(key);
 
 		if (recipe == null) return;
 		GhostRecipe ghostRecipe = createGhostRecipe(recipe, Minecraft.getMinecraft().player.openContainer.inventorySlots);

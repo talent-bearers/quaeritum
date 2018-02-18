@@ -6,8 +6,8 @@ import com.google.gson.JsonObject;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentSprite;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentText;
-import eladkay.quaeritum.api.book.pageinstance.PageInstance;
-import eladkay.quaeritum.api.book.pageinstance.PageInstanceFactory;
+import eladkay.quaeritum.api.book.hierarchy.page.Page;
+import eladkay.quaeritum.api.book.hierarchy.page.PageInstanceFactory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -70,7 +70,7 @@ public class ComponentEntryPage extends BookGuiComponent {
 			for (int i = 0; i < entryContentArray.size(); i++) {
 				JsonElement element = entryContentArray.get(i);
 
-				PageInstance pageInstance = PageInstanceFactory.INSTANCE.getPage(element);
+				Page pageInstance = PageInstanceFactory.getPage(element);
 
 				if (pageInstance == null) continue;
 
@@ -82,7 +82,7 @@ public class ComponentEntryPage extends BookGuiComponent {
 						pageComponent.setVisible(false);
 					}
 
-					contentCache.append("\n").append(pageInstance.getCachableString());
+					contentCache.append("\n").append(pageInstance.getSearchableStrings());
 
 					add(pageComponent);
 					pages.put(page++, pageComponent);
