@@ -29,24 +29,24 @@ public class ComponentCategory extends BookGuiComponent {
     private final Category category;
 
     public ComponentCategory(int posX, int posY, int width, int height, GuiBook book, @Nonnull Category category) {
-        super(posX, posY, width, height, book, book.MAIN_INDEX);
+        super(posX, posY, width, height, book, book.centralIndex);
         this.category = category;
 
         JsonElement icon = category.icon;
         String title = I18n.format(category.titleKey);
         String description = I18n.format(category.descKey);
 
-        BookGuiComponent linkComponent = new ComponentIndexPage(book, book.MAIN_INDEX, category);
+        BookGuiComponent linkComponent = new ComponentIndexPage(book, book.centralIndex, category);
 
-        book.COMPONENT_BOOK.add(linkComponent);
+        book.bookComponent.add(linkComponent);
         linkComponent.setVisible(false);
 
         BUS.hook(GuiComponentEvents.MouseClickEvent.class, (event) -> {
             if (getLinkingParent() != null) {
                 linkComponent.setLinkingParent(getLinkingParent());
-                book.FOCUSED_COMPONENT.setVisible(false);
-                book.FOCUSED_COMPONENT = linkComponent;
-                book.FOCUSED_COMPONENT.setVisible(true);
+                book.focus.setVisible(false);
+                book.focus = linkComponent;
+                book.focus.setVisible(true);
             }
         });
 

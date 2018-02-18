@@ -27,7 +27,7 @@ public class ComponentSearchResults extends BookGuiComponent {
 	private final int margin = 16;
 
 	public ComponentSearchResults(GuiBook book, BookGuiComponent parent) {
-		super(16, 16, book.COMPONENT_BOOK.getSize().getXi() - 32, book.COMPONENT_BOOK.getSize().getYi() - 32, book, parent);
+		super(16, 16, book.bookComponent.getSize().getXi() - 32, book.bookComponent.getSize().getYi() - 32, book, parent);
 
 		pageHeader = new ComponentText(0, 0, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.TOP);
 		pageHeader.getText().setValue("No results found!");

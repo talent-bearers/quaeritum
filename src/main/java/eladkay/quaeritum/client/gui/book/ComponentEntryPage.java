@@ -32,7 +32,7 @@ public class ComponentEntryPage extends BookGuiComponent {
 	private ComponentNavBar navBar;
 
 	public ComponentEntryPage(GuiBook book, BookGuiComponent parent, Entry entry, boolean cache) {
-		super(16, 16, book.COMPONENT_BOOK.getSize().getXi() - 32, book.COMPONENT_BOOK.getSize().getYi() - 32, book, parent);
+		super(16, 16, book.bookComponent.getSize().getXi() - 32, book.bookComponent.getSize().getYi() - 32, book, parent);
 		this.entry = entry;
 
 		this.title = I18n.format(entry.titleKey);

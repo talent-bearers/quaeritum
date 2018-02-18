@@ -44,9 +44,9 @@ public class GuiBook extends GuiBase {
 	public final Color mainColor;
 	public final Color highlightColor;
 
-	public ComponentSprite COMPONENT_BOOK;
-	public BookGuiComponent MAIN_INDEX;
-	public BookGuiComponent FOCUSED_COMPONENT;
+	public ComponentSprite bookComponent;
+	public BookGuiComponent centralIndex;
+	public BookGuiComponent focus;
 	public HashMap<BookGuiComponent, String> contentCache = new HashMap<>();
 
 	public GuiBook(Book book) {
@@ -55,13 +55,13 @@ public class GuiBook extends GuiBase {
 		this.mainColor = book.bookColor;
 		this.highlightColor = book.highlightColor;
 
-		COMPONENT_BOOK = new ComponentSprite(BOOK, 0, 0);
-		COMPONENT_BOOK.getColor().setValue(mainColor.darker());
+		bookComponent = new ComponentSprite(BOOK, 0, 0);
+		bookComponent.getColor().setValue(mainColor.darker());
 
 		ComponentSprite bookFilling = new ComponentSprite(BOOK_FILLING, 0, 0);
-		COMPONENT_BOOK.add(bookFilling);
+		bookComponent.add(bookFilling);
 
-		//COMPONENT_BOOK.BUS.hook(GuiComponentEvents.PostDrawEvent.class, event -> {
+		//bookComponent.BUS.hook(GuiComponentEvents.PostDrawEvent.class, event -> {
 		//	GlStateManager.pushMatrix();
 		//	GlStateManager.color(mainColor.getRed(), mainColor.getGreen(), mainColor.getBlue());
 //
@@ -71,17 +71,17 @@ public class GuiBook extends GuiBase {
 		//	GlStateManager.popMatrix();
 		//});
 
-		getMainComponents().add(COMPONENT_BOOK);
+		getMainComponents().add(bookComponent);
 
-		FOCUSED_COMPONENT = MAIN_INDEX = new ComponentMainIndex(0, 0, COMPONENT_BOOK.getSize().getXi(), COMPONENT_BOOK.getSize().getYi(), this, null);
-		COMPONENT_BOOK.add(MAIN_INDEX);
+		focus = centralIndex = new ComponentMainIndex(0, 0, bookComponent.getSize().getXi(), bookComponent.getSize().getYi(), this, null);
+		bookComponent.add(centralIndex);
 	}
 
 	public Consumer<String> searchImplementation(ComponentSearchResults searchResultsComponent) {
 		return type -> {
 
-			if (FOCUSED_COMPONENT != searchResultsComponent)
-				searchResultsComponent.setLinkingParent(FOCUSED_COMPONENT);
+			if (focus != searchResultsComponent)
+				searchResultsComponent.setLinkingParent(focus);
 
 			String query = type.replace("'", "").toLowerCase(Locale.ROOT);
 			String[] keywords = query.split(" ");
@@ -170,9 +170,9 @@ public class GuiBook extends GuiBase {
 				}
 			}
 
-			FOCUSED_COMPONENT.setVisible(false);
-			FOCUSED_COMPONENT = searchResultsComponent;
-			FOCUSED_COMPONENT.setVisible(true);
+			focus.setVisible(false);
+			focus = searchResultsComponent;
+			focus.setVisible(true);
 		};
 	}
 

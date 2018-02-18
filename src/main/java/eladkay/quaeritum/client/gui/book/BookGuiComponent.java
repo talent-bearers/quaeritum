@@ -55,7 +55,7 @@ public abstract class BookGuiComponent extends GuiComponent {
 
 	@Nullable
 	public BookGuiComponent getLinkingParent() {
-		return parent == null ? book.MAIN_INDEX : parent;
+		return parent == null ? book.centralIndex : parent;
 	}
 
 	public void setLinkingParent(@Nonnull BookGuiComponent component) {
@@ -73,9 +73,9 @@ public abstract class BookGuiComponent extends GuiComponent {
 		if (extra != null) extra.accept(indexButton);
 
 		indexButton.BUS.hook(GuiComponentEvents.MouseClickEvent.class, event -> {
-			book.FOCUSED_COMPONENT.setVisible(false);
-			book.FOCUSED_COMPONENT = this;
-			book.FOCUSED_COMPONENT.setVisible(true);
+			book.focus.setVisible(false);
+			book.focus = this;
+			book.focus.setVisible(true);
 			update();
 		});
 

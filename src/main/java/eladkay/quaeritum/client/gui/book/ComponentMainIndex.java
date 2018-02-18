@@ -45,12 +45,12 @@ public class ComponentMainIndex extends BookGuiComponent {
 
 		// --------- SEARCH BAR --------- //
 		{
-			ComponentSearchResults searchResultsComponent = new ComponentSearchResults(book, book.FOCUSED_COMPONENT);
+			ComponentSearchResults searchResultsComponent = new ComponentSearchResults(book, book.focus);
 			searchResultsComponent.setVisible(false);
-			book.COMPONENT_BOOK.add(searchResultsComponent);
+			book.bookComponent.add(searchResultsComponent);
 
 			ComponentSearchBar bar = new ComponentSearchBar(book, 0, book.searchImplementation(searchResultsComponent), null);
-			book.COMPONENT_BOOK.add(bar);
+			book.bookComponent.add(bar);
 		}
 		// --------- SEARCH BAR --------- //
 

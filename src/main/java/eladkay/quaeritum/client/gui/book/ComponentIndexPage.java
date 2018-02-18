@@ -27,7 +27,7 @@ public class ComponentIndexPage extends BookGuiComponent {
 	private ComponentNavBar navBar;
 
 	public ComponentIndexPage(GuiBook book, BookGuiComponent parent, Category category) {
-		super(16, 16, book.COMPONENT_BOOK.getSize().getXi() - 32, book.COMPONENT_BOOK.getSize().getYi() - 32, book, parent);
+		super(16, 16, book.bookComponent.getSize().getXi() - 32, book.bookComponent.getSize().getYi() - 32, book, parent);
 		this.category = category;
 
 		this.title = I18n.format(category.titleKey);
@@ -47,7 +47,7 @@ public class ComponentIndexPage extends BookGuiComponent {
 
 			contentComponent.setLinkingParent(this);
 			contentComponent.setVisible(false);
-			book.COMPONENT_BOOK.add(contentComponent);
+			book.bookComponent.add(contentComponent);
 
 			GuiComponent indexButton = contentComponent.createIndexButton(count, book, null);
 			pageComponent.add(indexButton);
