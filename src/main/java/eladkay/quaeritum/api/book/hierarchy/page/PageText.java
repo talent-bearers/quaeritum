@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentText;
 import com.teamwizardry.librarianlib.features.math.Vec2d;
+import eladkay.quaeritum.api.book.hierarchy.entry.Entry;
 import eladkay.quaeritum.client.gui.book.GuiBook;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
@@ -18,9 +19,16 @@ import java.util.List;
 public class PageText implements Page {
 
 	private final String key;
+	private final Entry entry;
 
-	public PageText(JsonObject jsonElement) {
+	public PageText(Entry entry, JsonObject jsonElement) {
+		this.entry = entry;
 		key = jsonElement.getAsJsonPrimitive("value").getAsString();
+	}
+
+	@Override
+	public @NotNull Entry getEntry() {
+		return entry;
 	}
 
 	@NotNull

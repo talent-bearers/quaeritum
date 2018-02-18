@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
 import com.teamwizardry.librarianlib.features.math.Vec2d;
+import eladkay.quaeritum.api.book.hierarchy.entry.Entry;
 import eladkay.quaeritum.api.book.provider.PageTypes;
 import eladkay.quaeritum.client.gui.book.GuiBook;
 import net.minecraftforge.fml.relauncher.Side;
@@ -12,9 +13,12 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 public interface Page {
+
+	@NotNull
+	Entry getEntry();
 
 	@NotNull
 	String getType();
@@ -32,10 +36,10 @@ public interface Page {
 	@SideOnly(Side.CLIENT)
 	List<GuiComponent> createBookComponents(GuiBook book, Vec2d size);
 
-	static Page fromJson(JsonElement element) {
+	static Page fromJson(Entry entry, JsonElement element) {
 		try {
 			JsonObject obj = null;
-			Function<JsonObject, Page> provider = null;
+			BiFunction<Entry, JsonObject, Page> provider = null;
 			if (element.isJsonPrimitive()) {
 				provider = PageTypes.getPageProvider("text");
 				obj = new JsonObject();
@@ -49,7 +53,7 @@ public interface Page {
 			if (obj == null || provider == null)
 				return null;
 
-			return provider.apply(obj);
+			return provider.apply(entry, obj);
 		} catch (Exception error) {
 			error.printStackTrace();
 			return null;

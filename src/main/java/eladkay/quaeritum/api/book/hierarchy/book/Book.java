@@ -77,8 +77,8 @@ public class Book {
             JsonArray allCategories = json.getAsJsonArray("categories");
             categories = Lists.newArrayList();
             for (JsonElement categoryJson : allCategories) {
-                Category category = Category.fromJson(location.getResourceDomain(), categoryJson.getAsJsonObject());
-                if (category != null)
+                Category category = new Category(this, categoryJson.getAsJsonObject());
+                if (category.isValid)
                     categories.add(category);
             }
         } catch (Exception error) {

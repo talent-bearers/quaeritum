@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.gson.JsonObject;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
 import com.teamwizardry.librarianlib.features.math.Vec2d;
+import eladkay.quaeritum.api.book.hierarchy.entry.Entry;
 import eladkay.quaeritum.api.book.structure.StructureCacheRegistry;
 import eladkay.quaeritum.client.gui.book.ComponentStructure;
 import eladkay.quaeritum.client.gui.book.GuiBook;
@@ -17,9 +18,16 @@ import java.util.List;
 public class PageStructure implements Page {
 
 	private final String structureName;
+	private final Entry entry;
 
-	public PageStructure(JsonObject object) {
+	public PageStructure(Entry entry, JsonObject object) {
+		this.entry = entry;
 		structureName = object.getAsJsonPrimitive("name").getAsString();
+	}
+
+	@Override
+	public @NotNull Entry getEntry() {
+		return entry;
 	}
 
 	@NotNull

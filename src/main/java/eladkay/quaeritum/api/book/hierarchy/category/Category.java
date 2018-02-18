@@ -6,7 +6,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import eladkay.quaeritum.api.book.hierarchy.book.Book;
 import eladkay.quaeritum.api.book.hierarchy.entry.Entry;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -15,46 +14,48 @@ import java.util.List;
  * Created at 10:19 PM on 2/17/18.
  */
 public class Category {
-    public final String modId;
+    public final Book book;
 
     public final List<Entry> entries;
     public final String titleKey;
     public final String descKey;
     public final JsonElement icon;
 
-    public Category(String modId, List<Entry> entries, String titleKey, String descKey, JsonElement icon) {
-        this.modId = modId;
-        this.entries = entries;
-        this.titleKey = titleKey;
-        this.descKey = descKey;
+    public boolean isValid = false;
+
+    public Category(Book book, JsonObject json) {
+        this.book = book;
+        String title = "";
+        String desc = "";
+        JsonElement icon = new JsonObject();
+        List<Entry> entries = Lists.newArrayList();
+
+        try {
+            title = json.getAsJsonPrimitive("title").getAsString();
+            desc = json.getAsJsonPrimitive("description").getAsString();
+            icon = json.get("icon");
+            JsonArray allEntries = json.getAsJsonArray("entries");
+            for (JsonElement entryJson : allEntries) {
+                JsonElement parsable = entryJson.isJsonPrimitive() ?
+                        Book.getJsonFromLink(entryJson.getAsString()) : entryJson;
+                Entry entry = new Entry(this, parsable.getAsJsonObject());
+                if (entry.isValid)
+                    entries.add(entry);
+            }
+            if (!entries.isEmpty())
+                isValid = true;
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+
+        this.titleKey = title;
+        this.descKey = desc;
         this.icon = icon;
+        this.entries = entries;
     }
 
     public boolean isSingleEntry() {
         return entries.size() == 1;
     }
 
-    @Nullable
-    public static Category fromJson(String modId, JsonObject json) {
-        try {
-            String title = json.getAsJsonPrimitive("title").getAsString();
-            String desc = json.getAsJsonPrimitive("description").getAsString();
-            JsonElement icon = json.get("icon");
-            JsonArray allEntries = json.getAsJsonArray("entries");
-            List<Entry> entries = Lists.newArrayList();
-            for (JsonElement entryJson : allEntries) {
-                JsonElement parsable = entryJson.isJsonPrimitive() ?
-                        Book.getJsonFromLink(entryJson.getAsString()) : entryJson;
-                Entry entry = Entry.fromJson(modId, parsable.getAsJsonObject());
-                if (entry != null)
-                    entries.add(entry);
-            }
-            if (entries.isEmpty())
-                return null;
-            return new Category(modId, entries, title, desc, icon);
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            return null;
-        }
-    }
 }

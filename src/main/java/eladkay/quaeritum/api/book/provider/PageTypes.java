@@ -1,6 +1,7 @@
 package eladkay.quaeritum.api.book.provider;
 
 import com.google.gson.JsonObject;
+import eladkay.quaeritum.api.book.hierarchy.entry.Entry;
 import eladkay.quaeritum.api.book.hierarchy.page.Page;
 import eladkay.quaeritum.api.book.hierarchy.page.PageRecipe;
 import eladkay.quaeritum.api.book.hierarchy.page.PageStructure;
@@ -10,11 +11,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 public class PageTypes {
 
-	private static final HashMap<String, Function<JsonObject, Page>> pageProviders = new HashMap<>();
+	private static final HashMap<String, BiFunction<Entry, JsonObject, Page>> pageProviders = new HashMap<>();
 
 	static {
 		registerPageProvider("text", PageText::new);
@@ -22,23 +23,23 @@ public class PageTypes {
 		registerPageProvider("structure", PageStructure::new);
 	}
 
-	public static void registerPageProvider(@NotNull String name, @NotNull Function<JsonObject, Page> provider) {
+	public static void registerPageProvider(@NotNull String name, @NotNull BiFunction<Entry, JsonObject, Page> provider) {
 		registerPageProvider(new ResourceLocation(name), provider);
 	}
 
-	public static void registerPageProvider(@NotNull ResourceLocation name, @NotNull Function<JsonObject, Page> provider) {
+	public static void registerPageProvider(@NotNull ResourceLocation name, @NotNull BiFunction<Entry, JsonObject, Page> provider) {
 		String key = name.toString();
 		if (!pageProviders.containsKey(key))
 			pageProviders.put(key, provider);
 	}
 
 	@Nullable
-	public static Function<JsonObject, Page> getPageProvider(@NotNull String type) {
+	public static BiFunction<Entry, JsonObject, Page> getPageProvider(@NotNull String type) {
 		return getPageProvider(new ResourceLocation(type));
 	}
 
 	@Nullable
-	public static Function<JsonObject, Page> getPageProvider(@NotNull ResourceLocation type) {
+	public static BiFunction<Entry, JsonObject, Page> getPageProvider(@NotNull ResourceLocation type) {
 		return pageProviders.getOrDefault(type.toString(), null);
 	}
 }
