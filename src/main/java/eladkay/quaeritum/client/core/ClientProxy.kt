@@ -47,7 +47,7 @@ class ClientProxy : CommonProxy() {
     override fun pre(e: FMLPreInitializationEvent) {
         super.pre(e)
         RenderSymbol
-        HudSymbolRenderer.INSTANCE
+        HudSymbolRenderer
         RemainingItemsRenderHandler
         LightningRenderer.INSTANCE
         RiftRenderer(Vec3d(0.0, 20.0, 0.0), RandUtil.nextLong(0, 10000))

@@ -44,7 +44,10 @@ object ChatChanger {
             UUID.fromString("d475af59-d73c-42be-90ed-f1a78f10d452") to EnumLegend.ELSEWHERE, // Tristaric
             UUID.fromString("95fe0728-e1bd-4989-a980-3d8976aedda9") to EnumLegend.DISDAIN, // WayOfFlowingTime
             UUID.fromString("b8ad70cc-5178-4369-af46-abfa329ce305") to EnumLegend.DECLARATION, // machinespray
-            UUID.fromString("7f6971c5-fb58-4519-a975-b1b5766e92d1") to EnumLegend.WONDER // HellfirePVP
+            UUID.fromString("7f6971c5-fb58-4519-a975-b1b5766e92d1") to EnumLegend.WONDER, // HellfirePVP
+            UUID.fromString("6a0e8505-1556-4ee9-bec0-6af32f05888d") to EnumLegend.DEEP, // 115kino
+            UUID.fromString("1d680bb6-2a9a-4f25-bf2f-a1af74361d69") to EnumLegend.DEEP, // KingPhygieBoo
+            UUID.fromString("4bfb28a3-005d-4fc9-9238-a55c6c17b575") to EnumLegend.DEEP // xJonL
     )
 
     var chatX = 0

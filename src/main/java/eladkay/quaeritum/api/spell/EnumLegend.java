@@ -101,7 +101,13 @@ public enum EnumLegend implements ISymbolCarrier {
     // Ancient of Wonder (HellfirePVP)
     WONDER(new Color(0x27E1EC), new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
             new LineSymbolInstruction(R2O2, 1 - R2O2, 0.5f, 0f),
-            new LineSymbolInstruction(1 - R2O2, 1 - R2O2, 0.5f, 0f));
+            new LineSymbolInstruction(1 - R2O2, 1 - R2O2, 0.5f, 0f)),
+    // Ancients of the Deep (Kino, Jon, and Bailey, the Glacidius Team)
+    DEEP(new Color(0x144694), new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
+            new LineSymbolInstruction(0.25f, 0.25f, 0.75f, 0.25f),
+            new LineSymbolInstruction(R2O2, 1 - R2O2, 0.6f, 1 - R2O2),
+            new LineSymbolInstruction(R2O2, 1 - R2O2 - 0.1f, 0.25f, 0.35f),
+            new LineSymbolInstruction(0.7f, 1 - R2O2, 0.4f, 1 - R2O2 - 0.3f));
 
     public final ISymbolInstruction[] symbolInstructions;
     @Nullable
