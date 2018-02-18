@@ -1,6 +1,9 @@
 {
   "title": "Welcome",
-  "icon": "quaeritum:textures/items/alloy_matrix.png",
+  "icon": {
+    "item": "quaeritum:resource",
+    "data": 4
+  },
   "description": "Welcome to Wizardry!",
   "type": "entry",
   "content": [

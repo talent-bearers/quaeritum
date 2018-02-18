@@ -1,22 +1,15 @@
 package eladkay.quaeritum.client.gui.book;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-import com.teamwizardry.librarianlib.core.LibrarianLib;
 import com.teamwizardry.librarianlib.features.gui.GuiBase;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentSprite;
 import com.teamwizardry.librarianlib.features.sprite.Sprite;
 import com.teamwizardry.librarianlib.features.sprite.Texture;
-import net.minecraft.client.Minecraft;
+import eladkay.quaeritum.api.book.hierarchy.book.Book;
 import net.minecraft.util.ResourceLocation;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nullable;
 import java.awt.*;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.Charset;
 import java.util.*;
 import java.util.List;
 import java.util.function.Consumer;
@@ -46,21 +39,21 @@ public class GuiBook extends GuiBase {
 	public static Sprite TITLE_BAR = GUIDE_BOOK_SHEET.getSprite("title_bar", 86, 11);
 	public static Sprite ERROR = new Sprite(new ResourceLocation(MOD_ID, "textures/gui/book/error/error.png"));
 	public static Sprite FOF = new Sprite(new ResourceLocation(MOD_ID, "textures/gui/book/error/fof.png"));
+
+	public final Book book;
 	public final Color mainColor;
 	public final Color highlightColor;
 
 	public ComponentSprite COMPONENT_BOOK;
-	private static String langname;
 	public BookGuiComponent MAIN_INDEX;
 	public BookGuiComponent FOCUSED_COMPONENT;
 	public HashMap<BookGuiComponent, String> contentCache = new HashMap<>();
 
-	public GuiBook(String location, Color mainColor, Color highlightColor) {
+	public GuiBook(Book book) {
 		super(146, 180);
-		this.mainColor = mainColor;
-		this.highlightColor = highlightColor;
-
-		langname = Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage().getLanguageCode().toLowerCase();
+		this.book = book;
+		this.mainColor = book.bookColor;
+		this.highlightColor = book.highlightColor;
 
 		COMPONENT_BOOK = new ComponentSprite(BOOK, 0, 0);
 		COMPONENT_BOOK.getColor().setValue(mainColor.darker());
@@ -80,25 +73,11 @@ public class GuiBook extends GuiBase {
 
 		getMainComponents().add(COMPONENT_BOOK);
 
-		FOCUSED_COMPONENT = MAIN_INDEX = new ComponentMainIndex(0, 0, location, COMPONENT_BOOK.getSize().getXi(), COMPONENT_BOOK.getSize().getYi(), this, null);
+		FOCUSED_COMPONENT = MAIN_INDEX = new ComponentMainIndex(0, 0, COMPONENT_BOOK.getSize().getXi(), COMPONENT_BOOK.getSize().getYi(), this, null);
 		COMPONENT_BOOK.add(MAIN_INDEX);
 	}
 
-	@Nullable
-	static JsonElement getJsonFromLink(String link) {
-		String updatedString = link;
-		if (link.contains("%LANG%")) updatedString = link.replace("%LANG%", langname);
-
-		InputStream stream = LibrarianLib.PROXY.getResource(MOD_ID, updatedString);
-
-		if (stream == null && !updatedString.equals(link)) stream = LibrarianLib.PROXY.getResource(MOD_ID, link);
-		if (stream == null) return null;
-
-		InputStreamReader reader = new InputStreamReader(stream, Charset.forName("UTF-8"));
-		return new JsonParser().parse(reader);
-	}
-
-	Consumer<String> defaultSearchImpl(ComponentSearchResults searchResultsComponent) {
+	public Consumer<String> searchImplementation(ComponentSearchResults searchResultsComponent) {
 		return type -> {
 
 			if (FOCUSED_COMPONENT != searchResultsComponent)

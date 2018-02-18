@@ -2,7 +2,7 @@ package eladkay.quaeritum.common.item
 
 import com.teamwizardry.librarianlib.features.base.item.IGlowingItem
 import com.teamwizardry.librarianlib.features.base.item.ItemMod
-import eladkay.quaeritum.client.gui.GUIHandler.GUI_BOOK
+import eladkay.quaeritum.client.gui.GUIHandler.GUI_CODEX
 import eladkay.quaeritum.common.Quaeritum
 import eladkay.quaeritum.common.lib.LibNames
 import net.minecraft.client.renderer.block.model.IBakedModel
@@ -26,7 +26,7 @@ class ItemCodex : ItemMod(LibNames.CODEX), IGlowingItem {
 
     override fun onItemRightClick(worldIn: World, playerIn: EntityPlayer, handIn: EnumHand): ActionResult<ItemStack> {
         val stack = playerIn.getHeldItem(handIn)
-        playerIn.openGui(Quaeritum.instance, GUI_BOOK, worldIn, 0, 0, 0)
+        playerIn.openGui(Quaeritum.instance, GUI_CODEX, worldIn, 0, 0, 0)
         return ActionResult(EnumActionResult.SUCCESS, stack)
     }
 

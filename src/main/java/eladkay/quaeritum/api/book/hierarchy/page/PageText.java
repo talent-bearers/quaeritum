@@ -17,10 +17,10 @@ import java.util.List;
 
 public class PageText implements Page {
 
-	private String key;
+	private final String key;
 
 	public PageText(JsonObject jsonElement) {
-		key = jsonElement.getAsJsonPrimitive("key").toString();
+		key = jsonElement.getAsJsonPrimitive("value").getAsString();
 	}
 
 	@NotNull
@@ -41,7 +41,7 @@ public class PageText implements Page {
 
 		String text = I18n.format(key);
 
-		List<String> list = Minecraft.getMinecraft().fontRenderer.listFormattedStringToWidth(text, 2200);
+		List<String> list = Minecraft.getMinecraft().fontRenderer.listFormattedStringToWidth(text, 118 * 16);
 
 		for (String section : list) {
 			if (section.trim().isEmpty()) continue;

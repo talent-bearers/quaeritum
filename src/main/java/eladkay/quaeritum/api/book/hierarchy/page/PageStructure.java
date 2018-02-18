@@ -16,7 +16,7 @@ import java.util.List;
 
 public class PageStructure implements Page {
 
-	private String structureName;
+	private final String structureName;
 
 	public PageStructure(JsonObject object) {
 		structureName = object.getAsJsonPrimitive("name").getAsString();

@@ -3,9 +3,11 @@ package eladkay.quaeritum.api.book.hierarchy.book;
 import com.google.common.collect.Lists;
 import com.google.gson.*;
 import com.teamwizardry.librarianlib.core.LibrarianLib;
+import com.teamwizardry.librarianlib.features.utilities.client.ClientRunnable;
 import eladkay.quaeritum.api.book.hierarchy.category.Category;
 import net.minecraft.util.ResourceLocation;
-import org.jetbrains.annotations.Nullable;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.awt.*;
 import java.io.InputStream;
@@ -13,46 +15,74 @@ import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.List;
 
+import static com.teamwizardry.librarianlib.features.helpers.CommonUtilMethods.getCurrentModId;
+
 /**
  * @author WireSegal
  * Created at 10:19 PM on 2/17/18.
  */
 public class Book {
-    public final String modId;
 
-    public final List<Category> categories;
-    public final String headerKey;
-    public final String subtitleKey;
-    public final Color bookColor;
-    public final Color highlightColor;
+    private static List<Book> allBooks = Lists.newArrayList();
+    public static boolean hasEverReloaded = false;
 
-    public Book(String modId, List<Category> categories, String headerKey, String subtitleKey, Color bookColor, Color highlightColor) {
-        this.modId = modId;
-        this.categories = categories;
-        this.headerKey = headerKey;
-        this.subtitleKey = subtitleKey;
-        this.bookColor = bookColor;
-        this.highlightColor = highlightColor;
+    static {
+        ClientRunnable.registerReloadHandler(new ClientRunnable() {
+            @Override
+            @SideOnly(Side.CLIENT)
+            public void runIfClient() {
+                hasEverReloaded = true;
+                for (Book book : allBooks)
+                    book.reload();
+            }
+        });
     }
 
-    @Nullable
-    public static Book fromJson(String modId, JsonObject json) {
+    public final ResourceLocation location;
+
+    public List<Category> categories;
+    public String headerKey;
+    public String subtitleKey;
+    public Color bookColor;
+    public Color highlightColor;
+
+    public Book(String name) {
+        this(new ResourceLocation(getCurrentModId(), name));
+    }
+
+    public Book(ResourceLocation location) {
+        this.location = location;
+
+        bookColor = Color.WHITE;
+        highlightColor = Color.WHITE;
+        headerKey = "";
+        subtitleKey = "";
+        categories = Lists.newArrayList();
+        allBooks.add(this);
+
+        if (hasEverReloaded)
+            reload();
+    }
+
+    public void reload() {
         try {
-            Color color = fromJsonElement(json.get("color"));
-            Color highlight = fromJsonElement(json.get("highlight"));
-            String header = json.getAsJsonPrimitive("title").getAsString();
-            String subtitle = json.getAsJsonPrimitive("subtitle").getAsString();
+            JsonElement jsonElement = getJsonFromLink(location);
+            if (jsonElement == null || !jsonElement.isJsonObject())
+                return;
+            JsonObject json = jsonElement.getAsJsonObject();
+            bookColor = fromJsonElement(json.get("color"));
+            highlightColor = fromJsonElement(json.get("highlight"));
+            headerKey = json.getAsJsonPrimitive("title").getAsString();
+            subtitleKey = json.getAsJsonPrimitive("subtitle").getAsString();
             JsonArray allCategories = json.getAsJsonArray("categories");
-            List<Category> categories = Lists.newArrayList();
+            categories = Lists.newArrayList();
             for (JsonElement categoryJson : allCategories) {
-                Category category = Category.fromJson(modId, categoryJson.getAsJsonObject());
+                Category category = Category.fromJson(location.getResourceDomain(), categoryJson.getAsJsonObject());
                 if (category != null)
                     categories.add(category);
             }
-            return new Book(modId, categories, header, subtitle, color, highlight);
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            return null;
+        } catch (Exception error) {
+            error.printStackTrace();
         }
     }
 

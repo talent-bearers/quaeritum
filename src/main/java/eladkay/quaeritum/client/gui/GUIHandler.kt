@@ -1,38 +1,44 @@
 package eladkay.quaeritum.client.gui
 
 import eladkay.quaeritum.client.gui.book.GuiBook
+import eladkay.quaeritum.client.gui.book.ItemModBook
 import eladkay.quaeritum.common.item.ItemReagentBag
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemBlock
 import net.minecraft.item.ItemStack
 import net.minecraft.world.World
 import net.minecraftforge.fml.common.network.IGuiHandler
-import java.awt.Color
 
 /**
  * @author WireSegal
  * Created at 1:49 PM on 7/29/17.
  */
 object GUIHandler : IGuiHandler {
-    val GUI_BAG = 0
-    val GUI_CODEX = 1
-    val GUI_BOOK = 2
+    const val GUI_BAG = 0
+    const val GUI_CODEX = 1
+    const val GUI_BOOK = 2
 
     override fun getClientGuiElement(ID: Int, player: EntityPlayer, world: World?, x: Int, y: Int, z: Int): Any? {
-        if (ID == GUI_BAG) {
-            val stack = getStack(player, ItemReagentBag::class.java)
-            // todo
-        } else if (ID == GUI_CODEX) {
-            return GuiCodex()
-        } else if (ID == GUI_BOOK)
-            return GuiBook("book/categories.json", Color(0xff548f), Color.CYAN)
+        when (ID) {
+            GUI_BAG -> {
+                val stack = getStack(player, ItemReagentBag::class.java)
+                // todo
+            }
+            GUI_CODEX -> return GuiCodex()
+            GUI_BOOK -> {
+                val stack = getStack(player, ItemModBook::class.java)
+                return GuiBook((stack.item as ItemModBook).book)
+            }
+        }
         return null
     }
 
     override fun getServerGuiElement(ID: Int, player: EntityPlayer, world: World?, x: Int, y: Int, z: Int): Any? {
-        if (ID == GUI_BAG) {
-            val stack = getStack(player, ItemReagentBag::class.java)
-            // todo
+        when (ID) {
+            GUI_BAG -> {
+                val stack = getStack(player, ItemReagentBag::class.java)
+                // todo
+            }
         }
         return null
     }

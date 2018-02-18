@@ -3,6 +3,8 @@ package eladkay.quaeritum.common.item
 import com.teamwizardry.librarianlib.core.LibrarianLib
 import com.teamwizardry.librarianlib.features.base.item.ItemMod
 import com.teamwizardry.librarianlib.features.base.item.ItemModSeed
+import eladkay.quaeritum.api.book.hierarchy.book.Book
+import eladkay.quaeritum.client.gui.book.ItemModBook
 import eladkay.quaeritum.common.ItemPassionDrive
 import eladkay.quaeritum.common.ItemTwinDrive
 import eladkay.quaeritum.common.ItemVibrancyDrive
@@ -15,6 +17,8 @@ import net.minecraft.item.ItemStack
 import net.minecraft.util.NonNullList
 
 object ModItems {
+
+    val bookData = Book("book")
 
     val dormant = ItemDormantSoulstone()
     val awakened = ItemAwakenedSoulstone()
@@ -42,7 +46,7 @@ object ModItems {
     val twinDrive = ItemTwinDrive()
     val oathScar = ItemOathScar()
 
-    val book = ItemMod("book")
+    val book = ItemModBook("book", bookData)
     val hiddenBook = object : ItemMod("riftbook") {
         override fun getSubItems(tab: CreativeTabs, subItems: NonNullList<ItemStack>) {
             // NO-OP

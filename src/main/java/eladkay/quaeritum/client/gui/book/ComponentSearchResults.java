@@ -1,5 +1,6 @@
 package eladkay.quaeritum.client.gui.book;
 
+import com.google.gson.JsonElement;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponentEvents;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentText;
@@ -207,7 +208,7 @@ public class ComponentSearchResults extends BookGuiComponent {
 
 	@Nullable
 	@Override
-	public String getIcon() {
+	public JsonElement getIcon() {
 		return null;
 	}
 

@@ -1,16 +1,17 @@
 package eladkay.quaeritum.client.gui.book;
 
-import com.google.gson.JsonArray;
+import com.google.common.collect.Lists;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentSprite;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentText;
+import eladkay.quaeritum.api.book.hierarchy.entry.Entry;
 import eladkay.quaeritum.api.book.hierarchy.page.Page;
+import net.minecraft.client.resources.I18n;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.HashMap;
+import java.util.List;
 
 import static eladkay.quaeritum.client.gui.book.GuiBook.TITLE_BAR;
 
@@ -20,10 +21,9 @@ import static eladkay.quaeritum.client.gui.book.GuiBook.TITLE_BAR;
  */
 public class ComponentEntryPage extends BookGuiComponent {
 
-	private final HashMap<Integer, GuiComponent> pages = new HashMap<>();
-	private final JsonObject entryObject;
-	@Nullable
-	private String icon;
+	private final List<GuiComponent> pages = Lists.newArrayList();
+	private final Entry entry;
+	private JsonElement icon;
 	private String title;
 	private String description;
 
@@ -31,65 +31,53 @@ public class ComponentEntryPage extends BookGuiComponent {
 
 	private ComponentNavBar navBar;
 
-	public ComponentEntryPage(GuiBook book, BookGuiComponent parent, JsonObject entryObject, boolean cache) {
+	public ComponentEntryPage(GuiBook book, BookGuiComponent parent, Entry entry, boolean cache) {
 		super(16, 16, book.COMPONENT_BOOK.getSize().getXi() - 32, book.COMPONENT_BOOK.getSize().getYi() - 32, book, parent);
-		this.entryObject = entryObject;
+		this.entry = entry;
 
-		if (entryObject.has("type") && entryObject.get("type").isJsonPrimitive()
-				&& entryObject.has("title") && entryObject.get("title").isJsonPrimitive()
-				&& entryObject.has("content") && entryObject.get("content").isJsonArray()
-				&& entryObject.has("icon") && entryObject.get("icon").isJsonPrimitive()
-				&& entryObject.has("description") && entryObject.get("description").isJsonPrimitive()) {
+		this.title = I18n.format(entry.titleKey);
+		this.description = I18n.format(entry.descKey);
+		this.icon = entry.icon;
 
-			String type = entryObject.getAsJsonPrimitive("type").getAsString();
-			if (!type.equals("entry")) return;
+		ComponentSprite titleBar = new ComponentSprite(TITLE_BAR,
+				(int) ((getSize().getX() / 2.0) - (TITLE_BAR.getWidth() / 2.0)),
+				-getPos().getXi() - 15);
+		titleBar.getColor().setValue(book.mainColor);
+		add(titleBar);
 
-			String icon = entryObject.getAsJsonPrimitive("icon").getAsString();
-			String title = entryObject.getAsJsonPrimitive("title").getAsString();
-			String description = entryObject.getAsJsonPrimitive("description").getAsString();
-			JsonArray entryContentArray = entryObject.getAsJsonArray("content");
+		ComponentText titleText = new ComponentText((int) (TITLE_BAR.getWidth() / 2.0), (int) (titleBar.getSize().getY() / 2.0) + 1, ComponentText.TextAlignH.CENTER, ComponentText.TextAlignV.MIDDLE);
+		titleText.getText().setValue(title);
+		titleBar.add(titleText);
 
-			this.title = title;
-			this.description = description;
-			this.icon = icon;
+		StringBuilder contentCache = new StringBuilder(title + "\n" + description);
 
-			ComponentSprite titleBar = new ComponentSprite(TITLE_BAR,
-					(int) ((getSize().getX() / 2.0) - (TITLE_BAR.getWidth() / 2.0)),
-					-getPos().getXi() - 15);
-			titleBar.getColor().setValue(book.mainColor);
-			add(titleBar);
+		boolean first = true;
+		for (Page page : entry.pages) {
 
-			ComponentText titleText = new ComponentText((int) (TITLE_BAR.getWidth() / 2.0), (int) (titleBar.getSize().getY() / 2.0) + 1, ComponentText.TextAlignH.CENTER, ComponentText.TextAlignV.MIDDLE);
-			titleText.getText().setValue(title);
-			titleBar.add(titleText);
+			for (GuiComponent pageComponent : page.createBookComponents(book, getSize())) {
 
-			StringBuilder contentCache = new StringBuilder(title + "\n" + description);
-
-			int page = 0;
-			for (int i = 0; i < entryContentArray.size(); i++) {
-				JsonElement element = entryContentArray.get(i);
-
-				Page pageInstance = PageGenerator.getPage(element);
-
-				if (pageInstance == null) continue;
-
-				for (GuiComponent pageComponent : pageInstance.createBookComponents(book, getSize())) {
-
-					if (page == 0) {
-						currentActive = pageComponent;
-					} else {
-						pageComponent.setVisible(false);
-					}
-
-					contentCache.append("\n").append(pageInstance.getSearchableStrings());
-
-					add(pageComponent);
-					pages.put(page++, pageComponent);
+				if (first) {
+					currentActive = pageComponent;
+					first = false;
+				} else {
+					pageComponent.setVisible(false);
 				}
-			}
 
-			if (cache) book.contentCache.put(this, contentCache.toString());
+				contentCache.append("\n");
+				List<String> searchables = page.getSearchableStrings();
+				if (searchables != null) for (String searchable : searchables)
+					contentCache.append(searchable).append(' ');
+				searchables = page.getSearchableKeys();
+				if (searchables != null) for (String searchable : searchables)
+					contentCache.append(I18n.format(searchable)).append(' ');
+
+				add(pageComponent);
+				pages.add(pageComponent);
+			}
 		}
+
+		if (cache) book.contentCache.put(this, contentCache.toString());
+
 
 		navBar = new ComponentNavBar(book, this, (getSize().getXi() / 2) - 35, getSize().getYi() + 16, 70, pages.size() - 1);
 		add(navBar);
@@ -111,7 +99,7 @@ public class ComponentEntryPage extends BookGuiComponent {
 
 	@Nullable
 	@Override
-	public String getIcon() {
+	public JsonElement getIcon() {
 		return icon;
 	}
 
@@ -127,6 +115,6 @@ public class ComponentEntryPage extends BookGuiComponent {
 	@Nonnull
 	@Override
 	public BookGuiComponent clone() {
-		return new ComponentEntryPage(getBook(), getLinkingParent(), entryObject, false);
+		return new ComponentEntryPage(getBook(), getLinkingParent(), entry, false);
 	}
 }

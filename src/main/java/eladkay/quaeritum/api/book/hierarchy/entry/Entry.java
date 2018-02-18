@@ -5,9 +5,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import eladkay.quaeritum.api.book.hierarchy.page.Page;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.crafting.CraftingHelper;
-import net.minecraftforge.common.crafting.JsonContext;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -22,9 +19,9 @@ public class Entry {
     public final List<Page> pages;
     public final String titleKey;
     public final String descKey;
-    public final ItemStack icon;
+    public final JsonElement icon;
 
-    public Entry(String modId, List<Page> pages, String titleKey, String descKey, ItemStack icon) {
+    public Entry(String modId, List<Page> pages, String titleKey, String descKey, JsonElement icon) {
         this.modId = modId;
         this.pages = pages;
         this.titleKey = titleKey;
@@ -37,7 +34,7 @@ public class Entry {
         try {
             String title = json.getAsJsonPrimitive("title").getAsString();
             String desc = json.getAsJsonPrimitive("description").getAsString();
-            ItemStack icon = CraftingHelper.getItemStack(json.getAsJsonObject("icon"), new JsonContext(modId));
+            JsonElement icon = json.get("icon");
             JsonArray allPages = json.getAsJsonArray("content");
             List<Page> pages = Lists.newArrayList();
             for (JsonElement pageJson : allPages) {

@@ -1,8 +1,10 @@
 {
-  "icon": "quaeritum:textures/items/argentus.png",
+  "icon": {
+    "item": "quaeritum:essence",
+    "data": 5
+  },
   "title": "Mana",
   "description": "Learn about what mana is and why you want it so badly.",
-  "type": "entry",
   "content": [
     "Of all the energy sources a wizard can draw on, mana is the safest and most available. Although it takes a trained wizard to manipulate it, crystal clear pools of this watery liquid can be found naturally. It can also manifest itself in people and objects, giving a trained wizard a constant source of energy to draw on. A mage who knows how to utilise mana is rarely powerless, and even if you are able to attack a fellow wizard when they are unprepared, they will still pose a threat.",
     "It is wise to beware the temptation to be too greedy, however; nothing covered by the art of wizardry comes without cost, and even good things can be dangerous in large doses. The dangers of mana come twofold.",

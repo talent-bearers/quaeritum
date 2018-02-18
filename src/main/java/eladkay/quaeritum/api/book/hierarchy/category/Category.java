@@ -6,7 +6,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import eladkay.quaeritum.api.book.hierarchy.book.Book;
 import eladkay.quaeritum.api.book.hierarchy.entry.Entry;
-import net.minecraft.util.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -21,9 +20,9 @@ public class Category {
     public final List<Entry> entries;
     public final String titleKey;
     public final String descKey;
-    public final ResourceLocation icon;
+    public final JsonElement icon;
 
-    public Category(String modId, List<Entry> entries, String titleKey, String descKey, ResourceLocation icon) {
+    public Category(String modId, List<Entry> entries, String titleKey, String descKey, JsonElement icon) {
         this.modId = modId;
         this.entries = entries;
         this.titleKey = titleKey;
@@ -36,7 +35,7 @@ public class Category {
         try {
             String title = json.getAsJsonPrimitive("title").getAsString();
             String desc = json.getAsJsonPrimitive("description").getAsString();
-            ResourceLocation icon = new ResourceLocation(json.getAsJsonPrimitive("icon").getAsString());
+            JsonElement icon = json.get("icon");
             JsonArray allEntries = json.getAsJsonArray("entries");
             List<Entry> entries = Lists.newArrayList();
             for (JsonElement entryJson : allEntries) {

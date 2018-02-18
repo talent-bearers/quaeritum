@@ -1,28 +1,26 @@
 package eladkay.quaeritum.client.gui.book;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentSprite;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentText;
 import com.teamwizardry.librarianlib.features.math.Vec2d;
+import eladkay.quaeritum.api.book.hierarchy.category.Category;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.resources.I18n;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 
 import static eladkay.quaeritum.client.gui.book.GuiBook.BANNER;
-import static eladkay.quaeritum.client.gui.book.GuiBook.getJsonFromLink;
 
 public class ComponentMainIndex extends BookGuiComponent {
 
-	private final String location;
 
-	public ComponentMainIndex(int posX, int posY, String location, int width, int height, @Nonnull GuiBook book, @Nullable BookGuiComponent parent) {
+	public ComponentMainIndex(int posX, int posY, int width, int height, @Nonnull GuiBook book, @Nullable BookGuiComponent parent) {
 		super(posX, posY, width, height, book, parent);
-		this.location = location;
 
 		// --------- BANNER --------- //
 		{
@@ -32,10 +30,10 @@ public class ComponentMainIndex extends BookGuiComponent {
 
 			FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
 			ComponentText componentBannerText = new ComponentText(20, 5, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.TOP);
-			componentBannerText.getText().setValue("Lexica Demoniaqa");
+			componentBannerText.getText().setValue(I18n.format(book.book.headerKey));
 			componentBannerText.getColor().setValue(book.highlightColor);
 
-			String subText = "- By Demoniaque";
+			String subText = I18n.format(book.book.subtitleKey);
 			ComponentText componentBannerSubText = new ComponentText(componentBanner.getSize().getXi() - 10, 2 + fontRenderer.FONT_HEIGHT, ComponentText.TextAlignH.RIGHT, ComponentText.TextAlignV.TOP);
 			componentBannerSubText.getText().setValue(subText);
 			componentBannerSubText.getUnicode().setValue(true);
@@ -51,7 +49,7 @@ public class ComponentMainIndex extends BookGuiComponent {
 			searchResultsComponent.setVisible(false);
 			book.COMPONENT_BOOK.add(searchResultsComponent);
 
-			ComponentSearchBar bar = new ComponentSearchBar(book, 0, book.defaultSearchImpl(searchResultsComponent), null);
+			ComponentSearchBar bar = new ComponentSearchBar(book, 0, book.searchImplementation(searchResultsComponent), null);
 			book.COMPONENT_BOOK.add(bar);
 		}
 		// --------- SEARCH BAR --------- //
@@ -60,22 +58,10 @@ public class ComponentMainIndex extends BookGuiComponent {
 		{
 
 			ArrayList<GuiComponent> categories = new ArrayList<>();
-
-			JsonElement json = getJsonFromLink(location);
-			if (json != null && json.isJsonArray()) {
-
-				for (JsonElement element : json.getAsJsonArray()) {
-					if (!element.isJsonPrimitive()) continue;
-
-					JsonElement indexElement = getJsonFromLink(element.getAsJsonPrimitive().getAsString());
-					if (indexElement == null || !indexElement.isJsonObject()) continue;
-
-					JsonObject cateogryObject = indexElement.getAsJsonObject();
-
-					ComponentCategory categoryComponent = new ComponentCategory(0, 0, 24, 24, book, cateogryObject);
-					add(categoryComponent);
-					categories.add(categoryComponent);
-				}
+			for (Category category : book.book.categories) {
+				ComponentCategory component = new ComponentCategory(0, 0, 24, 24, book, category);
+				add(component);
+				categories.add(component);
 			}
 
 			int row = 0;
@@ -113,7 +99,7 @@ public class ComponentMainIndex extends BookGuiComponent {
 
 	@Nullable
 	@Override
-	public String getIcon() {
+	public JsonElement getIcon() {
 		return null;
 	}
 
@@ -125,6 +111,6 @@ public class ComponentMainIndex extends BookGuiComponent {
 	@Nonnull
 	@Override
 	public BookGuiComponent clone() {
-		return new ComponentMainIndex(getPos().getXi(), getPos().getYi(), location, getSize().getXi(), getSize().getYi(), getBook(), getLinkingParent());
+		return new ComponentMainIndex(getPos().getXi(), getPos().getYi(), getSize().getXi(), getSize().getYi(), getBook(), getLinkingParent());
 	}
 }

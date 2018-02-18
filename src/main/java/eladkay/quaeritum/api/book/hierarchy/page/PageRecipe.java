@@ -15,7 +15,7 @@ import java.util.List;
 
 public class PageRecipe implements Page {
 
-	private ResourceLocation recipe;
+	private final ResourceLocation recipe;
 
 	public PageRecipe(JsonObject jsonElement) {
 		recipe = new ResourceLocation(jsonElement.getAsJsonPrimitive("recipe").getAsString());

@@ -1,5 +1,6 @@
 package eladkay.quaeritum.client.gui.book;
 
+import com.google.gson.JsonElement;
 import com.teamwizardry.librarianlib.core.client.ClientTickHandler;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponentEvents;
@@ -10,11 +11,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.common.crafting.CraftingHelper;
+import net.minecraftforge.common.crafting.JsonContext;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -24,6 +27,7 @@ import java.util.function.Consumer;
  * Property of Demoniaque.
  * All rights reserved.
  */
+@SideOnly(Side.CLIENT)
 public abstract class BookGuiComponent extends GuiComponent {
 
 	@Nonnull
@@ -47,7 +51,7 @@ public abstract class BookGuiComponent extends GuiComponent {
 	}
 
 	@Nullable
-	public abstract String getIcon();
+	public abstract JsonElement getIcon();
 
 	@Nullable
 	public BookGuiComponent getLinkingParent() {
@@ -90,51 +94,61 @@ public abstract class BookGuiComponent extends GuiComponent {
 				textComponent.getText().setValue(TextFormatting.RESET.toString() + getTitle());
 			});
 
-			if (getIcon() == null) return indexButton;
+			Runnable render = getRendererFor(getIcon());
 
-			Sprite iconSprite = null;
-			ItemStack stackIcon = ItemStack.EMPTY;
-			{
-				ResourceLocation iconLocation = new ResourceLocation(getIcon());
-				if (ForgeRegistries.ITEMS.containsKey(iconLocation)) {
-					Item itemIcon = ForgeRegistries.ITEMS.getValue(iconLocation);
-					if (itemIcon != null) stackIcon = new ItemStack(itemIcon);
-				} else iconSprite = new Sprite(iconLocation);
-			}
-
-			Sprite finalIconSprite = iconSprite;
-			ItemStack finalStackIcon = stackIcon;
-			indexButton.BUS.hook(GuiComponentEvents.PostDrawEvent.class, (event) -> {
-				if (finalIconSprite != null) {
-
-					GlStateManager.pushMatrix();
-					GlStateManager.color(1, 1, 1, 1);
-					GlStateManager.enableBlend();
-
-					finalIconSprite.getTex().bind();
-					finalIconSprite.draw((int) ClientTickHandler.getPartialTicks(), 0, 0, 16, 16);
-
-					GlStateManager.popMatrix();
-
-				} else if (finalStackIcon != null && !finalStackIcon.isEmpty()) {
-
-					GlStateManager.pushMatrix();
-					GlStateManager.enableBlend();
-					GlStateManager.enableRescaleNormal();
-					RenderHelper.enableGUIStandardItemLighting();
-
-					RenderItem itemRender = Minecraft.getMinecraft().getRenderItem();
-					itemRender.renderItemAndEffectIntoGUI(finalStackIcon, 0, 0);
-					itemRender.renderItemOverlays(Minecraft.getMinecraft().fontRenderer, finalStackIcon, 0, 0);
-
-					GlStateManager.enableAlpha();
-					RenderHelper.disableStandardItemLighting();
-					GlStateManager.popMatrix();
-				}
-			});
+			if (render != null)
+                indexButton.BUS.hook(GuiComponentEvents.PostDrawEvent.class, (event) -> {
+                    render.run();
+                });
 		}
 
 		return indexButton;
 	}
 
+	public static Runnable getRendererFor(JsonElement icon) {
+	    return getRendererFor(icon, false);
+	}
+
+    public static Runnable getRendererFor(JsonElement icon, boolean mask) {
+        if (icon == null) return null;
+
+        if (icon.isJsonPrimitive()) {
+            ResourceLocation iconLocation = new ResourceLocation(icon.getAsString());
+            Sprite sprite = new Sprite(new ResourceLocation(iconLocation.getResourceDomain(),
+                    "textures/" + iconLocation.getResourcePath() + ".png"));
+            return () -> renderSprite(sprite, mask);
+        } else if (icon.isJsonObject()) {
+            ItemStack stack = CraftingHelper.getItemStack(icon.getAsJsonObject(), new JsonContext("minecraft"));
+            if (!stack.isEmpty())
+                return () -> renderStack(stack);
+        }
+        return null;
+    }
+
+	private static void renderSprite(Sprite sprite, boolean mask) {
+		GlStateManager.pushMatrix();
+		GlStateManager.enableBlend();
+		if (!mask)
+            GlStateManager.color(1, 1, 1, 1);
+
+		sprite.getTex().bind();
+		sprite.draw((int) ClientTickHandler.getPartialTicks(), 0, 0, 16, 16);
+
+		GlStateManager.popMatrix();
+	}
+
+	private static void renderStack(ItemStack stack) {
+		GlStateManager.pushMatrix();
+		GlStateManager.enableBlend();
+		GlStateManager.enableRescaleNormal();
+		RenderHelper.enableGUIStandardItemLighting();
+
+		RenderItem itemRender = Minecraft.getMinecraft().getRenderItem();
+		itemRender.renderItemAndEffectIntoGUI(stack, 0, 0);
+		itemRender.renderItemOverlays(Minecraft.getMinecraft().fontRenderer, stack, 0, 0);
+
+		GlStateManager.enableAlpha();
+		RenderHelper.disableStandardItemLighting();
+		GlStateManager.popMatrix();
+	}
 }
