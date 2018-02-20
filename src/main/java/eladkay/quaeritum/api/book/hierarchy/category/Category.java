@@ -5,10 +5,11 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
-import com.teamwizardry.librarianlib.features.math.Vec2d;
 import eladkay.quaeritum.api.book.hierarchy.IBookElement;
 import eladkay.quaeritum.api.book.hierarchy.book.Book;
 import eladkay.quaeritum.api.book.hierarchy.entry.Entry;
+import eladkay.quaeritum.client.gui.book.ComponentCategoryPage;
+import eladkay.quaeritum.client.gui.book.ComponentEntryPage;
 import eladkay.quaeritum.client.gui.book.GuiBook;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -66,13 +67,15 @@ public class Category implements IBookElement {
     }
 
     @Override
-    public @Nullable IBookElement getParent() {
+    public @Nullable IBookElement getBookParent() {
         return book;
     }
 
     @SideOnly(Side.CLIENT)
     @Override
-    public GuiComponent createComponent(GuiBook book, Vec2d size) {
-        return null; // todo saad
+    public GuiComponent createComponent(GuiBook book) {
+        if (isSingleEntry())
+            return new ComponentEntryPage(book, entries.get(0));
+        return new ComponentCategoryPage(book, this);
     }
 }

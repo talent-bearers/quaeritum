@@ -10,6 +10,7 @@ import eladkay.quaeritum.client.gui.book.GuiBook;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.List;
@@ -44,10 +45,12 @@ public interface Page {
     @NotNull
     Entry getEntry();
 
+    @Nullable
     default Collection<String> getSearchableStrings() {
         return null;
     }
 
+    @Nullable
     default Collection<String> getSearchableKeys() {
         return null;
     }

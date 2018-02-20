@@ -1,7 +1,6 @@
 package eladkay.quaeritum.api.book.hierarchy;
 
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
-import com.teamwizardry.librarianlib.features.math.Vec2d;
 import eladkay.quaeritum.client.gui.book.GuiBook;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -13,8 +12,8 @@ import org.jetbrains.annotations.Nullable;
  */
 public interface IBookElement {
     @Nullable
-    IBookElement getParent();
+    IBookElement getBookParent();
 
     @SideOnly(Side.CLIENT)
-    GuiComponent createComponent(GuiBook book, Vec2d size);
+    GuiComponent createComponent(GuiBook book);
 }

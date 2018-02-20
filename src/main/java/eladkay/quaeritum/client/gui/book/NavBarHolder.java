@@ -7,39 +7,41 @@ import java.util.List;
 
 public abstract class NavBarHolder extends GuiComponent {
 
-	protected final List<GuiComponent> pages = Lists.newArrayList();
-	protected ComponentNavBar navBar;
-	protected GuiComponent currentActive;
-	private boolean first = true;
+    protected final List<GuiComponent> pages = Lists.newArrayList();
+    protected ComponentNavBar navBar;
+    protected GuiComponent currentActive;
+    private boolean first = true;
 
-	public NavBarHolder(int posX, int posY, int width, int height, GuiBook book) {
-		super(posX, posY, width, height);
+    public NavBarHolder(int posX, int posY, int width, int height, GuiBook book) {
+        super(posX, posY, width, height);
 
-		navBar = new ComponentNavBar(book, this, (getSize().getXi() / 2) - 35, getSize().getYi() + 16, 70, pages.size() - 1);
-		add(navBar);
+        navBar = new ComponentNavBar(book, (getSize().getXi() / 2) - 35, getSize().getYi() + 16, 70, pages.size());
+        add(navBar);
 
-		navBar.BUS.hook(EventNavBarChange.class, (navBarChange) -> {
-			update();
-		});
-	}
+        navBar.BUS.hook(EventNavBarChange.class, (navBarChange) -> {
+            update();
+        });
+    }
 
-	protected void addPage(GuiComponent pageComponent) {
-		if (first) {
-			currentActive = pageComponent;
-			first = false;
-		} else {
-			pageComponent.setVisible(false);
-		}
+    protected void addPage(GuiComponent pageComponent) {
+        if (first) {
+            currentActive = pageComponent;
+            first = false;
+        } else {
+            pageComponent.setVisible(false);
+        }
 
-		add(pageComponent);
-		pages.add(pageComponent);
-	}
+        add(pageComponent);
+        pages.add(pageComponent);
 
-	protected void update() {
-		if (currentActive != null) currentActive.setVisible(false);
+        navBar.maxPages = pages.size() - 1;
+    }
 
-		currentActive = pages.get(navBar.getPage());
+    protected void update() {
+        if (currentActive != null) currentActive.setVisible(false);
 
-		if (currentActive != null) currentActive.setVisible(true);
-	}
+        currentActive = pages.get(navBar.getPage());
+
+        if (currentActive != null) currentActive.setVisible(true);
+    }
 }

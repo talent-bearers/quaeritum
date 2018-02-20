@@ -5,8 +5,8 @@ import com.teamwizardry.librarianlib.features.gui.component.GuiComponentEvents;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentSprite;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentText;
 import com.teamwizardry.librarianlib.features.math.Vec2d;
-import eladkay.quaeritum.api.book.hierarchy.IBookElement;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.math.MathHelper;
 
 import java.awt.*;
@@ -21,116 +21,114 @@ import static eladkay.quaeritum.client.gui.book.GuiBook.*;
  */
 public class ComponentNavBar extends GuiComponent {
 
-	private int page = 0;
+    public int maxPages;
+    private int page = 0;
 
-	/**
-	 * @param navBarHolder The parent of holding this nav bar
-	 */
-	public ComponentNavBar(GuiBook book, GuiComponent navBarHolder, int posX, int posY, int width, int maxPages) {
-		super(posX, posY, width, 20);
+    public ComponentNavBar(GuiBook book, int posX, int posY, int width, int pageCount) {
+        super(posX, posY, width, 20);
 
-		ComponentSprite back = new ComponentSprite(ARROW_BACK, 0, (int) ((getSize().getY() / 2.0) - (ARROW_NEXT.getHeight() / 2.0)));
-		ComponentSprite home = new ComponentSprite(ARROW_HOME, (int) ((getSize().getX() / 2.0) - (ARROW_HOME.getWidth() / 2.0)), (int) ((getSize().getY() / 2.0) - (ARROW_NEXT.getHeight() / 2.0)));
-		ComponentSprite next = new ComponentSprite(ARROW_NEXT, (int) (getSize().getX() - ARROW_NEXT.getWidth()), (int) ((getSize().getY() / 2.0) - (ARROW_BACK.getHeight() / 2.0)));
-		add(back, next, home);
+        maxPages = Math.max(0, pageCount - 1);
 
-		if (maxPages > 1) {
-			ComponentText pageStringComponent = new ComponentText(0, 0, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.MIDDLE);
-			pageStringComponent.getUnicode().setValue(false);
+        ComponentSprite back = new ComponentSprite(ARROW_BACK, 0, (int) ((getSize().getY() / 2.0) - (ARROW_NEXT.getHeight() / 2.0)));
+        ComponentSprite home = new ComponentSprite(ARROW_HOME, (int) ((getSize().getX() / 2.0) - (ARROW_HOME.getWidth() / 2.0)), (int) ((getSize().getY() / 2.0) - (ARROW_NEXT.getHeight() / 2.0)));
+        ComponentSprite next = new ComponentSprite(ARROW_NEXT, (int) (getSize().getX() - ARROW_NEXT.getWidth()), (int) ((getSize().getY() / 2.0) - (ARROW_BACK.getHeight() / 2.0)));
+        add(back, next, home);
 
-			pageStringComponent.BUS.hook(GuiComponentEvents.ComponentTickEvent.class, event -> {
-				String pageString = (page + 1) + "/" + (maxPages + 1);
-				pageStringComponent.getText().setValue(pageString);
-				pageStringComponent.setPos(new Vec2d((getSize().getX() / 2.0) - (Minecraft.getMinecraft().fontRenderer.getStringWidth(pageString) / 2.0), (int) ((getSize().getY() / 2.0) - (ARROW_NEXT.getHeight() / 2.0)) + 15));
-			});
-			add(pageStringComponent);
-		}
+        if (maxPages > 1) {
+            ComponentText pageStringComponent = new ComponentText(0, 0, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.MIDDLE);
+            pageStringComponent.getUnicode().setValue(false);
 
-		home.BUS.hook(GuiComponentEvents.MouseInEvent.class, event -> {
-			home.setSprite(ARROW_HOME_PRESSED);
-			home.getColor().setValue(book.mainColor.brighter());
-		});
-		home.BUS.hook(GuiComponentEvents.MouseOutEvent.class, event -> {
-			home.setSprite(ARROW_HOME);
-			home.getColor().setValue(Color.WHITE);
-		});
-		List<String> homeTooltip = new ArrayList<>();
-		homeTooltip.add("Index");
-		home.render.getTooltip().setValue(homeTooltip);
+            pageStringComponent.BUS.hook(GuiComponentEvents.ComponentTickEvent.class, event -> {
+                String pageString = (page + 1) + "/" + (maxPages + 1);
+                pageStringComponent.getText().setValue(pageString);
+                pageStringComponent.setPos(new Vec2d((getSize().getX() / 2.0) - (Minecraft.getMinecraft().fontRenderer.getStringWidth(pageString) / 2.0), (int) ((getSize().getY() / 2.0) - (ARROW_NEXT.getHeight() / 2.0)) + 15));
+            });
+            add(pageStringComponent);
+        }
 
-		home.BUS.hook(GuiComponentEvents.MouseClickEvent.class, event -> {
+        home.BUS.hook(GuiComponentEvents.MouseInEvent.class, event -> {
+            home.setSprite(ARROW_HOME_PRESSED);
+            home.getColor().setValue(book.mainColor.brighter());
+        });
+        home.BUS.hook(GuiComponentEvents.MouseOutEvent.class, event -> {
+            home.setSprite(ARROW_HOME);
+            home.getColor().setValue(Color.WHITE);
+        });
+        List<String> homeTooltip = new ArrayList<>();
+        homeTooltip.add(I18n.format("librarianlib.book.nav.back"));
+        home.render.getTooltip().setValue(homeTooltip);
 
-			if (GuiBook.isShiftKeyDown()) {
-				book.focus.invalidate();
+        home.BUS.hook(GuiComponentEvents.MouseClickEvent.class, event -> {
+            if (GuiBook.isShiftKeyDown()) {
+                book.placeInFocus(book.book);
+            } else if (!book.history.empty()) {
+                book.forceInFocus(book.history.pop());
+            }
+        });
+        home.BUS.hook(GuiComponentEvents.ComponentTickEvent.class, event -> {
+            if (book.history.empty()) home.setVisible(false);
+            else home.setVisible(true);
+        });
 
-				book.focus = book.centralIndex = new ComponentMainIndex(0, 0, book.bookComponent.getSize().getXi(), book.bookComponent.getSize().getYi(), book);
-				book.bookComponent.add(book.centralIndex);
-			} else if (book.history.size() - 2 >= 0 && book.history.get(book.history.size() - 2) != null) {
-				IBookElement element = book.history.get(book.history.size() - 2);
+        back.BUS.hook(GuiComponentEvents.ComponentTickEvent.class, event -> {
+            int x = MathHelper.clamp(page - 1, 0, maxPages);
+            if (page == x) back.setVisible(false);
+            else back.setVisible(true);
 
-				book.bookComponent.add(book.focus = element.createComponent(book, book.bookComponent.getSize()));
-			}
-		});
+            if (!back.isVisible()) return;
 
-		back.BUS.hook(GuiComponentEvents.ComponentTickEvent.class, event -> {
-			int x = MathHelper.clamp(page - 1, 0, maxPages);
-			if (page == x) back.setVisible(false);
-			else back.setVisible(true);
+            if (event.component.getMouseOver()) {
+                back.setSprite(ARROW_BACK_PRESSED);
+                back.getColor().setValue(book.mainColor.brighter());
+            } else {
+                back.setSprite(ARROW_BACK);
+                back.getColor().setValue(Color.WHITE);
+            }
+        });
+        back.BUS.hook(GuiComponentEvents.MouseClickEvent.class, event -> {
+            int x = MathHelper.clamp(page - 1, 0, maxPages);
+            if (page == x) return;
 
-			if (!back.isVisible()) return;
+            page = x;
 
-			if (event.component.getMouseOver()) {
-				back.setSprite(ARROW_BACK_PRESSED);
-				back.getColor().setValue(book.mainColor.brighter());
-			} else {
-				back.setSprite(ARROW_BACK);
-				back.getColor().setValue(Color.WHITE);
-			}
-		});
-		back.BUS.hook(GuiComponentEvents.MouseClickEvent.class, event -> {
-			int x = MathHelper.clamp(page - 1, 0, maxPages);
-			if (page == x) return;
+            EventNavBarChange eventNavBarChange = new EventNavBarChange(page);
+            BUS.fire(eventNavBarChange);
+        });
+        List<String> backTooltip = new ArrayList<>();
+        backTooltip.add(I18n.format("librarianlib.book.nav.previous"));
+        back.render.getTooltip().setValue(backTooltip);
 
-			page = x;
+        next.BUS.hook(GuiComponentEvents.ComponentTickEvent.class, event -> {
+            int x = MathHelper.clamp(page + 1, 0, maxPages);
+            if (page == x) next.setVisible(false);
+            else next.setVisible(true);
 
-			EventNavBarChange eventNavBarChange = new EventNavBarChange(page);
-			BUS.fire(eventNavBarChange);
-		});
-		List<String> backTooltip = new ArrayList<>();
-		backTooltip.add("Back");
-		back.render.getTooltip().setValue(backTooltip);
+            if (!next.isVisible()) return;
 
-		next.BUS.hook(GuiComponentEvents.ComponentTickEvent.class, event -> {
-			int x = MathHelper.clamp(page + 1, 0, maxPages);
-			if (page == x) next.setVisible(false);
-			else next.setVisible(true);
+            if (event.component.getMouseOver()) {
+                next.setSprite(ARROW_NEXT_PRESSED);
+                next.getColor().setValue(book.mainColor.brighter());
+            } else {
+                next.setSprite(ARROW_NEXT);
+                next.getColor().setValue(Color.WHITE);
+            }
+        });
+        next.BUS.hook(GuiComponentEvents.MouseClickEvent.class, event -> {
+            int x = MathHelper.clamp(page + 1, 0, maxPages);
+            if (page == x) return;
 
-			if (!next.isVisible()) return;
+            page = x;
 
-			if (event.component.getMouseOver()) {
-				next.setSprite(ARROW_NEXT_PRESSED);
-				next.getColor().setValue(book.mainColor.brighter());
-			} else {
-				next.setSprite(ARROW_NEXT);
-				next.getColor().setValue(Color.WHITE);
-			}
-		});
-		next.BUS.hook(GuiComponentEvents.MouseClickEvent.class, event -> {
-			int x = MathHelper.clamp(page + 1, 0, maxPages);
-			if (page == x) return;
-
-			page = x;
-
-			EventNavBarChange eventNavBarChange = new EventNavBarChange(page);
-			BUS.fire(eventNavBarChange);
-		});
-		List<String> nextTooltip = new ArrayList<>();
-		nextTooltip.add("Next");
-		next.render.getTooltip().setValue(nextTooltip);
-	}
+            EventNavBarChange eventNavBarChange = new EventNavBarChange(page);
+            BUS.fire(eventNavBarChange);
+        });
+        List<String> nextTooltip = new ArrayList<>();
+        nextTooltip.add(I18n.format("librarianlib.book.nav.next"));
+        next.render.getTooltip().setValue(nextTooltip);
+    }
 
 
-	public int getPage() {
-		return page;
-	}
+    public int getPage() {
+        return page;
+    }
 }

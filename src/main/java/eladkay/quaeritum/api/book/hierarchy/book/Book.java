@@ -1,14 +1,18 @@
 package eladkay.quaeritum.api.book.hierarchy.book;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.gson.*;
 import com.teamwizardry.librarianlib.core.LibrarianLib;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
-import com.teamwizardry.librarianlib.features.math.Vec2d;
 import com.teamwizardry.librarianlib.features.utilities.client.ClientRunnable;
 import eladkay.quaeritum.api.book.hierarchy.IBookElement;
 import eladkay.quaeritum.api.book.hierarchy.category.Category;
+import eladkay.quaeritum.api.book.hierarchy.entry.Entry;
+import eladkay.quaeritum.api.book.hierarchy.page.Page;
+import eladkay.quaeritum.client.gui.book.ComponentMainIndex;
 import eladkay.quaeritum.client.gui.book.GuiBook;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -18,7 +22,9 @@ import java.awt.*;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import static com.teamwizardry.librarianlib.features.helpers.CommonUtilMethods.getCurrentModId;
 
@@ -49,9 +55,11 @@ public class Book implements IBookElement {
     public String subtitleKey;
     public Color bookColor;
     public Color highlightColor;
+
     public Book(String name) {
         this(new ResourceLocation(getCurrentModId(), name));
     }
+
     public Book(ResourceLocation location) {
         this.location = location;
 
@@ -114,14 +122,34 @@ public class Book implements IBookElement {
         }
     }
 
+    @SideOnly(Side.CLIENT)
+    public Map<Entry, String> getContentCache() {
+        Map<Entry, String> searchCache = Maps.newHashMap();
+        for (Category category : categories) {
+            for (Entry entry : category.entries) {
+                StringBuilder searchBuilder = new StringBuilder();
+                for (Page page : entry.pages) {
+                    Collection<String> searchable = page.getSearchableKeys();
+                    if (searchable != null) for (String key : searchable)
+                        searchBuilder.append(I18n.format(key)).append(' ');
+                    searchable = page.getSearchableStrings();
+                    if (searchable != null) for (String value : searchable)
+                        searchBuilder.append(value).append(' ');
+                }
+                searchCache.put(entry, searchBuilder.toString());
+            }
+        }
+        return searchCache;
+    }
+
     @Override
-    public @Nullable IBookElement getParent() {
+    public @Nullable IBookElement getBookParent() {
         return null;
     }
 
     @SideOnly(Side.CLIENT)
     @Override
-    public GuiComponent createComponent(GuiBook book, Vec2d size) {
-        return null; // todo saad
+    public GuiComponent createComponent(GuiBook book) {
+        return new ComponentMainIndex(book);
     }
 }

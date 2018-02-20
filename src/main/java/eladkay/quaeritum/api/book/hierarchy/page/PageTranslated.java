@@ -51,7 +51,7 @@ public class PageTranslated implements Page {
 
         String text = translations.getOrDefault(lang, defaultValue);
 
-        List<String> list = Minecraft.getMinecraft().fontRenderer.listFormattedStringToWidth(text, 118 * 16);
+        List<String> list = Minecraft.getMinecraft().fontRenderer.listFormattedStringToWidth(text, (size.getXi() + 16) * 18);
 
         for (String section : list) {
             if (section.trim().isEmpty()) continue;
