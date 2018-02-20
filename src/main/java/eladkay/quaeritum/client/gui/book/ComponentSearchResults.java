@@ -14,7 +14,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-public class ComponentSearchResults extends BookGuiComponent {
+public class ComponentSearchResults extends NavBarHolder {
 
     private final HashMap<Integer, GuiComponent> pages = new HashMap<>();
     private final int margin = 16;
@@ -22,9 +22,11 @@ public class ComponentSearchResults extends BookGuiComponent {
     private ComponentNavBar navBar = null;
     private ComponentText pageHeader;
     private ComponentVoid resultSection;
+    private GuiBook book;
 
-    public ComponentSearchResults(GuiBook book, BookGuiComponent parent) {
-        super(16, 16, book.bookComponent.getSize().getXi() - 32, book.bookComponent.getSize().getYi() - 32, book, parent);
+    public ComponentSearchResults(GuiBook book) {
+        super(16, 16, book.bookComponent.getSize().getXi() - 32, book.bookComponent.getSize().getYi() - 32, book);
+        this.book = book;
 
         pageHeader = new ComponentText(0, 0, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.TOP);
         pageHeader.getText().setValue("No results found!");
@@ -61,11 +63,10 @@ public class ComponentSearchResults extends BookGuiComponent {
             if (matchPercentage <= 0) continue;
 
             BookGuiComponent resultComponent = resultItem.getResultComponent().clone();
-            resultComponent.setLinkingParent(this);
 
             ComponentText textComponent = new ComponentText(25, Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT + 2, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.TOP);
 
-            GuiComponent indexButton = resultComponent.createIndexButton(count, getBook(), plate -> plate.add(textComponent));
+            GuiComponent indexButton = book.createIndexButton(count, , plate -> plate.add(textComponent));
             pageComponent.add(indexButton);
 
             // --------- HANDLE EXTRA TEXT COMPONENT --------- //
@@ -135,7 +136,7 @@ public class ComponentSearchResults extends BookGuiComponent {
 
             ComponentText textComponent = new ComponentText(25, Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT + 2, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.TOP);
 
-            GuiComponent indexButton = resultComponent.createIndexButton(count, getBook(), plate -> plate.add(textComponent));
+            GuiComponent indexButton = BookGuiComponent.createIndexButton(count, getBook(), plate -> plate.add(textComponent));
             pageComponent.add(indexButton);
 
             // --------- HANDLE EXTRA TEXT COMPONENT --------- //

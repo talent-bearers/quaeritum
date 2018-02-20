@@ -110,20 +110,17 @@ public abstract class BookGuiComponent extends GuiComponent {
     }
 
     public abstract void update();
-
     @Nonnull
     public abstract BookGuiComponent clone();
 
-    public GuiComponent createIndexButton(int indexID, GuiBook book, @Nullable Consumer<GuiComponent> extra) {
+    public static GuiComponent createIndexButton(int indexID, GuiBook book, @Nullable Consumer<GuiComponent> extra) {
         ComponentVoid indexButton = new ComponentVoid(0, 16 * indexID, getSize().getXi(), 16);
 
         if (extra != null) extra.accept(indexButton);
 
         indexButton.BUS.hook(GuiComponentEvents.MouseClickEvent.class, event -> {
-            book.focus.setVisible(false);
-            book.focus = this;
+            book.focus.invalidate();
             book.focus.setVisible(true);
-            update();
         });
 
         // SUB INDEX PLATE RENDERING

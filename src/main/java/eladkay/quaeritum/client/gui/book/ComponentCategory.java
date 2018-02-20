@@ -17,136 +17,101 @@ import net.minecraft.util.text.TextFormatting;
 import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
+import static eladkay.quaeritum.client.gui.book.BookGuiComponent.getRendererFor;
 import static org.lwjgl.opengl.GL11.GL_POLYGON_SMOOTH;
 
-public class ComponentCategory extends BookGuiComponent {
+public class ComponentCategory extends GuiComponent {
 
-    private final Category category;
+	public ComponentCategory(int posX, int posY, int width, int height, GuiBook book, @Nonnull Category category) {
+		super(posX, posY, width, height);
 
-    public ComponentCategory(int posX, int posY, int width, int height, GuiBook book, @Nonnull Category category) {
-        super(posX, posY, width, height, book, book.centralIndex);
-        this.category = category;
+		JsonElement icon = category.icon;
+		String title = I18n.format(category.titleKey);
+		String description = I18n.format(category.descKey);
 
-        JsonElement icon = category.icon;
-        String title = I18n.format(category.titleKey);
-        String description = I18n.format(category.descKey);
+		BUS.hook(GuiComponentEvents.MouseClickEvent.class, (event) -> {
+			GuiComponent linkedPageTo = category.isSingleEntry()
+					? new ComponentEntryPage(book, category.entries.get(0))
+					: new ComponentIndexPage(book, category);
 
-        BookGuiComponent linkComponent = category.isSingleEntry()
-                ? new ComponentEntryPage(book, book.centralIndex, category.entries.get(0), true)
-                : new ComponentIndexPage(book, book.centralIndex, category);
+			book.history.add(category.isSingleEntry() ? category.entries.get(0) : category);
+			book.focus.invalidate();
+			book.bookComponent.add(linkedPageTo);
+			book.focus = linkedPageTo;
+		});
 
-        book.bookComponent.add(linkComponent);
-        linkComponent.setVisible(false);
+		// ------- BUTTON RENDERING AND ANIMATION ------- //
+		Runnable iconMask = getRendererFor(icon, true);
+		{
+			BUS.hook(GuiComponentEvents.PostDrawEvent.class, (GuiComponentEvents.PostDrawEvent event) -> {
+				GlStateManager.color(0, 0, 0);
+				iconMask.run();
+			});
 
-        BUS.hook(GuiComponentEvents.MouseClickEvent.class, (event) -> {
-            if (getLinkingParent() != null) {
-                linkComponent.setLinkingParent(getLinkingParent());
-                book.focus.setVisible(false);
-                book.focus = linkComponent;
-                book.focus.setVisible(true);
-            }
-        });
+			render.getTooltip().func((Function<GuiComponent, List<String>>) guiComponent -> {
+				List<String> list = new ArrayList<>();
+				list.add(title);
+				list.add(TextFormatting.GRAY + description);
+				return list;
+			});
 
-        // ------- BUTTON RENDERING AND ANIMATION ------- //
-        Runnable iconMask = getRendererFor(icon, true);
-        {
-            BUS.hook(GuiComponentEvents.PostDrawEvent.class, (GuiComponentEvents.PostDrawEvent event) -> {
-                GlStateManager.color(0, 0, 0);
-                iconMask.run();
-            });
+			ComponentAnimatableVoid circleWipe = new ComponentAnimatableVoid(0, 0, 24, 24);
+			add(circleWipe);
+			circleWipe.getTransform().setTranslateZ(100);
 
-            render.getTooltip().func((Function<GuiComponent, List<String>>) guiComponent -> {
-                List<String> list = new ArrayList<>();
-                list.add(title);
-                list.add(TextFormatting.GRAY + description);
-                return list;
-            });
+			circleWipe.clipping.setClipToBounds(true);
+			circleWipe.clipping.setCustomClipping(() -> {
 
-            ComponentAnimatableVoid circleWipe = new ComponentAnimatableVoid(0, 0, 24, 24);
-            add(circleWipe);
-            circleWipe.getTransform().setTranslateZ(100);
+				GlStateManager.disableTexture2D();
+				GlStateManager.disableCull();
+				Tessellator tessellator = Tessellator.getInstance();
+				BufferBuilder buffer = tessellator.getBuffer();
+				buffer.begin(GL11.GL_TRIANGLE_FAN, DefaultVertexFormats.POSITION_COLOR);
+				for (int i = 0; i <= 10; i++) {
+					float angle = (float) (i * Math.PI * 2 / 10);
+					float x1 = (float) (12 + MathHelper.cos(angle) * circleWipe.animX);
+					float y1 = (float) (12 + MathHelper.sin(angle) * circleWipe.animX);
+					buffer.pos(x1, y1, 100).color(0f, 1f, 1f, 1f).endVertex();
+				}
+				tessellator.draw();
 
-            circleWipe.clipping.setClipToBounds(true);
-            circleWipe.clipping.setCustomClipping(() -> {
+				return Unit.INSTANCE;
+			});
 
-                GlStateManager.disableTexture2D();
-                GlStateManager.disableCull();
-                Tessellator tessellator = Tessellator.getInstance();
-                BufferBuilder buffer = tessellator.getBuffer();
-                buffer.begin(GL11.GL_TRIANGLE_FAN, DefaultVertexFormats.POSITION_COLOR);
-                for (int i = 0; i <= 10; i++) {
-                    float angle = (float) (i * Math.PI * 2 / 10);
-                    float x1 = (float) (12 + MathHelper.cos(angle) * circleWipe.animX);
-                    float y1 = (float) (12 + MathHelper.sin(angle) * circleWipe.animX);
-                    buffer.pos(x1, y1, 100).color(0f, 1f, 1f, 1f).endVertex();
-                }
-                tessellator.draw();
+			final double radius = 16;
 
-                return Unit.INSTANCE;
-            });
+			circleWipe.BUS.hook(GuiComponentEvents.MouseInEvent.class, event -> {
 
-            final double radius = 16;
+				BasicAnimation mouseInAnim = new BasicAnimation<>(circleWipe, "animX");
+				mouseInAnim.setDuration(10);
+				mouseInAnim.setEasing(Easing.easeOutQuint);
+				mouseInAnim.setTo(radius);
+				event.component.add(mouseInAnim);
+			});
 
-            circleWipe.BUS.hook(GuiComponentEvents.MouseInEvent.class, event -> {
+			circleWipe.BUS.hook(GuiComponentEvents.MouseOutEvent.class, event -> {
 
-                BasicAnimation mouseInAnim = new BasicAnimation<>(circleWipe, "animX");
-                mouseInAnim.setDuration(10);
-                mouseInAnim.setEasing(Easing.easeOutQuint);
-                mouseInAnim.setTo(radius);
-                event.component.add(mouseInAnim);
-            });
+				BasicAnimation mouseOutAnim = new BasicAnimation<>(circleWipe, "animX");
+				mouseOutAnim.setDuration(10);
+				mouseOutAnim.setEasing(Easing.easeOutQuint);
+				mouseOutAnim.setTo(0);
+				event.component.add(mouseOutAnim);
+			});
 
-            circleWipe.BUS.hook(GuiComponentEvents.MouseOutEvent.class, event -> {
-
-                BasicAnimation mouseOutAnim = new BasicAnimation<>(circleWipe, "animX");
-                mouseOutAnim.setDuration(10);
-                mouseOutAnim.setEasing(Easing.easeOutQuint);
-                mouseOutAnim.setTo(0);
-                event.component.add(mouseOutAnim);
-            });
-
-            circleWipe.BUS.hook(GuiComponentEvents.PostDrawEvent.class, (GuiComponentEvents.PostDrawEvent event) -> {
-                GlStateManager.color(book.highlightColor.getRed(), book.highlightColor.getGreen(), book.highlightColor.getBlue());
-                GlStateManager.enableAlpha();
-                GlStateManager.disableCull();
-                GL11.glEnable(GL_POLYGON_SMOOTH);
-                iconMask.run();
-                GL11.glDisable(GL_POLYGON_SMOOTH);
-                GlStateManager.enableCull();
-            });
-        }
-        // ------- BUTTON RENDERING AND ANIMATION ------- //
-    }
-
-    @Override
-    public String getTitle() {
-        return null;
-    }
-
-    @Override
-    public String getDescription() {
-        return null;
-    }
-
-    @Nullable
-    @Override
-    public JsonElement getIcon() {
-        return null;
-    }
-
-    @Override
-    public void update() {
-
-    }
-
-    @Nonnull
-    @Override
-    public BookGuiComponent clone() {
-        return new ComponentCategory(getPos().getXi(), getPos().getYi(), getSize().getXi(), getSize().getYi(), getBook(), category);
-    }
+			circleWipe.BUS.hook(GuiComponentEvents.PostDrawEvent.class, (GuiComponentEvents.PostDrawEvent event) -> {
+				GlStateManager.color(book.highlightColor.getRed(), book.highlightColor.getGreen(), book.highlightColor.getBlue());
+				GlStateManager.enableAlpha();
+				GlStateManager.disableCull();
+				GL11.glEnable(GL_POLYGON_SMOOTH);
+				iconMask.run();
+				GL11.glDisable(GL_POLYGON_SMOOTH);
+				GlStateManager.enableCull();
+			});
+		}
+		// ------- BUTTON RENDERING AND ANIMATION ------- //
+	}
 }
