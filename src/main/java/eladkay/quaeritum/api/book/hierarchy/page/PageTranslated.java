@@ -1,6 +1,7 @@
 package eladkay.quaeritum.api.book.hierarchy.page;
 
-import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentText;
@@ -8,7 +9,6 @@ import com.teamwizardry.librarianlib.features.math.Vec2d;
 import eladkay.quaeritum.api.book.hierarchy.entry.Entry;
 import eladkay.quaeritum.client.gui.book.GuiBook;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.NotNull;
@@ -16,15 +16,20 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
-public class PageText implements Page {
+public class PageTranslated implements Page {
 
-    private final String key;
+    private final String defaultValue;
+    private final Map<String, String> translations = Maps.newHashMap();
     private final Entry entry;
 
-    public PageText(Entry entry, JsonObject jsonElement) {
+    public PageTranslated(Entry entry, JsonObject jsonElement) {
         this.entry = entry;
-        key = jsonElement.getAsJsonPrimitive("value").getAsString();
+        this.defaultValue = jsonElement.getAsJsonPrimitive("en_us").getAsString();
+        for (Map.Entry<String, JsonElement> kv : jsonElement.entrySet())
+            if (!kv.getKey().equals("type"))
+                translations.put(kv.getKey(), kv.getValue().getAsString());
     }
 
     @Override
@@ -33,8 +38,8 @@ public class PageText implements Page {
     }
 
     @Override
-    public Collection<String> getSearchableKeys() {
-        return Lists.newArrayList(key);
+    public Collection<String> getSearchableStrings() {
+        return translations.values();
     }
 
     @Override
@@ -42,7 +47,9 @@ public class PageText implements Page {
     public List<GuiComponent> createBookComponents(GuiBook book, Vec2d size) {
         List<GuiComponent> pages = new ArrayList<>();
 
-        String text = I18n.format(key);
+        String lang = Minecraft.getMinecraft().gameSettings.language;
+
+        String text = translations.getOrDefault(lang, defaultValue);
 
         List<String> list = Minecraft.getMinecraft().fontRenderer.listFormattedStringToWidth(text, 118 * 16);
 

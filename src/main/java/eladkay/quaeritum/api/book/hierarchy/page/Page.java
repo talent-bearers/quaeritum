@@ -10,8 +10,8 @@ import eladkay.quaeritum.client.gui.book.GuiBook;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.function.BiFunction;
 
@@ -44,16 +44,11 @@ public interface Page {
     @NotNull
     Entry getEntry();
 
-    @NotNull
-    String getType();
-
-    @Nullable
-    default List<String> getSearchableStrings() {
+    default Collection<String> getSearchableStrings() {
         return null;
     }
 
-    @Nullable
-    default List<String> getSearchableKeys() {
+    default Collection<String> getSearchableKeys() {
         return null;
     }
 

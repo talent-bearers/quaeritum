@@ -29,12 +29,6 @@ public class PageRecipe implements Page {
         return entry;
     }
 
-    @NotNull
-    @Override
-    public String getType() {
-        return "recipe";
-    }
-
     @Override
     @SideOnly(Side.CLIENT)
     public List<GuiComponent> createBookComponents(GuiBook book, Vec2d size) {

@@ -2,10 +2,7 @@ package eladkay.quaeritum.api.book.provider;
 
 import com.google.gson.JsonObject;
 import eladkay.quaeritum.api.book.hierarchy.entry.Entry;
-import eladkay.quaeritum.api.book.hierarchy.page.Page;
-import eladkay.quaeritum.api.book.hierarchy.page.PageRecipe;
-import eladkay.quaeritum.api.book.hierarchy.page.PageStructure;
-import eladkay.quaeritum.api.book.hierarchy.page.PageText;
+import eladkay.quaeritum.api.book.hierarchy.page.*;
 import net.minecraft.util.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -21,6 +18,7 @@ public class PageTypes {
         registerPageProvider("text", PageText::new);
         registerPageProvider("recipe", PageRecipe::new);
         registerPageProvider("structure", PageStructure::new);
+        registerPageProvider("translated", PageTranslated::new);
     }
 
     public static void registerPageProvider(@NotNull String name, @NotNull BiFunction<Entry, JsonObject, Page> provider) {

@@ -12,8 +12,8 @@ import eladkay.quaeritum.client.gui.book.GuiBook;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
 import java.util.List;
 
 public class PageStructure implements Page {
@@ -33,14 +33,8 @@ public class PageStructure implements Page {
         return entry;
     }
 
-    @NotNull
     @Override
-    public String getType() {
-        return "structure";
-    }
-
-    @Override
-    public @Nullable List<String> getSearchableStrings() {
+    public Collection<String> getSearchableStrings() {
         return Lists.newArrayList(structureName);
     }
 
