@@ -4,8 +4,15 @@ import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
+import com.teamwizardry.librarianlib.features.math.Vec2d;
+import eladkay.quaeritum.api.book.hierarchy.IBookElement;
 import eladkay.quaeritum.api.book.hierarchy.book.Book;
 import eladkay.quaeritum.api.book.hierarchy.entry.Entry;
+import eladkay.quaeritum.client.gui.book.GuiBook;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -13,7 +20,7 @@ import java.util.List;
  * @author WireSegal
  * Created at 10:19 PM on 2/17/18.
  */
-public class Category {
+public class Category implements IBookElement {
     public final Book book;
 
     public final List<Entry> entries;
@@ -58,4 +65,14 @@ public class Category {
         return entries.size() == 1;
     }
 
+    @Override
+    public @Nullable IBookElement getParent() {
+        return book;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public List<GuiComponent> createBookComponents(GuiBook book, Vec2d size) {
+        return null; // todo saad
+    }
 }

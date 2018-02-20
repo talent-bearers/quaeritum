@@ -17,82 +17,82 @@ import static eladkay.quaeritum.client.gui.book.GuiBook.BOOKMARK;
  */
 public class ComponentBookMark extends ComponentAnimatableVoid {
 
-	private static Set<ComponentBookMark> bookMarks = new HashSet<>();
+    private static Set<ComponentBookMark> bookMarks = new HashSet<>();
 
-	private final GuiBook book;
-	private final int id;
-	private final Sprite box;
+    private final GuiBook book;
+    private final int id;
+    private final Sprite box;
 
-	private ComponentSprite bar;
+    private ComponentSprite bar;
 
-	public ComponentBookMark(GuiBook book, Sprite icon, int id) {
-		super(book.bookComponent.getSize().getXi() - 10, 20 + 5 * id + BOOKMARK.getHeight() * id, BOOKMARK.getWidth(), BOOKMARK.getHeight());
-		this.book = book;
-		this.id = id;
+    public ComponentBookMark(GuiBook book, Sprite icon, int id) {
+        super(book.bookComponent.getSize().getXi() - 10, 20 + 5 * id + BOOKMARK.getHeight() * id, BOOKMARK.getWidth(), BOOKMARK.getHeight());
+        this.book = book;
+        this.id = id;
 
-		bookMarks.add(this);
+        bookMarks.add(this);
 
-		box = BOOKMARK;
+        box = BOOKMARK;
 
-		clipping.setClipToBounds(true);
+        clipping.setClipToBounds(true);
 
-		animX = -box.getWidth() + 20;
+        animX = -box.getWidth() + 20;
 
-		bar = new ComponentSprite(BOOKMARK, -box.getWidth() + 20, 0);
-		bar.getColor().setValue(book.mainColor);
-		add(bar);
+        bar = new ComponentSprite(BOOKMARK, -box.getWidth() + 20, 0);
+        bar.getColor().setValue(book.mainColor);
+        add(bar);
 
-		ComponentSprite iconComponent = new ComponentSprite(icon, getSize().getXi() - icon.getWidth() - 8, 1);
-		bar.add(iconComponent);
-	}
+        ComponentSprite iconComponent = new ComponentSprite(icon, getSize().getXi() - icon.getWidth() - 8, 1);
+        bar.add(iconComponent);
+    }
 
-	@Nullable
-	private static ComponentBookMark getBookMarkFromID(int id) {
-		for (ComponentBookMark bookMark : bookMarks) {
-			if (bookMark.getId() == id) return bookMark;
-		}
+    @Nullable
+    private static ComponentBookMark getBookMarkFromID(int id) {
+        for (ComponentBookMark bookMark : bookMarks) {
+            if (bookMark.getId() == id) return bookMark;
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	public static int getNextId() {
-		int largest = 0;
-		for (ComponentBookMark bookMark : bookMarks) {
-			if (bookMark.getId() > largest) largest = bookMark.getId();
-		}
+    public static int getNextId() {
+        int largest = 0;
+        for (ComponentBookMark bookMark : bookMarks) {
+            if (bookMark.getId() > largest) largest = bookMark.getId();
+        }
 
-		return ++largest;
-	}
+        return ++largest;
+    }
 
-	public void slideOutShort() {
-		BasicAnimation mouseOutAnim = new BasicAnimation<>(bar, "pos.x");
-		mouseOutAnim.setDuration(10);
-		mouseOutAnim.setEasing(Easing.easeOutQuart);
-		mouseOutAnim.setTo(-40);
-		bar.add(mouseOutAnim);
-	}
+    public void slideOutShort() {
+        BasicAnimation mouseOutAnim = new BasicAnimation<>(bar, "pos.x");
+        mouseOutAnim.setDuration(10);
+        mouseOutAnim.setEasing(Easing.easeOutQuart);
+        mouseOutAnim.setTo(-40);
+        bar.add(mouseOutAnim);
+    }
 
-	public void slideOutLong() {
-		BasicAnimation mouseOutAnim = new BasicAnimation<>(bar, "pos.x");
-		mouseOutAnim.setDuration(10);
-		mouseOutAnim.setEasing(Easing.easeOutQuart);
-		mouseOutAnim.setTo(0);
-		bar.add(mouseOutAnim);
-	}
+    public void slideOutLong() {
+        BasicAnimation mouseOutAnim = new BasicAnimation<>(bar, "pos.x");
+        mouseOutAnim.setDuration(10);
+        mouseOutAnim.setEasing(Easing.easeOutQuart);
+        mouseOutAnim.setTo(0);
+        bar.add(mouseOutAnim);
+    }
 
-	public void slideIn() {
-		BasicAnimation mouseOutAnim = new BasicAnimation<>(bar, "pos.x");
-		mouseOutAnim.setDuration(10);
-		mouseOutAnim.setEasing(Easing.easeOutQuart);
-		mouseOutAnim.setTo(-box.getWidth() + 20);
-		bar.add(mouseOutAnim);
-	}
+    public void slideIn() {
+        BasicAnimation mouseOutAnim = new BasicAnimation<>(bar, "pos.x");
+        mouseOutAnim.setDuration(10);
+        mouseOutAnim.setEasing(Easing.easeOutQuart);
+        mouseOutAnim.setTo(-box.getWidth() + 20);
+        bar.add(mouseOutAnim);
+    }
 
-	public int getId() {
-		return id;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public GuiBook getBook() {
-		return book;
-	}
+    public GuiBook getBook() {
+        return book;
+    }
 }

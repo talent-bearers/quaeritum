@@ -19,6 +19,7 @@ public class BaseAlchemicalSpell implements IAlchemicalSpell {
     private final EnumSpellType type;
     @Nonnull
     private final String locKey;
+
     public BaseAlchemicalSpell(@Nonnull EnumSpellElement[] pattern, @Nonnull EnumSpellType type, @Nonnull String locKey, @Nonnull SpellRunnable onCast) {
         this.pattern = pattern;
         this.onCast = onCast;

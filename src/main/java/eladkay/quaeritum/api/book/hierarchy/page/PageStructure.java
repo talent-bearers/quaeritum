@@ -18,36 +18,36 @@ import java.util.List;
 
 public class PageStructure implements Page {
 
-	private final String structureName;
-	private final Entry entry;
-	private final CachedStructure structure;
+    private final String structureName;
+    private final Entry entry;
+    private final CachedStructure structure;
 
-	public PageStructure(Entry entry, JsonObject object) {
-		this.entry = entry;
-		structureName = object.getAsJsonPrimitive("name").getAsString();
-		structure = StructureCacheRegistry.getStructureOrAdd(structureName);
-	}
+    public PageStructure(Entry entry, JsonObject object) {
+        this.entry = entry;
+        structureName = object.getAsJsonPrimitive("name").getAsString();
+        structure = StructureCacheRegistry.getStructureOrAdd(structureName);
+    }
 
-	@Override
-	public @NotNull Entry getEntry() {
-		return entry;
-	}
+    @Override
+    public @NotNull Entry getEntry() {
+        return entry;
+    }
 
-	@NotNull
-	@Override
-	public String getType() {
-		return "structure";
-	}
+    @NotNull
+    @Override
+    public String getType() {
+        return "structure";
+    }
 
-	@Override
-	public @Nullable List<String> getSearchableStrings() {
-		return Lists.newArrayList(structureName);
-	}
+    @Override
+    public @Nullable List<String> getSearchableStrings() {
+        return Lists.newArrayList(structureName);
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public List<GuiComponent> createBookComponents(GuiBook book, Vec2d size) {
-		return Lists.newArrayList(
-				new ComponentStructure(0, 0, size.getXi(), size.getYi(), structure));
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public List<GuiComponent> createBookComponents(GuiBook book, Vec2d size) {
+        return Lists.newArrayList(
+                new ComponentStructure(0, 0, size.getXi(), size.getYi(), structure));
+    }
 }

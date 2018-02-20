@@ -3,11 +3,16 @@ package eladkay.quaeritum.api.book.hierarchy.book;
 import com.google.common.collect.Lists;
 import com.google.gson.*;
 import com.teamwizardry.librarianlib.core.LibrarianLib;
+import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
+import com.teamwizardry.librarianlib.features.math.Vec2d;
 import com.teamwizardry.librarianlib.features.utilities.client.ClientRunnable;
+import eladkay.quaeritum.api.book.hierarchy.IBookElement;
 import eladkay.quaeritum.api.book.hierarchy.category.Category;
+import eladkay.quaeritum.client.gui.book.GuiBook;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.io.InputStream;
@@ -21,10 +26,10 @@ import static com.teamwizardry.librarianlib.features.helpers.CommonUtilMethods.g
  * @author WireSegal
  * Created at 10:19 PM on 2/17/18.
  */
-public class Book {
+public class Book implements IBookElement {
 
-    private static List<Book> allBooks = Lists.newArrayList();
     public static boolean hasEverReloaded = false;
+    private static List<Book> allBooks = Lists.newArrayList();
 
     static {
         ClientRunnable.registerReloadHandler(new ClientRunnable() {
@@ -39,17 +44,14 @@ public class Book {
     }
 
     public final ResourceLocation location;
-
     public List<Category> categories;
     public String headerKey;
     public String subtitleKey;
     public Color bookColor;
     public Color highlightColor;
-
     public Book(String name) {
         this(new ResourceLocation(getCurrentModId(), name));
     }
-
     public Book(ResourceLocation location) {
         this.location = location;
 
@@ -62,28 +64,6 @@ public class Book {
 
         if (hasEverReloaded)
             reload();
-    }
-
-    public void reload() {
-        try {
-            JsonElement jsonElement = getJsonFromLink(location);
-            if (jsonElement == null || !jsonElement.isJsonObject())
-                return;
-            JsonObject json = jsonElement.getAsJsonObject();
-            bookColor = fromJsonElement(json.get("color"));
-            highlightColor = fromJsonElement(json.get("highlight"));
-            headerKey = json.getAsJsonPrimitive("title").getAsString();
-            subtitleKey = json.getAsJsonPrimitive("subtitle").getAsString();
-            JsonArray allCategories = json.getAsJsonArray("categories");
-            categories = Lists.newArrayList();
-            for (JsonElement categoryJson : allCategories) {
-                Category category = new Category(this, categoryJson.getAsJsonObject());
-                if (category.isValid)
-                    categories.add(category);
-            }
-        } catch (Exception error) {
-            error.printStackTrace();
-        }
     }
 
     public static Color fromJsonElement(JsonElement element) {
@@ -110,5 +90,38 @@ public class Book {
 
         InputStreamReader reader = new InputStreamReader(stream, Charset.forName("UTF-8"));
         return new JsonParser().parse(reader);
+    }
+
+    public void reload() {
+        try {
+            JsonElement jsonElement = getJsonFromLink(location);
+            if (jsonElement == null || !jsonElement.isJsonObject())
+                return;
+            JsonObject json = jsonElement.getAsJsonObject();
+            bookColor = fromJsonElement(json.get("color"));
+            highlightColor = fromJsonElement(json.get("highlight"));
+            headerKey = json.getAsJsonPrimitive("title").getAsString();
+            subtitleKey = json.getAsJsonPrimitive("subtitle").getAsString();
+            JsonArray allCategories = json.getAsJsonArray("categories");
+            categories = Lists.newArrayList();
+            for (JsonElement categoryJson : allCategories) {
+                Category category = new Category(this, categoryJson.getAsJsonObject());
+                if (category.isValid)
+                    categories.add(category);
+            }
+        } catch (Exception error) {
+            error.printStackTrace();
+        }
+    }
+
+    @Override
+    public @Nullable IBookElement getParent() {
+        return null;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public List<GuiComponent> createBookComponents(GuiBook book, Vec2d size) {
+        return null; // todo saad
     }
 }

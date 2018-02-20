@@ -16,28 +16,28 @@ import java.util.List;
 
 public class PageRecipe implements Page {
 
-	private final ResourceLocation recipe;
-	private final Entry entry;
+    private final ResourceLocation recipe;
+    private final Entry entry;
 
-	public PageRecipe(Entry entry, JsonObject jsonElement) {
-		this.entry = entry;
-		recipe = new ResourceLocation(jsonElement.getAsJsonPrimitive("recipe").getAsString());
-	}
+    public PageRecipe(Entry entry, JsonObject jsonElement) {
+        this.entry = entry;
+        recipe = new ResourceLocation(jsonElement.getAsJsonPrimitive("recipe").getAsString());
+    }
 
-	@Override
-	public @NotNull Entry getEntry() {
-		return entry;
-	}
+    @Override
+    public @NotNull Entry getEntry() {
+        return entry;
+    }
 
-	@NotNull
-	@Override
-	public String getType() {
-		return "recipe";
-	}
+    @NotNull
+    @Override
+    public String getType() {
+        return "recipe";
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public List<GuiComponent> createBookComponents(GuiBook book, Vec2d size) {
-		return Lists.newArrayList(new ComponentRecipe(0, 0, size.getXi(), size.getYi(), book.mainColor, recipe));
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public List<GuiComponent> createBookComponents(GuiBook book, Vec2d size) {
+        return Lists.newArrayList(new ComponentRecipe(0, 0, size.getXi(), size.getYi(), book.mainColor, recipe));
+    }
 }

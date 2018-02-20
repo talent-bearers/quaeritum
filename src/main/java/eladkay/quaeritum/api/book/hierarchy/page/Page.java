@@ -17,46 +17,46 @@ import java.util.function.BiFunction;
 
 public interface Page {
 
-	@NotNull
-	Entry getEntry();
+    static Page fromJson(Entry entry, JsonElement element) {
+        try {
+            JsonObject obj = null;
+            BiFunction<Entry, JsonObject, Page> provider = null;
+            if (element.isJsonPrimitive()) {
+                provider = PageTypes.getPageProvider("text");
+                obj = new JsonObject();
+                obj.addProperty("type", "text");
+                obj.addProperty("value", element.getAsString());
+            } else if (element.isJsonObject()) {
+                obj = element.getAsJsonObject();
+                provider = PageTypes.getPageProvider(obj.getAsJsonPrimitive("type").getAsString());
+            }
 
-	@NotNull
-	String getType();
+            if (obj == null || provider == null)
+                return null;
 
-	@Nullable
-	default List<String> getSearchableStrings() {
-		return null;
-	}
+            return provider.apply(entry, obj);
+        } catch (Exception error) {
+            error.printStackTrace();
+            return null;
+        }
+    }
 
-	@Nullable
-	default List<String> getSearchableKeys() {
-		return null;
-	}
+    @NotNull
+    Entry getEntry();
 
-	@SideOnly(Side.CLIENT)
-	List<GuiComponent> createBookComponents(GuiBook book, Vec2d size);
+    @NotNull
+    String getType();
 
-	static Page fromJson(Entry entry, JsonElement element) {
-		try {
-			JsonObject obj = null;
-			BiFunction<Entry, JsonObject, Page> provider = null;
-			if (element.isJsonPrimitive()) {
-				provider = PageTypes.getPageProvider("text");
-				obj = new JsonObject();
-				obj.addProperty("type", "text");
-				obj.addProperty("value", element.getAsString());
-			} else if (element.isJsonObject()) {
-				obj = element.getAsJsonObject();
-				provider = PageTypes.getPageProvider(obj.getAsJsonPrimitive("type").getAsString());
-			}
+    @Nullable
+    default List<String> getSearchableStrings() {
+        return null;
+    }
 
-			if (obj == null || provider == null)
-				return null;
+    @Nullable
+    default List<String> getSearchableKeys() {
+        return null;
+    }
 
-			return provider.apply(entry, obj);
-		} catch (Exception error) {
-			error.printStackTrace();
-			return null;
-		}
-	}
+    @SideOnly(Side.CLIENT)
+    List<GuiComponent> createBookComponents(GuiBook book, Vec2d size);
 }

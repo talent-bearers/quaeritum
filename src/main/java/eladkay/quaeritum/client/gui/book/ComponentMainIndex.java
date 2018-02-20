@@ -19,98 +19,98 @@ import static eladkay.quaeritum.client.gui.book.GuiBook.BANNER;
 public class ComponentMainIndex extends BookGuiComponent {
 
 
-	public ComponentMainIndex(int posX, int posY, int width, int height, @Nonnull GuiBook book, @Nullable BookGuiComponent parent) {
-		super(posX, posY, width, height, book, parent);
+    public ComponentMainIndex(int posX, int posY, int width, int height, @Nonnull GuiBook book, @Nullable BookGuiComponent parent) {
+        super(posX, posY, width, height, book, parent);
 
-		// --------- BANNER --------- //
-		{
-			ComponentSprite componentBanner = new ComponentSprite(BANNER, -8, 12);
-			componentBanner.getColor().setValue(book.mainColor);
-			add(componentBanner);
+        // --------- BANNER --------- //
+        {
+            ComponentSprite componentBanner = new ComponentSprite(BANNER, -8, 12);
+            componentBanner.getColor().setValue(book.mainColor);
+            add(componentBanner);
 
-			FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-			ComponentText componentBannerText = new ComponentText(20, 5, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.TOP);
-			componentBannerText.getText().setValue(I18n.format(book.book.headerKey));
-			componentBannerText.getColor().setValue(book.highlightColor);
+            FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+            ComponentText componentBannerText = new ComponentText(20, 5, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.TOP);
+            componentBannerText.getText().setValue(I18n.format(book.book.headerKey));
+            componentBannerText.getColor().setValue(book.highlightColor);
 
-			String subText = I18n.format(book.book.subtitleKey);
-			ComponentText componentBannerSubText = new ComponentText(componentBanner.getSize().getXi() - 10, 2 + fontRenderer.FONT_HEIGHT, ComponentText.TextAlignH.RIGHT, ComponentText.TextAlignV.TOP);
-			componentBannerSubText.getText().setValue(subText);
-			componentBannerSubText.getUnicode().setValue(true);
-			componentBannerSubText.getColor().setValue(book.highlightColor);
+            String subText = I18n.format(book.book.subtitleKey);
+            ComponentText componentBannerSubText = new ComponentText(componentBanner.getSize().getXi() - 10, 2 + fontRenderer.FONT_HEIGHT, ComponentText.TextAlignH.RIGHT, ComponentText.TextAlignV.TOP);
+            componentBannerSubText.getText().setValue(subText);
+            componentBannerSubText.getUnicode().setValue(true);
+            componentBannerSubText.getColor().setValue(book.highlightColor);
 
-			componentBanner.add(componentBannerText, componentBannerSubText);
-		}
-		// --------- BANNER --------- //
+            componentBanner.add(componentBannerText, componentBannerSubText);
+        }
+        // --------- BANNER --------- //
 
-		// --------- SEARCH BAR --------- //
-		{
-			ComponentSearchResults searchResultsComponent = new ComponentSearchResults(book, book.focus);
-			searchResultsComponent.setVisible(false);
-			book.bookComponent.add(searchResultsComponent);
+        // --------- SEARCH BAR --------- //
+        {
+            ComponentSearchResults searchResultsComponent = new ComponentSearchResults(book, book.focus);
+            searchResultsComponent.setVisible(false);
+            book.bookComponent.add(searchResultsComponent);
 
-			ComponentSearchBar bar = new ComponentSearchBar(book, 0, book.searchImplementation(searchResultsComponent), null);
-			book.bookComponent.add(bar);
-		}
-		// --------- SEARCH BAR --------- //
+            ComponentSearchBar bar = new ComponentSearchBar(book, 0, book.searchImplementation(searchResultsComponent), null);
+            book.bookComponent.add(bar);
+        }
+        // --------- SEARCH BAR --------- //
 
-		// --------- MAIN INDEX --------- //
-		{
+        // --------- MAIN INDEX --------- //
+        {
 
-			ArrayList<GuiComponent> categories = new ArrayList<>();
-			for (Category category : book.book.categories) {
-				ComponentCategory component = new ComponentCategory(0, 0, 24, 24, book, category);
-				add(component);
-				categories.add(component);
-			}
+            ArrayList<GuiComponent> categories = new ArrayList<>();
+            for (Category category : book.book.categories) {
+                ComponentCategory component = new ComponentCategory(0, 0, 24, 24, book, category);
+                add(component);
+                categories.add(component);
+            }
 
-			int row = 0;
-			int column = 0;
-			int buffer = 8;
-			int marginX = 28;
-			int marginY = 45;
-			int itemsPerRow = 3;
-			for (GuiComponent button : categories) {
+            int row = 0;
+            int column = 0;
+            int buffer = 8;
+            int marginX = 28;
+            int marginY = 45;
+            int itemsPerRow = 3;
+            for (GuiComponent button : categories) {
 
-				button.setPos(new Vec2d(
-						marginX + (column * button.getSize().getXi()) + (column * buffer),
-						marginY + (row * button.getSize().getY()) + (row * buffer)));
+                button.setPos(new Vec2d(
+                        marginX + (column * button.getSize().getXi()) + (column * buffer),
+                        marginY + (row * button.getSize().getY()) + (row * buffer)));
 
-				column++;
+                column++;
 
-				if (column >= itemsPerRow) {
-					row++;
-					column = 0;
-				}
-			}
-		}
-		// --------- MAIN INDEX --------- //
-	}
+                if (column >= itemsPerRow) {
+                    row++;
+                    column = 0;
+                }
+            }
+        }
+        // --------- MAIN INDEX --------- //
+    }
 
-	@Override
-	public String getTitle() {
-		return null;
-	}
+    @Override
+    public String getTitle() {
+        return null;
+    }
 
-	@Override
-	public String getDescription() {
-		return null;
-	}
+    @Override
+    public String getDescription() {
+        return null;
+    }
 
-	@Nullable
-	@Override
-	public JsonElement getIcon() {
-		return null;
-	}
+    @Nullable
+    @Override
+    public JsonElement getIcon() {
+        return null;
+    }
 
-	@Override
-	public void update() {
+    @Override
+    public void update() {
 
-	}
+    }
 
-	@Nonnull
-	@Override
-	public BookGuiComponent clone() {
-		return new ComponentMainIndex(getPos().getXi(), getPos().getYi(), getSize().getXi(), getSize().getYi(), getBook(), getLinkingParent());
-	}
+    @Nonnull
+    @Override
+    public BookGuiComponent clone() {
+        return new ComponentMainIndex(getPos().getXi(), getPos().getYi(), getSize().getXi(), getSize().getYi(), getBook(), getLinkingParent());
+    }
 }

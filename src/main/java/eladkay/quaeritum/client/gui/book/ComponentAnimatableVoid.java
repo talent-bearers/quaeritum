@@ -8,13 +8,13 @@ import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
  */
 public class ComponentAnimatableVoid extends GuiComponent {
 
-	public double animX;
+    public double animX;
 
-	public ComponentAnimatableVoid(int posX, int posY, int width, int height) {
-		super(posX, posY, width, height);
-	}
+    public ComponentAnimatableVoid(int posX, int posY, int width, int height) {
+        super(posX, posY, width, height);
+    }
 
-	public ComponentAnimatableVoid(int posX, int posY) {
-		super(posX, posY);
-	}
+    public ComponentAnimatableVoid(int posX, int posY) {
+        super(posX, posY);
+    }
 }

@@ -30,84 +30,20 @@ import java.util.function.Consumer;
 @SideOnly(Side.CLIENT)
 public abstract class BookGuiComponent extends GuiComponent {
 
-	@Nonnull
-	private final GuiBook book;
-	@Nullable
-	private BookGuiComponent parent;
+    @Nonnull
+    private final GuiBook book;
+    @Nullable
+    private BookGuiComponent parent;
 
-	public BookGuiComponent(int posX, int posY, int width, int height, @Nonnull GuiBook book, @Nullable BookGuiComponent parent) {
-		super(posX, posY, width, height);
-		this.book = book;
-		this.parent = parent;
-	}
+    public BookGuiComponent(int posX, int posY, int width, int height, @Nonnull GuiBook book, @Nullable BookGuiComponent parent) {
+        super(posX, posY, width, height);
+        this.book = book;
+        this.parent = parent;
+    }
 
-	public abstract String getTitle();
-
-	public abstract String getDescription();
-
-	@Nonnull
-	public GuiBook getBook() {
-		return book;
-	}
-
-	@Nullable
-	public abstract JsonElement getIcon();
-
-	@Nullable
-	public BookGuiComponent getLinkingParent() {
-		return parent == null ? book.centralIndex : parent;
-	}
-
-	public void setLinkingParent(@Nonnull BookGuiComponent component) {
-		this.parent = component;
-	}
-
-	public abstract void update();
-
-	@Nonnull
-	public abstract BookGuiComponent clone();
-
-	public GuiComponent createIndexButton(int indexID, GuiBook book, @Nullable Consumer<GuiComponent> extra) {
-		ComponentVoid indexButton = new ComponentVoid(0, 16 * indexID, getSize().getXi(), 16);
-
-		if (extra != null) extra.accept(indexButton);
-
-		indexButton.BUS.hook(GuiComponentEvents.MouseClickEvent.class, event -> {
-			book.focus.setVisible(false);
-			book.focus = this;
-			book.focus.setVisible(true);
-			update();
-		});
-
-		// SUB INDEX PLATE RENDERING
-		{
-			ComponentText textComponent = new ComponentText(20, Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT / 2, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.TOP);
-			textComponent.getUnicode().setValue(true);
-			textComponent.getText().setValue(getTitle());
-			indexButton.add(textComponent);
-
-			indexButton.BUS.hook(GuiComponentEvents.MouseInEvent.class, (event) -> {
-				textComponent.getText().setValue(" " + TextFormatting.ITALIC.toString() + getTitle());
-			});
-
-			indexButton.BUS.hook(GuiComponentEvents.MouseOutEvent.class, (event) -> {
-				textComponent.getText().setValue(TextFormatting.RESET.toString() + getTitle());
-			});
-
-			Runnable render = getRendererFor(getIcon());
-
-			if (render != null)
-                indexButton.BUS.hook(GuiComponentEvents.PostDrawEvent.class, (event) -> {
-                    render.run();
-                });
-		}
-
-		return indexButton;
-	}
-
-	public static Runnable getRendererFor(JsonElement icon) {
-	    return getRendererFor(icon, false);
-	}
+    public static Runnable getRendererFor(JsonElement icon) {
+        return getRendererFor(icon, false);
+    }
 
     public static Runnable getRendererFor(JsonElement icon, boolean mask) {
         if (icon == null) return null;
@@ -125,30 +61,94 @@ public abstract class BookGuiComponent extends GuiComponent {
         return null;
     }
 
-	private static void renderSprite(Sprite sprite, boolean mask) {
-		GlStateManager.pushMatrix();
-		GlStateManager.enableBlend();
-		if (!mask)
+    private static void renderSprite(Sprite sprite, boolean mask) {
+        GlStateManager.pushMatrix();
+        GlStateManager.enableBlend();
+        if (!mask)
             GlStateManager.color(1, 1, 1, 1);
 
-		sprite.getTex().bind();
-		sprite.draw((int) ClientTickHandler.getPartialTicks(), 0, 0, 16, 16);
+        sprite.getTex().bind();
+        sprite.draw((int) ClientTickHandler.getPartialTicks(), 0, 0, 16, 16);
 
-		GlStateManager.popMatrix();
-	}
+        GlStateManager.popMatrix();
+    }
 
-	private static void renderStack(ItemStack stack) {
-		GlStateManager.pushMatrix();
-		GlStateManager.enableBlend();
-		GlStateManager.enableRescaleNormal();
-		RenderHelper.enableGUIStandardItemLighting();
+    private static void renderStack(ItemStack stack) {
+        GlStateManager.pushMatrix();
+        GlStateManager.enableBlend();
+        GlStateManager.enableRescaleNormal();
+        RenderHelper.enableGUIStandardItemLighting();
 
-		RenderItem itemRender = Minecraft.getMinecraft().getRenderItem();
-		itemRender.renderItemAndEffectIntoGUI(stack, 0, 0);
-		itemRender.renderItemOverlays(Minecraft.getMinecraft().fontRenderer, stack, 0, 0);
+        RenderItem itemRender = Minecraft.getMinecraft().getRenderItem();
+        itemRender.renderItemAndEffectIntoGUI(stack, 0, 0);
+        itemRender.renderItemOverlays(Minecraft.getMinecraft().fontRenderer, stack, 0, 0);
 
-		GlStateManager.enableAlpha();
-		RenderHelper.disableStandardItemLighting();
-		GlStateManager.popMatrix();
-	}
+        GlStateManager.enableAlpha();
+        RenderHelper.disableStandardItemLighting();
+        GlStateManager.popMatrix();
+    }
+
+    public abstract String getTitle();
+
+    public abstract String getDescription();
+
+    @Nonnull
+    public GuiBook getBook() {
+        return book;
+    }
+
+    @Nullable
+    public abstract JsonElement getIcon();
+
+    @Nullable
+    public BookGuiComponent getLinkingParent() {
+        return parent == null ? book.centralIndex : parent;
+    }
+
+    public void setLinkingParent(@Nonnull BookGuiComponent component) {
+        this.parent = component;
+    }
+
+    public abstract void update();
+
+    @Nonnull
+    public abstract BookGuiComponent clone();
+
+    public GuiComponent createIndexButton(int indexID, GuiBook book, @Nullable Consumer<GuiComponent> extra) {
+        ComponentVoid indexButton = new ComponentVoid(0, 16 * indexID, getSize().getXi(), 16);
+
+        if (extra != null) extra.accept(indexButton);
+
+        indexButton.BUS.hook(GuiComponentEvents.MouseClickEvent.class, event -> {
+            book.focus.setVisible(false);
+            book.focus = this;
+            book.focus.setVisible(true);
+            update();
+        });
+
+        // SUB INDEX PLATE RENDERING
+        {
+            ComponentText textComponent = new ComponentText(20, Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT / 2, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.TOP);
+            textComponent.getUnicode().setValue(true);
+            textComponent.getText().setValue(getTitle());
+            indexButton.add(textComponent);
+
+            indexButton.BUS.hook(GuiComponentEvents.MouseInEvent.class, (event) -> {
+                textComponent.getText().setValue(" " + TextFormatting.ITALIC.toString() + getTitle());
+            });
+
+            indexButton.BUS.hook(GuiComponentEvents.MouseOutEvent.class, (event) -> {
+                textComponent.getText().setValue(TextFormatting.RESET.toString() + getTitle());
+            });
+
+            Runnable render = getRendererFor(getIcon());
+
+            if (render != null)
+                indexButton.BUS.hook(GuiComponentEvents.PostDrawEvent.class, (event) -> {
+                    render.run();
+                });
+        }
+
+        return indexButton;
+    }
 }

@@ -27,9 +27,9 @@ public enum EnumAnimusTier implements IStringSerializable {
             .stream(name().toLowerCase().split("_"))
             .map(EnumAnimusTier::capitalize)
             .collect(Collectors.joining());
+    public final Color tierColor;
     private final EnumSpellElement elementPrimary;
     private final EnumSpellElement elementSecondary;
-    public final Color tierColor;
 
     EnumAnimusTier(double awakenedFillPercentage, EnumSpellElement elementPrimary, EnumSpellElement elementSecondary, Color tierColor) {
         this.awakenedFillPercentage = awakenedFillPercentage;
