@@ -7,8 +7,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-
 /**
  * @author WireSegal
  * Created at 9:35 PM on 2/19/18.
@@ -18,5 +16,5 @@ public interface IBookElement {
     IBookElement getParent();
 
     @SideOnly(Side.CLIENT)
-    List<GuiComponent> createBookComponents(GuiBook book, Vec2d size);
+    GuiComponent createComponent(GuiBook book, Vec2d size);
 }

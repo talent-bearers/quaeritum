@@ -121,7 +121,7 @@ public class Book implements IBookElement {
 
     @SideOnly(Side.CLIENT)
     @Override
-    public List<GuiComponent> createBookComponents(GuiBook book, Vec2d size) {
+    public GuiComponent createComponent(GuiBook book, Vec2d size) {
         return null; // todo saad
     }
 }
