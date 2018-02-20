@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
 import com.teamwizardry.librarianlib.features.math.Vec2d;
 import eladkay.quaeritum.api.book.hierarchy.entry.Entry;
+import eladkay.quaeritum.api.book.structure.CachedStructure;
 import eladkay.quaeritum.api.book.structure.StructureCacheRegistry;
 import eladkay.quaeritum.client.gui.book.ComponentStructure;
 import eladkay.quaeritum.client.gui.book.GuiBook;
@@ -19,10 +20,12 @@ public class PageStructure implements Page {
 
 	private final String structureName;
 	private final Entry entry;
+	private final CachedStructure structure;
 
 	public PageStructure(Entry entry, JsonObject object) {
 		this.entry = entry;
 		structureName = object.getAsJsonPrimitive("name").getAsString();
+		structure = StructureCacheRegistry.getStructureOrAdd(structureName);
 	}
 
 	@Override
@@ -45,7 +48,6 @@ public class PageStructure implements Page {
 	@SideOnly(Side.CLIENT)
 	public List<GuiComponent> createBookComponents(GuiBook book, Vec2d size) {
 		return Lists.newArrayList(
-				new ComponentStructure(0, 0, size.getXi(), size.getYi(),
-						StructureCacheRegistry.getStructureOrAdd(structureName)));
+				new ComponentStructure(0, 0, size.getXi(), size.getYi(), structure));
 	}
 }
