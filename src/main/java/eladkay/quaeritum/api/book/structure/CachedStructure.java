@@ -3,7 +3,6 @@ package eladkay.quaeritum.api.book.structure;
 import com.google.common.collect.HashMultimap;
 import com.teamwizardry.librarianlib.features.kotlin.ClientUtilMethods;
 import com.teamwizardry.librarianlib.features.structure.Structure;
-import com.teamwizardry.librarianlib.features.utilities.client.ClientRunnable;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
@@ -24,20 +23,22 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.EnumMap;
 
-import static eladkay.quaeritum.api.lib.LibMisc.MOD_ID;
-
 public class CachedStructure extends Structure {
 
-    public final String name;
+    public final ResourceLocation name;
     @SideOnly(Side.CLIENT)
-    public HashMultimap<BlockRenderLayer, Template.BlockInfo> blocks;
+    private HashMultimap<BlockRenderLayer, Template.BlockInfo> blocks;
     @SideOnly(Side.CLIENT)
-    public EnumMap<BlockRenderLayer, int[]> vboCaches;
+    private EnumMap<BlockRenderLayer, int[]> vboCaches;
     public Vec3d perfectCenter;
 
-    public CachedStructure(@NotNull String name, @Nullable IBlockAccess access) {
-        super(new ResourceLocation(MOD_ID, name));
+    private IBlockAccess access;
+    private boolean builtVbos = false;
 
+    public CachedStructure(@NotNull ResourceLocation name, @Nullable IBlockAccess access) {
+        super(name);
+
+        this.access = access;
         this.name = name;
 
         int minX = 0;
@@ -69,46 +70,44 @@ public class CachedStructure extends Structure {
                 size.getY() / 2.0,
                 size.getZ() / 2.0);
         setOrigin(new BlockPos(perfectCenter));
-
-        ClientRunnable.run(new ClientRunnable() {
-            @SideOnly(Side.CLIENT)
-            @Override
-            public void runIfClient() {
-                blocks = HashMultimap.create();
-                vboCaches = new EnumMap<>(BlockRenderLayer.class);
-
-                if (getTemplateBlocks() == null) return;
-
-                for (Template.BlockInfo info : getTemplateBlocks()) {
-                    if (info.blockState.getMaterial() == Material.AIR) continue;
-                    blocks.put(info.blockState.getBlock().getBlockLayer(), info);
-                }
-
-                for (BlockRenderLayer layer : blocks.keySet()) {
-                    Tessellator tes = Tessellator.getInstance();
-                    BufferBuilder buffer = tes.getBuffer();
-                    BlockRendererDispatcher dispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
-
-                    buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
-
-                    for (Template.BlockInfo info : blocks.get(layer)) {
-                        IBlockAccess blockAccess = access == null ? getBlockAccess() : access;
-
-                        buffer.setTranslation(info.pos.getX(), info.pos.getY(), info.pos.getZ());
-
-                        dispatcher.getBlockModelRenderer().renderModel(blockAccess, dispatcher.getModelForState(info.blockState), info.blockState, BlockPos.ORIGIN, buffer, true);
-
-                        buffer.setTranslation(0, 0, 0);
-                    }
-
-                    vboCaches.put(layer, ClientUtilMethods.createCacheArrayAndReset(buffer));
-                }
-            }
-        });
     }
 
     @SideOnly(Side.CLIENT)
     public void draw() {
+        if (!builtVbos) {
+            blocks = HashMultimap.create();
+            vboCaches = new EnumMap<>(BlockRenderLayer.class);
+
+            if (getTemplateBlocks() == null) return;
+
+            for (Template.BlockInfo info : getTemplateBlocks()) {
+                if (info.blockState.getMaterial() == Material.AIR) continue;
+                blocks.put(info.blockState.getBlock().getBlockLayer(), info);
+            }
+
+            for (BlockRenderLayer layer : blocks.keySet()) {
+                Tessellator tes = Tessellator.getInstance();
+                BufferBuilder buffer = tes.getBuffer();
+                BlockRendererDispatcher dispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
+
+                buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
+
+                for (Template.BlockInfo info : blocks.get(layer)) {
+                    IBlockAccess blockAccess = access == null ? getBlockAccess() : access;
+
+                    buffer.setTranslation(info.pos.getX(), info.pos.getY(), info.pos.getZ());
+
+                    dispatcher.getBlockModelRenderer().renderModel(blockAccess, dispatcher.getModelForState(info.blockState), info.blockState, BlockPos.ORIGIN, buffer, true);
+
+                    buffer.setTranslation(0, 0, 0);
+                }
+
+                vboCaches.put(layer, ClientUtilMethods.createCacheArrayAndReset(buffer));
+            }
+
+            builtVbos = true;
+        }
+
         for (BlockRenderLayer layer : blocks.keySet()) {
             Tessellator tes = Tessellator.getInstance();
             BufferBuilder buffer = tes.getBuffer();

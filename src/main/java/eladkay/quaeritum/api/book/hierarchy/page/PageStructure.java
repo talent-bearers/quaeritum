@@ -20,11 +20,12 @@ public class PageStructure implements Page {
 
     private final String structureName;
     private final Entry entry;
-    private CachedStructure structure;
+    private final CachedStructure structure;
 
     public PageStructure(Entry entry, JsonObject object) {
         this.entry = entry;
         structureName = object.getAsJsonPrimitive("name").getAsString();
+        structure = StructureCacheRegistry.getStructureOrAdd(structureName);
     }
 
     @Override
@@ -40,9 +41,6 @@ public class PageStructure implements Page {
     @Override
     @SideOnly(Side.CLIENT)
     public List<GuiComponent> createBookComponents(GuiBook book, Vec2d size) {
-        if (structure == null)
-            structure = StructureCacheRegistry.getStructureOrAdd(structureName);
-
         return Lists.newArrayList(
                 new ComponentStructure(0, 0, size.getXi(), size.getYi(), structure));
     }
