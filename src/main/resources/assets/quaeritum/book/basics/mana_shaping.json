@@ -14,12 +14,12 @@
     },
     {
       "type": "structure",
-      "name": "mana_battery"
+      "name": "quaeritum:mana_battery"
     },
     "The arguably more important structure, the Crafting Altar, is a consumer of mana. It takes mana out of orbs on its structure, and directs it. Batteries can then be used to refill these orbs. By directing the power through reagents, you can infuse complex patterns into iridescent Nacre pearls, creating §lSpells§r. However, these reagents and patterns are far too complex to explain here, especially for you, and it would cheapen their importance. I will elaborate in further entries.",
     {
       "type": "structure",
-      "name": "mana_pool"
+      "name": "quaeritum:mana_pool"
     }
   ]
 }

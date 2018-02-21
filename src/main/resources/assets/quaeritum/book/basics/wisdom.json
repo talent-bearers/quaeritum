@@ -3,7 +3,6 @@
   "icon": {
     "item": "quaeritum:waking_blossom"
   },
-  "link": "documentation/%LANG%/basics/wisdom.json",
   "description": "Learn about wisdom wood, nacre liquid, devil dust, etc...",
   "type": "entry",
   "content": [
