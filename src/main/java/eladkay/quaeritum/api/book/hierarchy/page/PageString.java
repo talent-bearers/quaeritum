@@ -1,0 +1,83 @@
+package eladkay.quaeritum.api.book.hierarchy.page;
+
+import com.google.common.collect.Lists;
+import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
+import com.teamwizardry.librarianlib.features.gui.components.ComponentText;
+import com.teamwizardry.librarianlib.features.math.Vec2d;
+import eladkay.quaeritum.api.book.hierarchy.entry.Entry;
+import eladkay.quaeritum.client.gui.book.GuiBook;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScaledResolution;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public abstract class PageString implements Page {
+
+    private final Entry entry;
+
+    public PageString(Entry entry) {
+        this.entry = entry;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public abstract String getText();
+
+    @SideOnly(Side.CLIENT)
+    public int lineCount(Vec2d size, double yFactor) {
+        return (int) (size.getYi() * yFactor / Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT) - 1;
+    }
+
+    @Override
+    public @NotNull Entry getEntry() {
+        return entry;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public List<GuiComponent> createBookComponents(GuiBook book, Vec2d size) {
+        List<GuiComponent> pages = new ArrayList<>();
+
+        Minecraft minecraft = Minecraft.getMinecraft();
+        ScaledResolution res = new ScaledResolution(minecraft);
+        double xFactor = minecraft.displayWidth / res.getScaledWidth_double();
+        double yFactor = minecraft.displayHeight / res.getScaledHeight_double();
+
+        int lineCount = lineCount(size, yFactor);
+
+        String text = getText();
+
+        List<String> lines = minecraft.fontRenderer.listFormattedStringToWidth(text, (int) (size.getXi() * xFactor));
+
+        List<String> sections = Lists.newArrayList();
+
+        List<String> page = Lists.newArrayList();
+        for (String line : lines) {
+            String trim = line.trim();
+            if (!trim.isEmpty()) {
+                page.add(trim);
+                if (page.size() >= lineCount) {
+                    sections.add(String.join(" ", page));
+                    page.clear();
+                }
+            }
+        }
+
+        if (!page.isEmpty())
+            sections.add(String.join(" ", page));
+
+
+        for (String section : sections) {
+            ComponentText sectionComponent = new ComponentText(0, 0, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.TOP);
+            sectionComponent.getText().setValue(section);
+            sectionComponent.getWrap().setValue(size.getXi());
+            sectionComponent.getUnicode().setValue(true);
+
+            pages.add(sectionComponent);
+        }
+        return pages;
+    }
+}
