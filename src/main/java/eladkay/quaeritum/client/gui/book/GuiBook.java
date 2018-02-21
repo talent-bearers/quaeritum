@@ -145,10 +145,7 @@ public class GuiBook extends GuiBase {
 
         if (currentElement != null)
             history.push(currentElement);
-        if (focus != null)
-            focus.invalidate();
-        bookComponent.add(focus = element.createComponent(this));
-        currentElement = element;
+        forceInFocus(element);
     }
 
     public void forceInFocus(IBookElement element) {
@@ -186,31 +183,34 @@ public class GuiBook extends GuiBase {
                             .collect(Collectors.groupingBy(w -> w, Collectors.counting()))
                             .entrySet()
                             .stream()
-                            .max(Comparator.comparing(Map.Entry::getValue))
-                            .get().getValue();
+                            .map(Map.Entry::getValue)
+                            .max(Double::compare)
+                            .orElse(-1L);
 
-            double documentTfidf = 0;
-            for (String keyword : keywords) {
-                long keywordOccurance = Pattern.compile("\\b" + keyword).splitAsStream(cachedDocument).count() - 1;
-                double termFrequency = 0.5 + (0.5 * keywordOccurance / mostRepeatedWord);
+            if (mostRepeatedWord != -1L) {
+                double documentTfidf = 0;
+                for (String keyword : keywords) {
+                    long keywordOccurance = Pattern.compile("\\b" + keyword).splitAsStream(cachedDocument).count() - 1;
+                    double termFrequency = 0.5 + (0.5 * keywordOccurance / mostRepeatedWord);
 
-                int keywordDocumentOccurance = 0;
-                for (Entry documentComponent : contentCache.keySet()) {
-                    String documentContent = contentCache.get(documentComponent).toLowerCase(Locale.ROOT);
-                    if (documentContent.contains(keyword)) {
-                        keywordDocumentOccurance++;
+                    int keywordDocumentOccurance = 0;
+                    for (Entry documentComponent : contentCache.keySet()) {
+                        String documentContent = contentCache.get(documentComponent).toLowerCase(Locale.ROOT);
+                        if (documentContent.contains(keyword)) {
+                            keywordDocumentOccurance++;
+                        }
                     }
+                    keywordDocumentOccurance = keywordDocumentOccurance == 0 ? keywordDocumentOccurance + 1 : keywordDocumentOccurance;
+
+                    double inverseDocumentFrequency = Math.log(nbOfDocuments / (keywordDocumentOccurance));
+
+                    double keywordTfidf = termFrequency * inverseDocumentFrequency;
+
+                    documentTfidf += keywordTfidf;
                 }
-                keywordDocumentOccurance = keywordDocumentOccurance == 0 ? keywordDocumentOccurance + 1 : keywordDocumentOccurance;
 
-                double inverseDocumentFrequency = Math.log(nbOfDocuments / (keywordDocumentOccurance));
-
-                double keywordTfidf = termFrequency * inverseDocumentFrequency;
-
-                documentTfidf += keywordTfidf;
+                unfilteredTfidfResults.add(new TfidfSearchResult(cachedComponent, documentTfidf));
             }
-
-            unfilteredTfidfResults.add(new TfidfSearchResult(cachedComponent, documentTfidf));
         }
 
         ArrayList<TfidfSearchResult> filteredTfidfResults = new ArrayList<>();

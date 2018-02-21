@@ -7,7 +7,6 @@ import com.teamwizardry.librarianlib.features.math.Vec2d;
 import eladkay.quaeritum.api.book.hierarchy.entry.Entry;
 import eladkay.quaeritum.client.gui.book.GuiBook;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScaledResolution;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.NotNull;
@@ -27,8 +26,8 @@ public abstract class PageString implements Page {
     public abstract String getText();
 
     @SideOnly(Side.CLIENT)
-    public int lineCount(Vec2d size, double yFactor) {
-        return (int) (size.getYi() * yFactor / Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT) - 1;
+    public int lineCount(Vec2d size) {
+        return ((size.getYi()) / Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT);
     }
 
     @Override
@@ -42,15 +41,12 @@ public abstract class PageString implements Page {
         List<GuiComponent> pages = new ArrayList<>();
 
         Minecraft minecraft = Minecraft.getMinecraft();
-        ScaledResolution res = new ScaledResolution(minecraft);
-        double xFactor = minecraft.displayWidth / res.getScaledWidth_double();
-        double yFactor = minecraft.displayHeight / res.getScaledHeight_double();
 
-        int lineCount = lineCount(size, yFactor);
+        int lineCount = lineCount(size);
 
         String text = getText();
 
-        List<String> lines = minecraft.fontRenderer.listFormattedStringToWidth(text, (int) (size.getXi() * xFactor));
+        List<String> lines = minecraft.fontRenderer.listFormattedStringToWidth(text, (int) (size.getXi() * 1.35));
 
         List<String> sections = Lists.newArrayList();
 
@@ -60,14 +56,14 @@ public abstract class PageString implements Page {
             if (!trim.isEmpty()) {
                 page.add(trim);
                 if (page.size() >= lineCount) {
-                    sections.add(String.join(" ", page));
+                    sections.add(String.join("\n", page));
                     page.clear();
                 }
             }
         }
 
         if (!page.isEmpty())
-            sections.add(String.join(" ", page));
+            sections.add(String.join("\n", page));
 
 
         for (String section : sections) {
