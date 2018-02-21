@@ -52,7 +52,7 @@ public class ComponentCategoryButton extends GuiComponent {
                 return list;
             });
 
-            ComponentAnimatableVoid circleWipe = new ComponentAnimatableVoid(0, 0, 24, 24);
+            ComponentAnimatableVoid circleWipe = new ComponentAnimatableVoid(0, 0, width, height);
             add(circleWipe);
             circleWipe.getTransform().setTranslateZ(100);
 

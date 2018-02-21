@@ -28,7 +28,7 @@ public abstract class PageString implements Page {
 
     @SideOnly(Side.CLIENT)
     public int lineCount(Vec2d size) {
-        return (int) Math.ceil(size.getY() / Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT);
+        return (int) Math.ceil(size.getY() / Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT) - 1;
     }
 
     @Override
