@@ -7,6 +7,7 @@ import com.teamwizardry.librarianlib.features.math.Vec2d;
 import eladkay.quaeritum.api.book.hierarchy.entry.Entry;
 import eladkay.quaeritum.client.gui.book.GuiBook;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.NotNull;
@@ -46,7 +47,11 @@ public abstract class PageString implements Page {
 
         String text = getText();
 
-        List<String> lines = minecraft.fontRenderer.listFormattedStringToWidth(text, (int) (size.getXi() * 1.35));
+        FontRenderer fr = minecraft.fontRenderer;
+
+        fr.setBidiFlag(true);
+        fr.setUnicodeFlag(true);
+        List<String> lines = fr.listFormattedStringToWidth(text, size.getXi());
 
         List<String> sections = Lists.newArrayList();
 
