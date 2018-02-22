@@ -11,6 +11,7 @@ import eladkay.quaeritum.api.book.hierarchy.entry.Entry;
 import eladkay.quaeritum.client.gui.book.ComponentCategoryPage;
 import eladkay.quaeritum.client.gui.book.ComponentEntryPage;
 import eladkay.quaeritum.client.gui.book.GuiBook;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.Nullable;
@@ -44,9 +45,8 @@ public class Category implements IBookElement {
             icon = json.get("icon");
             JsonArray allEntries = json.getAsJsonArray("entries");
             for (JsonElement entryJson : allEntries) {
-                JsonElement parsable = entryJson.isJsonPrimitive() ?
-                        Book.getJsonFromLink(entryJson.getAsString()) : entryJson;
-                Entry entry = new Entry(this, parsable.getAsJsonObject());
+                JsonElement parsable = Book.getJsonFromLink(entryJson.getAsString());
+                Entry entry = new Entry(this, entryJson.getAsString(), parsable.getAsJsonObject());
                 if (entry.isValid)
                     entries.add(entry);
             }
@@ -60,6 +60,13 @@ public class Category implements IBookElement {
         this.descKey = desc;
         this.icon = icon;
         this.entries = entries;
+    }
+
+    public boolean anyUnlocked(EntityPlayer player) {
+        for (Entry entry : entries)
+            if (entry.isUnlocked(player))
+                return true;
+        return false;
     }
 
     public boolean isSingleEntry() {

@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.function.BiFunction;
 
 public class PageTypes {
@@ -33,7 +34,7 @@ public class PageTypes {
 
     @Nullable
     public static BiFunction<Entry, JsonObject, Page> getPageProvider(@NotNull String type) {
-        return getPageProvider(new ResourceLocation(type));
+        return getPageProvider(new ResourceLocation(type.toLowerCase(Locale.ROOT)));
     }
 
     @Nullable

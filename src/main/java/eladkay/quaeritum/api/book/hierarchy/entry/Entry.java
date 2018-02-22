@@ -1,26 +1,36 @@
 package eladkay.quaeritum.api.book.hierarchy.entry;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
 import eladkay.quaeritum.api.book.hierarchy.IBookElement;
 import eladkay.quaeritum.api.book.hierarchy.category.Category;
+import eladkay.quaeritum.api.book.hierarchy.entry.criterion.ICriterion;
+import eladkay.quaeritum.api.book.hierarchy.entry.criterion.game.EntryUnlockedEvent;
 import eladkay.quaeritum.api.book.hierarchy.page.Page;
 import eladkay.quaeritum.client.gui.book.ComponentEntryPage;
 import eladkay.quaeritum.client.gui.book.GuiBook;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author WireSegal
  * Created at 10:19 PM on 2/17/18.
  */
 public class Entry implements IBookElement {
+
+    public static final Map<ResourceLocation, Entry> ENTRIES = Maps.newHashMap();
+
     public final Category category;
 
     public final List<Page> pages;
@@ -28,9 +38,13 @@ public class Entry implements IBookElement {
     public final String descKey;
     public final JsonElement icon;
 
+    public ICriterion criterion = null;
+
     public boolean isValid = false;
 
-    public Entry(Category category, JsonObject json) {
+    public Entry(Category category, String rl, JsonObject json) {
+        ENTRIES.put(new ResourceLocation(rl), this);
+
         List<Page> pages = Lists.newArrayList();
         String titleKey = "";
         String descKey = "";
@@ -47,6 +61,8 @@ public class Entry implements IBookElement {
                 if (page != null)
                     pages.add(page);
             }
+            if (json.has("criteria"))
+                criterion = ICriterion.fromJson(json.get("criteria"));
             isValid = true;
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -56,6 +72,14 @@ public class Entry implements IBookElement {
         this.titleKey = titleKey;
         this.descKey = descKey;
         this.icon = icon;
+    }
+
+    public boolean isUnlocked(EntityPlayer player) {
+        if (criterion == null) return true;
+
+        boolean unlocked = !MinecraftForge.EVENT_BUS.post(new EntryUnlockedEvent(player, this));
+
+        return criterion.isUnlocked(player, unlocked);
     }
 
     @Override

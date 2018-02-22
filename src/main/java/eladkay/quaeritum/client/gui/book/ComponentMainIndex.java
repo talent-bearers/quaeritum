@@ -8,6 +8,7 @@ import eladkay.quaeritum.api.book.hierarchy.category.Category;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.player.EntityPlayer;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -44,10 +45,13 @@ public class ComponentMainIndex extends NavBarHolder {
         {
 
             ArrayList<GuiComponent> categories = new ArrayList<>();
+            EntityPlayer player = Minecraft.getMinecraft().player;
             for (Category category : book.book.categories) {
-                ComponentCategoryButton component = new ComponentCategoryButton(0, 0, 24, 24, book, category);
-                add(component);
-                categories.add(component);
+                if (category.anyUnlocked(player)) {
+                    ComponentCategoryButton component = new ComponentCategoryButton(0, 0, 24, 24, book, category);
+                    add(component);
+                    categories.add(component);
+                }
             }
 
             int row = 0;

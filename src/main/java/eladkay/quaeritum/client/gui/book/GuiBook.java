@@ -18,6 +18,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
@@ -159,6 +160,7 @@ public class GuiBook extends GuiBase {
     }
 
     public void search(String type) {
+        EntityPlayer player = Minecraft.getMinecraft().player;
         ComponentSearchResults toFocus = focus instanceof ComponentSearchResults ?
                 (ComponentSearchResults) focus :
                 new ComponentSearchResults(this);
@@ -171,7 +173,7 @@ public class GuiBook extends GuiBase {
         ArrayList<MatchCountSearchResult> matchCountSearchResults = new ArrayList<>();
 
         final int nbOfDocuments = contentCache.size();
-        for (Entry cachedComponent : contentCache.keySet()) {
+        for (Entry cachedComponent : contentCache.keySet()) if (cachedComponent.isUnlocked(player)) {
             String cachedDocument = contentCache
                     .get(cachedComponent)
                     .toLowerCase(Locale.ROOT)
@@ -194,7 +196,7 @@ public class GuiBook extends GuiBase {
                     double termFrequency = 0.5 + (0.5 * keywordOccurance / mostRepeatedWord);
 
                     int keywordDocumentOccurance = 0;
-                    for (Entry documentComponent : contentCache.keySet()) {
+                    for (Entry documentComponent : contentCache.keySet()) if (documentComponent.isUnlocked(player)) {
                         String documentContent = contentCache.get(documentComponent).toLowerCase(Locale.ROOT);
                         if (documentContent.contains(keyword)) {
                             keywordDocumentOccurance++;
@@ -231,7 +233,7 @@ public class GuiBook extends GuiBase {
         if (!filteredTfidfResults.isEmpty()) {
             toFocus.updateTfidfSearches(filteredTfidfResults);
         } else {
-            for (Entry cachedComponent : contentCache.keySet()) {
+            for (Entry cachedComponent : contentCache.keySet()) if (cachedComponent.isUnlocked(player)) {
                 String cachedDocument = contentCache
                         .get(cachedComponent)
                         .toLowerCase(Locale.ROOT)

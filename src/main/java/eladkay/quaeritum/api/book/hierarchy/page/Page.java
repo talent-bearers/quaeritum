@@ -26,7 +26,7 @@ public interface Page {
                 provider = PageTypes.getPageProvider("text");
                 obj = new JsonObject();
                 obj.addProperty("type", "text");
-                obj.addProperty("value", element.getAsString());
+                obj.add("value", element);
             } else if (element.isJsonObject()) {
                 obj = element.getAsJsonObject();
                 provider = PageTypes.getPageProvider(obj.getAsJsonPrimitive("type").getAsString());

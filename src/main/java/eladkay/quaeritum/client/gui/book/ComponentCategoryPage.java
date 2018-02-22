@@ -4,6 +4,8 @@ import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentVoid;
 import eladkay.quaeritum.api.book.hierarchy.category.Category;
 import eladkay.quaeritum.api.book.hierarchy.entry.Entry;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
 
 /**
  * Property of Demoniaque.
@@ -21,19 +23,21 @@ public class ComponentCategoryPage extends NavBarHolder {
         int itemsPerPage = 9;
         int count = 0;
         int id = 0;
+        EntityPlayer player = Minecraft.getMinecraft().player;
         for (Entry entry : category.entries) {
+            if (entry.isUnlocked(player)) {
+                GuiComponent indexPlate = book.createIndexButton(id++, entry, null);
+                pageComponent.add(indexPlate);
 
-            GuiComponent indexPlate = book.createIndexButton(id++, entry, null);
-            pageComponent.add(indexPlate);
-
-            count++;
-            if (count >= itemsPerPage) {
-                addPage(pageComponent);
-                pageComponent = new ComponentVoid(0, 0, getSize().getXi(), getSize().getYi());
-                add(pageComponent);
-                pageComponent.setVisible(false);
-                count = 0;
-                id = 0;
+                count++;
+                if (count >= itemsPerPage) {
+                    addPage(pageComponent);
+                    pageComponent = new ComponentVoid(0, 0, getSize().getXi(), getSize().getYi());
+                    add(pageComponent);
+                    pageComponent.setVisible(false);
+                    count = 0;
+                    id = 0;
+                }
             }
         }
     }
