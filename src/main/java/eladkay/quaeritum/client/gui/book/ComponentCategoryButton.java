@@ -17,6 +17,7 @@ import net.minecraft.util.text.TextFormatting;
 import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nonnull;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -95,8 +96,10 @@ public class ComponentCategoryButton extends GuiComponent {
                 event.component.add(mouseOutAnim);
             });
 
+            Color wipeColor = category.color;
+
             circleWipe.BUS.hook(GuiComponentEvents.PostDrawEvent.class, (GuiComponentEvents.PostDrawEvent event) -> {
-                GlStateManager.color(book.highlightColor.getRed(), book.highlightColor.getGreen(), book.highlightColor.getBlue());
+                GlStateManager.color(wipeColor.getRed(), wipeColor.getGreen(), wipeColor.getBlue());
                 GlStateManager.enableAlpha();
                 GlStateManager.disableCull();
                 GL11.glEnable(GL_POLYGON_SMOOTH);

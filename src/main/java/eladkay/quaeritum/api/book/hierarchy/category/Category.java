@@ -16,6 +16,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.Nullable;
 
+import java.awt.*;
 import java.util.List;
 
 /**
@@ -29,6 +30,7 @@ public class Category implements IBookElement {
     public final String titleKey;
     public final String descKey;
     public final JsonElement icon;
+    public final Color color;
 
     public boolean isValid = false;
 
@@ -38,11 +40,14 @@ public class Category implements IBookElement {
         String desc = "";
         JsonElement icon = new JsonObject();
         List<Entry> entries = Lists.newArrayList();
+        Color color = book.highlightColor;
 
         try {
             title = json.getAsJsonPrimitive("title").getAsString();
             desc = json.getAsJsonPrimitive("description").getAsString();
             icon = json.get("icon");
+            if (json.has("color"))
+                color = Book.colorFromJson(json.get("color"));
             JsonArray allEntries = json.getAsJsonArray("entries");
             for (JsonElement entryJson : allEntries) {
                 JsonElement parsable = Book.getJsonFromLink(entryJson.getAsString());
@@ -60,6 +65,7 @@ public class Category implements IBookElement {
         this.descKey = desc;
         this.icon = icon;
         this.entries = entries;
+        this.color = color;
     }
 
     public boolean anyUnlocked(EntityPlayer player) {

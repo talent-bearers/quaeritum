@@ -74,7 +74,7 @@ public class Book implements IBookElement {
             reload();
     }
 
-    public static Color fromJsonElement(JsonElement element) {
+    public static Color colorFromJson(JsonElement element) {
         if (element.isJsonPrimitive()) {
             JsonPrimitive primitive = element.getAsJsonPrimitive();
             if (primitive.isNumber())
@@ -106,8 +106,8 @@ public class Book implements IBookElement {
             if (jsonElement == null || !jsonElement.isJsonObject())
                 return;
             JsonObject json = jsonElement.getAsJsonObject();
-            bookColor = fromJsonElement(json.get("color"));
-            highlightColor = fromJsonElement(json.get("highlight"));
+            bookColor = colorFromJson(json.get("color"));
+            highlightColor = colorFromJson(json.get("highlight"));
             headerKey = json.getAsJsonPrimitive("title").getAsString();
             subtitleKey = json.getAsJsonPrimitive("subtitle").getAsString();
             JsonArray allCategories = json.getAsJsonArray("categories");
