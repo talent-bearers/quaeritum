@@ -5,6 +5,7 @@ import com.teamwizardry.librarianlib.features.animator.Easing;
 import com.teamwizardry.librarianlib.features.animator.animations.BasicAnimation;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponentEvents;
+import com.teamwizardry.librarianlib.features.math.Vec2d;
 import eladkay.quaeritum.api.book.hierarchy.category.Category;
 import kotlin.Unit;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -38,7 +39,7 @@ public class ComponentCategoryButton extends GuiComponent {
         });
 
         // ------- BUTTON RENDERING AND ANIMATION ------- //
-        Runnable iconMask = getRendererFor(icon, true);
+	    Runnable iconMask = getRendererFor(icon, new Vec2d(24, 24), true);
         {
             BUS.hook(GuiComponentEvents.PostDrawEvent.class, (GuiComponentEvents.PostDrawEvent event) -> {
                 GlStateManager.color(0, 0, 0);
