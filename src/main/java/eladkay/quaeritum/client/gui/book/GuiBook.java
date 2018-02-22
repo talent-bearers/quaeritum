@@ -8,6 +8,7 @@ import com.teamwizardry.librarianlib.features.gui.component.GuiComponentEvents;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentSprite;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentText;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentVoid;
+import com.teamwizardry.librarianlib.features.math.Vec2d;
 import com.teamwizardry.librarianlib.features.sprite.Sprite;
 import com.teamwizardry.librarianlib.features.sprite.Texture;
 import eladkay.quaeritum.api.book.hierarchy.IBookElement;
@@ -85,7 +86,7 @@ public class GuiBook extends GuiBase {
 
         // --------- SEARCH BAR --------- //
         {
-            ComponentSearchBar bar = new ComponentSearchBar(this, bookmarkID++, this::search, null);
+            ComponentTextBox bar = new ComponentTextBox(this, bookmarkID++, this::search, null);
             bookComponent.add(bar);
         }
         // --------- SEARCH BAR --------- //
@@ -93,43 +94,45 @@ public class GuiBook extends GuiBase {
         placeInFocus(book);
     }
 
-    public static Runnable getRendererFor(JsonElement icon) {
-        return getRendererFor(icon, false);
+    public static Runnable getRendererFor(JsonElement icon, Vec2d size) {
+        return getRendererFor(icon, size, false);
     }
 
-    public static Runnable getRendererFor(JsonElement icon, boolean mask) {
+    public static Runnable getRendererFor(JsonElement icon, Vec2d size, boolean mask) {
         if (icon == null) return null;
 
         if (icon.isJsonPrimitive()) {
             ResourceLocation iconLocation = new ResourceLocation(icon.getAsString());
             Sprite sprite = new Sprite(new ResourceLocation(iconLocation.getResourceDomain(),
                     "textures/" + iconLocation.getResourcePath() + ".png"));
-            return () -> renderSprite(sprite, mask);
+            return () -> renderSprite(sprite, size, mask);
         } else if (icon.isJsonObject()) {
             ItemStack stack = CraftingHelper.getItemStack(icon.getAsJsonObject(), new JsonContext("minecraft"));
             if (!stack.isEmpty())
-                return () -> renderStack(stack);
+                return () -> renderStack(stack, size);
         }
         return null;
     }
 
-    private static void renderSprite(Sprite sprite, boolean mask) {
+    private static void renderSprite(Sprite sprite, Vec2d size, boolean mask) {
         GlStateManager.pushMatrix();
         GlStateManager.enableBlend();
         if (!mask)
             GlStateManager.color(1, 1, 1, 1);
 
         sprite.getTex().bind();
-        sprite.draw((int) ClientTickHandler.getPartialTicks(), 0, 0, 16, 16);
+        sprite.draw((int) ClientTickHandler.getPartialTicks(), 0, 0, size.getXi(), size.getYi());
 
         GlStateManager.popMatrix();
     }
 
-    private static void renderStack(ItemStack stack) {
+    private static void renderStack(ItemStack stack, Vec2d size) {
         GlStateManager.pushMatrix();
         GlStateManager.enableBlend();
         GlStateManager.enableRescaleNormal();
         RenderHelper.enableGUIStandardItemLighting();
+
+        GlStateManager.scale(size.getX() / 16.0, size.getY() / 16.0, 0);
 
         RenderItem itemRender = Minecraft.getMinecraft().getRenderItem();
         itemRender.renderItemAndEffectIntoGUI(stack, 0, 0);
@@ -286,7 +289,7 @@ public class GuiBook extends GuiBase {
                 textComponent.getText().setValue(TextFormatting.RESET.toString() + title);
             });
 
-            Runnable render = getRendererFor(icon);
+            Runnable render = getRendererFor(icon, new Vec2d(16, 16));
 
             if (render != null)
                 indexButton.BUS.hook(GuiComponentEvents.PostDrawEvent.class, (event) -> {
