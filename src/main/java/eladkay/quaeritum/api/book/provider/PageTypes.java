@@ -19,7 +19,6 @@ public class PageTypes {
         registerPageProvider("text", PageText::new);
         registerPageProvider("recipe", PageRecipe::new);
         registerPageProvider("structure", PageStructure::new);
-        registerPageProvider("translated", PageTranslated::new);
     }
 
     public static void registerPageProvider(@NotNull String name, @NotNull BiFunction<Entry, JsonObject, Page> provider) {

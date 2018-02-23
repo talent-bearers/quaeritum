@@ -1,6 +1,7 @@
 package eladkay.quaeritum.client.gui.book;
 
 import com.google.gson.JsonElement;
+import com.teamwizardry.librarianlib.core.LibrarianLib;
 import com.teamwizardry.librarianlib.core.client.ClientTickHandler;
 import com.teamwizardry.librarianlib.features.gui.GuiBase;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
@@ -11,6 +12,7 @@ import com.teamwizardry.librarianlib.features.gui.components.ComponentVoid;
 import com.teamwizardry.librarianlib.features.math.Vec2d;
 import com.teamwizardry.librarianlib.features.sprite.Sprite;
 import com.teamwizardry.librarianlib.features.sprite.Texture;
+import com.teamwizardry.librarianlib.features.utilities.client.TooltipHelper;
 import eladkay.quaeritum.api.book.hierarchy.IBookElement;
 import eladkay.quaeritum.api.book.hierarchy.book.Book;
 import eladkay.quaeritum.api.book.hierarchy.entry.Entry;
@@ -33,6 +35,7 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -287,6 +290,24 @@ public class GuiBook extends GuiBase {
 
             indexButton.BUS.hook(GuiComponentEvents.MouseOutEvent.class, (event) -> {
                 textComponent.getText().setValue(TextFormatting.RESET.toString() + title);
+            });
+
+            indexButton.render.getTooltip().func((Function<GuiComponent, List<String>>) guiComponent -> {
+                List<String> list = new ArrayList<>();
+                TooltipHelper.addToTooltip(list, entry.titleKey);
+
+                String desc = entry.descKey;
+                String used = LibrarianLib.PROXY.canTranslate(desc) ? desc : desc + "0";
+                if (LibrarianLib.PROXY.canTranslate(used)) {
+                    TooltipHelper.addToTooltip(list, used);
+                    int i = 0;
+                    while (LibrarianLib.PROXY.canTranslate(desc + (++i)))
+                        TooltipHelper.addToTooltip(list, desc + i);
+                }
+
+                for (int i = 1; i < list.size(); i++)
+                    list.set(i, TextFormatting.GRAY + list.get(i));
+                return list;
             });
 
             Runnable render = getRendererFor(icon, new Vec2d(16, 16));
