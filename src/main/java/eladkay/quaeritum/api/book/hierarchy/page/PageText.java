@@ -41,7 +41,7 @@ public class PageText extends PageString {
     @Override
     @SideOnly(Side.CLIENT)
     public String getText() {
-        return I18n.format(key, args);
+        return I18n.format(key, args).replace("&", "§");
     }
 
     public static class TranslationHolder {

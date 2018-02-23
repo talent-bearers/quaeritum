@@ -276,7 +276,7 @@ public class GuiBook extends GuiBase {
 
         // SUB INDEX PLATE RENDERING
         {
-            final String title = I18n.format(entry.titleKey);
+            final String title = I18n.format(entry.titleKey).replace("&", "§");
             final JsonElement icon = entry.icon;
 
             ComponentText textComponent = new ComponentText(20, Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT / 2, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.TOP);
