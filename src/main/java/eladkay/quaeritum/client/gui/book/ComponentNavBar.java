@@ -5,9 +5,11 @@ import com.teamwizardry.librarianlib.features.gui.component.GuiComponentEvents;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentSprite;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentText;
 import com.teamwizardry.librarianlib.features.math.Vec2d;
+import eladkay.quaeritum.api.book.hierarchy.IBookElement;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.math.MathHelper;
+import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -23,9 +25,12 @@ public class ComponentNavBar extends GuiComponent {
 
     public int maxPages;
     private int page = 0;
+    private final GuiBook book;
 
     public ComponentNavBar(GuiBook book, int posX, int posY, int width, int pageCount) {
         super(posX, posY, width, 20);
+
+        this.book = book;
 
         maxPages = Math.max(0, pageCount - 1);
 
@@ -86,13 +91,7 @@ public class ComponentNavBar extends GuiComponent {
             }
         });
         back.BUS.hook(GuiComponentEvents.MouseClickEvent.class, event -> {
-            int x = MathHelper.clamp(page - 1, 0, maxPages);
-            if (page == x) return;
-
-            page = x;
-
-            EventNavBarChange eventNavBarChange = new EventNavBarChange(page);
-            BUS.fire(eventNavBarChange);
+            setPage(page - 1);
         });
         List<String> backTooltip = new ArrayList<>();
         backTooltip.add(I18n.format("librarianlib.book.nav.previous"));
@@ -114,13 +113,7 @@ public class ComponentNavBar extends GuiComponent {
             }
         });
         next.BUS.hook(GuiComponentEvents.MouseClickEvent.class, event -> {
-            int x = MathHelper.clamp(page + 1, 0, maxPages);
-            if (page == x) return;
-
-            page = x;
-
-            EventNavBarChange eventNavBarChange = new EventNavBarChange(page);
-            BUS.fire(eventNavBarChange);
+            setPage(page + 1);
         });
         List<String> nextTooltip = new ArrayList<>();
         nextTooltip.add(I18n.format("librarianlib.book.nav.next"));
@@ -128,7 +121,49 @@ public class ComponentNavBar extends GuiComponent {
     }
 
 
+    public void setPage(int target) {
+        int x = MathHelper.clamp(target, 0, maxPages);
+        if (page == x) return;
+
+        page = x;
+
+        EventNavBarChange eventNavBarChange = new EventNavBarChange(page);
+        BUS.fire(eventNavBarChange);
+
+        book.currentElement = new ElementWithPage(ElementWithPage.actualElement(book), x);
+    }
+
     public int getPage() {
         return page;
+    }
+
+    public static class ElementWithPage implements IBookElement {
+        public static IBookElement actualElement(GuiBook book) {
+            IBookElement element = book.currentElement;
+            if (element instanceof ElementWithPage)
+                return ((ElementWithPage) element).element;
+            return element;
+        }
+
+        private final IBookElement element;
+        private final int page;
+
+        public ElementWithPage(IBookElement element, int page) {
+            this.element = element;
+            this.page = page;
+        }
+
+        @Override
+        public @Nullable IBookElement getBookParent() {
+            return element.getBookParent();
+        }
+
+        @Override
+        public GuiComponent createComponent(GuiBook book) {
+            GuiComponent component = element.createComponent(book);
+            if (component instanceof NavBarHolder)
+                ((NavBarHolder) component).navBar.setPage(page);
+            return component;
+        }
     }
 }

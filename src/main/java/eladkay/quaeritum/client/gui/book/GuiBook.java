@@ -21,25 +21,23 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.JsonContext;
-import org.apache.commons.lang3.StringUtils;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Stack;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import static eladkay.quaeritum.api.lib.LibMisc.MOD_ID;
+import static eladkay.quaeritum.client.gui.book.ComponentNavBar.ElementWithPage.actualElement;
 
 /**
  * Property of Demoniaque.
@@ -89,7 +87,8 @@ public class GuiBook extends GuiBase {
 
         // --------- SEARCH BAR --------- //
         {
-            ComponentTextBox bar = new ComponentTextBox(this, bookmarkID++, this::search, null);
+            Search search = new Search(this);
+            ComponentTextBox bar = new ComponentTextBox(this, bookmarkID++, search::search, null);
             bookComponent.add(bar);
         }
         // --------- SEARCH BAR --------- //
@@ -147,7 +146,7 @@ public class GuiBook extends GuiBase {
     }
 
     public void placeInFocus(IBookElement element) {
-        if (element == currentElement)
+        if (element == actualElement(this))
             return;
 
         if (currentElement != null)
@@ -156,113 +155,13 @@ public class GuiBook extends GuiBase {
     }
 
     public void forceInFocus(IBookElement element) {
-        if (element == currentElement)
+        if (element == actualElement(this))
             return;
 
         if (focus != null)
             focus.invalidate();
         bookComponent.add(focus = element.createComponent(this));
         currentElement = element;
-    }
-
-    public void search(String type) {
-        EntityPlayer player = Minecraft.getMinecraft().player;
-        ComponentSearchResults toFocus = focus instanceof ComponentSearchResults ?
-                (ComponentSearchResults) focus :
-                new ComponentSearchResults(this);
-
-
-        String query = type.replace("'", "").toLowerCase(Locale.ROOT);
-        String[] keywords = query.split(" ");
-
-        ArrayList<TfidfSearchResult> unfilteredTfidfResults = new ArrayList<>();
-        ArrayList<MatchCountSearchResult> matchCountSearchResults = new ArrayList<>();
-
-        final int nbOfDocuments = contentCache.size();
-        for (Entry cachedComponent : contentCache.keySet()) if (cachedComponent.isUnlocked(player)) {
-            String cachedDocument = contentCache
-                    .get(cachedComponent)
-                    .toLowerCase(Locale.ROOT)
-                    .replace("'", "");
-
-            List<String> words = Arrays.asList(cachedDocument.split("\\s+"));
-            long mostRepeatedWord =
-                    words.stream()
-                            .collect(Collectors.groupingBy(w -> w, Collectors.counting()))
-                            .entrySet()
-                            .stream()
-                            .map(Map.Entry::getValue)
-                            .max(Double::compare)
-                            .orElse(-1L);
-
-            if (mostRepeatedWord != -1L) {
-                double documentTfidf = 0;
-                for (String keyword : keywords) {
-                    long keywordOccurance = Pattern.compile("\\b" + keyword).splitAsStream(cachedDocument).count() - 1;
-                    double termFrequency = 0.5 + (0.5 * keywordOccurance / mostRepeatedWord);
-
-                    int keywordDocumentOccurance = 0;
-                    for (Entry documentComponent : contentCache.keySet()) if (documentComponent.isUnlocked(player)) {
-                        String documentContent = contentCache.get(documentComponent).toLowerCase(Locale.ROOT);
-                        if (documentContent.contains(keyword)) {
-                            keywordDocumentOccurance++;
-                        }
-                    }
-                    keywordDocumentOccurance = keywordDocumentOccurance == 0 ? keywordDocumentOccurance + 1 : keywordDocumentOccurance;
-
-                    double inverseDocumentFrequency = Math.log(nbOfDocuments / (keywordDocumentOccurance));
-
-                    double keywordTfidf = termFrequency * inverseDocumentFrequency;
-
-                    documentTfidf += keywordTfidf;
-                }
-
-                unfilteredTfidfResults.add(new TfidfSearchResult(cachedComponent, documentTfidf));
-            }
-        }
-
-        ArrayList<TfidfSearchResult> filteredTfidfResults = new ArrayList<>();
-
-        double largestTFIDF = 0, smallestTFIDF = Integer.MAX_VALUE;
-        for (TfidfSearchResult resultItem2 : unfilteredTfidfResults) {
-            largestTFIDF = resultItem2.getTfidfrequency() > largestTFIDF ? resultItem2.getTfidfrequency() : largestTFIDF;
-            smallestTFIDF = resultItem2.getTfidfrequency() < smallestTFIDF ? resultItem2.getTfidfrequency() : smallestTFIDF;
-        }
-
-        for (TfidfSearchResult resultItem : unfilteredTfidfResults) {
-            double matchPercentage = Math.round((resultItem.getTfidfrequency() - smallestTFIDF) / (largestTFIDF - smallestTFIDF) * 100);
-            if (matchPercentage < 5 || Double.isNaN(matchPercentage)) continue;
-
-            filteredTfidfResults.add(resultItem);
-        }
-
-        if (!filteredTfidfResults.isEmpty()) {
-            toFocus.updateTfidfSearches(filteredTfidfResults);
-        } else {
-            for (Entry cachedComponent : contentCache.keySet()) if (cachedComponent.isUnlocked(player)) {
-                String cachedDocument = contentCache
-                        .get(cachedComponent)
-                        .toLowerCase(Locale.ROOT)
-                        .replace("'", "");
-
-                int mostMatches = 0;
-                for (String keyword : keywords) {
-                    int keywordOccurances = StringUtils.countMatches(cachedDocument, keyword);
-                    mostMatches += keywordOccurances;
-                }
-
-                if (mostMatches > 0)
-                    matchCountSearchResults.add(new MatchCountSearchResult(cachedComponent, mostMatches));
-            }
-
-            if (!matchCountSearchResults.isEmpty()) {
-                toFocus.updateMatchCountSearches(matchCountSearchResults);
-            } else {
-                toFocus.setAsBadSearch();
-            }
-        }
-
-        placeInFocus(toFocus);
     }
 
     public GuiComponent createIndexButton(int indexID, Entry entry, @Nullable Consumer<ComponentVoid> extra) {
@@ -319,53 +218,5 @@ public class GuiBook extends GuiBase {
         }
 
         return indexButton;
-    }
-
-    public static class TfidfSearchResult implements Comparable<TfidfSearchResult> {
-
-        private final Entry resultComponent;
-        private final double tfidfrequency;
-
-        public TfidfSearchResult(Entry resultComponent, double tfidfrequency) {
-            this.resultComponent = resultComponent;
-            this.tfidfrequency = tfidfrequency;
-        }
-
-        public Entry getResultComponent() {
-            return resultComponent;
-        }
-
-        public double getTfidfrequency() {
-            return tfidfrequency;
-        }
-
-        @Override
-        public int compareTo(@NotNull GuiBook.TfidfSearchResult o) {
-            return Double.compare(o.getTfidfrequency(), getTfidfrequency());
-        }
-    }
-
-    public static class MatchCountSearchResult implements Comparable<MatchCountSearchResult> {
-
-        private final Entry resultComponent;
-        private final int nbOfMatches;
-
-        public MatchCountSearchResult(Entry resultComponent, int nbOfMatches) {
-            this.resultComponent = resultComponent;
-            this.nbOfMatches = nbOfMatches;
-        }
-
-        public Entry getResultComponent() {
-            return resultComponent;
-        }
-
-        public int getMatchCount() {
-            return nbOfMatches;
-        }
-
-        @Override
-        public int compareTo(@NotNull GuiBook.MatchCountSearchResult o) {
-            return Double.compare(o.getMatchCount(), getMatchCount());
-        }
     }
 }

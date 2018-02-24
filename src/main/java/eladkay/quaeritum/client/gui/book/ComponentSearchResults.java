@@ -1,5 +1,6 @@
 package eladkay.quaeritum.client.gui.book;
 
+import com.google.common.collect.Lists;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponentEvents;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentText;
@@ -25,6 +26,10 @@ public class ComponentSearchResults extends NavBarHolder implements IBookElement
     private ComponentVoid resultSection;
     private GuiBook book;
 
+    private boolean lastWasFrequency = false;
+    private List<Search.FrequencySearchResult> freq = Lists.newArrayList();
+    private List<Search.MatchCountSearchResult> match = Lists.newArrayList();
+
     public ComponentSearchResults(GuiBook book) {
         super(16, 16, book.bookComponent.getSize().getXi() - 32, book.bookComponent.getSize().getYi() - 32, book);
         this.book = book;
@@ -39,8 +44,11 @@ public class ComponentSearchResults extends NavBarHolder implements IBookElement
         add(resultSection);
     }
 
-    public void updateTfidfSearches(List<GuiBook.TfidfSearchResult> results) {
+    public void updateTfidfSearches(List<Search.FrequencySearchResult> results) {
         reset();
+
+        lastWasFrequency = true;
+        freq = results;
 
         pageHeader.getText().setValue(results.size() == 1 ?
                 I18n.format("librarianlib.book.results.oneresult") :
@@ -52,17 +60,17 @@ public class ComponentSearchResults extends NavBarHolder implements IBookElement
         resultSection.add(pageComponent);
 
         double largestTFIDF = 0, smallestTFIDF = Integer.MAX_VALUE;
-        for (GuiBook.TfidfSearchResult resultItem2 : results) {
-            largestTFIDF = resultItem2.getTfidfrequency() > largestTFIDF ? resultItem2.getTfidfrequency() : largestTFIDF;
-            smallestTFIDF = resultItem2.getTfidfrequency() < smallestTFIDF ? resultItem2.getTfidfrequency() : smallestTFIDF;
+        for (Search.FrequencySearchResult resultItem2 : results) {
+            largestTFIDF = resultItem2.getFrequency() > largestTFIDF ? resultItem2.getFrequency() : largestTFIDF;
+            smallestTFIDF = resultItem2.getFrequency() < smallestTFIDF ? resultItem2.getFrequency() : smallestTFIDF;
         }
 
         int itemsPerPage = 8;
         int page = 0;
         int count = 0;
-        for (GuiBook.TfidfSearchResult resultItem : results) {
+        for (Search.FrequencySearchResult resultItem : results) {
 
-            double matchPercentage = results.size() == 1 ? 100 : Math.round((resultItem.getTfidfrequency() - smallestTFIDF) / (largestTFIDF - smallestTFIDF) * 100);
+            double matchPercentage = results.size() == 1 ? 100 : Math.round((resultItem.getFrequency() - smallestTFIDF) / (largestTFIDF - smallestTFIDF) * 100);
             if (matchPercentage <= 0) continue;
 
             Entry resultComponent = resultItem.getResultComponent();
@@ -122,8 +130,11 @@ public class ComponentSearchResults extends NavBarHolder implements IBookElement
         });
     }
 
-    public void updateMatchCountSearches(List<GuiBook.MatchCountSearchResult> results) {
+    public void updateMatchCountSearches(List<Search.MatchCountSearchResult> results) {
         reset();
+
+        lastWasFrequency = false;
+        match = results;
 
         pageHeader.getText().setValue(I18n.format("librarianlib.book.results.toobroad", results.size()));
 
@@ -135,7 +146,7 @@ public class ComponentSearchResults extends NavBarHolder implements IBookElement
         int itemsPerPage = 8;
         int page = 0;
         int count = 0;
-        for (GuiBook.MatchCountSearchResult resultItem : results) {
+        for (Search.MatchCountSearchResult resultItem : results) {
 
             Entry resultComponent = resultItem.getResultComponent();
 
@@ -214,7 +225,12 @@ public class ComponentSearchResults extends NavBarHolder implements IBookElement
 
     @Override
     public GuiComponent createComponent(GuiBook book) {
-        return this;
+        ComponentSearchResults results = new ComponentSearchResults(book);
+        if (lastWasFrequency)
+            results.updateTfidfSearches(freq);
+        else
+            results.updateMatchCountSearches(match);
+        return results;
     }
 
     @Override
