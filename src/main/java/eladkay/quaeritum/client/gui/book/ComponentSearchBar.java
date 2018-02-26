@@ -15,7 +15,8 @@ public class ComponentSearchBar extends ComponentBookMark {
 	public ComponentSearchBar(GuiBook book, int id, @Nullable Consumer<String> onType, @Nullable Consumer<String> onEnter) {
 		super(book, MAGNIFIER, id);
 
-		text = new ComponentTextField(1, 1, getSize().getXi() - 44 - 2 * MAGNIFIER.getWidth(), Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT + 2);
+		text = new ComponentTextField(Minecraft.getMinecraft().fontRenderer,
+		        0, 0, getSize().getXi() - 44 - 2 * MAGNIFIER.getWidth(), Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT + 2);
 		text.setEditedCallback(onType);
 		text.setEnterCallback(onEnter);
 		text.setEnabledColor(0xFFFFFF);

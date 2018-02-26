@@ -23,7 +23,7 @@ import java.util.function.Consumer;
 
 @SideOnly(Side.CLIENT)
 public class ComponentTextField extends GuiComponent {
-    private final FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+    private final FontRenderer fontRenderer;
     public int x;
     public int y;
     public int width;
@@ -43,16 +43,19 @@ public class ComponentTextField extends GuiComponent {
     private Consumer<String> editedCallback = null;
     private Consumer<String> enterCallback = null;
 
-    public ComponentTextField(int x, int y, int width, int height) {
-        super(x, y, width + Minecraft.getMinecraft().fontRenderer.getStringWidth("_"), height + 2);
-        this.x = x + 1;
-        this.y = y + 1;
+    public ComponentTextField(FontRenderer fontRenderer, int x, int y, int width, int height) {
+        super(x, y, width, height);
+        this.fontRenderer = fontRenderer;
+        this.x = x;
+        this.y = y;
         this.width = width;
-        this.height = height + 2;
+        this.height = height;
         BUS.hook(GuiComponentEvents.MouseDownEvent.class, (GuiComponentEvents.MouseDownEvent event) ->
                 mouseClicked(event.getMousePos().getXi(), event.getMousePos().getYi(), event.getButton().getMouseCode()));
         BUS.hook(GuiComponentEvents.KeyDownEvent.class, (GuiComponentEvents.KeyDownEvent event) ->
                 handleKeyTyped(event.getKey(), event.getKeyCode()));
+        BUS.hook(GuiComponentEvents.ComponentTickEvent.class, (GuiComponentEvents.ComponentTickEvent event) ->
+                updateCursorCounter());
     }
 
     @Override
@@ -317,17 +320,18 @@ public class ComponentTextField extends GuiComponent {
             int textColor = this.isEnabled ? this.enabledColor : this.disabledColor;
             int cursorRelativePosition = this.cursorPosition - this.lineScrollOffset;
             int selectionEndPosition = this.selectionEnd - this.lineScrollOffset;
-            String visible = this.fontRenderer.trimStringToWidth(this.text.substring(this.lineScrollOffset), this.getWidth());
+            String visible = this.fontRenderer.trimStringToWidth(this.text.substring(this.lineScrollOffset), this.getWidth() - fontRenderer.getStringWidth("_"));
             boolean cursorVisible = cursorRelativePosition >= 0 && cursorRelativePosition <= visible.length();
             boolean cursorBlinkActive = this.isFocused && this.cursorCounter / 6 % 2 == 0 && cursorVisible;
-            int offset = x;
+            int offset = x + 1;
+            int y = this.y + 2;
 
             if (selectionEndPosition > visible.length())
                 selectionEndPosition = visible.length();
 
             if (!visible.isEmpty()) {
                 String toCursor = cursorVisible ? visible.substring(0, cursorRelativePosition) : visible;
-                offset = this.fontRenderer.drawStringWithShadow(toCursor, (float) x, (float) y, textColor);
+                offset = this.fontRenderer.drawStringWithShadow(toCursor, offset, y + 1, textColor);
             }
 
             boolean cursorInText = this.cursorPosition < this.text.length() || this.text.length() >= this.getMaxStringLength();
@@ -339,18 +343,20 @@ public class ComponentTextField extends GuiComponent {
                 unselectedBound = --offset;
 
             if (!visible.isEmpty() && cursorVisible && cursorRelativePosition < visible.length())
-                this.fontRenderer.drawStringWithShadow(visible.substring(cursorRelativePosition),
-                        (float) offset, (float) y, textColor);
+                this.fontRenderer.drawStringWithShadow(visible.substring(cursorRelativePosition), offset, y, textColor);
 
-            if (cursorBlinkActive) if (cursorInText)
-                Gui.drawRect(unselectedBound, y - 1, unselectedBound + 1, y + 1 + this.fontRenderer.FONT_HEIGHT, 0xffd0d0d0);
-            else
-                this.fontRenderer.drawStringWithShadow("_", (float) unselectedBound, (float) y, textColor);
+            if (cursorBlinkActive) if (cursorInText) {
+                Gui.drawRect(unselectedBound, y - 1, unselectedBound + 1, y + 2 + this.fontRenderer.FONT_HEIGHT, 0xffd0d0d0);
+                GlStateManager.enableBlend();
+            } else
+                this.fontRenderer.drawStringWithShadow("_", unselectedBound, y + 1, textColor);
 
             if (selectionEndPosition != cursorRelativePosition) {
                 int selectionX = x + this.fontRenderer.getStringWidth(visible.substring(0, selectionEndPosition));
-                this.drawSelectionBox(unselectedBound, y - 1, selectionX - 1, y + 1 + this.fontRenderer.FONT_HEIGHT);
+                this.drawSelectionBox(unselectedBound, y, selectionX - 1, y + this.fontRenderer.FONT_HEIGHT);
             }
+
+            GlStateManager.color(1f, 1f, 1f, 1f);
         }
     }
 
@@ -380,6 +386,7 @@ public class ComponentTextField extends GuiComponent {
         tessellator.draw();
         GlStateManager.disableColorLogic();
         GlStateManager.enableTexture2D();
+        GlStateManager.color(1f, 1f, 1f, 1f);
     }
 
     public int getMaxStringLength() {
@@ -426,7 +433,7 @@ public class ComponentTextField extends GuiComponent {
                 this.lineScrollOffset = length;
             }
 
-            int boxWidth = this.getWidth();
+            int boxWidth = this.getWidth() - fontRenderer.getStringWidth("_");
             String visible = this.fontRenderer.trimStringToWidth(this.text.substring(this.lineScrollOffset), boxWidth);
             int positionInOverall = visible.length() + this.lineScrollOffset;
 
