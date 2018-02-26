@@ -69,9 +69,11 @@ public class ComponentSearchResults extends NavBarHolder implements ISearchAlgor
         resultSection.add(pageComponent);
 
         double largestFrequency = 0, smallestFrequency = Integer.MAX_VALUE;
-        for (ISearchAlgorithm.Result resultItem2 : results) {
-            largestFrequency = resultItem2.frequency() > largestFrequency ? resultItem2.frequency() : largestFrequency;
-            smallestFrequency = resultItem2.frequency() < smallestFrequency ? resultItem2.frequency() : smallestFrequency;
+        for (ISearchAlgorithm.Result resultItem : results) {
+            if (resultItem.frequency() > largestFrequency)
+                largestFrequency = resultItem.frequency();
+            if (resultItem.frequency() < smallestFrequency)
+                smallestFrequency = resultItem.frequency();
         }
 
         int itemsPerPage = 8;
@@ -111,7 +113,7 @@ public class ComponentSearchResults extends NavBarHolder implements ISearchAlgor
                     color = TextFormatting.RESET;
                     exactResult = simplifiedResult = resultItem.frequency() == 1 ?
                             I18n.format("librarianlib.book.results.kwd") :
-                            I18n.format("librarianlib.book.results.kwds", resultItem.frequency());
+                            I18n.format("librarianlib.book.results.kwds", (int) resultItem.frequency());
                 }
 
                 textComponent.getUnicode().setValue(true);
