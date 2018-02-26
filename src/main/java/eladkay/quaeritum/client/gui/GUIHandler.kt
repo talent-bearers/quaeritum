@@ -27,7 +27,7 @@ object GUIHandler : IGuiHandler {
             GUI_CODEX -> return GuiCodex()
             GUI_BOOK -> {
                 val stack = getStack(player, ItemModBook::class.java)
-                return GuiBook((stack.item as ItemModBook).book)
+                return GuiBook((stack.item as ItemModBook).getBook(player, world, stack))
             }
         }
         return null
