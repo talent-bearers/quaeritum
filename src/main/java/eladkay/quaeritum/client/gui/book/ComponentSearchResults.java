@@ -45,118 +45,101 @@ public class ComponentSearchResults extends NavBarHolder implements ISearchAlgor
     @Override
     public void acceptResults(@Nullable List<? extends ISearchAlgorithm.Result> results) {
         this.results = results;
-
-        if (results == null || results.isEmpty())
-            setAsBadSearch();
-        else
-            updateSearches(results);
-    }
-
-    public void updateSearches(List<? extends ISearchAlgorithm.Result> results) {
         reset();
 
-        ISearchAlgorithm.Result forTyping = results.get(0);
-        if (forTyping.specificResults())
-            pageHeader.getText().setValue(results.size() == 1 ?
-                    I18n.format("librarianlib.book.results.oneresult") :
-                    I18n.format("librarianlib.book.results.nresults", results.size()));
-        else
-            pageHeader.getText().setValue(I18n.format("librarianlib.book.results.toobroad", results.size()));
+        navBar = new ComponentNavBar(book, (getSize().getXi() / 2) - 35, getSize().getYi() + 16, 70, 1);
+        add(navBar);
 
-        Collections.sort(results);
+        navBar.BUS.hook(EventNavBarChange.class, (navBarChange) -> {
+            update();
+        });
 
-        ComponentVoid pageComponent = new ComponentVoid(0, 0, getSize().getXi(), getSize().getYi());
-        resultSection.add(pageComponent);
+        if (results == null || results.isEmpty()) {
+            pageHeader.getText().setValue(I18n.format("librarianlib.book.results.notfound"));
+        } else {
+            ISearchAlgorithm.Result forTyping = results.get(0);
+            if (forTyping.specificResults())
+                pageHeader.getText().setValue(results.size() == 1 ?
+                        I18n.format("librarianlib.book.results.oneresult") :
+                        I18n.format("librarianlib.book.results.nresults", results.size()));
+            else
+                pageHeader.getText().setValue(I18n.format("librarianlib.book.results.toobroad", results.size()));
 
-        double largestFrequency = 0, smallestFrequency = Integer.MAX_VALUE;
-        for (ISearchAlgorithm.Result resultItem : results) {
-            if (resultItem.frequency() > largestFrequency)
-                largestFrequency = resultItem.frequency();
-            if (resultItem.frequency() < smallestFrequency)
-                smallestFrequency = resultItem.frequency();
-        }
+            Collections.sort(results);
 
-        int itemsPerPage = 8;
-        int page = 0;
-        int count = 0;
-        for (ISearchAlgorithm.Result resultItem : results) {
+            ComponentVoid pageComponent = new ComponentVoid(0, 0, getSize().getXi(), getSize().getYi());
+            resultSection.add(pageComponent);
 
-            double matchPercentage = results.size() == 1 ? 100 : Math.round((resultItem.frequency() - smallestFrequency) / (largestFrequency - smallestFrequency) * 100);
-            if (matchPercentage <= 0) continue;
+            double largestFrequency = 0, smallestFrequency = Integer.MAX_VALUE;
+            for (ISearchAlgorithm.Result resultItem : results) {
+                if (resultItem.frequency() > largestFrequency)
+                    largestFrequency = resultItem.frequency();
+                if (resultItem.frequency() < smallestFrequency)
+                    smallestFrequency = resultItem.frequency();
+            }
 
-            Entry resultComponent = resultItem.found();
+            int itemsPerPage = 8;
+            int count = 0;
+            for (ISearchAlgorithm.Result resultItem : results) {
 
-            ComponentText textComponent = new ComponentText(25, Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT + 2, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.TOP);
+                double matchPercentage = results.size() == 1 ? 100 : Math.round((resultItem.frequency() - smallestFrequency) / (largestFrequency - smallestFrequency) * 100);
+                if (matchPercentage <= 0) continue;
 
-            GuiComponent indexButton = book.createIndexButton(count, resultComponent, plate -> plate.add(textComponent));
-            pageComponent.add(indexButton);
+                Entry resultComponent = resultItem.found();
 
-            // --------- HANDLE EXTRA TEXT COMPONENT --------- //
-            {
-                final TextFormatting color;
-                final String exactResult;
-                final String simplifiedResult;
-                if (forTyping.specificResults()) {
+                ComponentText textComponent = new ComponentText(25, Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT + 2, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.TOP);
 
-                    if (matchPercentage <= 25)
-                        color = TextFormatting.DARK_RED;
-                    else if (matchPercentage <= 50)
-                        color = TextFormatting.YELLOW;
-                    else if (matchPercentage <= 75)
-                        color = TextFormatting.GREEN;
-                    else
-                        color = TextFormatting.DARK_GREEN;
+                GuiComponent indexButton = book.createIndexButton(count, resultComponent, plate -> plate.add(textComponent));
+                pageComponent.add(indexButton);
 
-                    exactResult = I18n.format("librarianlib.book.results.match", matchPercentage);
-                    simplifiedResult = I18n.format("librarianlib.book.results.match", Math.round(matchPercentage));
-                } else {
-                    color = TextFormatting.RESET;
-                    exactResult = simplifiedResult = resultItem.frequency() == 1 ?
-                            I18n.format("librarianlib.book.results.kwd") :
-                            I18n.format("librarianlib.book.results.kwds", (int) resultItem.frequency());
-                }
+                // --------- HANDLE EXTRA TEXT COMPONENT --------- //
+                {
+                    final TextFormatting color;
+                    final String exactResult;
+                    final String simplifiedResult;
+                    if (forTyping.specificResults()) {
 
-                textComponent.getUnicode().setValue(true);
-                textComponent.getText().setValue("| " + color + simplifiedResult);
+                        if (matchPercentage <= 25)
+                            color = TextFormatting.DARK_RED;
+                        else if (matchPercentage <= 50)
+                            color = TextFormatting.YELLOW;
+                        else if (matchPercentage <= 75)
+                            color = TextFormatting.GREEN;
+                        else
+                            color = TextFormatting.DARK_GREEN;
 
-                indexButton.BUS.hook(GuiComponentEvents.MouseInEvent.class, (event) -> {
-                    textComponent.getText().setValue("  | " + color + TextFormatting.ITALIC + exactResult);
-                });
+                        exactResult = I18n.format("librarianlib.book.results.match", matchPercentage);
+                        simplifiedResult = I18n.format("librarianlib.book.results.match", Math.round(matchPercentage));
+                    } else {
+                        color = TextFormatting.RESET;
+                        exactResult = simplifiedResult = resultItem.frequency() == 1 ?
+                                I18n.format("librarianlib.book.results.kwd") :
+                                I18n.format("librarianlib.book.results.kwds", (int) resultItem.frequency());
+                    }
 
-                indexButton.BUS.hook(GuiComponentEvents.MouseOutEvent.class, (event) -> {
+                    textComponent.getUnicode().setValue(true);
                     textComponent.getText().setValue("| " + color + simplifiedResult);
-                });
-            }
-            // --------- HANDLE EXTRA TEXT COMPONENT --------- //
 
-            count++;
-            if (count >= itemsPerPage) {
-                pages.put(page++, pageComponent);
-                pageComponent = new ComponentVoid(0, 0, getSize().getXi(), getSize().getYi());
-                resultSection.add(pageComponent);
-                pageComponent.setVisible(false);
-                count = 0;
+                    indexButton.BUS.hook(GuiComponentEvents.MouseInEvent.class, (event) -> {
+                        textComponent.getText().setValue("  | " + color + TextFormatting.ITALIC + exactResult);
+                    });
+
+                    indexButton.BUS.hook(GuiComponentEvents.MouseOutEvent.class, (event) -> {
+                        textComponent.getText().setValue("| " + color + simplifiedResult);
+                    });
+                }
+                // --------- HANDLE EXTRA TEXT COMPONENT --------- //
+
+                count++;
+                if (count >= itemsPerPage) {
+                    pages.put(navBar.maxPages++, pageComponent);
+                    pageComponent = new ComponentVoid(0, 0, getSize().getXi(), getSize().getYi());
+                    resultSection.add(pageComponent);
+                    pageComponent.setVisible(false);
+                    count = 0;
+                }
             }
         }
-
-        navBar = new ComponentNavBar(book, (getSize().getXi() / 2) - 35, getSize().getYi() + 16, 70, pages.size());
-        add(navBar);
-
-        navBar.BUS.hook(EventNavBarChange.class, (navBarChange) -> {
-            update();
-        });
-    }
-
-    public void setAsBadSearch() {
-        reset();
-        pageHeader.getText().setValue(I18n.format("librarianlib.book.results.notfound"));
-
-        navBar = new ComponentNavBar(book, (getSize().getXi() / 2) - 35, getSize().getYi() + 16, 70, pages.size());
-        add(navBar);
-
-        navBar.BUS.hook(EventNavBarChange.class, (navBarChange) -> {
-            update();
-        });
     }
 
     private void reset() {
