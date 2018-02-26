@@ -44,6 +44,7 @@ public class ComponentCategoryButton extends GuiComponent {
             BUS.hook(GuiComponentEvents.PostDrawEvent.class, (GuiComponentEvents.PostDrawEvent event) -> {
                 GlStateManager.color(0, 0, 0);
                 iconMask.run();
+                GlStateManager.color(1, 1, 1);
             });
 
             render.getTooltip().func((Function<GuiComponent, List<String>>) guiComponent -> {
@@ -110,7 +111,7 @@ public class ComponentCategoryButton extends GuiComponent {
             Color wipeColor = category.color;
 
             circleWipe.BUS.hook(GuiComponentEvents.PostDrawEvent.class, (GuiComponentEvents.PostDrawEvent event) -> {
-                GlStateManager.color(wipeColor.getRed(), wipeColor.getGreen(), wipeColor.getBlue());
+                GlStateManager.color(wipeColor.getRed() / 255f, wipeColor.getGreen() / 255f, wipeColor.getBlue() / 255f);
                 GlStateManager.enableAlpha();
                 GlStateManager.disableCull();
                 GL11.glEnable(GL_POLYGON_SMOOTH);
