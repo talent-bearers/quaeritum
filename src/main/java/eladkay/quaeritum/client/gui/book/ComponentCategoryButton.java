@@ -71,17 +71,20 @@ public class ComponentCategoryButton extends GuiComponent {
 
             circleWipe.clipping.setClipToBounds(true);
             circleWipe.clipping.setCustomClipping(() -> {
-
                 GlStateManager.disableTexture2D();
                 GlStateManager.disableCull();
                 Tessellator tessellator = Tessellator.getInstance();
                 BufferBuilder buffer = tessellator.getBuffer();
-                buffer.begin(GL11.GL_TRIANGLE_FAN, DefaultVertexFormats.POSITION_COLOR);
+                buffer.begin(GL11.GL_TRIANGLE_STRIP, DefaultVertexFormats.POSITION_COLOR);
+                float centerX = width / 2;
+                float centerY = height / 2;
                 for (int i = 0; i <= 10; i++) {
                     float angle = (float) (i * Math.PI * 2 / 10);
-                    float x1 = (float) (12 + MathHelper.cos(angle) * circleWipe.animX);
-                    float y1 = (float) (12 + MathHelper.sin(angle) * circleWipe.animX);
-                    buffer.pos(x1, y1, 100).color(0f, 1f, 1f, 1f).endVertex();
+                    float x = (float) (centerX + MathHelper.cos(angle) * circleWipe.animX);
+                    float y = (float) (centerY + MathHelper.sin(angle) * circleWipe.animX);
+
+                    buffer.pos(x, y, 100).color(0f, 1f, 1f, 1f).endVertex();
+                    buffer.pos(centerX, centerY, 100).color(0f, 1f, 1f, 1f).endVertex();
                 }
                 tessellator.draw();
 
@@ -93,7 +96,7 @@ public class ComponentCategoryButton extends GuiComponent {
             circleWipe.BUS.hook(GuiComponentEvents.MouseInEvent.class, event -> {
 
                 BasicAnimation mouseInAnim = new BasicAnimation<>(circleWipe, "animX");
-                mouseInAnim.setDuration(10);
+                mouseInAnim.setDuration(20);
                 mouseInAnim.setEasing(Easing.easeOutQuint);
                 mouseInAnim.setTo(radius);
                 event.component.add(mouseInAnim);
@@ -102,7 +105,7 @@ public class ComponentCategoryButton extends GuiComponent {
             circleWipe.BUS.hook(GuiComponentEvents.MouseOutEvent.class, event -> {
 
                 BasicAnimation mouseOutAnim = new BasicAnimation<>(circleWipe, "animX");
-                mouseOutAnim.setDuration(10);
+                mouseOutAnim.setDuration(20);
                 mouseOutAnim.setEasing(Easing.easeOutQuint);
                 mouseOutAnim.setTo(0);
                 event.component.add(mouseOutAnim);

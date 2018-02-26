@@ -1,8 +1,8 @@
 {
   "title": "quaeritum.book.lorist.title",
   "subtitle": "quaeritum.book.lorist.subtitle",
-  "color": "0xb78314",
-  "highlight": "0x710eaf",
+  "color": "0xff8000",
+  "highlight": "0xa040ff",
   "categories": [
     {
       "title": "quaeritum.book.basics.title",
@@ -21,6 +21,7 @@
       "title": "quaeritum.book.basics.title",
       "icon": "quaeritum:gui/book/icons/pointy_hat",
       "description": "quaeritum.book.basics.description",
+      "color": "0xffffff",
       "entries": [
         "quaeritum:basics/welcome",
         "quaeritum:basics/mana",
