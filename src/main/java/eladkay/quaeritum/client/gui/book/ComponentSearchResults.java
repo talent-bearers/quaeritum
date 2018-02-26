@@ -96,20 +96,17 @@ public class ComponentSearchResults extends NavBarHolder implements ISearchAlgor
                 final String simplifiedResult;
                 if (forTyping.specificResults()) {
 
-                    if (matchPercentage > 25) {
-                        if (matchPercentage <= 50) {
-                            color = TextFormatting.YELLOW;
-                        } else if (matchPercentage <= 75) {
-                            color = TextFormatting.GREEN;
-                        } else if (matchPercentage <= 100) {
-                            color = TextFormatting.DARK_GREEN;
-                        } else color = TextFormatting.DARK_RED;
-                    } else color = TextFormatting.DARK_RED;
+                    if (matchPercentage <= 25)
+                        color = TextFormatting.DARK_RED;
+                    else if (matchPercentage <= 50)
+                        color = TextFormatting.YELLOW;
+                    else if (matchPercentage <= 75)
+                        color = TextFormatting.GREEN;
+                    else
+                        color = TextFormatting.DARK_GREEN;
 
-
-                    double finalMatchPercentage = Math.round(matchPercentage);
                     exactResult = I18n.format("librarianlib.book.results.match", matchPercentage);
-                    simplifiedResult = I18n.format("librarianlib.book.results.match", finalMatchPercentage);
+                    simplifiedResult = I18n.format("librarianlib.book.results.match", Math.round(matchPercentage));
                 } else {
                     color = TextFormatting.RESET;
                     exactResult = simplifiedResult = resultItem.frequency() == 1 ?

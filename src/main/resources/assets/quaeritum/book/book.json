@@ -1,9 +1,22 @@
 {
   "title": "quaeritum.book.lorist.title",
   "subtitle": "quaeritum.book.lorist.subtitle",
-  "color": "0xff548f",
-  "highlight": "0x00ffff",
+  "color": "0xb78314",
+  "highlight": "0x710eaf",
   "categories": [
+    {
+      "title": "quaeritum.book.basics.title",
+      "icon": "quaeritum:gui/book/icons/pointy_hat",
+      "description": "quaeritum.book.basics.description",
+      "entries": [
+        "quaeritum:basics/welcome",
+        "quaeritum:basics/mana",
+        "quaeritum:basics/wisdom",
+        "quaeritum:basics/spell_forging",
+        "quaeritum:basics/mana_shaping",
+        "quaeritum:basics/garbs"
+      ]
+    },
     {
       "title": "quaeritum.book.basics.title",
       "icon": "quaeritum:gui/book/icons/pointy_hat",
