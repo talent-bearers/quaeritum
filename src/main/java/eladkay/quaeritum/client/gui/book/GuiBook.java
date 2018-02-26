@@ -142,7 +142,8 @@ public class GuiBook extends GuiBase {
         itemRender.renderItemOverlays(Minecraft.getMinecraft().fontRenderer, stack, 0, 0);
 
         GlStateManager.enableAlpha();
-        RenderHelper.disableStandardItemLighting();
+        RenderHelper.enableStandardItemLighting();
+        GlStateManager.disableRescaleNormal();
         GlStateManager.popMatrix();
     }
 
