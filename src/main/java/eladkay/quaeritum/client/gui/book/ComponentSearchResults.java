@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-public class ComponentSearchResults extends NavBarHolder implements IBookElement {
+public class ComponentSearchResults extends NavBarHolder implements ISearchAlgorithm.Acceptor {
 
     private final HashMap<Integer, GuiComponent> pages = new HashMap<>();
     private final int margin = 16;
@@ -26,9 +26,7 @@ public class ComponentSearchResults extends NavBarHolder implements IBookElement
     private ComponentVoid resultSection;
     private GuiBook book;
 
-    private boolean lastWasFrequency = false;
-    private List<Search.FrequencySearchResult> freq = Lists.newArrayList();
-    private List<Search.MatchCountSearchResult> match = Lists.newArrayList();
+    private List<? extends ISearchAlgorithm.Result> results = Lists.newArrayList();
 
     public ComponentSearchResults(GuiBook book) {
         super(16, 16, book.bookComponent.getSize().getXi() - 32, book.bookComponent.getSize().getYi() - 32, book);
@@ -44,111 +42,47 @@ public class ComponentSearchResults extends NavBarHolder implements IBookElement
         add(resultSection);
     }
 
-    public void updateTfidfSearches(List<Search.FrequencySearchResult> results) {
-        reset();
+    @Override
+    public void acceptResults(@Nullable List<? extends ISearchAlgorithm.Result> results) {
+        this.results = results;
 
-        lastWasFrequency = true;
-        freq = results;
-
-        pageHeader.getText().setValue(results.size() == 1 ?
-                I18n.format("librarianlib.book.results.oneresult") :
-                I18n.format("librarianlib.book.results.nresults", results.size()));
-
-        Collections.sort(results);
-
-        ComponentVoid pageComponent = new ComponentVoid(0, 0, getSize().getXi(), getSize().getYi());
-        resultSection.add(pageComponent);
-
-        double largestTFIDF = 0, smallestTFIDF = Integer.MAX_VALUE;
-        for (Search.FrequencySearchResult resultItem2 : results) {
-            largestTFIDF = resultItem2.getFrequency() > largestTFIDF ? resultItem2.getFrequency() : largestTFIDF;
-            smallestTFIDF = resultItem2.getFrequency() < smallestTFIDF ? resultItem2.getFrequency() : smallestTFIDF;
-        }
-
-        int itemsPerPage = 8;
-        int page = 0;
-        int count = 0;
-        for (Search.FrequencySearchResult resultItem : results) {
-
-            double matchPercentage = results.size() == 1 ? 100 : Math.round((resultItem.getFrequency() - smallestTFIDF) / (largestTFIDF - smallestTFIDF) * 100);
-            if (matchPercentage <= 0) continue;
-
-            Entry resultComponent = resultItem.getResultComponent();
-
-            ComponentText textComponent = new ComponentText(25, Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT + 2, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.TOP);
-
-            GuiComponent indexButton = book.createIndexButton(count, resultComponent, plate -> plate.add(textComponent));
-            pageComponent.add(indexButton);
-
-            // --------- HANDLE EXTRA TEXT COMPONENT --------- //
-            {
-
-                final TextFormatting color;
-                if (matchPercentage > 25) {
-                    if (matchPercentage <= 50) {
-                        color = TextFormatting.YELLOW;
-                    } else if (matchPercentage <= 75) {
-                        color = TextFormatting.GREEN;
-                    } else if (matchPercentage <= 100) {
-                        color = TextFormatting.DARK_GREEN;
-                    } else color = TextFormatting.DARK_RED;
-                } else color = TextFormatting.DARK_RED;
-
-
-                double finalMatchPercentage = Math.round(matchPercentage);
-                String mpercent = I18n.format("librarianlib.book.results.match", matchPercentage);
-                String fmpercent = I18n.format("librarianlib.book.results.match", finalMatchPercentage);
-
-                textComponent.getUnicode().setValue(true);
-                textComponent.getText().setValue("| " + color + mpercent);
-
-                indexButton.BUS.hook(GuiComponentEvents.MouseInEvent.class, (event) -> {
-                    textComponent.getText().setValue("  | " + color + TextFormatting.ITALIC + fmpercent);
-                });
-
-                indexButton.BUS.hook(GuiComponentEvents.MouseOutEvent.class, (event) -> {
-                    textComponent.getText().setValue("| " + color + fmpercent);
-                });
-            }
-            // --------- HANDLE EXTRA TEXT COMPONENT --------- //
-
-            count++;
-            if (count >= itemsPerPage) {
-                pages.put(page++, pageComponent);
-                pageComponent = new ComponentVoid(0, 0, getSize().getXi(), getSize().getYi());
-                resultSection.add(pageComponent);
-                pageComponent.setVisible(false);
-                count = 0;
-            }
-        }
-
-        navBar = new ComponentNavBar(book, (getSize().getXi() / 2) - 35, getSize().getYi() + 16, 70, pages.size());
-        add(navBar);
-
-        navBar.BUS.hook(EventNavBarChange.class, (navBarChange) -> {
-            update();
-        });
+        if (results == null || results.isEmpty())
+            setAsBadSearch();
+        else
+            updateSearches(results);
     }
 
-    public void updateMatchCountSearches(List<Search.MatchCountSearchResult> results) {
+    public void updateSearches(List<? extends ISearchAlgorithm.Result> results) {
         reset();
 
-        lastWasFrequency = false;
-        match = results;
-
-        pageHeader.getText().setValue(I18n.format("librarianlib.book.results.toobroad", results.size()));
+        ISearchAlgorithm.Result forTyping = results.get(0);
+        if (forTyping.specificResults())
+            pageHeader.getText().setValue(results.size() == 1 ?
+                    I18n.format("librarianlib.book.results.oneresult") :
+                    I18n.format("librarianlib.book.results.nresults", results.size()));
+        else
+            pageHeader.getText().setValue(I18n.format("librarianlib.book.results.toobroad", results.size()));
 
         Collections.sort(results);
 
         ComponentVoid pageComponent = new ComponentVoid(0, 0, getSize().getXi(), getSize().getYi());
         resultSection.add(pageComponent);
 
+        double largestFrequency = 0, smallestFrequency = Integer.MAX_VALUE;
+        for (ISearchAlgorithm.Result resultItem2 : results) {
+            largestFrequency = resultItem2.frequency() > largestFrequency ? resultItem2.frequency() : largestFrequency;
+            smallestFrequency = resultItem2.frequency() < smallestFrequency ? resultItem2.frequency() : smallestFrequency;
+        }
+
         int itemsPerPage = 8;
         int page = 0;
         int count = 0;
-        for (Search.MatchCountSearchResult resultItem : results) {
+        for (ISearchAlgorithm.Result resultItem : results) {
 
-            Entry resultComponent = resultItem.getResultComponent();
+            double matchPercentage = results.size() == 1 ? 100 : Math.round((resultItem.frequency() - smallestFrequency) / (largestFrequency - smallestFrequency) * 100);
+            if (matchPercentage <= 0) continue;
+
+            Entry resultComponent = resultItem.found();
 
             ComponentText textComponent = new ComponentText(25, Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT + 2, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.TOP);
 
@@ -157,20 +91,41 @@ public class ComponentSearchResults extends NavBarHolder implements IBookElement
 
             // --------- HANDLE EXTRA TEXT COMPONENT --------- //
             {
+                final TextFormatting color;
+                final String exactResult;
+                final String simplifiedResult;
+                if (forTyping.specificResults()) {
 
-                String kwds = resultItem.getMatchCount() == 1 ?
-                        I18n.format("librarianlib.book.results.kwd") :
-                        I18n.format("librarianlib.book.results.kwds", resultItem.getMatchCount());
+                    if (matchPercentage > 25) {
+                        if (matchPercentage <= 50) {
+                            color = TextFormatting.YELLOW;
+                        } else if (matchPercentage <= 75) {
+                            color = TextFormatting.GREEN;
+                        } else if (matchPercentage <= 100) {
+                            color = TextFormatting.DARK_GREEN;
+                        } else color = TextFormatting.DARK_RED;
+                    } else color = TextFormatting.DARK_RED;
+
+
+                    double finalMatchPercentage = Math.round(matchPercentage);
+                    exactResult = I18n.format("librarianlib.book.results.match", matchPercentage);
+                    simplifiedResult = I18n.format("librarianlib.book.results.match", finalMatchPercentage);
+                } else {
+                    color = TextFormatting.RESET;
+                    exactResult = simplifiedResult = resultItem.frequency() == 1 ?
+                            I18n.format("librarianlib.book.results.kwd") :
+                            I18n.format("librarianlib.book.results.kwds", resultItem.frequency());
+                }
 
                 textComponent.getUnicode().setValue(true);
-                textComponent.getText().setValue("| " + kwds);
+                textComponent.getText().setValue("| " + color + simplifiedResult);
 
                 indexButton.BUS.hook(GuiComponentEvents.MouseInEvent.class, (event) -> {
-                    textComponent.getText().setValue("  | " + TextFormatting.ITALIC.toString() + kwds);
+                    textComponent.getText().setValue("  | " + color + TextFormatting.ITALIC + exactResult);
                 });
 
                 indexButton.BUS.hook(GuiComponentEvents.MouseOutEvent.class, (event) -> {
-                    textComponent.getText().setValue("| " + TextFormatting.RESET.toString() + kwds);
+                    textComponent.getText().setValue("| " + color + simplifiedResult);
                 });
             }
             // --------- HANDLE EXTRA TEXT COMPONENT --------- //
@@ -183,7 +138,6 @@ public class ComponentSearchResults extends NavBarHolder implements IBookElement
                 pageComponent.setVisible(false);
                 count = 0;
             }
-
         }
 
         navBar = new ComponentNavBar(book, (getSize().getXi() / 2) - 35, getSize().getYi() + 16, 70, pages.size());
@@ -226,10 +180,7 @@ public class ComponentSearchResults extends NavBarHolder implements IBookElement
     @Override
     public GuiComponent createComponent(GuiBook book) {
         ComponentSearchResults results = new ComponentSearchResults(book);
-        if (lastWasFrequency)
-            results.updateTfidfSearches(freq);
-        else
-            results.updateMatchCountSearches(match);
+        results.acceptResults(this.results);
         return results;
     }
 

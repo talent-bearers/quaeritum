@@ -6,7 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.StringUtils;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.regex.Pattern;
@@ -17,20 +17,17 @@ import java.util.stream.Collectors;
  * Created at 9:05 AM on 2/24/18.
  */
 @SideOnly(Side.CLIENT)
-public class Search {
+public class TFIDFSearch implements ISearchAlgorithm {
 
     private final GuiBook book;
 
-    public Search(GuiBook book) {
+    public TFIDFSearch(GuiBook book) {
         this.book = book;
     }
 
-    public void search(String type) {
+    @Nullable
+    public List<? extends Result> search(String type) {
         EntityPlayer player = Minecraft.getMinecraft().player;
-        ComponentSearchResults toFocus = book.focus instanceof ComponentSearchResults ?
-                (ComponentSearchResults) book.focus :
-                new ComponentSearchResults(book);
-
 
         String query = type.replace("'", "").toLowerCase(Locale.ROOT);
         String[] keywords = query.split(" ");
@@ -85,19 +82,19 @@ public class Search {
 
         double largestTFIDF = 0, smallestTFIDF = Integer.MAX_VALUE;
         for (FrequencySearchResult resultItem2 : unfilteredTfidfResults) {
-            largestTFIDF = resultItem2.getFrequency() > largestTFIDF ? resultItem2.getFrequency() : largestTFIDF;
-            smallestTFIDF = resultItem2.getFrequency() < smallestTFIDF ? resultItem2.getFrequency() : smallestTFIDF;
+            largestTFIDF = resultItem2.frequency() > largestTFIDF ? resultItem2.frequency() : largestTFIDF;
+            smallestTFIDF = resultItem2.frequency() < smallestTFIDF ? resultItem2.frequency() : smallestTFIDF;
         }
 
         for (FrequencySearchResult resultItem : unfilteredTfidfResults) {
-            double matchPercentage = Math.round((resultItem.getFrequency() - smallestTFIDF) / (largestTFIDF - smallestTFIDF) * 100);
+            double matchPercentage = Math.round((resultItem.frequency() - smallestTFIDF) / (largestTFIDF - smallestTFIDF) * 100);
             if (matchPercentage < 5 || Double.isNaN(matchPercentage)) continue;
 
             filteredTfidfResults.add(resultItem);
         }
 
         if (!filteredTfidfResults.isEmpty()) {
-            toFocus.updateTfidfSearches(filteredTfidfResults);
+            return filteredTfidfResults;
         } else {
             for (Entry cachedComponent : book.contentCache.keySet()) if (cachedComponent.isUnlocked(player)) {
                 String cachedDocument = book.contentCache
@@ -116,19 +113,14 @@ public class Search {
             }
 
             if (!matchCountSearchResults.isEmpty()) {
-                toFocus.updateMatchCountSearches(matchCountSearchResults);
+                return matchCountSearchResults;
             } else {
-                toFocus.setAsBadSearch();
+                return null;
             }
         }
-
-        if (book.focus instanceof ComponentSearchResults)
-            book.forceInFocus(toFocus);
-        else
-            book.placeInFocus(toFocus);
     }
 
-    public static class FrequencySearchResult implements Comparable<FrequencySearchResult> {
+    public static class FrequencySearchResult implements Result {
 
         private final Entry resultComponent;
         private final double frequency;
@@ -138,21 +130,23 @@ public class Search {
             this.frequency = frequency;
         }
 
-        public Entry getResultComponent() {
-            return resultComponent;
-        }
-
-        public double getFrequency() {
-            return frequency;
+        @Override
+        public boolean specificResults() {
+            return true;
         }
 
         @Override
-        public int compareTo(@NotNull Search.FrequencySearchResult o) {
-            return Double.compare(o.getFrequency(), getFrequency());
+        public Entry found() {
+            return resultComponent;
+        }
+
+        @Override
+        public double frequency() {
+            return frequency;
         }
     }
 
-    public static class MatchCountSearchResult implements Comparable<MatchCountSearchResult> {
+    public static class MatchCountSearchResult implements Result {
 
         private final Entry resultComponent;
         private final int nbOfMatches;
@@ -162,17 +156,19 @@ public class Search {
             this.nbOfMatches = nbOfMatches;
         }
 
-        public Entry getResultComponent() {
-            return resultComponent;
-        }
-
-        public int getMatchCount() {
-            return nbOfMatches;
+        @Override
+        public boolean specificResults() {
+            return false;
         }
 
         @Override
-        public int compareTo(@NotNull MatchCountSearchResult o) {
-            return Double.compare(o.getMatchCount(), getMatchCount());
+        public Entry found() {
+            return resultComponent;
+        }
+
+        @Override
+        public double frequency() {
+            return nbOfMatches;
         }
     }
 }
