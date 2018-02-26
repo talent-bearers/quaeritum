@@ -34,6 +34,7 @@ public class ComponentEntryPage extends NavBarHolder {
             for (GuiComponent pageComponent : page.createBookComponents(book, getSize())) {
                 addPage(pageComponent);
             }
+            navBar.whenMaxPagesSet();
         }
     }
 }

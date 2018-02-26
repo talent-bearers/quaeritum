@@ -139,6 +139,8 @@ public class ComponentSearchResults extends NavBarHolder implements ISearchAlgor
                     count = 0;
                 }
             }
+
+            navBar.whenMaxPagesSet();
         }
     }
 

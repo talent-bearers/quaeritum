@@ -4,9 +4,7 @@ import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponentEvents;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentSprite;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentText;
-import com.teamwizardry.librarianlib.features.math.Vec2d;
 import eladkay.quaeritum.api.book.hierarchy.IBookElement;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
@@ -38,18 +36,6 @@ public class ComponentNavBar extends GuiComponent {
         ComponentSprite home = new ComponentSprite(ARROW_HOME, (int) ((getSize().getX() / 2.0) - (ARROW_HOME.getWidth() / 2.0)), (int) ((getSize().getY() / 2.0) - (ARROW_NEXT.getHeight() / 2.0)));
         ComponentSprite next = new ComponentSprite(ARROW_NEXT, (int) (getSize().getX() - ARROW_NEXT.getWidth()), (int) ((getSize().getY() / 2.0) - (ARROW_BACK.getHeight() / 2.0)));
         add(back, next, home);
-
-        if (maxPages > 1) {
-            ComponentText pageStringComponent = new ComponentText(0, 0, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.MIDDLE);
-            pageStringComponent.getUnicode().setValue(false);
-
-            pageStringComponent.BUS.hook(GuiComponentEvents.ComponentTickEvent.class, event -> {
-                String pageString = (page + 1) + "/" + (maxPages + 1);
-                pageStringComponent.getText().setValue(pageString);
-                pageStringComponent.setPos(new Vec2d((getSize().getX() / 2.0) - (Minecraft.getMinecraft().fontRenderer.getStringWidth(pageString) / 2.0), (int) ((getSize().getY() / 2.0) - (ARROW_NEXT.getHeight() / 2.0)) + 15));
-            });
-            add(pageStringComponent);
-        }
 
         home.BUS.hook(GuiComponentEvents.MouseInEvent.class, event -> {
             home.setSprite(ARROW_HOME_PRESSED);
@@ -131,6 +117,22 @@ public class ComponentNavBar extends GuiComponent {
         BUS.fire(eventNavBarChange);
 
         book.currentElement = new ElementWithPage(ElementWithPage.actualElement(book), x);
+    }
+
+    public void whenMaxPagesSet() {
+        if (maxPages > 1) {
+            ComponentText pageStringComponent = new ComponentText((int) getSize().getX() / 2, (int) ((getSize().getY() / 2 - ARROW_NEXT.getHeight() / 2.0)) + 15, ComponentText.TextAlignH.CENTER, ComponentText.TextAlignV.MIDDLE);
+            pageStringComponent.getUnicode().setValue(false);
+
+            String initialString = (page + 1) + "/" + (maxPages + 1);
+            pageStringComponent.getText().setValue(initialString);
+
+            pageStringComponent.BUS.hook(GuiComponentEvents.ComponentTickEvent.class, event -> {
+                String pageString = (page + 1) + "/" + (maxPages + 1);
+                pageStringComponent.getText().setValue(pageString);
+            });
+            add(pageStringComponent);
+        }
     }
 
     public int getPage() {

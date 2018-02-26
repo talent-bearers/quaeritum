@@ -39,6 +39,7 @@ public class ComponentCategoryPage extends NavBarHolder {
                     id = 0;
                 }
             }
+            navBar.whenMaxPagesSet();
         }
     }
 }
