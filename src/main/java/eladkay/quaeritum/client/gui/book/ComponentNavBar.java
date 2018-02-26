@@ -141,6 +141,8 @@ public class ComponentNavBar extends GuiComponent {
 
     public static class ElementWithPage implements IBookElement {
         public static IBookElement actualElement(GuiBook book) {
+            if (book.currentElement == null)
+                return null;
             return book.currentElement.heldElement();
         }
 
