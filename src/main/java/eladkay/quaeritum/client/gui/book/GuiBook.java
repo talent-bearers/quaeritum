@@ -171,7 +171,6 @@ public class GuiBook extends GuiBase {
 
         if (extra != null) extra.accept(indexButton);
         indexButton.BUS.hook(GuiComponentEvents.MouseClickEvent.class, event -> {
-            history.add(entry);
             placeInFocus(entry);
         });
 
