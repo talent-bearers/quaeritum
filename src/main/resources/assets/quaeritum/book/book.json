@@ -16,20 +16,6 @@
         "quaeritum:basics/mana_shaping",
         "quaeritum:basics/garbs"
       ]
-    },
-    {
-      "title": "quaeritum.book.basics.title",
-      "icon": "quaeritum:gui/book/icons/pointy_hat",
-      "description": "quaeritum.book.basics.description",
-      "color": "0xffffff",
-      "entries": [
-        "quaeritum:basics/welcome",
-        "quaeritum:basics/mana",
-        "quaeritum:basics/wisdom",
-        "quaeritum:basics/spell_forging",
-        "quaeritum:basics/mana_shaping",
-        "quaeritum:basics/garbs"
-      ]
     }
   ]
 }

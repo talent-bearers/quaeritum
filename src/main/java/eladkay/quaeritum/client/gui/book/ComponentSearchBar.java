@@ -16,7 +16,7 @@ public class ComponentSearchBar extends ComponentBookMark {
 		super(book, MAGNIFIER, id);
 
 		text = new ComponentTextField(Minecraft.getMinecraft().fontRenderer,
-		        0, 0, getSize().getXi() - 44 - 2 * MAGNIFIER.getWidth(), Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT + 2);
+		        2, 1, getSize().getXi() - 44 - 2 * MAGNIFIER.getWidth(), Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT + 2);
 		text.setEditedCallback(onType);
 		text.setEnterCallback(onEnter);
 		text.setEnabledColor(0xFFFFFF);

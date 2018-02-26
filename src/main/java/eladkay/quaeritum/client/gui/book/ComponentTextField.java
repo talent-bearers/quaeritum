@@ -323,22 +323,21 @@ public class ComponentTextField extends GuiComponent {
             String visible = this.fontRenderer.trimStringToWidth(this.text.substring(this.lineScrollOffset), this.getWidth() - fontRenderer.getStringWidth("_"));
             boolean cursorVisible = cursorRelativePosition >= 0 && cursorRelativePosition <= visible.length();
             boolean cursorBlinkActive = this.isFocused && this.cursorCounter / 6 % 2 == 0 && cursorVisible;
-            int offset = x + 1;
-            int y = this.y + 2;
+            int offset = x;
 
             if (selectionEndPosition > visible.length())
                 selectionEndPosition = visible.length();
 
             if (!visible.isEmpty()) {
                 String toCursor = cursorVisible ? visible.substring(0, cursorRelativePosition) : visible;
-                offset = this.fontRenderer.drawStringWithShadow(toCursor, offset, y + 1, textColor);
+                offset = this.fontRenderer.drawStringWithShadow(toCursor, offset, y, textColor);
             }
 
             boolean cursorInText = this.cursorPosition < this.text.length() || this.text.length() >= this.getMaxStringLength();
             int unselectedBound = offset;
 
             if (!cursorVisible)
-                unselectedBound = cursorRelativePosition > 0 ? x + this.width : x;
+                unselectedBound = cursorRelativePosition > 0 ? x + this.width - fontRenderer.getStringWidth("_") : x;
             else if (cursorInText)
                 unselectedBound = --offset;
 
