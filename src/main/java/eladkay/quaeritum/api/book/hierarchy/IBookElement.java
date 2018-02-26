@@ -16,4 +16,8 @@ public interface IBookElement {
 
     @SideOnly(Side.CLIENT)
     GuiComponent createComponent(GuiBook book);
+
+    default IBookElement heldElement() {
+        return this;
+    }
 }

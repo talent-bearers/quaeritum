@@ -141,10 +141,7 @@ public class ComponentNavBar extends GuiComponent {
 
     public static class ElementWithPage implements IBookElement {
         public static IBookElement actualElement(GuiBook book) {
-            IBookElement element = book.currentElement;
-            if (element instanceof ElementWithPage)
-                return ((ElementWithPage) element).element;
-            return element;
+            return book.currentElement.heldElement();
         }
 
         private final IBookElement element;
@@ -153,6 +150,11 @@ public class ComponentNavBar extends GuiComponent {
         public ElementWithPage(IBookElement element, int page) {
             this.element = element;
             this.page = page;
+        }
+
+        @Override
+        public IBookElement heldElement() {
+            return element.heldElement();
         }
 
         @Override
