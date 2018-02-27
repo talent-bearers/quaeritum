@@ -6,12 +6,12 @@ import com.google.gson.*;
 import com.teamwizardry.librarianlib.core.LibrarianLib;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
 import com.teamwizardry.librarianlib.features.utilities.client.ClientRunnable;
+import eladkay.quaeritum.api.book.IBookGui;
 import eladkay.quaeritum.api.book.hierarchy.IBookElement;
 import eladkay.quaeritum.api.book.hierarchy.category.Category;
 import eladkay.quaeritum.api.book.hierarchy.entry.Entry;
 import eladkay.quaeritum.api.book.hierarchy.page.Page;
 import eladkay.quaeritum.client.gui.book.ComponentMainIndex;
-import eladkay.quaeritum.client.gui.book.GuiBook;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
@@ -128,6 +128,8 @@ public class Book implements IBookElement {
         for (Category category : categories) {
             for (Entry entry : category.entries) {
                 StringBuilder searchBuilder = new StringBuilder();
+                searchBuilder.append(I18n.format(entry.titleKey)).append(' ')
+                        .append(I18n.format(entry.descKey)).append(' ');
                 for (Page page : entry.pages) {
                     Collection<String> searchable = page.getSearchableKeys();
                     if (searchable != null) for (String key : searchable)
@@ -149,7 +151,7 @@ public class Book implements IBookElement {
 
     @SideOnly(Side.CLIENT)
     @Override
-    public GuiComponent createComponent(GuiBook book) {
+    public GuiComponent createComponent(IBookGui book) {
         return new ComponentMainIndex(book);
     }
 }

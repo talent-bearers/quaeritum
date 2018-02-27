@@ -4,9 +4,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
 import com.teamwizardry.librarianlib.features.math.Vec2d;
+import eladkay.quaeritum.api.book.IBookGui;
 import eladkay.quaeritum.api.book.hierarchy.entry.Entry;
 import eladkay.quaeritum.api.book.provider.PageTypes;
-import eladkay.quaeritum.client.gui.book.GuiBook;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.NotNull;
@@ -56,5 +56,5 @@ public interface Page {
     }
 
     @SideOnly(Side.CLIENT)
-    List<GuiComponent> createBookComponents(GuiBook book, Vec2d size);
+    List<GuiComponent> createBookComponents(IBookGui book, Vec2d size);
 }

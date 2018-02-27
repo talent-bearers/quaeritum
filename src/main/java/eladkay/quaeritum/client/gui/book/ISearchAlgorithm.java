@@ -1,5 +1,6 @@
 package eladkay.quaeritum.client.gui.book;
 
+import eladkay.quaeritum.api.book.IBookGui;
 import eladkay.quaeritum.api.book.hierarchy.IBookElement;
 import eladkay.quaeritum.api.book.hierarchy.entry.Entry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -19,15 +20,15 @@ import java.util.function.Supplier;
 public interface ISearchAlgorithm {
     @Nullable List<? extends Result> search(String input);
 
-    default Consumer<String> textBoxConsumer(GuiBook book, Supplier<Acceptor> newComponent) {
+    default Consumer<String> textBoxConsumer(IBookGui book, Supplier<Acceptor> newComponent) {
         return (input) -> {
-            Acceptor acceptor = book.focus instanceof Acceptor ?
-                    (Acceptor) book.focus :
+            Acceptor acceptor = book.getFocus() instanceof Acceptor ?
+                    (Acceptor) book.getFocus() :
                     newComponent.get();
 
             acceptor.acceptResults(search(input));
 
-            if (book.focus instanceof ComponentSearchResults)
+            if (book.getFocus() instanceof Acceptor)
                 book.forceInFocus(acceptor);
             else
                 book.placeInFocus(acceptor);

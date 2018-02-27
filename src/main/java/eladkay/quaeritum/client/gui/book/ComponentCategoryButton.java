@@ -8,6 +8,7 @@ import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponentEvents;
 import com.teamwizardry.librarianlib.features.math.Vec2d;
 import com.teamwizardry.librarianlib.features.utilities.client.TooltipHelper;
+import eladkay.quaeritum.api.book.IBookGui;
 import eladkay.quaeritum.api.book.hierarchy.category.Category;
 import kotlin.Unit;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -24,12 +25,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-import static eladkay.quaeritum.client.gui.book.GuiBook.getRendererFor;
 import static org.lwjgl.opengl.GL11.GL_POLYGON_SMOOTH;
 
 public class ComponentCategoryButton extends GuiComponent {
 
-    public ComponentCategoryButton(int posX, int posY, int width, int height, GuiBook book, @Nonnull Category category) {
+    public ComponentCategoryButton(int posX, int posY, int width, int height, IBookGui book, @Nonnull Category category) {
         super(posX, posY, width, height);
 
         JsonElement icon = category.icon;
@@ -39,7 +39,7 @@ public class ComponentCategoryButton extends GuiComponent {
         });
 
         // ------- BUTTON RENDERING AND ANIMATION ------- //
-	    Runnable iconMask = getRendererFor(icon, new Vec2d(24, 24), true);
+	    Runnable iconMask = IBookGui.getRendererFor(icon, new Vec2d(24, 24), true);
         {
             BUS.hook(GuiComponentEvents.PostDrawEvent.class, (GuiComponentEvents.PostDrawEvent event) -> {
                 GlStateManager.color(0, 0, 0);

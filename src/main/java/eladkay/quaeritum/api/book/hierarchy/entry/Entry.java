@@ -6,13 +6,13 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
+import eladkay.quaeritum.api.book.IBookGui;
 import eladkay.quaeritum.api.book.hierarchy.IBookElement;
 import eladkay.quaeritum.api.book.hierarchy.category.Category;
 import eladkay.quaeritum.api.book.hierarchy.entry.criterion.ICriterion;
 import eladkay.quaeritum.api.book.hierarchy.entry.criterion.game.EntryUnlockedEvent;
 import eladkay.quaeritum.api.book.hierarchy.page.Page;
 import eladkay.quaeritum.client.gui.book.ComponentEntryPage;
-import eladkay.quaeritum.client.gui.book.GuiBook;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
@@ -94,7 +94,7 @@ public class Entry implements IBookElement {
 
     @SideOnly(Side.CLIENT)
     @Override
-    public GuiComponent createComponent(GuiBook book) {
+    public GuiComponent createComponent(IBookGui book) {
         return new ComponentEntryPage(book, this);
     }
 }

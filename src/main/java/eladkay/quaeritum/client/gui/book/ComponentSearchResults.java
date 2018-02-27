@@ -5,6 +5,7 @@ import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponentEvents;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentText;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentVoid;
+import eladkay.quaeritum.api.book.IBookGui;
 import eladkay.quaeritum.api.book.hierarchy.IBookElement;
 import eladkay.quaeritum.api.book.hierarchy.entry.Entry;
 import net.minecraft.client.Minecraft;
@@ -24,12 +25,12 @@ public class ComponentSearchResults extends NavBarHolder implements ISearchAlgor
     private ComponentNavBar navBar = null;
     private ComponentText pageHeader;
     private ComponentVoid resultSection;
-    private GuiBook book;
+    private IBookGui book;
 
     private List<? extends ISearchAlgorithm.Result> results = Lists.newArrayList();
 
-    public ComponentSearchResults(GuiBook book) {
-        super(16, 16, book.bookComponent.getSize().getXi() - 32, book.bookComponent.getSize().getYi() - 32, book);
+    public ComponentSearchResults(IBookGui book) {
+        super(16, 16, book.getMainComponent().getSize().getXi() - 32, book.getMainComponent().getSize().getYi() - 32, book);
         this.book = book;
 
         pageHeader = new ComponentText(0, 0, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.TOP);
@@ -89,7 +90,7 @@ public class ComponentSearchResults extends NavBarHolder implements ISearchAlgor
 
                 ComponentText textComponent = new ComponentText(25, Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT + 2, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.TOP);
 
-                GuiComponent indexButton = book.createIndexButton(count, resultComponent, plate -> plate.add(textComponent));
+                GuiComponent indexButton = book.makeNavigationButton(count, resultComponent, plate -> plate.add(textComponent));
                 pageComponent.add(indexButton);
 
                 // --------- HANDLE EXTRA TEXT COMPONENT --------- //
@@ -162,7 +163,7 @@ public class ComponentSearchResults extends NavBarHolder implements ISearchAlgor
     }
 
     @Override
-    public GuiComponent createComponent(GuiBook book) {
+    public GuiComponent createComponent(IBookGui book) {
         ComponentSearchResults results = new ComponentSearchResults(book);
         results.acceptResults(this.results);
         return results;
@@ -170,6 +171,6 @@ public class ComponentSearchResults extends NavBarHolder implements ISearchAlgor
 
     @Override
     public @Nullable IBookElement getBookParent() {
-        return book.book;
+        return book.getBook();
     }
 }

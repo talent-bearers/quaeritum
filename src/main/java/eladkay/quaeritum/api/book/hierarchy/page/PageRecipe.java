@@ -4,9 +4,9 @@ import com.google.common.collect.Lists;
 import com.google.gson.JsonObject;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
 import com.teamwizardry.librarianlib.features.math.Vec2d;
+import eladkay.quaeritum.api.book.IBookGui;
 import eladkay.quaeritum.api.book.hierarchy.entry.Entry;
 import eladkay.quaeritum.client.gui.book.ComponentRecipe;
-import eladkay.quaeritum.client.gui.book.GuiBook;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -31,7 +31,7 @@ public class PageRecipe implements Page {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public List<GuiComponent> createBookComponents(GuiBook book, Vec2d size) {
-        return Lists.newArrayList(new ComponentRecipe(0, 0, size.getXi(), size.getYi(), book.mainColor, recipe));
+    public List<GuiComponent> createBookComponents(IBookGui book, Vec2d size) {
+        return Lists.newArrayList(new ComponentRecipe(0, 0, size.getXi(), size.getYi(), book.getBook().bookColor, recipe, book.nextSprite(true)));
     }
 }

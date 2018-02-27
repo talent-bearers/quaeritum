@@ -4,8 +4,8 @@ import com.google.common.collect.Lists;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentText;
 import com.teamwizardry.librarianlib.features.math.Vec2d;
+import eladkay.quaeritum.api.book.IBookGui;
 import eladkay.quaeritum.api.book.hierarchy.entry.Entry;
-import eladkay.quaeritum.client.gui.book.GuiBook;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraftforge.fml.relauncher.Side;
@@ -38,7 +38,7 @@ public abstract class PageString implements Page {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public List<GuiComponent> createBookComponents(GuiBook book, Vec2d size) {
+    public List<GuiComponent> createBookComponents(IBookGui book, Vec2d size) {
         List<GuiComponent> pages = new ArrayList<>();
 
         Minecraft minecraft = Minecraft.getMinecraft();

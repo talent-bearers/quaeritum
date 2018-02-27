@@ -2,6 +2,7 @@ package eladkay.quaeritum.client.gui.book;
 
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentVoid;
+import eladkay.quaeritum.api.book.IBookGui;
 import eladkay.quaeritum.api.book.hierarchy.category.Category;
 import eladkay.quaeritum.api.book.hierarchy.entry.Entry;
 import net.minecraft.client.Minecraft;
@@ -13,8 +14,8 @@ import net.minecraft.entity.player.EntityPlayer;
  */
 public class ComponentCategoryPage extends NavBarHolder {
 
-    public ComponentCategoryPage(GuiBook book, Category category) {
-        super(16, 16, book.bookComponent.getSize().getXi() - 32, book.bookComponent.getSize().getYi() - 32, book);
+    public ComponentCategoryPage(IBookGui book, Category category) {
+        super(16, 16, book.getMainComponent().getSize().getXi() - 32, book.getMainComponent().getSize().getYi() - 32, book);
 
         ComponentVoid pageComponent = new ComponentVoid(0, 0, getSize().getXi(), getSize().getYi());
         add(pageComponent);
@@ -26,7 +27,7 @@ public class ComponentCategoryPage extends NavBarHolder {
         EntityPlayer player = Minecraft.getMinecraft().player;
         for (Entry entry : category.entries) {
             if (entry.isUnlocked(player)) {
-                GuiComponent indexPlate = book.createIndexButton(id++, entry, null);
+                GuiComponent indexPlate = book.makeNavigationButton(id++, entry, null);
                 pageComponent.add(indexPlate);
 
                 count++;

@@ -5,12 +5,12 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
+import eladkay.quaeritum.api.book.IBookGui;
 import eladkay.quaeritum.api.book.hierarchy.IBookElement;
 import eladkay.quaeritum.api.book.hierarchy.book.Book;
 import eladkay.quaeritum.api.book.hierarchy.entry.Entry;
 import eladkay.quaeritum.client.gui.book.ComponentCategoryPage;
 import eladkay.quaeritum.client.gui.book.ComponentEntryPage;
-import eladkay.quaeritum.client.gui.book.GuiBook;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -86,7 +86,7 @@ public class Category implements IBookElement {
 
     @SideOnly(Side.CLIENT)
     @Override
-    public GuiComponent createComponent(GuiBook book) {
+    public GuiComponent createComponent(IBookGui book) {
         if (isSingleEntry())
             return new ComponentEntryPage(book, entries.get(0));
         return new ComponentCategoryPage(book, this);

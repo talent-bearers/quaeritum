@@ -1,7 +1,7 @@
 package eladkay.quaeritum.api.book.hierarchy;
 
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
-import eladkay.quaeritum.client.gui.book.GuiBook;
+import eladkay.quaeritum.api.book.IBookGui;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.Nullable;
@@ -15,7 +15,7 @@ public interface IBookElement {
     IBookElement getBookParent();
 
     @SideOnly(Side.CLIENT)
-    GuiComponent createComponent(GuiBook book);
+    GuiComponent createComponent(IBookGui book);
 
     default IBookElement heldElement() {
         return this;

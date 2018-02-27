@@ -4,12 +4,11 @@ import com.teamwizardry.librarianlib.features.animator.Easing;
 import com.teamwizardry.librarianlib.features.animator.animations.BasicAnimation;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentSprite;
 import com.teamwizardry.librarianlib.features.sprite.Sprite;
+import eladkay.quaeritum.api.book.IBookGui;
 
 import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Set;
-
-import static eladkay.quaeritum.client.gui.book.GuiBook.BOOKMARK;
 
 /**
  * Property of Demoniaque.
@@ -19,27 +18,29 @@ public class ComponentBookMark extends ComponentAnimatableVoid {
 
     private static Set<ComponentBookMark> bookMarks = new HashSet<>();
 
-    private final GuiBook book;
+    private final IBookGui book;
     private final int id;
     private final Sprite box;
 
     private ComponentSprite bar;
 
-    public ComponentBookMark(GuiBook book, Sprite icon, int id) {
-        super(book.bookComponent.getSize().getXi() - 10, 20 + 5 * id + BOOKMARK.getHeight() * id, BOOKMARK.getWidth(), BOOKMARK.getHeight());
+    public ComponentBookMark(IBookGui book, Sprite icon, int id) {
+        super(book.getMainComponent().getSize().getXi() - 10,
+                20 + 5 * id + book.bookmarkSprite().getHeight() * id,
+                book.bookmarkSprite().getWidth(), book.bookmarkSprite().getHeight());
         this.book = book;
         this.id = id;
 
         bookMarks.add(this);
 
-        box = BOOKMARK;
+        box = book.bookmarkSprite();
 
         clipping.setClipToBounds(true);
 
         animX = -box.getWidth() + 20;
 
-        bar = new ComponentSprite(BOOKMARK, -box.getWidth() + 20, 0);
-        bar.getColor().setValue(book.mainColor);
+        bar = new ComponentSprite(book.bookmarkSprite(), -box.getWidth() + 20, 0);
+        bar.getColor().setValue(book.getBook().bookColor);
         add(bar);
 
         ComponentSprite iconComponent = new ComponentSprite(icon, getSize().getXi() - icon.getWidth() - 8, 1);
@@ -92,7 +93,7 @@ public class ComponentBookMark extends ComponentAnimatableVoid {
         return id;
     }
 
-    public GuiBook getBook() {
+    public IBookGui getBook() {
         return book;
     }
 }

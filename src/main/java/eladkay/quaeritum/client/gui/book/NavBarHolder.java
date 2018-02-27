@@ -2,6 +2,7 @@ package eladkay.quaeritum.client.gui.book;
 
 import com.google.common.collect.Lists;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
+import eladkay.quaeritum.api.book.IBookGui;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ public abstract class NavBarHolder extends GuiComponent {
     protected GuiComponent currentActive;
     private boolean first = true;
 
-    public NavBarHolder(int posX, int posY, int width, int height, GuiBook book) {
+    public NavBarHolder(int posX, int posY, int width, int height, IBookGui book) {
         super(posX, posY, width, height);
 
         navBar = new ComponentNavBar(book, (getSize().getXi() / 2) - 35, getSize().getYi() + 16, 70, pages.size());

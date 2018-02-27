@@ -1,5 +1,6 @@
 package eladkay.quaeritum.client.gui.book;
 
+import eladkay.quaeritum.api.book.IBookGui;
 import eladkay.quaeritum.api.book.hierarchy.entry.Entry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,9 +20,9 @@ import java.util.stream.Collectors;
 @SideOnly(Side.CLIENT)
 public class TFIDFSearch implements ISearchAlgorithm {
 
-    private final GuiBook book;
+    private final IBookGui book;
 
-    public TFIDFSearch(GuiBook book) {
+    public TFIDFSearch(IBookGui book) {
         this.book = book;
     }
 
@@ -35,9 +36,11 @@ public class TFIDFSearch implements ISearchAlgorithm {
         ArrayList<FrequencySearchResult> unfilteredTfidfResults = new ArrayList<>();
         ArrayList<MatchCountSearchResult> matchCountSearchResults = new ArrayList<>();
 
-        final int nbOfDocuments = book.contentCache.size();
-        for (Entry cachedComponent : book.contentCache.keySet()) if (cachedComponent.isUnlocked(player)) {
-            String cachedDocument = book.contentCache
+        Map<Entry, String> contentCache = book.getCachedSearchContent();
+
+        final int nbOfDocuments = contentCache.size();
+        for (Entry cachedComponent : contentCache.keySet()) if (cachedComponent.isUnlocked(player)) {
+            String cachedDocument = contentCache
                     .get(cachedComponent)
                     .toLowerCase(Locale.ROOT)
                     .replace("'", "");
@@ -59,8 +62,8 @@ public class TFIDFSearch implements ISearchAlgorithm {
                     double termFrequency = 0.5 + (0.5 * keywordOccurance / mostRepeatedWord);
 
                     int keywordDocumentOccurance = 0;
-                    for (Entry documentComponent : book.contentCache.keySet()) if (documentComponent.isUnlocked(player)) {
-                        String documentContent = book.contentCache.get(documentComponent).toLowerCase(Locale.ROOT);
+                    for (Entry documentComponent : contentCache.keySet()) if (documentComponent.isUnlocked(player)) {
+                        String documentContent = contentCache.get(documentComponent).toLowerCase(Locale.ROOT);
                         if (documentContent.contains(keyword)) {
                             keywordDocumentOccurance++;
                         }
@@ -96,8 +99,8 @@ public class TFIDFSearch implements ISearchAlgorithm {
         if (!filteredTfidfResults.isEmpty()) {
             return filteredTfidfResults;
         } else {
-            for (Entry cachedComponent : book.contentCache.keySet()) if (cachedComponent.isUnlocked(player)) {
-                String cachedDocument = book.contentCache
+            for (Entry cachedComponent : contentCache.keySet()) if (cachedComponent.isUnlocked(player)) {
+                String cachedDocument = contentCache
                         .get(cachedComponent)
                         .toLowerCase(Locale.ROOT)
                         .replace("'", "");

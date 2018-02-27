@@ -3,6 +3,7 @@ package eladkay.quaeritum.client.gui.book;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponentEvents;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentStack;
+import com.teamwizardry.librarianlib.features.sprite.Sprite;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.recipebook.GhostRecipe;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -24,7 +25,6 @@ import java.awt.*;
 import java.util.Iterator;
 import java.util.List;
 
-import static eladkay.quaeritum.client.gui.book.GuiBook.ARROW_HOME_PRESSED;
 import static org.lwjgl.opengl.GL11.GL_SMOOTH;
 
 public class ComponentRecipe extends GuiComponent {
@@ -34,7 +34,7 @@ public class ComponentRecipe extends GuiComponent {
      *
      * @param key The recipe name.
      */
-    public ComponentRecipe(int posX, int posY, int width, int height, Color mainColor, @NotNull ResourceLocation key) {
+    public ComponentRecipe(int posX, int posY, int width, int height, Color mainColor, @NotNull ResourceLocation key, @NotNull Sprite arrow) {
         super(posX, posY, width, height);
 
         IRecipe recipe = ForgeRegistries.RECIPES.getValue(key);
@@ -73,11 +73,11 @@ public class ComponentRecipe extends GuiComponent {
             GlStateManager.enableBlend();
             GlStateManager.enableAlpha();
             GlStateManager.translate(
-                    (int) ((getSize().getX() / 2.0) + (ARROW_HOME_PRESSED.getWidth() / 2.0) + 16), (int) ((getSize().getY() / 2.0) + (ARROW_HOME_PRESSED.getHeight() / 2.0) - 8 + 1), 0);
+                    (int) ((getSize().getX() / 2.0) + (arrow.getWidth() / 2.0) + 16), (int) ((getSize().getY() / 2.0) + (arrow.getHeight() / 2.0) - 8 + 1), 0);
             GlStateManager.rotate(180, 0, 0, 1);
             GlStateManager.color(1f, 0.5f, 1f, 1f);
-            ARROW_HOME_PRESSED.bind();
-            ARROW_HOME_PRESSED.draw((int) event.getPartialTicks(), 0, 0);
+            arrow.bind();
+            arrow.draw((int) event.getPartialTicks(), 0, 0);
             GlStateManager.popMatrix();
 
             GlStateManager.pushMatrix();

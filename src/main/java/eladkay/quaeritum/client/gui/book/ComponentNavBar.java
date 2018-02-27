@@ -4,7 +4,10 @@ import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponentEvents;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentSprite;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentText;
+import com.teamwizardry.librarianlib.features.sprite.Sprite;
+import eladkay.quaeritum.api.book.IBookGui;
 import eladkay.quaeritum.api.book.hierarchy.IBookElement;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
@@ -12,8 +15,6 @@ import org.jetbrains.annotations.Nullable;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import static eladkay.quaeritum.client.gui.book.GuiBook.*;
 
 /**
  * Property of Demoniaque.
@@ -23,26 +24,31 @@ public class ComponentNavBar extends GuiComponent {
 
     public int maxPages;
     private int page = 0;
-    private final GuiBook book;
+    private final IBookGui book;
+    private final Sprite nextSprite;
 
-    public ComponentNavBar(GuiBook book, int posX, int posY, int width, int pageCount) {
+    public ComponentNavBar(IBookGui book, int posX, int posY, int width, int pageCount) {
         super(posX, posY, width, 20);
 
         this.book = book;
 
         maxPages = Math.max(0, pageCount - 1);
 
-        ComponentSprite back = new ComponentSprite(ARROW_BACK, 0, (int) ((getSize().getY() / 2.0) - (ARROW_NEXT.getHeight() / 2.0)));
-        ComponentSprite home = new ComponentSprite(ARROW_HOME, (int) ((getSize().getX() / 2.0) - (ARROW_HOME.getWidth() / 2.0)), (int) ((getSize().getY() / 2.0) - (ARROW_NEXT.getHeight() / 2.0)));
-        ComponentSprite next = new ComponentSprite(ARROW_NEXT, (int) (getSize().getX() - ARROW_NEXT.getWidth()), (int) ((getSize().getY() / 2.0) - (ARROW_BACK.getHeight() / 2.0)));
+        Sprite backSprite = book.backSprite(false);
+        Sprite homeSprite = book.homeSprite(false);
+        nextSprite = book.nextSprite(false);
+
+        ComponentSprite back = new ComponentSprite(backSprite, 0, (int) ((getSize().getY() / 2.0) - (backSprite.getHeight() / 2.0)));
+        ComponentSprite home = new ComponentSprite(homeSprite, (int) ((getSize().getX() / 2.0) - (homeSprite.getWidth() / 2.0)), (int) ((getSize().getY() / 2.0) - (backSprite.getHeight() / 2.0)));
+        ComponentSprite next = new ComponentSprite(nextSprite, (int) (getSize().getX() - nextSprite.getWidth()), (int) ((getSize().getY() / 2.0) - (nextSprite.getHeight() / 2.0)));
         add(back, next, home);
 
         home.BUS.hook(GuiComponentEvents.MouseInEvent.class, event -> {
-            home.setSprite(ARROW_HOME_PRESSED);
-            home.getColor().setValue(book.mainColor.brighter());
+            home.setSprite(book.homeSprite(true));
+            home.getColor().setValue(book.getBook().bookColor.brighter());
         });
         home.BUS.hook(GuiComponentEvents.MouseOutEvent.class, event -> {
-            home.setSprite(ARROW_HOME);
+            home.setSprite(book.homeSprite(false));
             home.getColor().setValue(Color.WHITE);
         });
         List<String> homeTooltip = new ArrayList<>();
@@ -50,14 +56,14 @@ public class ComponentNavBar extends GuiComponent {
         home.render.getTooltip().setValue(homeTooltip);
 
         home.BUS.hook(GuiComponentEvents.MouseClickEvent.class, event -> {
-            if (GuiBook.isShiftKeyDown()) {
-                book.placeInFocus(book.book);
-            } else if (!book.history.empty()) {
-                book.forceInFocus(book.history.pop());
+            if (GuiScreen.isShiftKeyDown()) {
+                book.placeInFocus(book.getBook());
+            } else if (!book.getHistory().empty()) {
+                book.forceInFocus(book.getHistory().pop());
             }
         });
         home.BUS.hook(GuiComponentEvents.ComponentTickEvent.class, event -> {
-            if (book.history.empty()) home.setVisible(false);
+            if (book.getHistory().empty()) home.setVisible(false);
             else home.setVisible(true);
         });
 
@@ -69,10 +75,10 @@ public class ComponentNavBar extends GuiComponent {
             if (!back.isVisible()) return;
 
             if (event.component.getMouseOver()) {
-                back.setSprite(ARROW_BACK_PRESSED);
-                back.getColor().setValue(book.mainColor.brighter());
+                back.setSprite(book.backSprite(true));
+                back.getColor().setValue(book.getBook().bookColor.brighter());
             } else {
-                back.setSprite(ARROW_BACK);
+                back.setSprite(book.backSprite(false));
                 back.getColor().setValue(Color.WHITE);
             }
         });
@@ -90,13 +96,11 @@ public class ComponentNavBar extends GuiComponent {
 
             if (!next.isVisible()) return;
 
-            if (event.component.getMouseOver()) {
-                next.setSprite(ARROW_NEXT_PRESSED);
-                next.getColor().setValue(book.mainColor.brighter());
-            } else {
-                next.setSprite(ARROW_NEXT);
+            next.setSprite(book.nextSprite(event.component.getMouseOver()));
+            if (event.component.getMouseOver())
+                next.getColor().setValue(book.getBook().bookColor.brighter());
+            else
                 next.getColor().setValue(Color.WHITE);
-            }
         });
         next.BUS.hook(GuiComponentEvents.MouseClickEvent.class, event -> {
             setPage(page + 1);
@@ -116,12 +120,12 @@ public class ComponentNavBar extends GuiComponent {
         EventNavBarChange eventNavBarChange = new EventNavBarChange(page);
         BUS.fire(eventNavBarChange);
 
-        book.currentElement = new ElementWithPage(ElementWithPage.actualElement(book), x);
+        book.setCurrentElement(new ElementWithPage(book.actualElement(), x));
     }
 
     public void whenMaxPagesSet() {
         if (maxPages > 1) {
-            ComponentText pageStringComponent = new ComponentText((int) getSize().getX() / 2, (int) ((getSize().getY() / 2 - ARROW_NEXT.getHeight() / 2.0)) + 15, ComponentText.TextAlignH.CENTER, ComponentText.TextAlignV.MIDDLE);
+            ComponentText pageStringComponent = new ComponentText((int) getSize().getX() / 2, (int) ((getSize().getY() / 2 - nextSprite.getHeight() / 2.0)) + 15, ComponentText.TextAlignH.CENTER, ComponentText.TextAlignV.MIDDLE);
             pageStringComponent.getUnicode().setValue(false);
 
             String initialString = (page + 1) + "/" + (maxPages + 1);
@@ -140,11 +144,6 @@ public class ComponentNavBar extends GuiComponent {
     }
 
     public static class ElementWithPage implements IBookElement {
-        public static IBookElement actualElement(GuiBook book) {
-            if (book.currentElement == null)
-                return null;
-            return book.currentElement.heldElement();
-        }
 
         private final IBookElement element;
         private final int page;
@@ -165,7 +164,7 @@ public class ComponentNavBar extends GuiComponent {
         }
 
         @Override
-        public GuiComponent createComponent(GuiBook book) {
+        public GuiComponent createComponent(IBookGui book) {
             GuiComponent component = element.createComponent(book);
             if (component instanceof NavBarHolder)
                 ((NavBarHolder) component).navBar.setPage(page);
