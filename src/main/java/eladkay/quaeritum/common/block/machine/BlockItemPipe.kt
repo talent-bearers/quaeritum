@@ -143,8 +143,8 @@ class BlockItemPipe : BlockModContainer("pipe", Material.IRON, *EnumDyeColor.val
         return tileAt?.hasCapability(ITEM_HANDLER_CAPABILITY, facing.opposite) == true
     }
 
-    override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos)
-            = AABBS[getActualState(state, source, pos)] ?: CENTER_AABB
+    override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos) = AABBS[getActualState(state, source, pos)]
+            ?: CENTER_AABB
 
     override fun addCollisionBoxToList(state: IBlockState, worldIn: World, pos: BlockPos, entityBox: AxisAlignedBB, collidingBoxes: MutableList<AxisAlignedBB>, entityIn: Entity?, isActualState: Boolean) {
         for (box in getBoxes(state, worldIn, pos))
@@ -269,7 +269,7 @@ class TileItemPipe : TileModTickable(), IColorAcceptor {
             setColor(facing, color)
     }
 
-    private inline fun <reified T> Array<T>.shuffle() : List<T> {
+    private inline fun <reified T> Array<T>.shuffle(): List<T> {
         val toList = mutableListOf<T>()
         val fromList = toMutableList()
         while (fromList.isNotEmpty()) {

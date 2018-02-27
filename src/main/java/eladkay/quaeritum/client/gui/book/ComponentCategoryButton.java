@@ -39,7 +39,7 @@ public class ComponentCategoryButton extends GuiComponent {
         });
 
         // ------- BUTTON RENDERING AND ANIMATION ------- //
-	    Runnable iconMask = IBookGui.getRendererFor(icon, new Vec2d(24, 24), true);
+        Runnable iconMask = IBookGui.getRendererFor(icon, new Vec2d(24, 24), true);
         {
             BUS.hook(GuiComponentEvents.PostDrawEvent.class, (GuiComponentEvents.PostDrawEvent event) -> {
                 GlStateManager.color(0, 0, 0);

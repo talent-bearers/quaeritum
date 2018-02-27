@@ -56,8 +56,8 @@ open class PactforgerBind : IDiagram {
                     } else
                         sequenceOf((it as EntityItem).item)
                 }.firstOrNull {
-            it.item == ModItems.scroll && it.itemDamage == 1
-        }
+                    it.item == ModItems.scroll && it.itemDamage == 1
+                }
     }
 
     override fun canRitualRun(world: World, pos: BlockPos, tile: TileEntity): Boolean {

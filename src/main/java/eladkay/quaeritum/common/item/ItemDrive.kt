@@ -34,8 +34,8 @@ abstract class ItemDrive(name: String, val minTier: EnumAnimusTier) : ItemMod("$
     init {
         setMaxStackSize(1)
         addPropertyOverride(ResourceLocation(LibMisc.MOD_ID, "left")) { stack, _, entity ->
-            val default: EnumHandSide
-                    = ClientRunnable.produce { Minecraft.getMinecraft().player }?.primaryHand ?: EnumHandSide.RIGHT
+            val default: EnumHandSide = ClientRunnable.produce { Minecraft.getMinecraft().player }?.primaryHand
+                    ?: EnumHandSide.RIGHT
             val hand = if (entity != null) when {
                 entity.heldItemMainhand === stack -> entity.primaryHand
                 entity.heldItemOffhand === stack -> entity.primaryHand.opposite()
@@ -92,8 +92,8 @@ abstract class ItemDrive(name: String, val minTier: EnumAnimusTier) : ItemMod("$
                         val bb = it?.entityBoundingBox
                         bb != null && (it != player || player.rotationPitch == 90F) && intersectsBox(from, to, bb.grow(1.0))
                     }.forEach {
-                        affectEntity(stack, player, count, it)
-                    }
+                                affectEntity(stack, player, count, it)
+                            }
                 }
             }
         } else if (!player.world.isRemote) player.stopActiveHand()

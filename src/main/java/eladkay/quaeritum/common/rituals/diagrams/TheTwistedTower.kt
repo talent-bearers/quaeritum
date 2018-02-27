@@ -36,8 +36,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import java.awt.Color
 
 
-
-
 /**
  * @author WireSegal
  * Created at 9:25 PM on 1/12/18.

@@ -22,10 +22,10 @@ import java.util.List;
  */
 public class ComponentNavBar extends GuiComponent {
 
-    public int maxPages;
-    private int page = 0;
     private final IBookGui book;
     private final Sprite nextSprite;
+    public int maxPages;
+    private int page = 0;
 
     public ComponentNavBar(IBookGui book, int posX, int posY, int width, int pageCount) {
         super(posX, posY, width, 20);
@@ -110,19 +110,6 @@ public class ComponentNavBar extends GuiComponent {
         next.render.getTooltip().setValue(nextTooltip);
     }
 
-
-    public void setPage(int target) {
-        int x = MathHelper.clamp(target, 0, maxPages);
-        if (page == x) return;
-
-        page = x;
-
-        EventNavBarChange eventNavBarChange = new EventNavBarChange(page);
-        BUS.fire(eventNavBarChange);
-
-        book.setCurrentElement(new ElementWithPage(book.actualElement(), x));
-    }
-
     public void whenMaxPagesSet() {
         if (maxPages > 1) {
             ComponentText pageStringComponent = new ComponentText((int) getSize().getX() / 2, (int) ((getSize().getY() / 2 - nextSprite.getHeight() / 2.0)) + 15, ComponentText.TextAlignH.CENTER, ComponentText.TextAlignV.MIDDLE);
@@ -141,6 +128,18 @@ public class ComponentNavBar extends GuiComponent {
 
     public int getPage() {
         return page;
+    }
+
+    public void setPage(int target) {
+        int x = MathHelper.clamp(target, 0, maxPages);
+        if (page == x) return;
+
+        page = x;
+
+        EventNavBarChange eventNavBarChange = new EventNavBarChange(page);
+        BUS.fire(eventNavBarChange);
+
+        book.setCurrentElement(new ElementWithPage(book.actualElement(), x));
     }
 
     public static class ElementWithPage implements IBookElement {

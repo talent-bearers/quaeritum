@@ -105,34 +105,34 @@ class AcademyOfTheFive : IDiagram {
                     } else
                         sequenceOf((it as EntityItem).item to null)
                 }.filter {
-            it.first.item is ItemStarMap
-        }.forEach { (stack, player) ->
-            ItemNBTHelper.setList(stack, "poses",
-                    NBTTagList(academiesToSend.size) { NBTTagLong(academiesToSend.toList()[it].toLong()) }
-                            .also { it.appendTag(NBTTagLong(pos.toLong())) })
+                    it.first.item is ItemStarMap
+                }.forEach { (stack, player) ->
+                    ItemNBTHelper.setList(stack, "poses",
+                            NBTTagList(academiesToSend.size) { NBTTagLong(academiesToSend.toList()[it].toLong()) }
+                                    .also { it.appendTag(NBTTagLong(pos.toLong())) })
 
 
-            if (player != null) {
-                var visited = ItemNBTHelper.getCompound(stack, "visited")
-                if (visited == null) {
-                    visited = NBTTagCompound()
-                    ItemNBTHelper.setCompound(stack, "visited", visited)
+                    if (player != null) {
+                        var visited = ItemNBTHelper.getCompound(stack, "visited")
+                        if (visited == null) {
+                            visited = NBTTagCompound()
+                            ItemNBTHelper.setCompound(stack, "visited", visited)
+                        }
+                        if (!visited.hasKey(player.cachedUniqueIdString))
+                            visited.setTag(player.cachedUniqueIdString, NBTTagList())
+                        val comp = visited.getTagList(player.cachedUniqueIdString, Constants.NBT.TAG_LONG)
+                        if (comp.none { (it as NBTTagLong).long == pos.toLong() })
+                            comp.appendTag(NBTTagLong(pos.toLong()))
+                        comp.removeAll { nbt -> data.academies.none { (nbt as NBTTagLong).long == it.toLong() } }
+
+                        if (comp.tagCount() >= 20) {
+                            val connection = (world as WorldServer).advancementManager.getAdvancement(ResourceLocation("quaeritum:connection"))
+                            if (connection != null)
+                                (player as EntityPlayerMP).advancements.grantCriterion(connection, "far_traveled")
+
+                        }
+                    }
                 }
-                if (!visited.hasKey(player.cachedUniqueIdString))
-                    visited.setTag(player.cachedUniqueIdString, NBTTagList())
-                val comp = visited.getTagList(player.cachedUniqueIdString, Constants.NBT.TAG_LONG)
-                if (comp.none { (it as NBTTagLong).long == pos.toLong() })
-                    comp.appendTag(NBTTagLong(pos.toLong()))
-                comp.removeAll { nbt -> data.academies.none { (nbt as NBTTagLong).long == it.toLong() } }
-
-                if (comp.tagCount() >= 20) {
-                    val connection = (world as WorldServer).advancementManager.getAdvancement(ResourceLocation("quaeritum:connection"))
-                    if (connection != null)
-                        (player as EntityPlayerMP).advancements.grantCriterion(connection, "far_traveled")
-
-                }
-            }
-        }
 
         if (data.academies.hashCode() != hash)
             data.markDirty()
@@ -190,7 +190,8 @@ class ItemStarMap : ItemMod("star_map") {
 
     override fun onItemRightClick(worldIn: World, playerIn: EntityPlayer, handIn: EnumHand): ActionResult<ItemStack> {
         val stack = playerIn.getHeldItem(handIn)
-        if (worldIn.provider.dimension == 0 && (ItemNBTHelper.getList(stack, "poses", Constants.NBT.TAG_LONG)?.tagCount() ?: 0) > 0) {
+        if (worldIn.provider.dimension == 0 && (ItemNBTHelper.getList(stack, "poses", Constants.NBT.TAG_LONG)?.tagCount()
+                        ?: 0) > 0) {
             if (worldIn.isRemote) ClientRunnable.run {
                 val poses = ItemNBTHelper.getList(stack, "poses", Constants.NBT.TAG_LONG)
                 if (poses != null) for (pos in poses) {

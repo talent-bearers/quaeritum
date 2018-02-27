@@ -18,8 +18,7 @@ class BlockIronheartFlower : BlockModBush(LibNames.FLOWER + "_ironheart", Materi
             entityIn.attackEntityFrom(DamageSource.CACTUS, 3.0f)
     }
 
-    override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos)
-            = super.getBoundingBox(state, source, pos).offset(state.getOffset(source, pos))
+    override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos) = super.getBoundingBox(state, source, pos).offset(state.getOffset(source, pos))
 
     override fun getOffsetType() = Block.EnumOffsetType.XZ
 }

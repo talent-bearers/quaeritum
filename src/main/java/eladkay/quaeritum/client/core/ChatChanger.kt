@@ -77,7 +77,6 @@ object ChatChanger {
     val GuiNewChat.scrollPos by MethodHandleHelper.delegateForReadOnly<GuiNewChat, Int>(GuiNewChat::class.java, "j", "field_146250_j", "scrollPos")
 
 
-
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
     fun renderSymbols(event: RenderGameOverlayEvent.Post) {

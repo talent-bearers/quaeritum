@@ -26,12 +26,11 @@ import java.util.EnumMap;
 public class CachedStructure extends Structure {
 
     public final ResourceLocation name;
+    public Vec3d perfectCenter;
     @SideOnly(Side.CLIENT)
     private HashMultimap<BlockRenderLayer, Template.BlockInfo> blocks;
     @SideOnly(Side.CLIENT)
     private EnumMap<BlockRenderLayer, int[]> vboCaches;
-    public Vec3d perfectCenter;
-
     private IBlockAccess access;
     private boolean builtVbos = false;
 

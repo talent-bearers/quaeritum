@@ -30,8 +30,7 @@ object QuaeritumInternalHandler : IInternalHandler {
     fun getTrueSaveData(): QuaeritumSaveData {
         val world = (if (FMLCommonHandler.instance().effectiveSide.isClient)
             ClientRunnable.produce { Minecraft.getMinecraft().world }
-            else DimensionManager.getWorld(0)) ?:
-                throw UnsupportedOperationException("There's no world?")
+        else DimensionManager.getWorld(0)) ?: throw UnsupportedOperationException("There's no world?")
         val mapStorage = world.mapStorage ?: return QuaeritumSaveData()
 
         var saveData = mapStorage.getOrLoadData(QuaeritumSaveData::class.java, LibMisc.MOD_ID) as? QuaeritumSaveData

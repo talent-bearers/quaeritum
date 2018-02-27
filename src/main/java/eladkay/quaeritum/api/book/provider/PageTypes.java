@@ -2,7 +2,10 @@ package eladkay.quaeritum.api.book.provider;
 
 import com.google.gson.JsonObject;
 import eladkay.quaeritum.api.book.hierarchy.entry.Entry;
-import eladkay.quaeritum.api.book.hierarchy.page.*;
+import eladkay.quaeritum.api.book.hierarchy.page.Page;
+import eladkay.quaeritum.api.book.hierarchy.page.PageRecipe;
+import eladkay.quaeritum.api.book.hierarchy.page.PageStructure;
+import eladkay.quaeritum.api.book.hierarchy.page.PageText;
 import net.minecraft.util.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

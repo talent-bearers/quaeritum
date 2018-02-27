@@ -23,21 +23,8 @@ import java.util.Map;
  */
 public class CriterionAdvancement implements ICriterion {
 
-    private final ResourceLocation advancement;
-
-    public CriterionAdvancement(JsonObject object) {
-        advancement = new ResourceLocation(object.getAsJsonPrimitive("name").getAsString());
-    }
-
     @SideOnly(Side.CLIENT)
     private static Function1<ClientAdvancementManager, Object> mh;
-
-
-    @SideOnly(Side.CLIENT)
-    @SuppressWarnings("unchecked")
-    private static Map<Advancement, AdvancementProgress> progress(ClientAdvancementManager manager) {
-        return (Map<Advancement, AdvancementProgress>) mh.invoke(manager);
-    }
 
     static {
         ClientRunnable.run(new ClientRunnable() {
@@ -49,6 +36,18 @@ public class CriterionAdvancement implements ICriterion {
         });
     }
 
+    private final ResourceLocation advancement;
+
+
+    public CriterionAdvancement(JsonObject object) {
+        advancement = new ResourceLocation(object.getAsJsonPrimitive("name").getAsString());
+    }
+
+    @SideOnly(Side.CLIENT)
+    @SuppressWarnings("unchecked")
+    private static Map<Advancement, AdvancementProgress> progress(ClientAdvancementManager manager) {
+        return (Map<Advancement, AdvancementProgress>) mh.invoke(manager);
+    }
 
     @Override
     public boolean isUnlocked(EntityPlayer player, boolean grantedInCode) {

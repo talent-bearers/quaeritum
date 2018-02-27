@@ -41,6 +41,10 @@ public class GuiBook extends GuiBase implements IBookGui {
 
     public static Sprite ERROR = new Sprite(new ResourceLocation(MOD_ID, "textures/gui/book/error/error.png"));
     public static Sprite FOF = new Sprite(new ResourceLocation(MOD_ID, "textures/gui/book/error/fof.png"));
+    public final Book book;
+    public final Color mainColor;
+    public final Color highlightColor;
+    public final Map<Entry, String> contentCache;
     private final Sprite bookSprite;
     private final Sprite bookFillingSprite;
     private final Sprite arrowNext;
@@ -53,10 +57,6 @@ public class GuiBook extends GuiBase implements IBookGui {
     private final Sprite bookmark;
     private final Sprite magnifier;
     private final Sprite titleBar;
-    public final Book book;
-    public final Color mainColor;
-    public final Color highlightColor;
-    public final Map<Entry, String> contentCache;
     public int bookmarkID;
     public ComponentSprite bookComponent;
     public GuiComponent focus;

@@ -46,7 +46,9 @@ class DesignBornOfPassion : IDiagram {
                 val apiClazz = Class.forName("vazkii.botania.api.BotaniaAPI")
                 stoneOres = apiClazz.getDeclaredField("oreWeights").get(null) as MutableMap<String, Int>
                 netherOres = apiClazz.getDeclaredField("oreWeightsNether").get(null) as MutableMap<String, Int>
-            } catch (ignored: ClassNotFoundException) {} catch (ignored: NoSuchFieldException) {}
+            } catch (ignored: ClassNotFoundException) {
+            } catch (ignored: NoSuchFieldException) {
+            }
         }
 
         // Copied from Botania with minor changes.

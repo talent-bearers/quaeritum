@@ -26,14 +26,12 @@ abstract class ItemModBook(name: String, vararg variants: String) : ItemMod(name
     }
 
     class ItemSingleBook(name: String, val book: Book) : ItemModBook(name) {
-        override fun getBook(player: EntityPlayer, world: World?, stack: ItemStack)
-                = book
+        override fun getBook(player: EntityPlayer, world: World?, stack: ItemStack) = book
     }
 
     companion object {
         @JvmStatic
         @JvmName("forBook")
-        operator fun invoke(name: String, book: Book)
-                = ItemSingleBook(name, book)
+        operator fun invoke(name: String, book: Book) = ItemSingleBook(name, book)
     }
 }

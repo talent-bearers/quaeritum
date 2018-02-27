@@ -110,20 +110,28 @@ public interface IBookGui {
 
     @NotNull
     Sprite bindingSprite();
+
     @NotNull
     Sprite pageSprite();
+
     @NotNull
     Sprite nextSprite(boolean pressed);
+
     @NotNull
     Sprite backSprite(boolean pressed);
+
     @NotNull
     Sprite homeSprite(boolean pressed);
+
     @NotNull
     Sprite bannerSprite();
+
     @NotNull
     Sprite bookmarkSprite();
+
     @NotNull
     Sprite searchIconSprite();
+
     @NotNull
     Sprite titleBarSprite();
 

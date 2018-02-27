@@ -24,9 +24,11 @@ object AdvancementManager {
     fun onEntityKilled(e: LivingDeathEvent) {
         val trueSource = e.source.trueSource
         if (trueSource is EntityPlayerMP) {
-            val spirit = trueSource.serverWorld.advancementManager.getAdvancement(ResourceLocation("quaeritum:spirit")) ?: return
+            val spirit = trueSource.serverWorld.advancementManager.getAdvancement(ResourceLocation("quaeritum:spirit"))
+                    ?: return
 
-            val end = trueSource.serverWorld.advancementManager.getAdvancement(ResourceLocation("end/kill_dragon")) ?: return
+            val end = trueSource.serverWorld.advancementManager.getAdvancement(ResourceLocation("end/kill_dragon"))
+                    ?: return
             if (!trueSource.advancements.getProgress(spirit).isDone && trueSource.advancements.getProgress(end).isDone)
                 trueSource.advancements.grantCriterion(spirit, "slain_dragons")
         }

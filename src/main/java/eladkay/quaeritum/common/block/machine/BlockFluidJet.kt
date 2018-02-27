@@ -71,8 +71,7 @@ class BlockFluidJet : BlockModContainer("fluid_jet", Material.IRON) {
     override fun isFullCube(state: IBlockState) = false
     override fun isOpaqueCube(blockState: IBlockState) = false
 
-    override fun getStateForPlacement(worldIn: World, pos: BlockPos, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float, meta: Int, placer: EntityLivingBase): IBlockState
-            = defaultState.withProperty(FACING, facing.opposite)
+    override fun getStateForPlacement(worldIn: World, pos: BlockPos, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float, meta: Int, placer: EntityLivingBase): IBlockState = defaultState.withProperty(FACING, facing.opposite)
 
     override fun getBlockFaceShape(world: IBlockAccess, state: IBlockState, pos: BlockPos, facing: EnumFacing): BlockFaceShape {
         if (facing == state.getValue(FACING).opposite) return BlockFaceShape.MIDDLE_POLE_THIN

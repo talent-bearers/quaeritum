@@ -11,7 +11,8 @@ class CompoundingCraftingRecipeJEI(val baseRecipe: IAlchemicalComposition) : IRe
     override fun getIngredients(ingredients: IIngredients) {
         ingredients.setInputLists<ItemStack>(ItemStack::class.java, listOf(baseRecipe.exampleDustStack.matchingStacks.toList()))
         ingredients.setInput<FluidStack>(FluidStack::class.java, baseRecipe.exampleLiquidStack)
-        ingredients.setOutput(ItemStack::class.java, baseRecipe.exampleCompositeStack.matchingStacks.firstOrNull() ?: ItemStack.EMPTY)
+        ingredients.setOutput(ItemStack::class.java, baseRecipe.exampleCompositeStack.matchingStacks.firstOrNull()
+                ?: ItemStack.EMPTY)
     }
 
 }

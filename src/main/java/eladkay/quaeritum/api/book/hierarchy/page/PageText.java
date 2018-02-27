@@ -45,6 +45,13 @@ public class PageText extends PageString {
     }
 
     public static class TranslationHolder {
+        public final String key;
+        public final Object[] args;
+        public TranslationHolder(String key, Object[] args) {
+            this.key = key;
+            this.args = args;
+        }
+
         public static TranslationHolder fromJson(JsonObject jsonElement) {
             List<Object> arguments = Lists.newArrayList();
             try {
@@ -67,19 +74,11 @@ public class PageText extends PageString {
                             arguments.add(fromJson(arg.getAsJsonObject()));
                         }
                 return new TranslationHolder(key, arguments.toArray());
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
+            }
 
             return null;
         }
-
-        public final String key;
-        public final Object[] args;
-
-        public TranslationHolder(String key, Object[] args) {
-            this.key = key;
-            this.args = args;
-        }
-
 
         @Override
         public String toString() {

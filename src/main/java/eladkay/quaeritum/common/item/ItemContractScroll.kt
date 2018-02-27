@@ -64,12 +64,12 @@ class ItemContractScroll : ItemMod(LibNames.SCROLL, LibNames.SCROLL, LibNames.SE
                         val rot = chalkState.block == ModBlocks.chalk && chalkState.getValue(BlockModColored.COLOR) == EnumDyeColor.BROWN
                         val items = IDiagram.Helper.entitiesAroundAltar(world.getTileEntity(pos), 4.0)
                         if (IDiagram.Helper.matches(items.map { it.item }, mutableListOf(
-                                ItemEssence.stackOf(EnumAnimusTier.VERDIS),
-                                ItemEssence.stackOf(EnumAnimusTier.LUCIS),
-                                ItemEssence.stackOf(EnumAnimusTier.FERRUS),
-                                ItemEssence.stackOf(EnumAnimusTier.ARGENTUS),
-                                ItemEssence.stackOf(EnumAnimusTier.ATLAS)
-                        )) && takeAnimusFrom(20, EnumAnimusTier.ATLAS, stack)) {
+                                        ItemEssence.stackOf(EnumAnimusTier.VERDIS),
+                                        ItemEssence.stackOf(EnumAnimusTier.LUCIS),
+                                        ItemEssence.stackOf(EnumAnimusTier.FERRUS),
+                                        ItemEssence.stackOf(EnumAnimusTier.ARGENTUS),
+                                        ItemEssence.stackOf(EnumAnimusTier.ATLAS)
+                                )) && takeAnimusFrom(20, EnumAnimusTier.ATLAS, stack)) {
                             items.forEach {
                                 if (canDelete(it.item)) {
                                     it.setDead()

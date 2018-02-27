@@ -33,6 +33,7 @@ public class ComponentTextField extends GuiComponent {
     private int maxStringLength = 64;
     private int cursorCounter;
     private boolean canLoseFocus = true;
+    private boolean autoFocus = false;
     private boolean isFocused;
     private boolean isEnabled = true;
     private int lineScrollOffset;
@@ -63,6 +64,10 @@ public class ComponentTextField extends GuiComponent {
         ++this.cursorCounter;
     }
 
+    public String getText() {
+        return this.text;
+    }
+
     public void setText(String textIn) {
         if (textIn.length() > this.maxStringLength) {
             this.text = textIn.substring(0, this.maxStringLength);
@@ -71,10 +76,6 @@ public class ComponentTextField extends GuiComponent {
         }
 
         this.cursorToEnd();
-    }
-
-    public String getText() {
-        return this.text;
     }
 
     public String getSelectedText() {
@@ -195,13 +196,6 @@ public class ComponentTextField extends GuiComponent {
         this.setCursorPosition(this.selectionEnd + num);
     }
 
-    public void setCursorPosition(int pos) {
-        this.cursorPosition = pos;
-        int i = this.text.length();
-        this.cursorPosition = MathHelper.clamp(this.cursorPosition, 0, i);
-        this.setSelectionPosition(this.cursorPosition);
-    }
-
     public void cursorToStart() {
         this.setCursorPosition(0);
     }
@@ -211,8 +205,14 @@ public class ComponentTextField extends GuiComponent {
     }
 
     public boolean handleKeyTyped(char input, int inputCode) {
-        if (!this.isFocused) return false;
-        else if (GuiScreen.isKeyComboCtrlA(inputCode)) {
+        if (!this.isFocused) {
+            if (this.autoFocus)
+                setFocused(true);
+            else
+                return false;
+        }
+
+        if (GuiScreen.isKeyComboCtrlA(inputCode)) {
             this.cursorToEnd();
             this.setSelectionPosition(0);
             return true;
@@ -398,6 +398,17 @@ public class ComponentTextField extends GuiComponent {
         return this.cursorPosition;
     }
 
+    public void setCursorPosition(int pos) {
+        this.cursorPosition = pos;
+        int i = this.text.length();
+        this.cursorPosition = MathHelper.clamp(this.cursorPosition, 0, i);
+        this.setSelectionPosition(this.cursorPosition);
+    }
+
+    public boolean isFocused() {
+        return isFocused;
+    }
+
     public void setFocused(boolean isFocused) {
         if (isFocused && !this.isFocused)
             this.cursorCounter = 0;
@@ -406,10 +417,6 @@ public class ComponentTextField extends GuiComponent {
 
         GuiScreen currentScreen = Minecraft.getMinecraft().currentScreen;
         if (currentScreen != null) currentScreen.setFocused(isFocused);
-    }
-
-    public boolean isFocused() {
-        return isFocused;
     }
 
     public int getSelectionEnd() {
@@ -462,13 +469,17 @@ public class ComponentTextField extends GuiComponent {
         }
     }
 
+    public void setAutoFocus(boolean autoFocus) {
+        this.autoFocus = autoFocus;
+    }
+
     public void setEnabledColor(int enabledColor) {
         this.enabledColor = new Color(enabledColor);
     }
 
     public static class TextEditEvent extends EventCancelable {
-        private String section;
         private final String whole;
+        private String section;
 
         public TextEditEvent(String section, String whole) {
             this.section = section;

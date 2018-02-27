@@ -101,7 +101,8 @@ class BlockFluidHolder : BlockModContainer("fluid_holder", Material.GLASS) {
 
     override fun getDrops(drops: NonNullList<ItemStack>, world: IBlockAccess, pos: BlockPos, state: IBlockState, fortune: Int) {
         val drop = ItemStack(this)
-        val tile = world.getTileEntitySafely(pos) as? TileFluidColumn ?: return super.getDrops(drops, world, pos, state, fortune)
+        val tile = world.getTileEntitySafely(pos) as? TileFluidColumn
+                ?: return super.getDrops(drops, world, pos, state, fortune)
         val fluid = tile.fluid.handler.fluid ?: return super.getDrops(drops, world, pos, state, fortune)
         ItemNBTHelper.setCompound(drop, "fluid", fluid.writeToNBT(NBTTagCompound()))
         drops.add(drop)

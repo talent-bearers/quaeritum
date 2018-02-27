@@ -18,8 +18,7 @@ object TradeAttumentHandler {
 
     private val trades = WeakHashMap<EntityPlayer, PositionTrade>()
 
-    private fun World.getEntityByUUID(uuid: UUID)
-            = this.loadedEntityList.firstOrNull { uuid == it.uniqueID }
+    private fun World.getEntityByUUID(uuid: UUID) = this.loadedEntityList.firstOrNull { uuid == it.uniqueID }
 
     fun getTrade(player: EntityPlayer, time: Int): Entity? {
         val trade = trades[player] ?: return null

@@ -101,9 +101,9 @@ object ComplexSpells {
             player.world.getEntitiesInAABBexcluding(player, player.entityBoundingBox.grow(5.0)) {
                 it != null && it !is EntityPlayer && it.getDistanceSq(player) < 25.0
             }.forEach {
-                if (it is EntityLivingBase && i-- != 0)
-                    it.addPotionEffect(PotionEffect(PotionRooted, 200))
-            }
+                        if (it is EntityLivingBase && i-- != 0)
+                            it.addPotionEffect(PotionEffect(PotionRooted, 200))
+                    }
         }
 
         SpellParser.registerSpell(arrayOf(WATER, FORM), EVOCATION, "ice_shock") { player, trailing, total ->

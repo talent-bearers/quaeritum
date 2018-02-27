@@ -39,47 +39,49 @@ public class TFIDFSearch implements ISearchAlgorithm {
         Map<Entry, String> contentCache = book.getCachedSearchContent();
 
         final int nbOfDocuments = contentCache.size();
-        for (Entry cachedComponent : contentCache.keySet()) if (cachedComponent.isUnlocked(player)) {
-            String cachedDocument = contentCache
-                    .get(cachedComponent)
-                    .toLowerCase(Locale.ROOT)
-                    .replace("'", "");
+        for (Entry cachedComponent : contentCache.keySet())
+            if (cachedComponent.isUnlocked(player)) {
+                String cachedDocument = contentCache
+                        .get(cachedComponent)
+                        .toLowerCase(Locale.ROOT)
+                        .replace("'", "");
 
-            List<String> words = Arrays.asList(cachedDocument.split("\\s+"));
-            long mostRepeatedWord =
-                    words.stream()
-                            .collect(Collectors.groupingBy(w -> w, Collectors.counting()))
-                            .entrySet()
-                            .stream()
-                            .map(Map.Entry::getValue)
-                            .max(Double::compare)
-                            .orElse(-1L);
+                List<String> words = Arrays.asList(cachedDocument.split("\\s+"));
+                long mostRepeatedWord =
+                        words.stream()
+                                .collect(Collectors.groupingBy(w -> w, Collectors.counting()))
+                                .entrySet()
+                                .stream()
+                                .map(Map.Entry::getValue)
+                                .max(Double::compare)
+                                .orElse(-1L);
 
-            if (mostRepeatedWord != -1L) {
-                double documentTfidf = 0;
-                for (String keyword : keywords) {
-                    long keywordOccurance = Pattern.compile("\\b" + keyword).splitAsStream(cachedDocument).count() - 1;
-                    double termFrequency = 0.5 + (0.5 * keywordOccurance / mostRepeatedWord);
+                if (mostRepeatedWord != -1L) {
+                    double documentTfidf = 0;
+                    for (String keyword : keywords) {
+                        long keywordOccurance = Pattern.compile("\\b" + keyword).splitAsStream(cachedDocument).count() - 1;
+                        double termFrequency = 0.5 + (0.5 * keywordOccurance / mostRepeatedWord);
 
-                    int keywordDocumentOccurance = 0;
-                    for (Entry documentComponent : contentCache.keySet()) if (documentComponent.isUnlocked(player)) {
-                        String documentContent = contentCache.get(documentComponent).toLowerCase(Locale.ROOT);
-                        if (documentContent.contains(keyword)) {
-                            keywordDocumentOccurance++;
-                        }
+                        int keywordDocumentOccurance = 0;
+                        for (Entry documentComponent : contentCache.keySet())
+                            if (documentComponent.isUnlocked(player)) {
+                                String documentContent = contentCache.get(documentComponent).toLowerCase(Locale.ROOT);
+                                if (documentContent.contains(keyword)) {
+                                    keywordDocumentOccurance++;
+                                }
+                            }
+                        keywordDocumentOccurance = keywordDocumentOccurance == 0 ? keywordDocumentOccurance + 1 : keywordDocumentOccurance;
+
+                        double inverseDocumentFrequency = Math.log(nbOfDocuments / (keywordDocumentOccurance));
+
+                        double keywordTfidf = termFrequency * inverseDocumentFrequency;
+
+                        documentTfidf += keywordTfidf;
                     }
-                    keywordDocumentOccurance = keywordDocumentOccurance == 0 ? keywordDocumentOccurance + 1 : keywordDocumentOccurance;
 
-                    double inverseDocumentFrequency = Math.log(nbOfDocuments / (keywordDocumentOccurance));
-
-                    double keywordTfidf = termFrequency * inverseDocumentFrequency;
-
-                    documentTfidf += keywordTfidf;
+                    unfilteredTfidfResults.add(new FrequencySearchResult(cachedComponent, documentTfidf));
                 }
-
-                unfilteredTfidfResults.add(new FrequencySearchResult(cachedComponent, documentTfidf));
             }
-        }
 
         ArrayList<FrequencySearchResult> filteredTfidfResults = new ArrayList<>();
 
@@ -99,21 +101,22 @@ public class TFIDFSearch implements ISearchAlgorithm {
         if (!filteredTfidfResults.isEmpty()) {
             return filteredTfidfResults;
         } else {
-            for (Entry cachedComponent : contentCache.keySet()) if (cachedComponent.isUnlocked(player)) {
-                String cachedDocument = contentCache
-                        .get(cachedComponent)
-                        .toLowerCase(Locale.ROOT)
-                        .replace("'", "");
+            for (Entry cachedComponent : contentCache.keySet())
+                if (cachedComponent.isUnlocked(player)) {
+                    String cachedDocument = contentCache
+                            .get(cachedComponent)
+                            .toLowerCase(Locale.ROOT)
+                            .replace("'", "");
 
-                int mostMatches = 0;
-                for (String keyword : keywords) {
-                    int keywordOccurances = StringUtils.countMatches(cachedDocument, keyword);
-                    mostMatches += keywordOccurances;
+                    int mostMatches = 0;
+                    for (String keyword : keywords) {
+                        int keywordOccurances = StringUtils.countMatches(cachedDocument, keyword);
+                        mostMatches += keywordOccurances;
+                    }
+
+                    if (mostMatches > 0)
+                        matchCountSearchResults.add(new MatchCountSearchResult(cachedComponent, mostMatches));
                 }
-
-                if (mostMatches > 0)
-                    matchCountSearchResults.add(new MatchCountSearchResult(cachedComponent, mostMatches));
-            }
 
             if (!matchCountSearchResults.isEmpty()) {
                 return matchCountSearchResults;

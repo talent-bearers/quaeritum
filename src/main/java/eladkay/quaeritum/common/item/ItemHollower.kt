@@ -74,7 +74,7 @@ class ItemHollower : ItemMod(LibNames.HOLLOWER) {
             visited.add(visitable)
 
             val state = if (!inBox(minX, maxX, minY, maxY, minZ, maxZ,
-                    visitable.x, visitable.y, visitable.z))
+                            visitable.x, visitable.y, visitable.z))
                 Blocks.AIR.defaultState else world.getBlockState(visitable)
             val material = state.material
 

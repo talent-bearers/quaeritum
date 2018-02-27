@@ -24,22 +24,22 @@ object PotionVampirism : PotionMod(LibNames.VAMPIRISM, false, 0xB22018) {
             entity.world.getEntitiesWithinAABB(EntityLivingBase::class.java, entity.entityBoundingBox.grow(7.0)) {
                 it != null && it != entity && it.canBeHitWithPotion() && it.getDistanceSq(entity) <= 25.0
             }.forEach {
-                if (it.health > 0.5) {
-                    if (healthRemaining != 0f) {
-                        val taken = Math.min(healthRemaining, it.health - 0.5f)
-                        it.attackEntityFrom(DamageSource.MAGIC, taken)
-                        entity.heal(taken)
-                        if (entity is EntityPlayer) {
-                            entity.foodStats.addStats(taken.toInt(), 1f)
+                        if (it.health > 0.5) {
+                            if (healthRemaining != 0f) {
+                                val taken = Math.min(healthRemaining, it.health - 0.5f)
+                                it.attackEntityFrom(DamageSource.MAGIC, taken)
+                                entity.heal(taken)
+                                if (entity is EntityPlayer) {
+                                    entity.foodStats.addStats(taken.toInt(), 1f)
+                                }
+                                healthRemaining -= taken
+                            }
+                        } else {
+                            it.addPotionEffect(PotionEffect(MobEffects.SLOWNESS, 500, 3))
+                            it.addPotionEffect(PotionEffect(MobEffects.WEAKNESS, 500, 10))
                         }
-                        healthRemaining -= taken
+                        // todo masquerade-style lightning effect
                     }
-                } else {
-                    it.addPotionEffect(PotionEffect(MobEffects.SLOWNESS, 500, 3))
-                    it.addPotionEffect(PotionEffect(MobEffects.WEAKNESS, 500, 10))
-                }
-                // todo masquerade-style lightning effect
-            }
         }
     }
 }

@@ -32,12 +32,12 @@ object EpicSpells {
             player.world.getEntitiesWithinAABB(EntityPlayer::class.java, player.entityBoundingBox.grow(25.0)) {
                 it != null && it != player && it.getDistanceSq(player) < 625.0
             }.forEach {
-                it.heal(trailing * 5f + 5f)
-                applyShiftedBuff(MobEffects.SPEED, player, trailing + 4, true)
-                applyShiftedBuff(MobEffects.JUMP_BOOST, player, trailing + 4, true)
-                applyShiftedBuff(MobEffects.STRENGTH, player, trailing + 4, true)
-                applyShiftedBuff(MobEffects.RESISTANCE, player, trailing + 4, true)
-            }
+                        it.heal(trailing * 5f + 5f)
+                        applyShiftedBuff(MobEffects.SPEED, player, trailing + 4, true)
+                        applyShiftedBuff(MobEffects.JUMP_BOOST, player, trailing + 4, true)
+                        applyShiftedBuff(MobEffects.STRENGTH, player, trailing + 4, true)
+                        applyShiftedBuff(MobEffects.RESISTANCE, player, trailing + 4, true)
+                    }
 
             player.addPotionEffect(PotionEffect(MobEffects.WITHER, 500, 3))
             player.addPotionEffect(PotionEffect(MobEffects.SLOWNESS, 500, 3))
@@ -81,8 +81,8 @@ object EpicSpells {
                     player.world.getEntitiesWithinAABB(EntityPlayer::class.java, player.entityBoundingBox.grow(25.0)) {
                         it != null && it != player && it.getDistanceSq(player) < 625.0
                     }.forEach {
-                        ElementHandler.setReagents(player, *evocation)
-                    }
+                                ElementHandler.setReagents(player, *evocation)
+                            }
             }
         }
 

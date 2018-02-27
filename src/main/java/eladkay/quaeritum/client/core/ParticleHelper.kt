@@ -128,7 +128,8 @@ object ParticleHelper {
                     entityfx = FXBeam(Minecraft.getMinecraft().world, posX, posY, posZ, r.toFloat(), g.toFloat(), b.toFloat(), true)
                 }
 
-                Quaeritum.proxy.spawnParticle(entityfx ?: throw IllegalArgumentException(particleName), Minecraft.getMinecraft().world)
+                Quaeritum.proxy.spawnParticle(entityfx
+                        ?: throw IllegalArgumentException(particleName), Minecraft.getMinecraft().world)
             }
         }
 
