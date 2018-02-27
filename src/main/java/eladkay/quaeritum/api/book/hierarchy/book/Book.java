@@ -55,6 +55,7 @@ public class Book implements IBookElement {
     public String subtitleKey;
     public Color bookColor;
     public Color highlightColor;
+    public String textureSheet;
 
     public Book(String name) {
         this(new ResourceLocation(getCurrentModId(), name));
@@ -68,6 +69,7 @@ public class Book implements IBookElement {
         headerKey = "";
         subtitleKey = "";
         categories = Lists.newArrayList();
+        textureSheet = "";
         allBooks.add(this);
 
         if (hasEverReloaded)
@@ -110,6 +112,12 @@ public class Book implements IBookElement {
             highlightColor = colorFromJson(json.get("highlight"));
             headerKey = json.getAsJsonPrimitive("title").getAsString();
             subtitleKey = json.getAsJsonPrimitive("subtitle").getAsString();
+
+            if (json.has("sheet"))
+                textureSheet = json.getAsJsonPrimitive("sheet").getAsString();
+            else
+                textureSheet = "quaeritum:gui/book/guide_book"; // todo replace with librarianlib
+
             JsonArray allCategories = json.getAsJsonArray("categories");
             categories = Lists.newArrayList();
             for (JsonElement categoryJson : allCategories) {

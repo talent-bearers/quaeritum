@@ -41,19 +41,18 @@ public class GuiBook extends GuiBase implements IBookGui {
 
     public static Sprite ERROR = new Sprite(new ResourceLocation(MOD_ID, "textures/gui/book/error/error.png"));
     public static Sprite FOF = new Sprite(new ResourceLocation(MOD_ID, "textures/gui/book/error/fof.png"));
-    private Texture GUIDE_BOOK_SHEET = new Texture(new ResourceLocation(MOD_ID, "textures/gui/book/guide_book.png"));
-    private final Sprite BOOK = GUIDE_BOOK_SHEET.getSprite("book", 146, 180);
-    private final Sprite BOOK_FILLING = GUIDE_BOOK_SHEET.getSprite("book_filling", 146, 180);
-    private final Sprite ARROW_NEXT = GUIDE_BOOK_SHEET.getSprite("arrow_next", 18, 10);
-    private final Sprite ARROW_NEXT_PRESSED = GUIDE_BOOK_SHEET.getSprite("arrow_next_pressed", 18, 10);
-    private final Sprite ARROW_BACK = GUIDE_BOOK_SHEET.getSprite("arrow_back", 18, 10);
-    private final Sprite ARROW_BACK_PRESSED = GUIDE_BOOK_SHEET.getSprite("arrow_back_pressed", 18, 10);
-    private final Sprite ARROW_HOME = GUIDE_BOOK_SHEET.getSprite("arrow_home", 18, 9);
-    private final Sprite ARROW_HOME_PRESSED = GUIDE_BOOK_SHEET.getSprite("arrow_home_pressed", 18, 9);
-    private final Sprite BANNER = GUIDE_BOOK_SHEET.getSprite("banner", 140, 31);
-    private final Sprite BOOKMARK = GUIDE_BOOK_SHEET.getSprite("bookmark", 133, 13);
-    private final Sprite MAGNIFIER = GUIDE_BOOK_SHEET.getSprite("magnifier", 12, 12);
-    private final Sprite TITLE_BAR = GUIDE_BOOK_SHEET.getSprite("title_bar", 86, 11);
+    private final Sprite bookSprite;
+    private final Sprite bookFillingSprite;
+    private final Sprite arrowNext;
+    private final Sprite arrowNextPressed;
+    private final Sprite arrowBack;
+    private final Sprite arrowBackPressed;
+    private final Sprite arrowHome;
+    private final Sprite arrowHomePressed;
+    private final Sprite banner;
+    private final Sprite bookmark;
+    private final Sprite magnifier;
+    private final Sprite titleBar;
     public final Book book;
     public final Color mainColor;
     public final Color highlightColor;
@@ -67,6 +66,23 @@ public class GuiBook extends GuiBase implements IBookGui {
     public GuiBook(Book book) {
         super(146, 180);
         this.book = book;
+
+        ResourceLocation bookRl = new ResourceLocation(book.textureSheet);
+
+        Texture guideBookSheet = new Texture(new ResourceLocation(bookRl.getResourceDomain(), "textures/" + bookRl.getResourcePath() + ".png"));
+        bookSprite = guideBookSheet.getSprite("book", 146, 180);
+        bookFillingSprite = guideBookSheet.getSprite("book_filling", 146, 180);
+        arrowNext = guideBookSheet.getSprite("arrow_next", 18, 10);
+        arrowNextPressed = guideBookSheet.getSprite("arrow_next_pressed", 18, 10);
+        arrowBack = guideBookSheet.getSprite("arrow_back", 18, 10);
+        arrowBackPressed = guideBookSheet.getSprite("arrow_back_pressed", 18, 10);
+        arrowHome = guideBookSheet.getSprite("arrow_home", 18, 9);
+        arrowHomePressed = guideBookSheet.getSprite("arrow_home_pressed", 18, 9);
+        banner = guideBookSheet.getSprite("banner", 140, 31);
+        bookmark = guideBookSheet.getSprite("bookmark", 133, 13);
+        magnifier = guideBookSheet.getSprite("magnifier", 12, 12);
+        titleBar = guideBookSheet.getSprite("title_bar", 86, 11);
+
         this.contentCache = book.getContentCache();
         this.mainColor = book.bookColor;
         this.highlightColor = book.highlightColor;
@@ -93,55 +109,55 @@ public class GuiBook extends GuiBase implements IBookGui {
     @NotNull
     @Override
     public Sprite bindingSprite() {
-        return BOOK;
+        return bookSprite;
     }
 
     @NotNull
     @Override
     public Sprite pageSprite() {
-        return BOOK_FILLING;
+        return bookFillingSprite;
     }
 
     @NotNull
     @Override
     public Sprite nextSprite(boolean pressed) {
-        return pressed ? ARROW_NEXT_PRESSED : ARROW_NEXT;
+        return pressed ? arrowNextPressed : arrowNext;
     }
 
     @NotNull
     @Override
     public Sprite backSprite(boolean pressed) {
-        return pressed ? ARROW_BACK_PRESSED : ARROW_BACK;
+        return pressed ? arrowBackPressed : arrowBack;
     }
 
     @NotNull
     @Override
     public Sprite homeSprite(boolean pressed) {
-        return pressed ? ARROW_HOME_PRESSED : ARROW_HOME;
+        return pressed ? arrowHomePressed : arrowHome;
     }
 
     @NotNull
     @Override
     public Sprite bannerSprite() {
-        return BANNER;
+        return banner;
     }
 
     @NotNull
     @Override
     public Sprite bookmarkSprite() {
-        return BOOKMARK;
+        return bookmark;
     }
 
     @NotNull
     @Override
     public Sprite searchIconSprite() {
-        return MAGNIFIER;
+        return magnifier;
     }
 
     @NotNull
     @Override
     public Sprite titleBarSprite() {
-        return TITLE_BAR;
+        return titleBar;
     }
 
     @Override
