@@ -88,8 +88,7 @@ public class GuiBook extends GuiBase {
         // --------- SEARCH BAR --------- //
         {
             ComponentSearchBar bar = new ComponentSearchBar(this, bookmarkID++,
-                    new TFIDFSearch(this).textBoxConsumer(this, () -> new ComponentSearchResults(this)),
-                    null);
+                    new TFIDFSearch(this).textBoxConsumer(this, () -> new ComponentSearchResults(this)));
             bookComponent.add(bar);
         }
         // --------- SEARCH BAR --------- //
