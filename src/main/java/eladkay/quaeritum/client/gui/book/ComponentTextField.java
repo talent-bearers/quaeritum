@@ -168,26 +168,24 @@ public class ComponentTextField extends GuiComponent {
 
     public int getWordSkippingWhitespace(int relativeIndex, int startingPos, boolean skipWhitespace) {
         int pos = startingPos;
-
         boolean backwards = relativeIndex < 0;
         int toSearch = Math.abs(relativeIndex);
 
-        for (int i = 0; i < toSearch; ++i) {
+        for (int i = 0; i < toSearch; ++i)
             if (!backwards) {
                 int length = this.text.length();
-                pos = this.text.indexOf(32, pos);
+                pos = this.text.indexOf(' ', pos);
 
                 if (pos == -1)
                     pos = length;
-                else while (skipWhitespace && pos < length && Character.isWhitespace(this.text.charAt(pos)))
+                else while (skipWhitespace && pos < length && this.text.charAt(pos) == ' ')
                     pos++;
             } else {
-                while (skipWhitespace && pos > 0 && Character.isWhitespace(this.text.charAt(pos - 1)))
-                    --pos;
-                while (pos > 0 && Character.isWhitespace(this.text.charAt(pos - 1)))
+                while (skipWhitespace && pos > 0 && this.text.charAt(pos - 1) == ' ')
+                    pos--;
+                while (pos > 0 && this.text.charAt(pos - 1) != ' ')
                     pos--;
             }
-        }
 
         return pos;
     }
@@ -230,13 +228,11 @@ public class ComponentTextField extends GuiComponent {
             return true;
         } else switch (inputCode) {
             case Keyboard.KEY_BACK:
-
                 if (isEnabled)
                     if (GuiScreen.isCtrlKeyDown())
                         this.deleteWords(-1);
                     else
                         this.deleteFromCursor(-1);
-
                 return true;
             case Keyboard.KEY_HOME:
 
