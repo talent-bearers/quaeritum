@@ -13,7 +13,6 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.util.text.TextFormatting;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -65,8 +64,6 @@ public class ComponentSearchResults extends NavBarHolder implements ISearchAlgor
                         I18n.format("librarianlib.book.results.nresults", results.size()));
             else
                 pageHeader.getText().setValue(I18n.format("librarianlib.book.results.toobroad", results.size()));
-
-            Collections.sort(results);
 
             ComponentVoid pageComponent = new ComponentVoid(0, 0, getSize().getXi(), getSize().getYi());
             resultSection.add(pageComponent);

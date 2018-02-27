@@ -8,6 +8,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -26,7 +27,10 @@ public interface ISearchAlgorithm {
                     (Acceptor) book.getFocus() :
                     newComponent.get();
 
-            acceptor.acceptResults(search(input));
+            List<? extends Result> results = search(input);
+            if (results != null)
+                Collections.sort(results);
+            acceptor.acceptResults(results);
 
             if (book.getFocus() instanceof Acceptor)
                 book.forceInFocus(acceptor);
