@@ -39,10 +39,10 @@ public class TFIDFSearch implements ISearchAlgorithm {
         Map<Entry, String> contentCache = book.getCachedSearchContent();
 
         final int nbOfDocuments = contentCache.size();
-        for (Entry cachedComponent : contentCache.keySet())
-            if (cachedComponent.isUnlocked(player)) {
+        for (Entry cachedEntry : contentCache.keySet())
+            if (cachedEntry.isUnlocked(player)) {
                 String cachedDocument = contentCache
-                        .get(cachedComponent)
+                        .get(cachedEntry)
                         .toLowerCase(Locale.ROOT)
                         .replace("'", "");
 
@@ -79,7 +79,7 @@ public class TFIDFSearch implements ISearchAlgorithm {
                         documentTfidf += keywordTfidf;
                     }
 
-                    unfilteredTfidfResults.add(new FrequencySearchResult(cachedComponent, documentTfidf));
+                    unfilteredTfidfResults.add(new FrequencySearchResult(cachedEntry, documentTfidf));
                 }
             }
 
@@ -87,12 +87,12 @@ public class TFIDFSearch implements ISearchAlgorithm {
 
         double largestTFIDF = 0, smallestTFIDF = Integer.MAX_VALUE;
         for (FrequencySearchResult resultItem2 : unfilteredTfidfResults) {
-            largestTFIDF = resultItem2.frequency() > largestTFIDF ? resultItem2.frequency() : largestTFIDF;
-            smallestTFIDF = resultItem2.frequency() < smallestTFIDF ? resultItem2.frequency() : smallestTFIDF;
+            largestTFIDF = resultItem2.getFrequency() > largestTFIDF ? resultItem2.getFrequency() : largestTFIDF;
+            smallestTFIDF = resultItem2.getFrequency() < smallestTFIDF ? resultItem2.getFrequency() : smallestTFIDF;
         }
 
         for (FrequencySearchResult resultItem : unfilteredTfidfResults) {
-            double matchPercentage = Math.round((resultItem.frequency() - smallestTFIDF) / (largestTFIDF - smallestTFIDF) * 100);
+            double matchPercentage = Math.round((resultItem.getFrequency() - smallestTFIDF) / (largestTFIDF - smallestTFIDF) * 100);
             if (matchPercentage < 5 || Double.isNaN(matchPercentage)) continue;
 
             filteredTfidfResults.add(resultItem);
@@ -128,26 +128,26 @@ public class TFIDFSearch implements ISearchAlgorithm {
 
     public static class FrequencySearchResult implements Result {
 
-        private final Entry resultComponent;
+        private final Entry resultEntry;
         private final double frequency;
 
-        public FrequencySearchResult(Entry resultComponent, double frequency) {
-            this.resultComponent = resultComponent;
+        public FrequencySearchResult(Entry resultEntry, double frequency) {
+            this.resultEntry = resultEntry;
             this.frequency = frequency;
         }
 
         @Override
-        public boolean specificResults() {
+        public boolean isSpecificResult() {
             return true;
         }
 
         @Override
-        public Entry found() {
-            return resultComponent;
+        public Entry getEntry() {
+            return resultEntry;
         }
 
         @Override
-        public double frequency() {
+        public double getFrequency() {
             return frequency;
         }
     }
@@ -163,17 +163,17 @@ public class TFIDFSearch implements ISearchAlgorithm {
         }
 
         @Override
-        public boolean specificResults() {
+        public boolean isSpecificResult() {
             return false;
         }
 
         @Override
-        public Entry found() {
+        public Entry getEntry() {
             return resultComponent;
         }
 
         @Override
-        public double frequency() {
+        public double getFrequency() {
             return nbOfMatches;
         }
     }
