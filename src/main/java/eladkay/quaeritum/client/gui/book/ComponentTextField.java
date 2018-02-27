@@ -395,9 +395,7 @@ public class ComponentTextField extends GuiComponent {
     }
 
     public void setCursorPosition(int pos) {
-        this.cursorPosition = pos;
-        int i = this.text.length();
-        this.cursorPosition = MathHelper.clamp(this.cursorPosition, 0, i);
+        this.cursorPosition = MathHelper.clamp(pos, 0, this.text.length());
         this.setSelectionPosition(this.cursorPosition);
     }
 
@@ -445,9 +443,8 @@ public class ComponentTextField extends GuiComponent {
         this.selectionEnd = position;
 
         if (this.fontRenderer != null) {
-            if (this.lineScrollOffset > length) {
+            if (this.lineScrollOffset > length)
                 this.lineScrollOffset = length;
-            }
 
             int boxWidth = this.getWidth() - fontRenderer.getStringWidth("_");
             String visible = this.fontRenderer.trimStringToWidth(this.text.substring(this.lineScrollOffset), boxWidth);
