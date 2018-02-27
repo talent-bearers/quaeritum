@@ -469,8 +469,16 @@ public class ComponentTextField extends GuiComponent {
         this.autoFocus = autoFocus;
     }
 
-    public void setEnabledColor(int enabledColor) {
-        this.enabledColor = new Color(enabledColor);
+    public void setEnabledColor(Color enabledColor) {
+        this.enabledColor = enabledColor;
+    }
+
+    public void setSelectionColor(Color selectionColor) {
+        this.selectionColor = selectionColor;
+    }
+
+    public void setCursorColor(Color cursorColor) {
+        this.cursorColor = cursorColor;
     }
 
     public static class TextEditEvent extends EventCancelable {

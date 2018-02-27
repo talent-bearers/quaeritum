@@ -19,7 +19,9 @@ public class ComponentSearchBar extends ComponentBookMark {
                 2, 1, getSize().getXi() - 44 - 2 * book.searchIconSprite().getWidth(), Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT + 2);
         if (onType != null)
             text.BUS.hook(TextEditEvent.class, (TextEditEvent edit) -> onType.accept(edit.getWhole()));
-        text.setEnabledColor(0xFFFFFF);
+        text.setEnabledColor(book.getBook().searchTextColor);
+        text.setSelectionColor(book.getBook().searchTextHighlight);
+        text.setCursorColor(book.getBook().searchTextCursor);
         text.setAutoFocus(true);
         add(text);
 
