@@ -28,8 +28,10 @@ public interface ISearchAlgorithm {
                     newComponent.get();
 
             List<? extends Result> results = search(input);
-            if (results != null)
+            if (results != null) {
                 Collections.sort(results);
+                Collections.reverse(results);
+            }
             acceptor.acceptResults(results);
 
             if (book.getFocus() instanceof Acceptor)
@@ -48,7 +50,7 @@ public interface ISearchAlgorithm {
 
         @Override
         default int compareTo(@NotNull ISearchAlgorithm.Result o) {
-            return Double.compare(o.frequency(), frequency());
+            return Double.compare(frequency(), o.frequency());
         }
     }
 
