@@ -324,7 +324,7 @@ public class ComponentTextField extends GuiComponent {
             int selectionEndPosition = this.selectionEnd - this.lineScrollOffset;
             String visible = this.fontRenderer.trimStringToWidth(this.text.substring(this.lineScrollOffset), this.getWidth() - fontRenderer.getStringWidth("_"));
             boolean cursorVisible = cursorRelativePosition >= 0 && cursorRelativePosition <= visible.length();
-            boolean cursorBlinkActive = this.isFocused && this.cursorCounter / 6 % 2 == 0 && cursorVisible;
+            boolean cursorBlinkActive = this.isFocused && ((this.cursorCounter / 12) % 2) == 0 && cursorVisible;
             int offset = getX();
 
             if (selectionEndPosition > visible.length())
