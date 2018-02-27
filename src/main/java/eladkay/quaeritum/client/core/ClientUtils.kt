@@ -11,7 +11,7 @@ object ClientUtils {
         if (animus != 0) {
             tooltip.add(AnimusHelper.getTier(stack).toString().toLowerCase(Locale.ROOT).capitalizeFirst())
             if (advanced)
-                tooltip.add("${animus}animX")
+                tooltip.add("${animus}x")
         }
     }
 }
