@@ -47,6 +47,7 @@ public class PageText extends PageString {
     public static class TranslationHolder {
         public final String key;
         public final Object[] args;
+
         public TranslationHolder(String key, Object[] args) {
             this.key = key;
             this.args = args;

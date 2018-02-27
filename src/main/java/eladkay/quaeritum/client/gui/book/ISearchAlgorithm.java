@@ -36,15 +36,15 @@ public interface ISearchAlgorithm {
     }
 
     interface Result extends Comparable<Result> {
-	    double getFrequency();
+        double getFrequency();
 
-	    boolean isSpecificResult();
+        boolean isSpecificResult();
 
-	    Entry getEntry();
+        Entry getEntry();
 
         @Override
         default int compareTo(@NotNull ISearchAlgorithm.Result o) {
-	        return Double.compare(o.getFrequency(), getFrequency());
+            return Double.compare(o.getFrequency(), getFrequency());
         }
     }
 
