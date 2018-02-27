@@ -1,7 +1,10 @@
 package eladkay.quaeritum.client.gui.book;
 
+import com.teamwizardry.librarianlib.features.eventbus.Event;
+import com.teamwizardry.librarianlib.features.eventbus.EventCancelable;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponentEvents;
+import com.teamwizardry.librarianlib.features.kotlin.ClientUtilMethods;
 import com.teamwizardry.librarianlib.features.math.Vec2d;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -19,15 +22,13 @@ import org.jetbrains.annotations.NotNull;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
-import java.util.function.Consumer;
+import java.awt.*;
 
 @SideOnly(Side.CLIENT)
 public class ComponentTextField extends GuiComponent {
     private final FontRenderer fontRenderer;
-    public int x;
-    public int y;
-    public int width;
-    public int height;
+
+    // Will expose as needed in liblib. Ignore any getters/setters missing now.
     private String text = "";
     private int maxStringLength = 64;
     private int cursorCounter;
@@ -37,19 +38,14 @@ public class ComponentTextField extends GuiComponent {
     private int lineScrollOffset;
     private int cursorPosition;
     private int selectionEnd;
-    private int enabledColor = 0xe0e0e0;
-    private int disabledColor = 0x707070;
-
-    private Consumer<String> editedCallback = null;
-    private Consumer<String> enterCallback = null;
+    private Color enabledColor = new Color(0xe0e0e0);
+    private Color disabledColor = new Color(0x707070);
+    private Color selectionColor = new Color(0x0000ff);
+    private Color cursorColor = new Color(0xd0d0d0);
 
     public ComponentTextField(FontRenderer fontRenderer, int x, int y, int width, int height) {
         super(x, y, width, height);
         this.fontRenderer = fontRenderer;
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
         BUS.hook(GuiComponentEvents.MouseDownEvent.class, (GuiComponentEvents.MouseDownEvent event) ->
                 mouseClicked(event.getMousePos().getXi(), event.getMousePos().getYi(), event.getButton().getMouseCode()));
         BUS.hook(GuiComponentEvents.KeyDownEvent.class, (GuiComponentEvents.KeyDownEvent event) ->
@@ -61,14 +57,6 @@ public class ComponentTextField extends GuiComponent {
     @Override
     public void drawComponent(@NotNull Vec2d mousePos, float partialTicks) {
         drawTextBox();
-    }
-
-    public void setEditedCallback(Consumer<String> editedCallback) {
-        this.editedCallback = editedCallback;
-    }
-
-    public void setEnterCallback(Consumer<String> enterCallback) {
-        this.enterCallback = enterCallback;
     }
 
     public void updateCursorCounter() {
@@ -104,24 +92,31 @@ public class ComponentTextField extends GuiComponent {
 
         String build = this.text.isEmpty() ? "" : this.text.substring(0, selectionStart);
 
-        int shiftBy;
 
-        if (remainingSpace < allowed.length()) {
-            build += allowed.substring(0, remainingSpace);
-            shiftBy = remainingSpace;
-        } else {
-            build += allowed;
-            shiftBy = allowed.length();
+        String fakeBuildStart = build;
+
+        String set;
+
+        if (remainingSpace < allowed.length())
+            set = allowed.substring(0, remainingSpace);
+        else
+            set = allowed;
+
+        build += set;
+
+        String fakeBuildEnd = "";
+        if (!this.text.isEmpty() && selectionEnd < this.text.length()) {
+            fakeBuildEnd = this.text.substring(selectionEnd);
+            build += fakeBuildEnd;
         }
 
-        if (!this.text.isEmpty() && selectionEnd < this.text.length())
-            build = build + this.text.substring(selectionEnd);
+        TextEditEvent editEvent = BUS.fire(new TextEditEvent(set, build));
+        if (!editEvent.isCanceled()) {
+            String section = editEvent.section;
 
-        this.text = build;
-        this.shiftCursor(selectionStart - this.selectionEnd + shiftBy);
-
-        if (editedCallback != null)
-            editedCallback.accept(text);
+            this.text = fakeBuildStart + section + fakeBuildEnd;
+            this.shiftCursor(selectionStart - this.selectionEnd + section.length());
+        }
     }
 
     public void deleteWords(int count) {
@@ -142,14 +137,22 @@ public class ComponentTextField extends GuiComponent {
                 int end = backwards ? this.cursorPosition : this.cursorPosition + count;
                 String build = start >= 0 ? this.text.substring(0, start) : "";
 
-                if (end < this.text.length()) build += this.text.substring(end);
+                String buildStart = build;
 
-                this.text = build;
+                String buildEnd = "";
+                if (end < this.text.length()) {
+                    buildEnd = this.text.substring(end);
+                    build += buildEnd;
+                }
 
-                if (backwards) this.shiftCursor(count);
 
-                if (editedCallback != null)
-                    editedCallback.accept(text);
+                TextEditEvent editEvent = BUS.fire(new TextEditEvent("", build));
+                if (!editEvent.isCanceled()) {
+                    String section = editEvent.section;
+
+                    this.text = buildStart + section + buildEnd;
+                    if (backwards) this.shiftCursor(count);
+                }
             }
         }
     }
@@ -284,8 +287,7 @@ public class ComponentTextField extends GuiComponent {
 
                 return true;
             case Keyboard.KEY_RETURN:
-                if (enterCallback != null)
-                    enterCallback.accept(text);
+                BUS.fire(new TextSentEvent(text));
                 return true;
             default:
                 if (ChatAllowedCharacters.isAllowedCharacter(input)) {
@@ -300,13 +302,13 @@ public class ComponentTextField extends GuiComponent {
     }
 
     public boolean mouseClicked(int mouseX, int mouseY, int mouseButton) {
-        boolean withinBoundary = mouseX >= this.x && mouseX < this.x + this.width && mouseY >= this.y && mouseY < this.y + this.height;
+        boolean withinBoundary = mouseX >= getX() && mouseX < getX() + getWidth() && mouseY >= getY() && mouseY < getY() + getHeight();
 
         if (this.canLoseFocus)
             this.setFocused(withinBoundary);
 
         if (this.isFocused && withinBoundary && mouseButton == 0) {
-            int xFromLeft = mouseX - this.x;
+            int xFromLeft = mouseX - getX();
 
             String visible = this.fontRenderer.trimStringToWidth(this.text.substring(this.lineScrollOffset), this.getWidth());
             this.setCursorPosition(this.fontRenderer.trimStringToWidth(visible, xFromLeft).length() + this.lineScrollOffset);
@@ -317,42 +319,42 @@ public class ComponentTextField extends GuiComponent {
 
     public void drawTextBox() {
         if (this.isVisible()) {
-            int textColor = this.isEnabled ? this.enabledColor : this.disabledColor;
+            int textColor = this.isEnabled ? this.enabledColor.getRGB() : this.disabledColor.getRGB();
             int cursorRelativePosition = this.cursorPosition - this.lineScrollOffset;
             int selectionEndPosition = this.selectionEnd - this.lineScrollOffset;
             String visible = this.fontRenderer.trimStringToWidth(this.text.substring(this.lineScrollOffset), this.getWidth() - fontRenderer.getStringWidth("_"));
             boolean cursorVisible = cursorRelativePosition >= 0 && cursorRelativePosition <= visible.length();
             boolean cursorBlinkActive = this.isFocused && this.cursorCounter / 6 % 2 == 0 && cursorVisible;
-            int offset = x;
+            int offset = getX();
 
             if (selectionEndPosition > visible.length())
                 selectionEndPosition = visible.length();
 
             if (!visible.isEmpty()) {
                 String toCursor = cursorVisible ? visible.substring(0, cursorRelativePosition) : visible;
-                offset = this.fontRenderer.drawStringWithShadow(toCursor, offset, y, textColor);
+                offset = this.fontRenderer.drawStringWithShadow(toCursor, offset, getY(), textColor);
             }
 
             boolean cursorInText = this.cursorPosition < this.text.length() || this.text.length() >= this.getMaxStringLength();
             int unselectedBound = offset;
 
             if (!cursorVisible)
-                unselectedBound = cursorRelativePosition > 0 ? x + this.width - fontRenderer.getStringWidth("_") : x;
+                unselectedBound = cursorRelativePosition > 0 ? getX() + getWidth() - fontRenderer.getStringWidth("_") : getX();
             else if (cursorInText)
                 unselectedBound = --offset;
 
             if (!visible.isEmpty() && cursorVisible && cursorRelativePosition < visible.length())
-                this.fontRenderer.drawStringWithShadow(visible.substring(cursorRelativePosition), offset, y, textColor);
+                this.fontRenderer.drawStringWithShadow(visible.substring(cursorRelativePosition), offset, getY(), textColor);
 
             if (cursorBlinkActive) if (cursorInText) {
-                Gui.drawRect(unselectedBound, y - 1, unselectedBound + 1, y + 2 + this.fontRenderer.FONT_HEIGHT, 0xffd0d0d0);
+                Gui.drawRect(unselectedBound, getY() - 1, unselectedBound + 1, getY() + 2 + this.fontRenderer.FONT_HEIGHT, cursorColor.getRGB());
                 GlStateManager.enableBlend();
             } else
-                this.fontRenderer.drawStringWithShadow("_", unselectedBound, y + 1, textColor);
+                this.fontRenderer.drawStringWithShadow("_", unselectedBound, getY() + 1, textColor);
 
             if (selectionEndPosition != cursorRelativePosition) {
-                int selectionX = x + this.fontRenderer.getStringWidth(visible.substring(0, selectionEndPosition));
-                this.drawSelectionBox(unselectedBound, y, selectionX - 1, y + this.fontRenderer.FONT_HEIGHT);
+                int selectionX = getX() + this.fontRenderer.getStringWidth(visible.substring(0, selectionEndPosition));
+                this.drawSelectionBox(unselectedBound, getY(), selectionX - 1, getY() + this.fontRenderer.FONT_HEIGHT);
             }
 
             GlStateManager.color(1f, 1f, 1f, 1f);
@@ -365,15 +367,15 @@ public class ComponentTextField extends GuiComponent {
         int minY = Math.min(startY, endY);
         int maxY = Math.max(startY, endY);
 
-        if (minX > this.x + this.width)
-            minX = this.x + this.width;
+        if (minX > getX() + getWidth())
+            minX = getX() + getWidth();
 
-        if (maxX > this.x + this.width)
-            maxX = this.x + this.width;
+        if (maxX > getX() + getWidth())
+            maxX = getX() + getWidth();
 
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
-        GlStateManager.color(0f, 0f, 1f, 1f);
+        ClientUtilMethods.glColor(selectionColor);
         GlStateManager.disableTexture2D();
         GlStateManager.enableColorLogic();
         GlStateManager.colorLogicOp(GlStateManager.LogicOp.OR_REVERSE);
@@ -415,7 +417,19 @@ public class ComponentTextField extends GuiComponent {
     }
 
     public int getWidth() {
-        return this.width;
+        return getSize().getXi();
+    }
+
+    public int getHeight() {
+        return getSize().getYi();
+    }
+
+    public int getX() {
+        return getPos().getXi();
+    }
+
+    public int getY() {
+        return getPos().getYi();
     }
 
     public void setSelectionPosition(int position) {
@@ -448,16 +462,42 @@ public class ComponentTextField extends GuiComponent {
         }
     }
 
-    public void setCanLoseFocus(boolean canLoseFocusIn) {
-        this.canLoseFocus = canLoseFocusIn;
-    }
-
     public void setEnabledColor(int enabledColor) {
-        this.enabledColor = enabledColor;
+        this.enabledColor = new Color(enabledColor);
     }
 
-    public void setDisabledColor(int disabledColor) {
-        this.disabledColor = disabledColor;
+    public static class TextEditEvent extends EventCancelable {
+        private String section;
+        private final String whole;
+
+        public TextEditEvent(String section, String whole) {
+            this.section = section;
+            this.whole = whole;
+        }
+
+        public String getWhole() {
+            return whole;
+        }
+
+        public String getSection() {
+            return section;
+        }
+
+        public void setSection(String section) {
+            this.section = section;
+        }
+    }
+
+    public static class TextSentEvent extends Event {
+        private final String content;
+
+        public TextSentEvent(String content) {
+            this.content = content;
+        }
+
+        public String getContent() {
+            return content;
+        }
     }
 }
 

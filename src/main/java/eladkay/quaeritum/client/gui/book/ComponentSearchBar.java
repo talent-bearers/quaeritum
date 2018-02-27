@@ -1,6 +1,7 @@
 package eladkay.quaeritum.client.gui.book;
 
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponentEvents;
+import eladkay.quaeritum.client.gui.book.ComponentTextField.TextEditEvent;
 import net.minecraft.client.Minecraft;
 
 import javax.annotation.Nullable;
@@ -12,13 +13,13 @@ public class ComponentSearchBar extends ComponentBookMark {
 
 	private ComponentTextField text;
 
-	public ComponentSearchBar(GuiBook book, int id, @Nullable Consumer<String> onType, @Nullable Consumer<String> onEnter) {
+	public ComponentSearchBar(GuiBook book, int id, @Nullable Consumer<String> onType) {
 		super(book, MAGNIFIER, id);
 
 		text = new ComponentTextField(Minecraft.getMinecraft().fontRenderer,
 		        2, 1, getSize().getXi() - 44 - 2 * MAGNIFIER.getWidth(), Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT + 2);
-		text.setEditedCallback(onType);
-		text.setEnterCallback(onEnter);
+		if (onType != null)
+			text.BUS.hook(TextEditEvent.class, (TextEditEvent edit) -> onType.accept(edit.getWhole()));
 		text.setEnabledColor(0xFFFFFF);
 		add(text);
 
