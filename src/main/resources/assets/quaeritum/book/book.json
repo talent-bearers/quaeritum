@@ -1,8 +1,9 @@
 {
   "title": "quaeritum.book.lorist.title",
   "subtitle": "quaeritum.book.lorist.subtitle",
-  "color": "0xff8000",
-  "highlight": "0xa040ff",
+  "color": "0x803D29",
+  "binding": "0x3C0A72",
+  "highlight": "0x9034F4",
   "categories": [
     {
       "title": "quaeritum.book.basics.title",

@@ -1,7 +1,5 @@
 package eladkay.quaeritum.client.gui
 
-import eladkay.quaeritum.client.gui.book.GuiBook
-import eladkay.quaeritum.client.gui.book.ItemModBook
 import eladkay.quaeritum.common.item.ItemReagentBag
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemBlock
@@ -16,7 +14,6 @@ import net.minecraftforge.fml.common.network.IGuiHandler
 object GUIHandler : IGuiHandler {
     const val GUI_BAG = 0
     const val GUI_CODEX = 1
-    const val GUI_BOOK = 2
 
     override fun getClientGuiElement(ID: Int, player: EntityPlayer, world: World?, x: Int, y: Int, z: Int): Any? {
         when (ID) {
@@ -25,10 +22,6 @@ object GUIHandler : IGuiHandler {
                 // todo
             }
             GUI_CODEX -> return GuiCodex()
-            GUI_BOOK -> {
-                val stack = getStack(player, ItemModBook::class.java)
-                return GuiBook((stack.item as ItemModBook).getBook(player, world, stack))
-            }
         }
         return null
     }
