@@ -42,7 +42,7 @@ class BlockInterface : BlockModContainer(LibNames.INTERFACE, Material.WOOD) {
     }
 
     override fun getStateForPlacement(world: World, pos: BlockPos, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float, meta: Int, placer: EntityLivingBase, hand: EnumHand): IBlockState {
-        return defaultState.withProperty(FACING, EnumFacing.getDirectionFromEntityLiving(pos, placer))
+        return defaultState.withProperty(FACING, EnumFacing.getDirectionFromEntityLiving(pos, placer).opposite)
     }
 
     override fun createBlockState() = BlockStateContainer(this, FACING)
@@ -185,7 +185,7 @@ class BlockInterface : BlockModContainer(LibNames.INTERFACE, Material.WOOD) {
                         if (resultStack.isNotEmpty) {
                             val item = EntityItem(worldS,
                                     pos.x + 0.5 + facing.frontOffsetX * 0.625,
-                                    pos.y + 0.25 + facing.frontOffsetY * 0.625,
+                                    pos.y + 0.25 + facing.frontOffsetY * 0.625 + if (facing == EnumFacing.UP) 0.25 else 0.0,
                                     pos.z + 0.5 + facing.frontOffsetZ * 0.625,
                                     resultStack)
                             item.motionX = facing.frontOffsetX * 0.25
@@ -198,11 +198,11 @@ class BlockInterface : BlockModContainer(LibNames.INTERFACE, Material.WOOD) {
                     } else {
                         val item = EntityItem(worldS,
                                 pos.x + 0.5 + facing.frontOffsetX * 0.625,
-                                pos.y + 0.25 + facing.frontOffsetY * 0.625,
+                                pos.y + 0.25 + facing.frontOffsetY * 0.625 + if (facing == EnumFacing.UP) 0.25 else 0.0,
                                 pos.z + 0.5 + facing.frontOffsetZ * 0.625,
                                 stack)
                         item.motionX = facing.frontOffsetX * 0.25
-                        item.motionY = facing.frontOffsetY * 0.25 + 0.05
+                        item.motionY = facing.frontOffsetY * 0.375 + 0.05
                         item.motionZ = facing.frontOffsetZ * 0.25
                         world.spawnEntity(item)
 

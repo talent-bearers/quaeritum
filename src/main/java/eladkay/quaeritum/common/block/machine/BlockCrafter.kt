@@ -36,7 +36,7 @@ class BlockCrafter : BlockModContainer(LibNames.CRAFTER, Material.WOOD) {
     }
 
     override fun getStateForPlacement(world: World, pos: BlockPos, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float, meta: Int, placer: EntityLivingBase, hand: EnumHand): IBlockState {
-        return defaultState.withProperty(FACING, placer.horizontalFacing)
+        return defaultState.withProperty(FACING, placer.horizontalFacing.opposite)
     }
 
     override fun createBlockState() = BlockStateContainer(this, FACING)
