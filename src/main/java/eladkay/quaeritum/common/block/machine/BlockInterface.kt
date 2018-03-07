@@ -42,7 +42,7 @@ class BlockInterface : BlockModContainer(LibNames.INTERFACE, Material.WOOD) {
     }
 
     override fun getStateForPlacement(world: World, pos: BlockPos, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float, meta: Int, placer: EntityLivingBase, hand: EnumHand): IBlockState {
-        return defaultState.withProperty(FACING, facing.opposite)
+        return defaultState.withProperty(FACING, EnumFacing.getDirectionFromEntityLiving(pos, placer))
     }
 
     override fun createBlockState() = BlockStateContainer(this, FACING)
@@ -214,10 +214,6 @@ class BlockInterface : BlockModContainer(LibNames.INTERFACE, Material.WOOD) {
 
             override fun getSlotLimit(slot: Int): Int {
                 return 64
-            }
-
-            private fun getStackLimit(slot: Int, stack: ItemStack): Int {
-                return Math.min(getSlotLimit(slot), stack.maxStackSize)
             }
 
             private fun validateSlotIndex(slot: Int) {

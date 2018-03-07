@@ -32,6 +32,7 @@ object ModBlocks {
     val ironheart = BlockIronheartFlower()
 
     val interf = BlockInterface()
+    val crafter = BlockCrafter()
 
     val pipe = BlockItemPipe()
 

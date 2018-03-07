@@ -3,30 +3,27 @@ package eladkay.quaeritum.common.block.machine
 import com.teamwizardry.librarianlib.features.autoregister.TileRegister
 import com.teamwizardry.librarianlib.features.base.block.tile.BlockModContainer
 import com.teamwizardry.librarianlib.features.base.block.tile.TileMod
-import com.teamwizardry.librarianlib.features.kotlin.isNotEmpty
-import com.teamwizardry.librarianlib.features.saving.Save
-import com.teamwizardry.librarianlib.features.saving.SaveMethodGetter
-import com.teamwizardry.librarianlib.features.saving.SaveMethodSetter
+import com.teamwizardry.librarianlib.features.base.block.tile.module.ModuleInventory
+import com.teamwizardry.librarianlib.features.saving.Module
 import eladkay.quaeritum.common.lib.LibNames
-import net.minecraft.block.Block
 import net.minecraft.block.material.Material
-import net.minecraft.block.properties.PropertyBool
+import net.minecraft.block.properties.PropertyDirection
 import net.minecraft.block.state.BlockStateContainer
 import net.minecraft.block.state.IBlockState
-import net.minecraft.entity.item.EntityItem
+import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.inventory.Container
 import net.minecraft.inventory.InventoryCrafting
 import net.minecraft.item.ItemStack
 import net.minecraft.item.crafting.CraftingManager
 import net.minecraft.util.EnumFacing
+import net.minecraft.util.EnumHand
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.items.CapabilityItemHandler
+import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.ItemStackHandler
-import net.minecraftforge.items.wrapper.RangedWrapper
-import java.util.*
 
 /**
  * @author WireSegal
@@ -35,134 +32,115 @@ import java.util.*
 class BlockCrafter : BlockModContainer(LibNames.CRAFTER, Material.WOOD) {
 
     companion object {
-        val POWERED: PropertyBool = PropertyBool.create("powered")
+        val FACING: PropertyDirection = PropertyDirection.create("facing") { it in EnumFacing.HORIZONTALS }
     }
 
-    override fun createBlockState() = BlockStateContainer(this, POWERED)
-    override fun getMetaFromState(state: IBlockState) = if (state.getValue(POWERED)) 1 else 0
-    override fun getStateFromMeta(meta: Int): IBlockState = defaultState.withProperty(POWERED, meta != 0)
+    override fun getStateForPlacement(world: World, pos: BlockPos, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float, meta: Int, placer: EntityLivingBase, hand: EnumHand): IBlockState {
+        return defaultState.withProperty(FACING, placer.horizontalFacing)
+    }
+
+    override fun createBlockState() = BlockStateContainer(this, FACING)
+    override fun getMetaFromState(state: IBlockState) = state.getValue(FACING).index
+    override fun getStateFromMeta(meta: Int): IBlockState = defaultState.withProperty(FACING, EnumFacing.getFront(meta))
 
     override fun createTileEntity(world: World, state: IBlockState) = TileCrafter()
 
-    fun updatePower(world: World, pos: BlockPos, state: IBlockState) {
-        if (world.isRemote) return
-        val isOn = state.getValue(POWERED)
-        if (isOn xor world.isBlockPowered(pos)) {
-            world.setBlockState(pos, defaultState.withProperty(POWERED, !isOn))
-            if (!isOn) (world.getTileEntity(pos) as? TileCrafter)?.onPowered()
-        }
-    }
-
-    override fun neighborChanged(state: IBlockState, worldIn: World, pos: BlockPos, blockIn: Block, fromPos: BlockPos) = updatePower(worldIn, pos, state)
-    override fun onBlockAdded(worldIn: World, pos: BlockPos, state: IBlockState) = updatePower(worldIn, pos, state)
-    override fun updateTick(worldIn: World, pos: BlockPos, state: IBlockState, rand: Random) = updatePower(worldIn, pos, state)
-
     @TileRegister("crafter")
     class TileCrafter : TileMod() {
-        private val internalHandler = object : ItemStackHandler(10) {
-            override fun getStackLimit(slot: Int, stack: ItemStack) = 1
-            override fun onContentsChanged(slot: Int) {
-                markDirty()
+        @Module
+        val inventory = ModuleInventory(object : ItemStackHandler(1) {
+            override fun getSlotLimit(slot: Int): Int {
+                return 1
             }
-        }
-
-        var handler: ItemStackHandler
-            @SaveMethodGetter("handler") get() = internalHandler
-            @SaveMethodSetter("handler") set(value) {
-                handler.deserializeNBT(value.serializeNBT())
-            }
-
-        @Save
-        val enabled = BooleanArray(9) { true }
-
-        val inputs = object : RangedWrapper(handler, 0, 9) {
-            override fun insertItem(slot: Int, stack: ItemStack, simulate: Boolean): ItemStack {
-                if ((slot + 0 < 9) || !enabled[slot]) return stack
-                return super.insertItem(slot, stack, simulate)
-            }
-        }
-        val output = RangedWrapper(handler, 9, 10)
-
-        fun onPowered() {
-            //todo implementation
-        }
-
-        private fun craft(fullCheck: Boolean): Boolean {
-            if (fullCheck && !isFull())
-                return false
-
-            val craft = InventoryCrafting(object : Container() {
-                override fun canInteractWith(player: EntityPlayer): Boolean {
-                    return false
-                }
-            }, 3, 3)
-            for (i in 0..8) {
-                val stack = handler.getStackInSlot(i)
-
-                if (stack.isEmpty || !enabled[i])
-                    continue
-
-                craft.setInventorySlotContents(i, stack.copy())
-            }
-
-            val recipes = CraftingManager.findMatchingRecipe(craft, world)
-            if (recipes != null) {
-                handler.setStackInSlot(9, recipes.getCraftingResult(craft))
-
-                for (i in 0..8) {
-                    val stack = handler.getStackInSlot(i)
-
-                    val container = stack.item.getContainerItem(stack)
-                    handler.setStackInSlot(i, container)
-                }
-                return true
-            }
-
-            return false
-        }
-
-        fun isFull(): Boolean {
-            return (0 until 9).none { enabled[it] && handler.getStackInSlot(it).isEmpty }
-        }
-
-        private fun ejectAll() {
-            (0 until 9).forEach {
-                val stack = handler.getStackInSlot(it)
-                if (stack.isNotEmpty) eject(stack)
-                handler.setStackInSlot(it, ItemStack.EMPTY)
-            }
-        }
-
-        fun canEject(): Boolean {
-            val stateBelow = world.getBlockState(pos.down())
-            val blockBelow = stateBelow.block
-            return blockBelow.isAir(stateBelow, world, pos.down()) || stateBelow.getCollisionBoundingBox(world, pos.down()) == null
-        }
-
-        fun eject(stack: ItemStack) {
-            val item = EntityItem(world, pos.x + 0.5, pos.y - 0.5, pos.z + 0.5, stack)
-            item.motionX = 0.0
-            item.motionY = 0.0
-            item.motionZ = 0.0
-            world.spawnEntity(item)
-        }
+        }).setSides()
 
         @Suppress("UNCHECKED_CAST")
         override fun <T : Any> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
-            if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) return when (facing) {
-                EnumFacing.NORTH,
-                EnumFacing.SOUTH,
-                EnumFacing.WEST,
-                EnumFacing.EAST,
-                EnumFacing.UP -> inputs
-                EnumFacing.DOWN -> output
-                else -> handler
-            } as T
-            return super.getCapability(capability, facing)
+            val normal = world.getBlockState(pos).getValue(FACING)
+
+            return if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY &&
+                    (facing != null && facing.axis == normal.axis))
+                (if (normal == facing) outputInventory else inventory.handler) as T
+            else super.getCapability(capability, facing)
         }
 
         override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean {
-            return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing)
+            val normal = world.getBlockState(pos).getValue(FACING)
+
+            return (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY &&
+                    (facing != null && facing.axis == normal.axis))
+                    || super.hasCapability(capability, facing)
+        }
+
+        private val outputInventory = OutputInventory()
+
+        private inner class OutputInventory : IItemHandler {
+            fun extractRecipe(amount: Int, take: Boolean): ItemStack {
+                val inventoryCrafting = InventoryCrafting(object : Container() {
+                    override fun canInteractWith(playerIn: EntityPlayer): Boolean {
+                        return true
+                    }
+                }, 3, 3)
+
+                val normal = world.getBlockState(pos).getValue(FACING)
+                val onPlane = normal.rotateYCCW()
+
+                for (y in -1..1) for (perpendicular in -1..1) {
+                    val row = y + 1
+                    val column = perpendicular + 1
+
+                    val idx = row + column * 3
+
+                    val tile = world.getTileEntity(pos.offset(EnumFacing.UP, y).offset(onPlane, perpendicular))
+                    if (tile is TileCrafter) {
+                        val stack = tile.inventory.handler.getStackInSlot(0)
+                        inventoryCrafting.setInventorySlotContents(idx, stack.copy())
+                    }
+                }
+
+                val recipe = CraftingManager.findMatchingRecipe(inventoryCrafting, world)
+                if (recipe != null) {
+                    val output = recipe.getCraftingResult(inventoryCrafting)
+                    if (output.count <= amount) {
+                        if (take) {
+                            val remainder = recipe.getRemainingItems(inventoryCrafting)
+
+                            for (y in -1..1) for (perpendicular in -1..1) {
+                                val row = y + 1
+                                val column = perpendicular + 1
+
+                                val idx = row + column * 3
+
+                                val tile = world.getTileEntity(pos.offset(EnumFacing.UP, y).offset(onPlane, perpendicular))
+                                (tile as? TileCrafter)?.inventory?.handler?.setStackInSlot(0, remainder[idx])
+                            }
+                        }
+                        return output
+                    }
+                }
+
+                return ItemStack.EMPTY
+            }
+
+            override fun insertItem(slot: Int, stack: ItemStack, simulate: Boolean): ItemStack {
+                return stack
+            }
+
+            override fun getStackInSlot(slot: Int): ItemStack {
+                return ItemStack.EMPTY
+            }
+
+            override fun getSlotLimit(slot: Int): Int {
+                return 64
+            }
+
+            override fun getSlots(): Int {
+                return 1
+            }
+
+            override fun extractItem(slot: Int, amount: Int, simulate: Boolean): ItemStack {
+                return extractRecipe(amount, simulate)
+            }
         }
     }
 }

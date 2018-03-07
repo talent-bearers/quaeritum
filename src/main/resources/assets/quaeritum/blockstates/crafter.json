@@ -1,0 +1,16 @@
+{
+	"variants": {
+		"facing=north": {
+			"model": "quaeritum:crafter"
+		},
+		"facing=south": {
+			"model": "quaeritum:crafter"
+		},
+		"facing=west": {
+			"model": "quaeritum:crafter"
+		},
+		"facing=east": {
+			"model": "quaeritum:crafter"
+		}
+	}
+}
