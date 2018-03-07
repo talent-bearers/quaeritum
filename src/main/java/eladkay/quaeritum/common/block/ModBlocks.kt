@@ -31,6 +31,8 @@ object ModBlocks {
     val ironCrop = BlockIronheartCrop()
     val ironheart = BlockIronheartFlower()
 
+    val interf = BlockInterface()
+
     val pipe = BlockItemPipe()
 
     init {

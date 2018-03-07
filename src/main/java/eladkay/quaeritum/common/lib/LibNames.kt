@@ -59,4 +59,5 @@ object LibNames {
     const val ESSENCE = "essence"
     const val SCROLL = "scroll"
     const val SEALED_SCROLL = "sealed_scroll"
+    const val INTERFACE = "interface"
 }

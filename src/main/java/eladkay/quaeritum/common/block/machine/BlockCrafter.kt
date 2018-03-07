@@ -65,6 +65,7 @@ class BlockCrafter : BlockModContainer(LibNames.CRAFTER, Material.WOOD) {
                 markDirty()
             }
         }
+
         var handler: ItemStackHandler
             @SaveMethodGetter("handler") get() = internalHandler
             @SaveMethodSetter("handler") set(value) {
