@@ -75,7 +75,9 @@ class BlockInterface : BlockModContainer(LibNames.INTERFACE, Material.WOOD) {
                         val takeFrom = mutableListOf<EntityItem>()
                         var total = 0
                         val iterator = items.iterator()
-                        val first = iterator.next()
+                        var first = EntityItem(world)
+                        while (first.item.isEmpty)
+                            first = iterator.next()
                         takeFrom.add(first)
                         total += first.item.count
                         if (n > total) for (item in iterator) {
@@ -86,9 +88,11 @@ class BlockInterface : BlockModContainer(LibNames.INTERFACE, Material.WOOD) {
                             }
                         }
 
+
                         val copy = first.item.copy()
+                        val subtractAmount = copy.count
                         for (i in takeFrom) {
-                            val toTake = Math.max(i.item.count, total)
+                            val toTake = Math.min(i.item.count, total)
                             copy.count += toTake
                             if (take) {
                                 i.item.count -= toTake
@@ -98,6 +102,8 @@ class BlockInterface : BlockModContainer(LibNames.INTERFACE, Material.WOOD) {
 
                             total -= toTake
                         }
+
+                        copy.count -= subtractAmount
 
                         return copy
                     }
@@ -146,7 +152,7 @@ class BlockInterface : BlockModContainer(LibNames.INTERFACE, Material.WOOD) {
 
             override fun getStackInSlot(slot: Int): ItemStack {
                 validateSlotIndex(slot)
-                return getContainedForSlot(world, world.getBlockState(pos).getValue(FACING), pos, slot, getSlotLimit(slot), false)
+                return ItemStack.EMPTY
             }
 
             override fun insertItem(slot: Int, stack: ItemStack, simulate: Boolean): ItemStack {
