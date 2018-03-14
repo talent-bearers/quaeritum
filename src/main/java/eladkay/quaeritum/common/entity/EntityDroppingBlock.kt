@@ -117,20 +117,26 @@ class EntityDroppingBlock : Entity {
                     if (stateInWorld.block != Blocks.PISTON_EXTENSION) {
                         this.setDead()
 
-                        if (block is BlockFalling) block.onBroken(this.world, selfPos)
+                        (block as? BlockFalling)?.onBroken(this.world, selfPos)
 
-                        if (this.shouldDropItem && this.world.gameRules.getBoolean("doTileDrops"))
-                            this.entityDropItem(ItemStack(block, 1, block.damageDropped(this.block)), 0.0f)
+                        die()
                     }
 
                 } else if (this.fallTime > 100 && (selfPos.y < 1 || selfPos.y > 256) || this.fallTime > 600) {
-                    if (this.shouldDropItem && this.world.gameRules.getBoolean("doTileDrops"))
-                        this.entityDropItem(ItemStack(block, 1, block.damageDropped(this.block)), 0.0f)
+                    die()
 
                     this.setDead()
                 }
             }
         }
+    }
+
+    fun die() {
+        val block = this.block.block
+        if (this.shouldDropItem && this.world.gameRules.getBoolean("doTileDrops"))
+            this.entityDropItem(ItemStack(block, 1, block.damageDropped(this.block)), 0.0f)
+
+        world.playEvent(2001, position, Block.getStateId(this.block))
     }
 
     /**
