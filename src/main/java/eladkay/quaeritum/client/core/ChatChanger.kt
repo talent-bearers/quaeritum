@@ -1,5 +1,6 @@
 package eladkay.quaeritum.client.core
 
+import com.teamwizardry.librarianlib.features.kotlin.times
 import com.teamwizardry.librarianlib.features.methodhandles.MethodHandleHelper
 import eladkay.quaeritum.api.spell.EnumLegend
 import eladkay.quaeritum.api.spell.EnumSpellElement
@@ -18,6 +19,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import java.util.*
+import kotlin.math.ceil
 
 
 /**
@@ -47,7 +49,8 @@ object ChatChanger {
             UUID.fromString("7f6971c5-fb58-4519-a975-b1b5766e92d1") to EnumLegend.WONDER, // HellfirePVP
             UUID.fromString("6a0e8505-1556-4ee9-bec0-6af32f05888d") to EnumLegend.DEEP, // 115kino
             UUID.fromString("1d680bb6-2a9a-4f25-bf2f-a1af74361d69") to EnumLegend.DEEP, // KingPhygieBoo
-            UUID.fromString("4bfb28a3-005d-4fc9-9238-a55c6c17b575") to EnumLegend.DEEP // xJonL
+            UUID.fromString("4bfb28a3-005d-4fc9-9238-a55c6c17b575") to EnumLegend.DEEP, // xJonL
+            UUID.fromString("6c249311-f939-4e66-9f31-49b753bfb14b") to EnumLegend.SLOTH // InsomniaKitten
     )
 
     var chatX = 0
@@ -67,11 +70,21 @@ object ChatChanger {
         chatY = event.posY
     }
 
-    fun forElement(legend: EnumSpellElement) = "${TextFormatting.LIGHT_PURPLE}${TextFormatting.values()[legend.ordinal]}${TextFormatting.RESET}   ${TextFormatting.BOLD}${TextFormatting.RESET}"
-    fun forLegend(legend: EnumLegend) = "${TextFormatting.GOLD}${TextFormatting.values()[legend.ordinal]}${TextFormatting.RESET}   ${TextFormatting.BOLD}${TextFormatting.RESET}"
+    fun forLegend(legend: Enum<*>)
+            = "${TextFormatting.GOLD}${colorNum(legend.ordinal, ceil(EnumLegend.values().size.toDouble() / 16).toInt())}   ${TextFormatting.BOLD}${TextFormatting.RESET}"
 
-    private val ELEMENT_PATTERN = "(?:${TextFormatting.LIGHT_PURPLE}\u00a7([0-9A-Fa-fK-Ok-oRr])${TextFormatting.RESET} {3}${TextFormatting.BOLD}${TextFormatting.RESET})".toRegex()
-    private val LEGEND_PATTERN = "(?:${TextFormatting.GOLD}\u00a7([0-9A-Fa-fK-Ok-oRr])${TextFormatting.RESET} {3}${TextFormatting.BOLD}${TextFormatting.RESET})".toRegex()
+    fun colorNum(index: Int, total: Int): String {
+        var numStr = index.toString(16)
+        numStr = "0" * (total - numStr.length) + numStr
+        return numStr.map { "§$it" }.joinToString("")
+    }
+
+    fun deconstruct(colors: String): Int {
+        return colors.replace("§", "").toInt(16)
+    }
+
+    private val ELEMENT_PATTERN = "(?:${TextFormatting.AQUA}§([0-9A-Fa-f]) {3}${TextFormatting.BOLD}${TextFormatting.RESET})".toRegex()
+    private val LEGEND_PATTERN = "(?:${TextFormatting.GOLD}((?:§[0-9A-Fa-f])+) {3}${TextFormatting.BOLD}${TextFormatting.RESET})".toRegex()
 
     val GuiNewChat.lines by MethodHandleHelper.delegateForReadOnly<GuiNewChat, List<ChatLine>>(GuiNewChat::class.java, "i", "field_146253_i", "drawnChatLines")
     val GuiNewChat.scrollPos by MethodHandleHelper.delegateForReadOnly<GuiNewChat, Int>(GuiNewChat::class.java, "j", "field_146250_j", "scrollPos")
@@ -103,9 +116,9 @@ object ChatChanger {
 
                         val before = text.substring(0 until (match.groups[0]?.range?.first ?: 0))
                         val id = match.groupValues[1]
-                        val formatting = TextFormatting.values().firstOrNull { it.toString() == "\u00a7$id" }
-                        if (formatting != null && formatting.ordinal < EnumLegend.values().size) {
-                            val element = EnumLegend.values()[formatting.ordinal]
+                        val formatting = deconstruct(id)
+                        if (formatting < EnumLegend.values().size) {
+                            val element = EnumLegend.values()[formatting]
                             val x = chatX + 3 + Minecraft.getMinecraft().fontRenderer.getStringWidth(before).toFloat()
                             val y = chatY - (Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT) * (idx.toFloat() - shift)
                             GlStateManager.pushMatrix()
@@ -133,9 +146,9 @@ object ChatChanger {
 
                         val before = text.substring(0 until (match.groups[0]?.range?.first ?: 0))
                         val id = match.groupValues[1]
-                        val formatting = TextFormatting.values().firstOrNull { it.toString() == "\u00a7$id" }
-                        if (formatting != null && formatting.ordinal < EnumSpellElement.values().size) {
-                            val element = EnumSpellElement.values()[formatting.ordinal]
+                        val formatting = deconstruct(id)
+                        if (formatting < EnumSpellElement.values().size) {
+                            val element = EnumSpellElement.values()[formatting]
                             val x = chatX + 3 + Minecraft.getMinecraft().fontRenderer.getStringWidth(before).toFloat()
                             val y = chatY - (Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT) * (idx.toFloat() - shift)
                             GlStateManager.pushMatrix()

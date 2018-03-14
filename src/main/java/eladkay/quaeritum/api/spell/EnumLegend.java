@@ -107,7 +107,12 @@ public enum EnumLegend implements ISymbolCarrier {
             new LineSymbolInstruction(0.25f, 0.25f, 0.75f, 0.25f),
             new LineSymbolInstruction(R2O2, 1 - R2O2, 0.6f, 1 - R2O2),
             new LineSymbolInstruction(R2O2, 1 - R2O2 - 0.1f, 0.25f, 0.35f),
-            new LineSymbolInstruction(0.7f, 1 - R2O2, 0.4f, 1 - R2O2 - 0.3f));
+            new LineSymbolInstruction(0.7f, 1 - R2O2, 0.4f, 1 - R2O2 - 0.3f)),
+    // Ancient of Sloth (InsomniaKitten)
+    SLOTH(new Color(0xB92CFF), new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
+            new LineSymbolInstruction(R2O2, R2O2, 1 - R2O2, 1 - R2O2),
+            new LineSymbolInstruction(R2O2, 1 - R2O2, 1 - R2O2, R2O2),
+            new CircleSymbolInstruction(0.5f, 1 - R2O2, R2O2));
 
     public final ISymbolInstruction[] symbolInstructions;
     @Nullable
