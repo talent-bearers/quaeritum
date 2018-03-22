@@ -176,15 +176,15 @@ interface IColorAcceptor {
 
     fun getColor(): Int
 
-    fun acceptsColor(facing: EnumFacing, color: Int): Boolean
+    fun acceptsColor(facing: EnumFacing, color: Int, strict: Boolean): Boolean
 
     companion object {
-        fun tryPush(world: World, stack: ItemStack, pos: BlockPos, facing: EnumFacing, color: Int): ItemStack {
+        fun tryPush(world: World, stack: ItemStack, pos: BlockPos, facing: EnumFacing, color: Int, strict: Boolean): ItemStack {
             val tileAt = world.getTileEntity(pos.offset(facing))
             if (tileAt != null && tileAt.hasCapability(ITEM_HANDLER_CAPABILITY, facing.opposite)) {
                 val cap = tileAt.getCapability(ITEM_HANDLER_CAPABILITY, facing.opposite)
                 if (cap != null) {
-                    if (tileAt !is IColorAcceptor || tileAt.acceptsColor(facing, color)) {
+                    if (tileAt !is IColorAcceptor || tileAt.acceptsColor(facing, color, strict)) {
                         val remainStack = ItemHandlerHelper.insertItem(cap, stack, false)
                         if (remainStack.count != stack.count) {
                             if (tileAt is IColorAcceptor)
@@ -244,10 +244,10 @@ class TileItemPipe : TileModTickable(), IColorAcceptor {
         return pipe.getValue(BlockItemPipe.COLOR).metadata
     }
 
-    override fun acceptsColor(facing: EnumFacing, color: Int): Boolean {
-        if (color == 0) return true
+    override fun acceptsColor(facing: EnumFacing, color: Int, strict: Boolean): Boolean {
+        if (color == 0 && !strict) return true
         val colorAt = getColor(facing)
-        return colorAt == color || colorAt == 0
+        return colorAt == color || (colorAt == 0 && !strict)
     }
 
     fun pushFrom(facing: EnumFacing) {
@@ -257,11 +257,20 @@ class TileItemPipe : TileModTickable(), IColorAcceptor {
 
         val color = getColor(facing)
 
-        var remainder = tryPush(world, stackAt, pos, facing.opposite, color)
+        var remainder = tryPush(world, stackAt, pos, facing.opposite, color, true)
         for (pushFacing in EnumFacing.VALUES.shuffle()) if (pushFacing.axis != facing.axis) {
-            remainder = tryPush(world, remainder, pos, pushFacing, color)
+            remainder = tryPush(world, remainder, pos, pushFacing, color, true)
             if (remainder.isEmpty)
                 break
+        }
+
+        if (remainder.isNotEmpty) {
+            remainder = tryPush(world, stackAt, pos, facing.opposite, color, false)
+            for (pushFacing in EnumFacing.VALUES.shuffle()) if (pushFacing.axis != facing.axis) {
+                remainder = tryPush(world, remainder, pos, pushFacing, color, false)
+                if (remainder.isEmpty)
+                    break
+            }
         }
 
         items.handler.setStackInSlot(facing.index, remainder)
