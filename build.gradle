@@ -50,9 +50,11 @@ minecraft {
 repositories {
     maven { url = 'http://maven.bluexin.be/repository/snapshots' }
     maven { url = 'http://dvs1.progwml6.com/files/maven' }
+    maven { url = 'http://maven.tterrag.com' }
 }
 
 dependencies {
+    runtime "team.chisel.ctm:CTM:$ctm_version"
     deobfCompile "mezz.jei:jei_$jei_version"
     compile "com.teamwizardry.librarianlib:librarianlib-$liblib_version:deobf"
 }
