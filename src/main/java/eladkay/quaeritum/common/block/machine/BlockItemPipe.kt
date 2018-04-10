@@ -141,7 +141,10 @@ class BlockItemPipe : BlockModContainer("pipe", Material.IRON, *EnumDyeColor.val
 
     override fun doesSideBlockRendering(state: IBlockState, world: IBlockAccess, pos: BlockPos, face: EnumFacing): Boolean {
         val target = world.getBlockState(pos.offset(face))
-        return target.block == this && target.getValue(COLOR) == state.getValue(COLOR)
+        return if (target.block == this) {
+            val color = target.getValue(COLOR)
+            color == EnumDyeColor.WHITE || color == state.getValue(COLOR)
+        } else false
     }
 
     fun connectedOnSide(facing: EnumFacing, pos: BlockPos, worldIn: IBlockAccess): Boolean {
