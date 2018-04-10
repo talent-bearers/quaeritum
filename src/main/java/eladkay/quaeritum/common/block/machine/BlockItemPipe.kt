@@ -1,6 +1,7 @@
 package eladkay.quaeritum.common.block.machine
 
 import com.teamwizardry.librarianlib.features.autoregister.TileRegister
+import com.teamwizardry.librarianlib.features.base.IExtraVariantHolder
 import com.teamwizardry.librarianlib.features.base.block.IBlockColorProvider
 import com.teamwizardry.librarianlib.features.base.block.tile.BlockModContainer
 import com.teamwizardry.librarianlib.features.base.block.tile.TileModTickable
@@ -11,6 +12,7 @@ import com.teamwizardry.librarianlib.features.kotlin.isNotEmpty
 import com.teamwizardry.librarianlib.features.saving.Module
 import com.teamwizardry.librarianlib.features.saving.NoSync
 import com.teamwizardry.librarianlib.features.saving.Save
+import eladkay.quaeritum.api.lib.LibMisc
 import eladkay.quaeritum.api.util.RandUtil
 import eladkay.quaeritum.common.block.machine.IColorAcceptor.Companion.tryPush
 import net.minecraft.block.material.Material
@@ -19,6 +21,7 @@ import net.minecraft.block.properties.PropertyEnum
 import net.minecraft.block.state.BlockFaceShape
 import net.minecraft.block.state.BlockStateContainer
 import net.minecraft.block.state.IBlockState
+import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.entity.Entity
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.EnumDyeColor
@@ -42,7 +45,7 @@ import net.minecraftforge.items.ItemStackHandler
  * @author WireSegal
  * Created at 12:59 PM on 1/16/18.
  */
-class BlockItemPipe : BlockModContainer("pipe", Material.IRON, *EnumDyeColor.values().map { "pipe_" + it.getName() }.toTypedArray()), IBlockColorProvider {
+class BlockItemPipe : BlockModContainer("pipe", Material.IRON, *EnumDyeColor.values().map { "pipe_${it.getName()}" }.toTypedArray()), IBlockColorProvider, IExtraVariantHolder {
     companion object {
         val UP: PropertyBool = PropertyBool.create("up")
         val DOWN: PropertyBool = PropertyBool.create("down")
@@ -101,6 +104,12 @@ class BlockItemPipe : BlockModContainer("pipe", Material.IRON, *EnumDyeColor.val
         get() = { stack, idx ->
             if (idx == 0) EnumDyeColor.byMetadata(stack.itemDamage).colorValue else -1
         }
+
+    override val extraVariants: Array<out String> get() = arrayOf("pipe")
+
+    override val meshDefinition: ((stack: ItemStack) -> ModelResourceLocation)?
+        //get() = { ModelHandler.getResource(LibMisc.MOD_ID, "pipe")!! } FIXME
+        get() = { ModelResourceLocation("${LibMisc.MOD_ID}:pipe", "inventory") }
 
     @SideOnly(Side.CLIENT)
     override fun getBlockLayer(): BlockRenderLayer {
