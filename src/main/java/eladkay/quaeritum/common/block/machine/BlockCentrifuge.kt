@@ -3,9 +3,9 @@ package eladkay.quaeritum.common.block.machine
 import com.teamwizardry.librarianlib.features.autoregister.TileRegister
 import com.teamwizardry.librarianlib.features.base.block.tile.BlockModContainer
 import com.teamwizardry.librarianlib.features.base.block.tile.TileMod
+import com.teamwizardry.librarianlib.features.base.block.tile.module.ModuleInventory
+import com.teamwizardry.librarianlib.features.saving.Module
 import com.teamwizardry.librarianlib.features.saving.Save
-import com.teamwizardry.librarianlib.features.saving.SaveMethodGetter
-import com.teamwizardry.librarianlib.features.saving.SaveMethodSetter
 import eladkay.quaeritum.api.machines.CentrifugeRecipes
 import eladkay.quaeritum.common.core.QuaeritumSoundEvents
 import eladkay.quaeritum.common.lib.LibNames
@@ -16,16 +16,9 @@ import net.minecraft.block.state.BlockStateContainer
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.init.Blocks
-import net.minecraft.inventory.InventoryHelper
-import net.minecraft.item.ItemStack
 import net.minecraft.util.*
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
-import net.minecraftforge.common.capabilities.Capability
-import net.minecraftforge.items.CapabilityItemHandler
-import net.minecraftforge.items.IItemHandler
-import net.minecraftforge.items.ItemStackHandler
-import net.minecraftforge.items.wrapper.RangedWrapper
 
 /**
  * @author WireSegal
@@ -49,84 +42,16 @@ class BlockCentrifuge : BlockModContainer(LibNames.CENTRIFUGE, Material.CLOTH) {
 
     override fun getStateForPlacement(world: World?, pos: BlockPos?, facing: EnumFacing?, hitX: Float, hitY: Float, hitZ: Float, meta: Int, placer: EntityLivingBase, hand: EnumHand?): IBlockState = defaultState.withProperty(BlockHorizontal.FACING, placer.horizontalFacing)
 
-    override fun hasComparatorInputOverride(state: IBlockState): Boolean = true
-    override fun getComparatorInputOverride(blockState: IBlockState, worldIn: World, pos: BlockPos): Int {
-        return (worldIn.getTileEntity(pos) as? TileCentrifuge)?.getComparatorOutput() ?: 0
-    }
-
-    override fun breakBlock(worldIn: World, pos: BlockPos, state: IBlockState) {
-        val handler = (worldIn.getTileEntity(pos) as? TileCentrifuge)?.handler
-        if (handler != null)
-            dropInventoryItems(worldIn, pos, handler)
-        super.breakBlock(worldIn, pos, state)
-    }
-
-    fun dropInventoryItems(worldIn: World, pos: BlockPos, inventory: IItemHandler) {
-        dropInventoryItems(worldIn, pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble(), inventory)
-    }
-
-    private fun dropInventoryItems(worldIn: World, x: Double, y: Double, z: Double, inventory: IItemHandler) {
-        (0 until inventory.slots)
-                .mapNotNull { inventory.getStackInSlot(it) }
-                .forEach { InventoryHelper.spawnItemStack(worldIn, x, y, z, it) }
-    }
-
     override fun createTileEntity(world: World, state: IBlockState) = TileCentrifuge()
-
-    private class CentrifugeHandler(val tile: TileMod) : ItemStackHandler(3) {
-        override fun onContentsChanged(slot: Int) {
-            tile.markDirty()
-        }
-
-        public override fun getStackLimit(slot: Int, stack: ItemStack): Int {
-            return super.getStackLimit(slot, stack)
-        }
-    }
 
     @TileRegister("centrifuge")
     class TileCentrifuge : TileMod(), ITickable {
 
-        private val internalHandler = CentrifugeHandler(this)
-        var handler: ItemStackHandler
-            @SaveMethodGetter("handler") get() = internalHandler
-            @SaveMethodSetter("handler") set(value) {
-                handler.deserializeNBT(value.serializeNBT())
-            }
+        @Module
+        val inputs = ModuleInventory(2).disallowSides(EnumFacing.DOWN)
 
-        val inputs = RangedWrapper(handler, 0, 2)
-        val output = RangedWrapper(handler, 2, 3)
-
-        fun getComparatorOutput(): Int {
-            val unfloored = ((0 until internalHandler.slots)
-                    .flatMap {
-                        val stack = internalHandler.getStackInSlot(it)
-                        if (stack.isEmpty) listOf()
-                        else listOf(IndexedValue(it, stack))
-                    }.sumByDouble {
-                        it.value.count / Math.min(internalHandler.getStackLimit(it.index, it.value), it.value.maxStackSize).toDouble()
-                    } / internalHandler.slots.toFloat()) * 14.0
-            val floored = Math.floor(unfloored).toInt()
-
-            return floored + if (unfloored > 0.0) 1 else 0
-        }
-
-        @Suppress("UNCHECKED_CAST")
-        override fun <T : Any> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
-            if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) return when (facing) {
-                EnumFacing.UP -> inputs
-                EnumFacing.DOWN,
-                EnumFacing.NORTH,
-                EnumFacing.SOUTH,
-                EnumFacing.WEST,
-                EnumFacing.EAST -> output
-                else -> handler
-            } as T
-            return super.getCapability(capability, facing)
-        }
-
-        override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean {
-            return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing)
-        }
+        @Module
+        val output =  ModuleInventory(1).setSides(EnumFacing.DOWN)
 
         @Save
         var totalSteam = 0
@@ -135,11 +60,11 @@ class BlockCentrifuge : BlockModContainer(LibNames.CENTRIFUGE, Material.CLOTH) {
             if (world.isRemote) return
 
             val heated = world.getBlockState(pos.down()).block == Blocks.FIRE
-            val recipe = CentrifugeRecipes.getRecipe(inputs, heated)
+            val recipe = CentrifugeRecipes.getRecipe(inputs.handler, heated)
             if (recipe != null) {
-                if (totalSteam >= recipe.steamRequired(inputs, heated)) {
-                    if (output.insertItem(0, recipe.getOutput(inputs, heated), false).isEmpty) {
-                        recipe.consumeInputs(inputs, heated)
+                if (totalSteam >= recipe.steamRequired(inputs.handler, heated)) {
+                    if (output.handler.insertItem(0, recipe.getOutput(inputs.handler, heated), false).isEmpty) {
+                        recipe.consumeInputs(inputs.handler, heated)
                         totalSteam = 0
                     }
                 } else {
