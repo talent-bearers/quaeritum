@@ -133,10 +133,34 @@ class BlockItemPipe : BlockModContainer("pipe", Material.IRON, *EnumDyeColor.val
     override fun isFullCube(state: IBlockState) = false
     override fun isOpaqueCube(blockState: IBlockState) = false
 
-    override fun getActualState(state: IBlockState, worldIn: IBlockAccess, pos: BlockPos): IBlockState {
-        var returnState = state
-        for ((facing, prop) in PROPERTIES.entries) returnState = returnState.withProperty(prop, connectedOnSide(facing, pos, worldIn))
-        return returnState
+    override fun getActualState(state: IBlockState, world: IBlockAccess, origin: BlockPos): IBlockState {
+        val pos = origin as? BlockPos.MutableBlockPos ?: BlockPos.MutableBlockPos(origin)
+        var actualState = state
+        for ((side, prop) in PROPERTIES.entries) {
+            pos.move(side)
+            val connect = canConnectTo(side, pos, world)
+            actualState = actualState.withProperty(prop, connect)
+            pos.move(side.opposite)
+        }
+        return actualState
+    }
+
+    private fun canConnectTo(side: EnumFacing, pos: BlockPos.MutableBlockPos, world: IBlockAccess): Boolean {
+        var connect = false
+        val target = world.getBlockState(pos)
+        pos.move(side.opposite)
+        if ((target.block as? IConnectsToPipe)?.doesConnect(side, pos, world) == true) {
+            connect = true
+        }
+        pos.move(side)
+        if (!connect) {
+            val tile = world.getTileEntitySafely(pos.move(side.opposite))
+            val tileAt = world.getTileEntity( pos.move(side))
+            connect = if (tileAt is IColorAcceptor && tile is IColorAcceptor)
+                (tile.getColor() == 0 || tileAt.getColor() == 0 || tile.getColor() == tileAt.getColor())
+            else tileAt?.hasCapability(ITEM_HANDLER_CAPABILITY, side.opposite) == true
+        }
+        return connect
     }
 
     override fun doesSideBlockRendering(state: IBlockState, world: IBlockAccess, pos: BlockPos, face: EnumFacing): Boolean {
@@ -145,19 +169,6 @@ class BlockItemPipe : BlockModContainer("pipe", Material.IRON, *EnumDyeColor.val
             val color = target.getValue(COLOR)
             color == EnumDyeColor.WHITE || color == state.getValue(COLOR)
         } else false
-    }
-
-    fun connectedOnSide(facing: EnumFacing, pos: BlockPos, worldIn: IBlockAccess): Boolean {
-        val posOffset = pos.offset(facing)
-        val state = worldIn.getBlockState(posOffset)
-        if ((state.block as? IConnectsToPipe)?.doesConnect(facing, pos, worldIn) == true)
-            return true
-
-        val tile = worldIn.getTileEntitySafely(pos)
-        val tileAt = worldIn.getTileEntity(pos.offset(facing))
-        if (tileAt is IColorAcceptor && tile is IColorAcceptor)
-            return tileAt.getColor() == 0 || tile.getColor() == 0 || tile.getColor() == tileAt.getColor()
-        return tileAt?.hasCapability(ITEM_HANDLER_CAPABILITY, facing.opposite) == true
     }
 
     override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos) = AABBS[getActualState(state, source, pos)]
