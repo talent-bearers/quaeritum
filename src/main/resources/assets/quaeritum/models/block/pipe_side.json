@@ -1,34 +1,33 @@
 {
-	"__comment": "Designed by Wire Segal with Cubik Studio - https://cubik.studio",
-	"textures": {
-		"particle": "quaeritum:blocks/pipe",
-		"texture": "quaeritum:blocks/pipe",
-		"overlay": "quaeritum:blocks/pipe_overlay"
-	},
-	"elements": [ 	 
-		{
-			"__comment": "Pipe",
-			"from": [ 5, 11, 5 ],
-			"to": [ 11, 16, 11 ],
-			"faces": {
-				"up": { "uv": [ 5, 5, 11, 11 ], "texture": "#texture", "cullface": "up" },
-				"north": { "uv": [ 5, 0, 11, 5 ], "texture": "#texture" },
-				"south": { "uv": [ 5, 0, 11, 5 ], "texture": "#texture" },
-				"west": { "uv": [ 5, 0, 11, 5 ], "texture": "#texture" },
-				"east": { "uv": [ 5, 0, 11, 5 ], "texture": "#texture" }
-			}
-		},
-		{
-			"__comment": "Overlay",
-			"from": [ 5, 11, 5 ],
-			"to": [ 11, 16, 11 ],
-			"faces": {
-				"up": { "uv": [ 5, 5, 11, 11 ], "texture": "#overlay", "tintindex": 1, "cullface": "up" },
-				"north": { "uv": [ 5, 0, 11, 5 ], "texture": "#overlay", "tintindex": 1 },
-				"south": { "uv": [ 5, 0, 11, 5 ], "texture": "#overlay", "tintindex": 1 },
-				"west": { "uv": [ 5, 0, 11, 5 ], "texture": "#overlay", "tintindex": 1 },
-				"east": { "uv": [ 5, 0, 11, 5 ], "texture": "#overlay", "tintindex": 1 }
-			}
-		}
-	]
+    "parent": "block/block",
+    "textures": {
+        "texture": "quaeritum:blocks/pipe",
+        "overlay": "quaeritum:blocks/pipe_overlay"
+    },
+    "elements": [
+        {
+            "__comment": "pipe",
+            "from": [ 5, 5, 0 ],
+            "to": [ 11, 11, 5 ],
+            "faces": {
+                "down": { "uv": [ 5, 11, 11, 16 ], "texture": "#texture" },
+                "up": { "uv": [ 5, 0, 11, 5 ], "texture": "#texture" },
+                "north": { "uv": [ 5, 5, 11, 11 ], "texture": "#texture", "cullface": "north" },
+                "west": { "uv": [ 0, 5, 5, 11 ], "texture": "#texture" },
+                "east": { "uv": [ 11, 5, 16, 11 ], "texture": "#texture" }
+            }
+        },
+        {
+            "__comment": "overlay",
+            "from": [ 5, 5, 0 ],
+            "to": [ 11, 11, 5 ],
+            "faces": {
+                "down": { "uv": [ 5, 11, 11, 16 ], "texture": "#overlay", "tintindex": 0 },
+                "up": { "uv": [ 5, 0, 11, 5 ], "texture": "#overlay", "tintindex": 0 },
+                "north": { "uv": [ 5, 5, 11, 11 ], "texture": "#overlay", "cullface": "north", "tintindex": 0 },
+                "west": { "uv": [ 0, 5, 5, 11 ], "texture": "#overlay", "tintindex": 0 },
+                "east": { "uv": [ 11, 5, 16, 11 ], "texture": "#overlay", "tintindex": 0 }
+            }
+        }
+    ]
 }
