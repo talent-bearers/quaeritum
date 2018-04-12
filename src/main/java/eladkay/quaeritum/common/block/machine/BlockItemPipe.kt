@@ -15,6 +15,7 @@ import com.teamwizardry.librarianlib.features.saving.Save
 import eladkay.quaeritum.api.lib.LibMisc
 import eladkay.quaeritum.api.util.RandUtil
 import eladkay.quaeritum.common.block.machine.IColorAcceptor.Companion.tryPush
+import net.minecraft.block.SoundType
 import net.minecraft.block.material.Material
 import net.minecraft.block.properties.PropertyBool
 import net.minecraft.block.properties.PropertyEnum
@@ -87,6 +88,7 @@ class BlockItemPipe : BlockModContainer("pipe", Material.IRON, *EnumDyeColor.val
 
     init {
         setHardness(1f)
+        soundType = SoundType.CLOTH
         for (state in blockState.validStates) {
             var aabb = CENTER_AABB
             for ((prop, bound) in PROP_TO_AABB.entries)

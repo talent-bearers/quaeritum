@@ -58,4 +58,6 @@ object RenderHolder : TileEntitySpecialRenderer<TileFluidColumn>() {
             GlStateManager.popMatrix()
         }
     }
+
+    override fun isGlobalRenderer(te: TileFluidColumn?): Boolean = true
 }
