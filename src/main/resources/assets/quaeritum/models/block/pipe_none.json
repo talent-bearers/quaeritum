@@ -1,6 +1,7 @@
 {
     "parent": "block/block",
     "textures": {
+        "particle": "quaeritum:blocks/pipe",
         "texture": "quaeritum:blocks/pipe",
         "overlay": "quaeritum:blocks/pipe_overlay"
     },
@@ -18,7 +19,7 @@
             "from": [ 5, 5, 5 ],
             "to": [ 11, 11, 11 ],
             "faces": {
-                "north": { "uv": [ 5, 5, 11, 11 ], "texture": "#overlay", "cullface": "north", "tintindex": 0 }
+                "north": { "uv": [ 5, 5, 11, 11 ], "texture": "#overlay", "cullface": "north", "tintindex": 1 }
             }
         }
     ]

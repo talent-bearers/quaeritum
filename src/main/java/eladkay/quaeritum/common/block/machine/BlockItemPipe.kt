@@ -99,12 +99,12 @@ class BlockItemPipe : BlockModContainer("pipe", Material.IRON, *EnumDyeColor.val
 
     override val blockColorFunction: ((state: IBlockState, world: IBlockAccess?, pos: BlockPos?, tintIndex: Int) -> Int)?
         get() = { state, _, _, idx ->
-            if (idx == 0) state.getValue(COLOR).colorValue else -1
+            if (idx == 1) state.getValue(COLOR).colorValue else -1
         }
 
     override val itemColorFunction: ((ItemStack, Int) -> Int)?
         get() = { stack, idx ->
-            if (idx == 0) EnumDyeColor.byMetadata(stack.itemDamage).colorValue else -1
+            if (idx == 1) EnumDyeColor.byMetadata(stack.itemDamage).colorValue else -1
         }
 
     override val extraVariants: Array<out String> get() = arrayOf("pipe")
