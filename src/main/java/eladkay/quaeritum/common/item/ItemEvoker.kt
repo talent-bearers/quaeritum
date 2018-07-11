@@ -96,8 +96,8 @@ class ItemEvoker : ItemMod(LibNames.SOUL_EVOKER), IItemColorProvider {
                     val angle = if (!elements.any { it != EnumSpellElement.AETHER }) {
                         ClientTickHandler.ticksInGame * 2L % 360L / 360.0f
                     } else {
-                        var xBucket = 0f
-                        var yBucket = 0f
+                        var xBucket = 0.0
+                        var yBucket = 0.0
                         var size = 0
                         for (element in elements) {
                             val c = element.color ?: continue

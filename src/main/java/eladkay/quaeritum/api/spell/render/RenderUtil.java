@@ -99,7 +99,7 @@ public final class RenderUtil {
     }
 
     public static void renderLine(BufferBuilder buffer, double x1, double y1, double x2, double y2, float r, float g, float b, double thickness) {
-        float atan = fastAtan2((float) (y2 - y1), (float) (x2 - x1));
+        float atan = fastAtan2(y2 - y1, x2 - x1);
         renderCap(buffer, x1, y1, r, g, b, thickness, atan + Math.PI / 2, SEGMENTS_CIRCLE);
         renderCap(buffer, x2, y2, r, g, b, thickness, atan - Math.PI / 2, SEGMENTS_CIRCLE);
         renderConnectingSegment(buffer, x1, y1, r, g, b, 0, thickness, atan + Math.PI / 2);
@@ -126,7 +126,7 @@ public final class RenderUtil {
         return MathHelper.cos((float) a);
     }
 
-    public static float fastAtan2(float y, float x) {
+    public static float fastAtan2(double y, double x) {
         return (float) MathHelper.atan2(y, x);
     }
 }
