@@ -12,89 +12,97 @@ public final class RenderUtil {
     public static final int SEGMENTS_CIRCLE = 36;
     public static float alphaMultiplier = 1f;
 
+    private static void renderCap(BufferBuilder buffer, double cX, double cY, float r, float g, float b, double thickness, double normalAngle, int sides) {
+        for (int i = 0; i < sides; i++) {
+            double angle = i * Math.PI / sides + normalAngle;
+            float normX = cos(angle);
+            float normY = sin(angle);
+            double outerX = cX + normX * thickness;
+            double outerY = cY + normY * thickness;
+            buffer.pos(outerX, outerY, 0).color(0, 0, 0, 0).endVertex();
+            buffer.pos(cX, cY, 0).color(r, g, b, 0.75f * alphaMultiplier).endVertex();
+        }
+    }
+
+    private static void renderCurlingCap(BufferBuilder buffer, double cX, double cY, float r, float g, float b, double thickness, double normalAngle, int sides, boolean ccw) {
+        int direction = ccw ? -1 : 1;
+
+        for (int i = 0; i < sides; i++) {
+            double angle = i * Math.PI / sides + normalAngle;
+            float normX = cos(angle);
+            float normXOffset = cos(angle - normalAngle);
+            float normY = sin(angle);
+            double length = thickness / (2 + direction * normXOffset);
+            double outerX = cX + normX * length;
+            double outerY = cY + normY * length;
+            buffer.pos(outerX, outerY, 0).color(0, 0, 0, 0).endVertex();
+            buffer.pos(cX, cY, 0).color(r, g, b, 0.75f * alphaMultiplier).endVertex();
+        }
+    }
+
+    private static void renderArcSegment(BufferBuilder buffer, double cX, double cY, float r, float g, float b, double radius, double outerRadius, double angleOffset, int sides, double radians, boolean repeatLast) {
+        int segments = repeatLast ? sides + 1 : sides;
+        for (int i = 0; i < segments; i++)
+            renderArcPoint(buffer, cX, cY, r, g, b, radius, outerRadius, angleOffset, sides, radians, i);
+    }
+
+    private static void renderArcPoint(BufferBuilder buffer, double cX, double cY, float r, float g, float b, double radius, double outerRadius, double angleOffset, int sides, double radians, int pointIndex) {
+        double angle = pointIndex * radians / sides + angleOffset;
+        float normX = cos(angle);
+        float normY = sin(angle);
+        double innerX = cX + normX * radius;
+        double innerY = cY + normY * radius;
+        double outerX = cX + normX * outerRadius;
+        double outerY = cY + normY * outerRadius;
+        buffer.pos(outerX, outerY, 0).color(0, 0, 0, 0).endVertex();
+        buffer.pos(innerX, innerY, 0).color(r, g, b, 0.75f * alphaMultiplier).endVertex();
+    }
+
+    private static void renderInnerArcSegment(BufferBuilder buffer, double cX, double cY, float r, float g, float b, double radius, double outerRadius, double angleOffset, int sides, double radians, boolean repeatLast) {
+        int segments = repeatLast ? sides + 1 : sides;
+        for (int i = segments; i >= 0; i--)
+            renderArcPoint(buffer, cX, cY, r, g, b, radius, outerRadius, angleOffset, sides, radians, i);
+    }
+
+    private static void renderConnectingSegment(BufferBuilder buffer, double cX, double cY, float r, float g, float b, double radius, double outerRadius, double angleOffset) {
+        float normX = cos(angleOffset);
+        float normY = sin(angleOffset);
+        double innerX = cX + normX * radius;
+        double innerY = cY + normY * radius;
+        double outerX = cX + normX * outerRadius;
+        double outerY = cY + normY * outerRadius;
+
+        buffer.pos(outerX, outerY, 0).color(0, 0, 0, 0).endVertex();
+        buffer.pos(innerX, innerY, 0).color(r, g, b, 0.75f * alphaMultiplier).endVertex();
+    }
+
     public static void renderHalfCircle(BufferBuilder buffer, double cX, double cY, float r, float g, float b, double radius, double thickness, double angleOffset) {
+        renderArc(buffer, cX, cY, r, g, b, radius, thickness, angleOffset, Math.PI);
+    }
+
+    public static void renderArc(BufferBuilder buffer, double cX, double cY, float r, float g, float b, double radius, double thickness, double angleOffset, double radians) {
+        if (radians >= 2 * Math.PI) {
+            renderNGon(buffer, cX, cY, r, g, b, radius, thickness, SEGMENTS_CIRCLE, angleOffset);
+            return;
+        }
+
         double outerRadius = radius + thickness;
         double centralRadius = radius - thickness / 2;
 
-        double xShift = MathHelper.cos((float) angleOffset) * radius;
-        double yShift = MathHelper.sin((float) angleOffset) * radius;
+        double xShift = cos(angleOffset) * radius;
+        double yShift = sin(angleOffset) * radius;
 
-        for (int i = 0; i < SEGMENTS_CIRCLE; i++) {
-            double angle = i * Math.PI / SEGMENTS_CIRCLE + angleOffset;
-            float normX = MathHelper.cos((float) angle);
-            float normY = MathHelper.sin((float) angle);
-            double innerX = cX + normX * radius;
-            double innerY = cY + normY * radius;
-            double outerX = cX + normX * outerRadius;
-            double outerY = cY + normY * outerRadius;
-            buffer.pos(outerX, outerY, 0).color(0, 0, 0, 0).endVertex();
-            buffer.pos(innerX, innerY, 0).color(r, g, b, 0.75f * alphaMultiplier).endVertex();
-        }
-
-        for (int i = 0; i < SEGMENTS_CIRCLE; i++) {
-            double angle = i * Math.PI / SEGMENTS_CIRCLE + angleOffset + Math.PI;
-            float normX = MathHelper.cos((float) angle);
-            float normXOffset = MathHelper.cos((float) (angle - angleOffset));
-            float normY = MathHelper.sin((float) angle);
-            double length = thickness / (2 + normXOffset);
-            double outerX = -xShift + cX + normX * length;
-            double outerY = -yShift + cY + normY * length;
-            buffer.pos(outerX, outerY, 0).color(0, 0, 0, 0).endVertex();
-            buffer.pos(-xShift + cX, -yShift + cY, 0).color(r, g, b, 0.75f * alphaMultiplier).endVertex();
-        }
-
-        for (int i = 0; i <= SEGMENTS_CIRCLE; i++) {
-            double angle = i * Math.PI / SEGMENTS_CIRCLE + angleOffset;
-            float normX = MathHelper.cos((float) angle);
-            float normY = MathHelper.sin((float) angle);
-            double innerX = cX + normX * radius;
-            double innerY = cY + normY * radius;
-            double centralX = cX + normX * centralRadius;
-            double centralY = cY + normY * centralRadius;
-            buffer.pos(innerX, innerY, 0).color(r, g, b, 0.75f * alphaMultiplier).endVertex();
-            buffer.pos(centralX, centralY, 0).color(0, 0, 0, 0).endVertex();
-        }
-
-        for (int i = 0; i < SEGMENTS_CIRCLE; i++) {
-            double angle = i * Math.PI / SEGMENTS_CIRCLE + angleOffset - Math.PI;
-            float normX = MathHelper.cos((float) angle);
-            float normXOffset = MathHelper.cos((float) (angle - angleOffset));
-            float normY = MathHelper.sin((float) angle);
-            double length = thickness / (2 - normXOffset);
-            double outerX = xShift + cX + normX * length;
-            double outerY = yShift + cY + normY * length;
-            buffer.pos(outerX, outerY, 0).color(0, 0, 0, 0).endVertex();
-            buffer.pos(xShift + cX, yShift + cY, 0).color(r, g, b, 0.75f * alphaMultiplier).endVertex();
-        }
+        renderArcSegment(buffer, cX, cY, r, g, b, radius, outerRadius, angleOffset, SEGMENTS_CIRCLE, radians, false);
+        renderCurlingCap(buffer, cX - xShift, cY - yShift, r, g, b, thickness, angleOffset + radians, SEGMENTS_CIRCLE, true);
+        renderInnerArcSegment(buffer, cX, cY, r, g, b, radius, centralRadius, angleOffset, SEGMENTS_CIRCLE, radians, true);
+        renderCurlingCap(buffer, cX + xShift, cY + yShift, r, g, b, thickness, angleOffset - radians, SEGMENTS_CIRCLE, false);
     }
 
     public static void renderLine(BufferBuilder buffer, double x1, double y1, double x2, double y2, float r, float g, float b, double thickness) {
         float atan = fastAtan2((float) (y2 - y1), (float) (x2 - x1));
-        for (int i = 0; i < SEGMENTS_CIRCLE; i++) {
-            double angle = i * Math.PI / SEGMENTS_CIRCLE + atan + Math.PI / 2;
-            float normX = MathHelper.cos((float) angle);
-            float normY = MathHelper.sin((float) angle);
-            double outerX = x1 + normX * thickness;
-            double outerY = y1 + normY * thickness;
-            buffer.pos(outerX, outerY, 0).color(0, 0, 0, 0).endVertex();
-            buffer.pos(x1, y1, 0).color(r, g, b, 0.75f * alphaMultiplier).endVertex();
-        }
-        for (int i = 0; i < SEGMENTS_CIRCLE; i++) {
-            double angle = i * Math.PI / SEGMENTS_CIRCLE + atan - Math.PI / 2;
-            float normX = MathHelper.cos((float) angle);
-            float normY = MathHelper.sin((float) angle);
-            double outerX = x2 + normX * thickness;
-            double outerY = y2 + normY * thickness;
-            buffer.pos(outerX, outerY, 0).color(0, 0, 0, 0).endVertex();
-            buffer.pos(x2, y2, 0).color(r, g, b, 0.75f * alphaMultiplier).endVertex();
-        }
-        double angle = atan + Math.PI / 2;
-        float normX = MathHelper.cos((float) angle);
-        float normY = MathHelper.sin((float) angle);
-        double outerX = x1 + normX * thickness;
-        double outerY = y1 + normY * thickness;
-        buffer.pos(outerX, outerY, 0).color(0, 0, 0, 0).endVertex();
-        buffer.pos(x1, y1, 0).color(r, g, b, 0.75f * alphaMultiplier).endVertex();
+        renderCap(buffer, x1, y1, r, g, b, thickness, atan + Math.PI / 2, SEGMENTS_CIRCLE);
+        renderCap(buffer, x2, y2, r, g, b, thickness, atan - Math.PI / 2, SEGMENTS_CIRCLE);
+        renderConnectingSegment(buffer, x1, y1, r, g, b, 0, thickness, atan + Math.PI / 2);
     }
 
     public static void renderNGon(BufferBuilder buffer, double cX, double cY, float r, float g, float b, double radius, double thickness, int sides) {
@@ -105,51 +113,20 @@ public final class RenderUtil {
         double outerRadius = radius + thickness;
         double centralRadius = radius - thickness / 2;
 
-        for (int i = 0; i <= sides; i++) {
-            double angle = i * 2 * Math.PI / sides + angleOffset;
-            float normX = MathHelper.cos((float) angle);
-            float normY = MathHelper.sin((float) angle);
-            double innerX = cX + normX * radius;
-            double innerY = cY + normY * radius;
-            double outerX = cX + normX * outerRadius;
-            double outerY = cY + normY * outerRadius;
-            buffer.pos(outerX, outerY, 0).color(0, 0, 0, 0).endVertex();
-            buffer.pos(innerX, innerY, 0).color(r, g, b, 0.75f * alphaMultiplier).endVertex();
-        }
+        renderArcSegment(buffer, cX, cY, r, g, b, radius, outerRadius, angleOffset, sides, 2 * Math.PI, true);
+        renderInnerArcSegment(buffer, cX, cY, r, g, b, radius, centralRadius, angleOffset, sides, 2 * Math.PI, false);
+        renderConnectingSegment(buffer, cX, cY, r, g, b, radius, outerRadius, angleOffset);
+    }
 
-        for (int i = sides; i >= 0; i--) {
-            double angle = i * 2 * Math.PI / sides + angleOffset;
-            float normX = MathHelper.cos((float) angle);
-            float normY = MathHelper.sin((float) angle);
-            double innerX = cX + normX * radius;
-            double innerY = cY + normY * radius;
-            double centralX = cX + normX * centralRadius;
-            double centralY = cY + normY * centralRadius;
-            buffer.pos(centralX, centralY, 0).color(0, 0, 0, 0).endVertex();
-            buffer.pos(innerX, innerY, 0).color(r, g, b, 0.5f * alphaMultiplier).endVertex();
-        }
+    public static float sin(double a) {
+        return MathHelper.sin((float) a);
+    }
 
-        float normX = MathHelper.cos((float) angleOffset);
-        float normY = MathHelper.sin((float) angleOffset);
-        double innerX = cX + normX * radius;
-        double innerY = cY + normY * radius;
-        double outerX = cX + normX * outerRadius;
-        double outerY = cY + normY * outerRadius;
-
-        buffer.pos(outerX, outerY, 0).color(0, 0, 0, 0).endVertex();
-        buffer.pos(innerX, innerY, 0).color(r, g, b, 0.75f * alphaMultiplier).endVertex();
+    public static float cos(double a) {
+        return MathHelper.cos((float) a);
     }
 
     public static float fastAtan2(float y, float x) {
-        if (x == 0) return Math.copySign(1.57079637f, y);
-        float ay = MathHelper.abs(y);
-        float ax = MathHelper.abs(x);
-        float a = Math.min(ax, ay) / Math.max(ax, ay);
-        float s = a * a;
-        float r = ((-0.0464964749f * s + 0.15931422f) * s - 0.327622764f) * s * a + a;
-        if (ay > ax) r = 1.57079637f - r;
-        if (x < 0) r = 3.14159274f - r;
-        if (y < 0) r = -r;
-        return r;
+        return (float) MathHelper.atan2(y, x);
     }
 }
