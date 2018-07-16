@@ -9,6 +9,8 @@ import eladkay.quaeritum.common.ItemPassionDrive
 import eladkay.quaeritum.common.ItemTwinDrive
 import eladkay.quaeritum.common.ItemVibrancyDrive
 import eladkay.quaeritum.common.block.ModBlocks
+import eladkay.quaeritum.common.item.historic.ItemOathScar
+import eladkay.quaeritum.common.item.historic.ItemWorldBlade
 import eladkay.quaeritum.common.item.misc.*
 import eladkay.quaeritum.common.item.soulstones.*
 import eladkay.quaeritum.common.rituals.diagrams.ItemStarMap

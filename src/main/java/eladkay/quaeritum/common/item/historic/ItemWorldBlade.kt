@@ -1,4 +1,4 @@
-package eladkay.quaeritum.common.item.misc
+package eladkay.quaeritum.common.item.historic
 
 import com.google.common.collect.Multimap
 import com.teamwizardry.librarianlib.features.base.item.ItemModSword

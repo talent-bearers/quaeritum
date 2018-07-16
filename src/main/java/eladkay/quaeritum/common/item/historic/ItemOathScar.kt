@@ -1,4 +1,4 @@
-package eladkay.quaeritum.common.item.misc
+package eladkay.quaeritum.common.item.historic
 
 import com.teamwizardry.librarianlib.features.base.item.ItemModSword
 import com.teamwizardry.librarianlib.features.helpers.ItemNBTHelper
