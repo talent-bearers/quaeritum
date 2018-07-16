@@ -56,7 +56,10 @@ public enum EnumLegend implements ISymbolCarrier {
     MYSTERIES(new Color(0xB10078), new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
             new HalfCircleSymbolInstruction(0.5f, 1 - R2O2, 0.5f - R2O2, Math.PI),
             new HalfCircleSymbolInstruction(0.5f, R2O2, 0.5f - R2O2, 0)),
-    // Ancient of Twisted Ways (Elucent (before the Blink, Emoniph), Archmage of Twisted Paths (Water))
+    // Ancient of Twisted Ways / Archmage of Twisted Paths (Water)
+    // Before the Blink: Emoniph
+    // After the Blink: Elucent
+    // After the Fool's Day: EpicSquid
     TWISTED(new Color(0x4EFF93), new CircleSymbolInstruction(0.5f, 0.5f, 0.5f),
             new LineSymbolInstruction(0.5f, 0.5f, 0.5f, 0.25f),
             new LineSymbolInstruction(0.5f, 0.25f, 0.25f, 0.5f),

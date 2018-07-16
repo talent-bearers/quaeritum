@@ -36,10 +36,14 @@ object ChatChanger {
             UUID.fromString("adb68f1a-29a8-4354-bf74-d80e5f315865") to EnumLegend.LORIST, // theLorist
             UUID.fromString("c716cef1-833b-47e5-9d62-a936a9552d0d") to EnumLegend.DISCOVERY, // Eladkay
             UUID.fromString("cd3f01ee-8930-49f3-b3e6-05348338b359") to EnumLegend.TRUTH, // Escapee_
+            UUID.fromString("689c0981-d8d1-4b64-898f-eb3735be92f5") to EnumLegend.DOORWAYS, // Mithion
             UUID.fromString("2ac3ed86-bf32-4f64-a010-92b095eed279") to EnumLegend.DOORWAYS, // Demoniaque1
             UUID.fromString("8c826f34-113b-4238-a173-44639c53b6e6") to EnumLegend.GROWTH, // Vazkii
             UUID.fromString("0f95811a-b3b6-4dba-ba03-4adfec7cf5ab") to EnumLegend.MYSTERIES, // Azanor
+            UUID.fromString("9004a217-117a-4fca-9aae-df52436b6eb7") to EnumLegend.TWISTED, // Emoniph
             UUID.fromString("9417e568-6054-4a47-b1b5-93f747cfa4ce") to EnumLegend.TWISTED, // Elucent
+            UUID.fromString("a3cc41c0-57f3-4d24-bd4c-976f800a7625") to EnumLegend.TWISTED, // EpicSquid315
+            UUID.fromString("b626a673-dbae-43e8-8c41-010e49896b20") to EnumLegend.INGENUITY, // AlexIIL
             UUID.fromString("ccf731e2-bb8c-4426-8876-cbee224e34bd") to EnumLegend.INGENUITY, // KingLemming
             UUID.fromString("117de7ec-f75a-4d1f-9a8b-20e1f1b642ae") to EnumLegend.SHATTERED, // MrCodeWarrior
             UUID.fromString("562193d8-7da3-48c0-82fb-89cde9f2bcb7") to EnumLegend.ARCHIVE, // CobrasBane
