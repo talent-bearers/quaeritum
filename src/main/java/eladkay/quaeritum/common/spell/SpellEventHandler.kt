@@ -80,7 +80,7 @@ object SpellEventHandler {
             val look = player.lookVec
             val speedVec = look
                     .scale(0.75)
-                    .addVector(player.motionX, player.motionY, player.motionZ)
+                    .add(player.motionX, player.motionY, player.motionZ)
 
             player.motionX = speedVec.x
             player.motionY = speedVec.y

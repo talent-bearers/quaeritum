@@ -120,9 +120,9 @@ object RemainingItemsRenderHandler {
     }
 
     fun set(player: EntityPlayer, displayStack: ItemStack, pattern: Pattern) {
-        val count = (0..player.inventory.sizeInventory - 1)
+        val count = (0 until player.inventory.sizeInventory)
                 .mapNotNull { player.inventory.getStackInSlot(it) }
-                .filter { pattern.matcher(it.unlocalizedName).find() }
+                .filter { pattern.matcher(it.translationKey).find() }
                 .sumBy { it.count }
 
         Quaeritum.proxy.setRemainingItemDisplay(null, displayStack, null, count)

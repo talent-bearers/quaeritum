@@ -127,10 +127,10 @@ class EntityChaosborn : EntityMob {
     //  @Override
     fun attackEntityWithRangedAttack(p_82196_1_: EntityLivingBase,
                                      p_82196_2_: Float) {
-        val entityarrow = EntityArrowFire(this.world, this, p_82196_1_, 1.6f, (14 - this.world.difficulty.difficultyId * 4).toFloat())
+        val entityarrow = EntityArrowFire(this.world, this, p_82196_1_, 1.6f, (14 - this.world.difficulty.id * 4).toFloat())
         val i = 3 //Equivalent to a power 3 bow.
         val j = 1 //Equivalent to a punch 2 bow.
-        entityarrow.damage = (p_82196_2_ * 2.0f).toDouble() + this.rand.nextGaussian() * 0.25 + (this.world.difficulty.difficultyId.toFloat() * 0.11f).toDouble()
+        entityarrow.damage = (p_82196_2_ * 2.0f).toDouble() + this.rand.nextGaussian() * 0.25 + (this.world.difficulty.id.toFloat() * 0.11f).toDouble()
         entityarrow.damage = entityarrow.damage + i.toDouble() * 0.5 + 0.5
         entityarrow.setKnockbackStrength(j)
         entityarrow.setFire(100)

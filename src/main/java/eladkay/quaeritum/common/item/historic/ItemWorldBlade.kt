@@ -52,7 +52,7 @@ class ItemWorldBlade : ItemModSword(LibNames.WORLD_BLADE, LibMaterials.TEMPESTEE
                 pos = entityLiving.positionVector.add(entityLiving.lookVec * 8.0)
             } else {
                 when (result.typeOfHit) {
-                    RayTraceResult.Type.BLOCK -> pos = Vec3d(result.blockPos).add(Vec3d(result.sideHit.directionVec)).addVector(0.5, 0.5, 0.5)
+                    RayTraceResult.Type.BLOCK -> pos = Vec3d(result.blockPos).add(Vec3d(result.sideHit.directionVec)).add(0.5, 0.5, 0.5)
                     RayTraceResult.Type.ENTITY -> {
                         pos = result.entityHit.positionVector
                         hitEntity = true

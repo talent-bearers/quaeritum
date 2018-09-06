@@ -102,8 +102,8 @@ public final class ContractRegistry {
     public static IContractOath registerOath(@NotNull ResourceLocation id, int length,
                                              @NotNull Predicate<EntityPlayer> unlocked,
                                              @NotNull QuadConsumer<EntityPlayer, ItemStack, World, BlockPos> fire) {
-        String modid = id.getResourceDomain();
-        String name = id.getResourcePath();
+        String modid = id.getNamespace();
+        String name = id.getPath();
         String[] lines = new String[length];
         for (int i = 0; i < length; i++) lines[i] = modid + ".oath." + name + i;
         return registerOath(id, modid + ".oath." + name, unlocked, fire, lines);

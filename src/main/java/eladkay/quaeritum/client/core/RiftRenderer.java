@@ -21,6 +21,7 @@ import org.lwjgl.opengl.GL14;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.lwjgl.opengl.GL14.GL_FUNC_ADD;
 import static org.lwjgl.opengl.GL14.GL_FUNC_SUBTRACT;
@@ -77,7 +78,7 @@ public class RiftRenderer {
 
             for (int j = 0; j < SEGMENT_COUNT; j++) {
                 double x = j / SEGMENT_COUNT;
-                Vec3d scale = sub.scale(x).add(point).addVector(
+                Vec3d scale = sub.scale(x).add(point).add(
                         rand.nextDouble(-JAGGED_RESOLUTION, JAGGED_RESOLUTION),
                         rand.nextDouble(-JAGGED_RESOLUTION, JAGGED_RESOLUTION),
                         0);
@@ -96,7 +97,7 @@ public class RiftRenderer {
 
             for (int j = 0; j < SEGMENT_COUNT; j++) {
                 double x = j / SEGMENT_COUNT;
-                Vec3d scale = sub.scale(x).add(point).addVector(
+                Vec3d scale = sub.scale(x).add(point).add(
                         rand.nextDouble(-JAGGED_RESOLUTION, JAGGED_RESOLUTION),
                         rand.nextDouble(-JAGGED_RESOLUTION, JAGGED_RESOLUTION),
                         0);
@@ -190,59 +191,9 @@ public class RiftRenderer {
         GL14.glBlendEquation(GL_FUNC_SUBTRACT);
         GlStateManager.depthMask(false);
 
-        vb.begin(GL11.GL_TRIANGLE_STRIP, DefaultVertexFormats.POSITION_COLOR);
-        for (int i = 0; i < points1.size(); i += (flip1 ? 1 : 0)) {
-            Vec3d point;
-            if (flip1) point = points1.get(i);
-            else point = points3.get(i);
-
-            flip1 = !flip1;
-
-            point = point.add(
-                    new Vec3d(
-                            MathHelper.sin((float) (((ClientTickHandler.getTicks() / 30.0) + point.lengthVector()))),
-                            MathHelper.sin((float) (((ClientTickHandler.getTicks() / 30.0) + point.lengthVector() * 0.5))),
-                            MathHelper.sin((float) (((ClientTickHandler.getTicks() / 30.0) + point.lengthVector() * 1.5)))).scale(0.3));
-
-            pos(vb, point).color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha()).endVertex();
-        }
-        tessellator.draw();
-
-        vb.begin(GL11.GL_TRIANGLE_STRIP, DefaultVertexFormats.POSITION_COLOR);
-        for (int i = 0; i < points2.size(); i += (flip2 ? 1 : 0)) {
-            Vec3d point;
-            if (flip2) point = points2.get(i);
-            else point = points4.get(i);
-
-            flip2 = !flip2;
-
-            point = point.add(
-                    new Vec3d(
-                            MathHelper.sin((float) (((ClientTickHandler.getTicks() / 30.0) + point.lengthVector()))),
-                            MathHelper.sin((float) (((ClientTickHandler.getTicks() / 30.0) + point.lengthVector() * 0.5))),
-                            MathHelper.sin((float) (((ClientTickHandler.getTicks() / 30.0) + point.lengthVector() * 1.5)))).scale(0.3));
-
-            pos(vb, point).color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha()).endVertex();
-        }
-        tessellator.draw();
-
-        vb.begin(GL11.GL_TRIANGLE_STRIP, DefaultVertexFormats.POSITION_COLOR);
-        for (int i = 0; i < points3.size(); i += (flip3 ? 1 : 0)) {
-            Vec3d point;
-            if (flip3) point = points3.get(i);
-            else point = points4.get(i);
-
-            flip3 = !flip3;
-
-            point = point.add(
-                    new Vec3d(
-                            MathHelper.sin((float) (((ClientTickHandler.getTicks() / 30.0) + point.lengthVector()))),
-                            MathHelper.sin((float) (((ClientTickHandler.getTicks() / 30.0) + point.lengthVector() * 0.5))),
-                            MathHelper.sin((float) (((ClientTickHandler.getTicks() / 30.0) + point.lengthVector() * 1.5)))).scale(0.3));
-
-            pos(vb, point).color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha()).endVertex();
-        }
-        tessellator.draw();
+        flip1 = renderSection(vb, tessellator, color, flip1, points1, points3);
+        flip2 = renderSection(vb, tessellator, color, flip2, points2, points4);
+        flip3 = renderSection(vb, tessellator, color, flip3, points3, points4);
 
         GL14.glBlendEquation(GL_FUNC_ADD);
         GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
@@ -250,5 +201,26 @@ public class RiftRenderer {
         GlStateManager.depthMask(true);
         GlStateManager.enableTexture2D();
         GlStateManager.popMatrix();
+    }
+
+    private static boolean renderSection(BufferBuilder vb, Tessellator tessellator, Color color, boolean flip, List<Vec3d> pointsA, List<Vec3d> pointsB) {
+        vb.begin(GL11.GL_TRIANGLE_STRIP, DefaultVertexFormats.POSITION_COLOR);
+        for (int i = 0; i < pointsA.size(); i += (flip ? 1 : 0)) {
+            Vec3d point;
+            if (flip) point = pointsA.get(i);
+            else point = pointsB.get(i);
+
+            flip = !flip;
+
+            point = point.add(
+                    new Vec3d(
+                            MathHelper.sin((float) (((ClientTickHandler.getTicks() / 30.0) + point.length()))),
+                            MathHelper.sin((float) (((ClientTickHandler.getTicks() / 30.0) + point.length() * 0.5))),
+                            MathHelper.sin((float) (((ClientTickHandler.getTicks() / 30.0) + point.length() * 1.5)))).scale(0.3));
+
+            pos(vb, point).color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha()).endVertex();
+        }
+        tessellator.draw();
+        return flip;
     }
 }

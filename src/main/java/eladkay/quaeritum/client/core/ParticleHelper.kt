@@ -85,7 +85,7 @@ object ParticleHelper {
     fun spawnParticle(particleName: String, posX: Double, posY: Double, posZ: Double, motX: Double, motY: Double, motZ: Double, r: Double, g: Double, b: Double) {
 
         val minecraft = Minecraft.getMinecraft()
-        if (minecraft != null && minecraft.renderViewEntity != null && minecraft.effectRenderer != null) {
+        if (minecraft.renderViewEntity != null && minecraft.effectRenderer != null) {
             val var15 = minecraft.renderViewEntity!!.posX - posX
             val var17 = minecraft.renderViewEntity!!.posY - posY
             val var19 = minecraft.renderViewEntity!!.posZ - posZ

@@ -75,7 +75,7 @@ class BlockFluidHolder : BlockModContainer("fluid_holder", Material.GLASS) {
         return BlockStateContainer(this, UP, DOWN)
     }
 
-    override fun getBlockLayer() = BlockRenderLayer.CUTOUT
+    override fun getRenderLayer() = BlockRenderLayer.CUTOUT
 
     override fun getBoundingBox(state: IBlockState?, source: IBlockAccess?, pos: BlockPos?) = AABB
 

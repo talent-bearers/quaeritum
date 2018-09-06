@@ -59,7 +59,7 @@ class ItemEvoker : ItemMod(LibNames.SOUL_EVOKER), IItemColorProvider {
                 ItemNBTHelper.setIntArray(stack, "quaeritum_elements", ElementHandler.fromElements(elements))
 
             val tag = stack.tagCompound
-            if (tag != null && tag.hasNoTags())
+            if (tag != null && tag.isEmpty)
                 stack.tagCompound = null
         }
 

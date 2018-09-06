@@ -5,13 +5,13 @@ import com.teamwizardry.librarianlib.features.base.item.ItemMod
 import com.teamwizardry.librarianlib.features.base.item.ItemModBook
 import com.teamwizardry.librarianlib.features.base.item.ItemModSeed
 import com.teamwizardry.librarianlib.features.gui.provided.book.hierarchy.book.Book
-import eladkay.quaeritum.common.ItemPassionDrive
-import eladkay.quaeritum.common.ItemTwinDrive
-import eladkay.quaeritum.common.ItemVibrancyDrive
 import eladkay.quaeritum.common.block.ModBlocks
+import eladkay.quaeritum.common.item.historic.ItemDeagAnam
 import eladkay.quaeritum.common.item.historic.ItemOathScar
 import eladkay.quaeritum.common.item.historic.ItemWorldBlade
-import eladkay.quaeritum.common.item.misc.*
+import eladkay.quaeritum.common.item.misc.ItemFertilizer
+import eladkay.quaeritum.common.item.misc.ItemPicture
+import eladkay.quaeritum.common.item.misc.ItemWorldShield
 import eladkay.quaeritum.common.item.soulstones.*
 import eladkay.quaeritum.common.rituals.diagrams.ItemStarMap
 import net.minecraft.creativetab.CreativeTabs
@@ -45,6 +45,7 @@ object ModItems {
     val vibrancyDrive = ItemVibrancyDrive()
     val twinDrive = ItemTwinDrive()
     val oathScar = ItemOathScar()
+    val deagAnam = ItemDeagAnam()
 
     val book = ItemModBook("book", Book("book"))
 

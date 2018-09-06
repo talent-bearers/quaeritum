@@ -43,7 +43,7 @@ class ShardedSkiesDiagram : IDiagram {
     override fun onPrepUpdate(world: World, pos: BlockPos, tile: TileEntity, ticksRemaining: Int): Boolean {
         for (stack in IDiagram.Helper.entitiesAroundAltar(tile, 4.0)) {
             if (!IDiagram.Helper.isEntityItemInList(stack, requiredItems)) continue
-            PacketHandler.NETWORK.sendToAllAround(PuffMessage(stack.positionVector.addVector(RandUtil.nextDouble(-0.25, 0.25), 0.0, RandUtil.nextDouble(-0.25, 0.25))),
+            PacketHandler.NETWORK.sendToAllAround(PuffMessage(stack.positionVector.add(RandUtil.nextDouble(-0.25, 0.25), 0.0, RandUtil.nextDouble(-0.25, 0.25))),
                     world, stack.positionVector, 64)
         }
         return hasRequiredItems(world, pos, tile)

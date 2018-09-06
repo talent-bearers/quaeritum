@@ -110,7 +110,7 @@ object BasicSpells {
             val look = player.lookVec
             val speedVec = look
                     .scale(0.75 + (trailing.toDouble() / 2) / total)
-                    .addVector(player.motionX / total, player.motionY / total + look.y * (trailing.toDouble() / 2) / total, player.motionZ / total)
+                    .add(player.motionX / total, player.motionY / total + look.y * (trailing.toDouble() / 2) / total, player.motionZ / total)
 
             player.motionX = speedVec.x
             player.motionY = speedVec.y

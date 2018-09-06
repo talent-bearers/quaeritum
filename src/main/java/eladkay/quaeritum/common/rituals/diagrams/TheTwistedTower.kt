@@ -181,8 +181,8 @@ class TheTwistedTower : IDiagram {
         } ?: return false
 
         player.addPotionEffect(PotionEffect(PotionRooted, 10, 0, true, true))
-        val posVec = Vec3d(pos).addVector(0.5, 0.125, 0.5)
-        PacketHandler.NETWORK.sendToAllAround(MessageTowerEffect(posVec, player.positionVector.addVector(0.0, player.getEyeHeight() * 1.5, 0.0)),
+        val posVec = Vec3d(pos).add(0.5, 0.125, 0.5)
+        PacketHandler.NETWORK.sendToAllAround(MessageTowerEffect(posVec, player.positionVector.add(0.0, player.getEyeHeight() * 1.5, 0.0)),
                 world, posVec, 64)
 
         PacketHandler.NETWORK.sendToAllAround(PuffMessage(player.positionVector, color = Color(0x341C0E),

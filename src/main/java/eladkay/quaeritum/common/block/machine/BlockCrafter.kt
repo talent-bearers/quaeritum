@@ -41,7 +41,7 @@ class BlockCrafter : BlockModContainer(LibNames.CRAFTER, Material.WOOD) {
 
     override fun createBlockState() = BlockStateContainer(this, FACING)
     override fun getMetaFromState(state: IBlockState) = state.getValue(FACING).index
-    override fun getStateFromMeta(meta: Int): IBlockState = defaultState.withProperty(FACING, EnumFacing.getFront(meta))
+    override fun getStateFromMeta(meta: Int): IBlockState = defaultState.withProperty(FACING, EnumFacing.byIndex(meta))
 
     override fun createTileEntity(world: World, state: IBlockState) = TileCrafter()
 

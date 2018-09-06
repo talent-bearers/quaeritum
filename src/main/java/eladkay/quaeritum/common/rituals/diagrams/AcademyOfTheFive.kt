@@ -90,7 +90,7 @@ class AcademyOfTheFive : IDiagram {
 
         if (academiesToSend.isNotEmpty())
             PacketHandler.NETWORK.sendToAllAround(MessageAcademyEffect(pos, academiesToSend.toTypedArray()),
-                    world, Vec3d(pos).addVector(0.5, 0.5, 0.5), 64)
+                    world, Vec3d(pos).add(0.5, 0.5, 0.5), 64)
 
         tile.world.getEntitiesWithinAABB(Entity::class.java, AxisAlignedBB(tile.pos).grow(4.0))
                 .asSequence()
@@ -195,11 +195,11 @@ class ItemStarMap : ItemMod("star_map") {
             if (worldIn.isRemote) ClientRunnable.run {
                 val poses = ItemNBTHelper.getList(stack, "poses", Constants.NBT.TAG_LONG)
                 if (poses != null) for (pos in poses) {
-                    val subCent = playerIn.positionVector.addVector(0.0, 0.5, 0.0)
-                    val cent = subCent.addVector(0.0, 1.0, 0.0)
+                    val subCent = playerIn.positionVector.add(0.0, 0.5, 0.0)
+                    val cent = subCent.add(0.0, 1.0, 0.0)
                     val position = BlockPos.fromLong((pos as NBTTagLong).long)
-                    var dir = Vec3d(position).addVector(0.5, 0.5, 0.5).subtract(subCent)
-                    dir = dir.addVector(0.0, -dir.y / 2, 0.0)
+                    var dir = Vec3d(position).add(0.5, 0.5, 0.5).subtract(subCent)
+                    dir = dir.add(0.0, -dir.y / 2, 0.0)
                     dir = dir.normalize()
                     (0 until 10)
                             .map { cent.add(dir.scale(1.5 + it / 6.0)) }

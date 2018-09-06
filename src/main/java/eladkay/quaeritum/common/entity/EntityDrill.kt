@@ -5,6 +5,7 @@ import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.util.DamageSource
 import net.minecraft.util.EnumActionResult
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.BlockPos
@@ -51,8 +52,8 @@ class EntityDrill : EntityBaseProjectile {
 
     var blocksLeft = 0
 
-    override fun getDefaultDamageSource() = null
-    override fun getShotDamageSource(shooter: Entity) = null
+    override fun getDefaultDamageSource(): DamageSource? = null
+    override fun getShotDamageSource(shooter: Entity): DamageSource? = null
 
     override fun onImpactEntity(entity: Entity, successful: Boolean) {
         // NO-OP

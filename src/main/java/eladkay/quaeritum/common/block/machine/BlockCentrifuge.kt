@@ -36,7 +36,7 @@ class BlockCentrifuge : BlockModContainer(LibNames.CENTRIFUGE, Material.CLOTH) {
 
     override fun withMirror(state: IBlockState, mirrorIn: Mirror): IBlockState = state.withRotation(mirrorIn.toRotation(state.getValue(FACING)))
 
-    override fun getStateFromMeta(meta: Int): IBlockState = defaultState.withProperty(FACING, EnumFacing.getHorizontal(meta))
+    override fun getStateFromMeta(meta: Int): IBlockState = defaultState.withProperty(FACING, EnumFacing.byHorizontalIndex(meta))
 
     override fun getMetaFromState(state: IBlockState) = state.getValue(FACING).horizontalIndex
 

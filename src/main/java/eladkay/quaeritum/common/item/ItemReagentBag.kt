@@ -47,11 +47,11 @@ class ItemReagentBag : ItemMod(LibNames.REAGENT_BAG), ISpellReagent {
         }
     }
 
-    override fun getUnlocalizedName(stack: ItemStack): String {
+    override fun getTranslationKey(stack: ItemStack): String {
         return if (ItemNBTHelper.getBoolean(stack, "infinite", false))
-            super.getUnlocalizedName(stack) + ".infinite"
+            super.getTranslationKey(stack) + ".infinite"
         else
-            super.getUnlocalizedName(stack)
+            super.getTranslationKey(stack)
     }
 
     override fun canAddToReagentBag(stack: ItemStack) = false

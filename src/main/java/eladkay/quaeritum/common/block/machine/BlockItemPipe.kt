@@ -114,7 +114,7 @@ class BlockItemPipe : BlockModContainer("pipe", Material.IRON, *EnumDyeColor.val
         get() = { ModelResourceLocation("${LibMisc.MOD_ID}:pipe", "inventory") }
 
     @SideOnly(Side.CLIENT)
-    override fun getBlockLayer(): BlockRenderLayer {
+    override fun getRenderLayer(): BlockRenderLayer {
         return BlockRenderLayer.CUTOUT
     }
 

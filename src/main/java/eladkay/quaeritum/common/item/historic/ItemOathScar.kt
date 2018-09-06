@@ -1,5 +1,7 @@
 package eladkay.quaeritum.common.item.historic
 
+import com.teamwizardry.librarianlib.features.base.item.IGlowingItem
+import com.teamwizardry.librarianlib.features.base.item.IGlowingItem.Helper.wrapperBake
 import com.teamwizardry.librarianlib.features.base.item.ItemModSword
 import com.teamwizardry.librarianlib.features.helpers.ItemNBTHelper
 import com.teamwizardry.librarianlib.features.helpers.threadLocal
@@ -13,6 +15,7 @@ import eladkay.quaeritum.common.lib.LibMaterials
 import eladkay.quaeritum.common.networking.PuffMessage
 import net.minecraft.block.Block
 import net.minecraft.block.state.IBlockState
+import net.minecraft.client.renderer.block.model.IBakedModel
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.SoundEvents
 import net.minecraft.item.EnumRarity
@@ -29,13 +32,15 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent
 import net.minecraftforge.event.entity.player.PlayerInteractEvent
 import net.minecraftforge.event.world.BlockEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
 import java.awt.Color
 
 /**
  * @author WireSegal
  * Created at 4:15 PM on 1/10/18.
  */
-class ItemOathScar : ItemModSword("oath_scar", LibMaterials.SCAR) {
+class ItemOathScar : ItemModSword("oath_scar", LibMaterials.SCAR), IGlowingItem {
 
     private val TAG_STORAGE = "stored"
     private val TAG_BLOCK = "block"
@@ -46,6 +51,12 @@ class ItemOathScar : ItemModSword("oath_scar", LibMaterials.SCAR) {
     init {
         MinecraftForge.EVENT_BUS.register(this)
     }
+
+    @SideOnly(Side.CLIENT)
+    override fun transformToGlow(itemStack: ItemStack, model: IBakedModel) = wrapperBake(model, false, 1)
+
+    @SideOnly(Side.CLIENT)
+    override fun shouldDisableLightingForGlow(itemStack: ItemStack, model: IBakedModel) = true
 
     private fun getStored(stack: ItemStack): Pair<IBlockState, NBTTagCompound?>? {
         val comp = ItemNBTHelper.getCompound(stack, TAG_STORAGE) ?: return null
@@ -127,7 +138,7 @@ class ItemOathScar : ItemModSword("oath_scar", LibMaterials.SCAR) {
                     val tile = player.world.getTileEntity(pos)
                     val tileData = tile?.writeToNBT(NBTTagCompound())
                     setStored(stack, player.world.totalWorldTime, blockState, tileData)
-                    ItemContractScroll.puff(PuffMessage(Vec3d(pos).addVector(0.5, 0.0, 0.5), scatter = 0.25, amount = 50, color = Color(0x3030BF)), world)
+                    ItemContractScroll.puff(PuffMessage(Vec3d(pos).add(0.5, 0.0, 0.5), scatter = 0.25, amount = 50, color = Color(0x3030BF)), world)
 
                     val prevLock = lockedWorld
                     lockedWorld = world
@@ -146,7 +157,7 @@ class ItemOathScar : ItemModSword("oath_scar", LibMaterials.SCAR) {
                 val dist = if (player.isCreative) attrib else attrib - 0.5f
                 val vec3d = player.getPositionEyes(1f)
                 val vec3d1 = player.getLook(1f)
-                val vec3d2 = vec3d.addVector(vec3d1.x * dist, vec3d1.y * dist, vec3d1.z * dist)
+                val vec3d2 = vec3d.add(vec3d1.x * dist, vec3d1.y * dist, vec3d1.z * dist)
                 val trace = world.rayTraceBlocks(vec3d, vec3d2, false, false, true) ?: return
                 val facing = trace.sideHit
 
@@ -154,7 +165,7 @@ class ItemOathScar : ItemModSword("oath_scar", LibMaterials.SCAR) {
 
                 if (player.canPlayerEdit(setPosAt, facing, stack) && world.mayPlace(block, setPosAt, false, facing, null)) {
                     world.playSound(null, setPosAt, SoundEvents.ENTITY_ENDERMEN_TELEPORT, SoundCategory.PLAYERS, 1f, 0.75f)
-                    ItemContractScroll.puff(PuffMessage(Vec3d(setPosAt).addVector(0.5, 0.0, 0.5), scatter = 0.25, amount = 50, color = Color(0x3030BF)), world)
+                    ItemContractScroll.puff(PuffMessage(Vec3d(setPosAt).add(0.5, 0.0, 0.5), scatter = 0.25, amount = 50, color = Color(0x3030BF)), world)
 
                     val state = stored.first
                     val tileData = stored.second

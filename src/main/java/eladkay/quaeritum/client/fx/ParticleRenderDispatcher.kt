@@ -31,7 +31,7 @@ object ParticleRenderDispatcher {
     fun dispatch() {
         val tessellator = Tessellator.getInstance()
 
-        val profiler = Minecraft.getMinecraft().mcProfiler
+        val profiler = Minecraft.getMinecraft().profiler
 
         GL11.glPushAttrib(GL11.GL_LIGHTING_BIT)
         GlStateManager.depthMask(false)

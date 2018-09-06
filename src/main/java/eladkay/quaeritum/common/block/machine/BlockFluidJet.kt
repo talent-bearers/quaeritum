@@ -66,7 +66,7 @@ class BlockFluidJet : BlockModContainer("fluid_jet", Material.IRON) {
     override fun createBlockState() = BlockStateContainer(this, FACING)
 
     override fun getMetaFromState(state: IBlockState) = state.getValue(FACING).index
-    override fun getStateFromMeta(meta: Int) = defaultState.withProperty(FACING, EnumFacing.getFront(meta))
+    override fun getStateFromMeta(meta: Int) = defaultState.withProperty(FACING, EnumFacing.byIndex(meta))
 
     override fun isFullCube(state: IBlockState) = false
     override fun isOpaqueCube(blockState: IBlockState) = false
@@ -114,8 +114,8 @@ class BlockFluidJet : BlockModContainer("fluid_jet", Material.IRON) {
                                     lastStack = tentativeStack
                                     val offset = pos.offset(facing.opposite, dist)
                                     val trace = world.getBlockState(offset)
-                                            .collisionRayTrace(world, pos, Vec3d(pos).addVector(0.5, 0.5, 0.5), Vec3d(offset).addVector(0.5, 0.5, 0.5))
-                                    distance = dist - trace.hitVec.subtract(Vec3d(pos).addVector(0.5, 0.5, 0.5)).lengthVector()
+                                            .collisionRayTrace(world, pos, Vec3d(pos).add(0.5, 0.5, 0.5), Vec3d(offset).add(0.5, 0.5, 0.5))
+                                    distance = dist - trace.hitVec.subtract(Vec3d(pos).add(0.5, 0.5, 0.5)).length()
                                     // todo hurt people who are in the way
                                     targetCap.fill(cap.drain(succeeded, true), true)
                                     te.markDirty()

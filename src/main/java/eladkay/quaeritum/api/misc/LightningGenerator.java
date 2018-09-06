@@ -27,7 +27,7 @@ public class LightningGenerator {
         ArrayList<Vec3d> results = new ArrayList<>();
         Vec3d sub = point2.subtract(point1);
         Vec3d normal = sub.normalize();
-        double dist = sub.lengthVector();
+        double dist = sub.length();
 
         ArrayList<Float> points = new ArrayList<>();
         points.add(0f);

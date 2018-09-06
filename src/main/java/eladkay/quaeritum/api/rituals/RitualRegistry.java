@@ -18,7 +18,7 @@ public final class RitualRegistry {
 
         if (!modid.equals(LibMisc.MOD_ID)) {
             ResourceLocation rl = new ResourceLocation(name);
-            name = modid + ":" + rl.getResourcePath();
+            name = modid + ":" + rl.getPath();
         }
 
         if (!mapDiagrams.containsKey(name)) {
@@ -36,7 +36,7 @@ public final class RitualRegistry {
 
         if (!modid.equals(LibMisc.MOD_ID)) {
             ResourceLocation rl = new ResourceLocation(name);
-            name = modid + ":" + rl.getResourcePath();
+            name = modid + ":" + rl.getPath();
         }
 
         if (!mapWorks.containsKey(name)) {

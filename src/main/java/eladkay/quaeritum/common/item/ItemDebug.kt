@@ -98,8 +98,8 @@ class ItemDebug : ItemMod(LibNames.DEBUG) {
                     } else if (bstate.block !== Blocks.AIR) {
                         if (flag) out += "\n"
                         flag = true
-                        if (bstate.block.registryName!!.resourceDomain == "minecraft")
-                            out += "chalks.add(new PositionedBlock(Blocks." + bstate.block.registryName!!.resourcePath.toUpperCase() + ".getDefaultState(), new BlockPos(" + shift.x + ", " + shift.y + ", " + shift.z + "), null)); // " + bstate
+                        if (bstate.block.registryName!!.namespace == "minecraft")
+                            out += "chalks.add(new PositionedBlock(Blocks." + bstate.block.registryName!!.path.toUpperCase() + ".getDefaultState(), new BlockPos(" + shift.x + ", " + shift.y + ", " + shift.z + "), null)); // " + bstate
                         else
                             out += "chalks.add(new PositionedBlock(UNKNOWN, new BlockPos(" + shift.x + ", " + shift.y + ", " + shift.z + "), null); // " + bstate
                     }

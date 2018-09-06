@@ -6,6 +6,7 @@ import eladkay.quaeritum.api.spell.EnumSpellElement
 import eladkay.quaeritum.api.spell.render.RenderUtil
 import eladkay.quaeritum.client.gui.GuiCodex
 import eladkay.quaeritum.client.render.RenderSymbol
+import eladkay.quaeritum.client.render.renderWheel
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.Tessellator
@@ -75,6 +76,14 @@ object HudSymbolRenderer {
         val scaleMin = (event.resolution.scaleFactor * 15).toDouble()
         val scaleMax = scaleMin * 5
         val time = 30.0
+
+
+        val wheelSize = MathHelper.sqrt(event.resolution.scaledHeight * event.resolution.scaledHeight +
+                event.resolution.scaledWidth * event.resolution.scaledWidth.toFloat()) / 2
+        val ratio = event.resolution.scaledHeight.toFloat() / event.resolution.scaledWidth
+
+        renderWheel(wheelSize / 2, 2 * wheelSize, wheelSize * 3 / 4, ratio, cX.toFloat(), cY.toFloat(),
+                0.05f, 0.1f, 10, Random(), *EnumSpellElement.values())
 
         if (elements.size > symbols.size) {
             for (i in symbols.size until elements.size) {

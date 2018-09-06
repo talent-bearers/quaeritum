@@ -47,7 +47,7 @@ class BlockInterface : BlockModContainer(LibNames.INTERFACE, Material.WOOD) {
 
     override fun createBlockState() = BlockStateContainer(this, FACING)
     override fun getMetaFromState(state: IBlockState) = state.getValue(FACING).index
-    override fun getStateFromMeta(meta: Int): IBlockState = defaultState.withProperty(FACING, EnumFacing.getFront(meta))
+    override fun getStateFromMeta(meta: Int): IBlockState = defaultState.withProperty(FACING, EnumFacing.byIndex(meta))
 
     override fun createTileEntity(world: World, state: IBlockState) = TileInterface()
 
@@ -171,9 +171,9 @@ class BlockInterface : BlockModContainer(LibNames.INTERFACE, Material.WOOD) {
                         player.capabilities.isCreativeMode = false
                         player.rotationYaw = facing.horizontalAngle
                         player.rotationPitch = if (facing == EnumFacing.UP) -90f else if (facing == EnumFacing.DOWN) 90f else 0f
-                        player.posX = pos.x + 0.5 + facing.frontOffsetX * 0.75
-                        player.posY = pos.y + 0.5 - player.eyeHeight + facing.frontOffsetY * 0.75
-                        player.posZ = pos.z + 0.5 + facing.frontOffsetZ * 0.75
+                        player.posX = pos.x + 0.5 + facing.xOffset * 0.75
+                        player.posY = pos.y + 0.5 - player.eyeHeight + facing.yOffset * 0.75
+                        player.posZ = pos.z + 0.5 + facing.zOffset * 0.75
 
                         player.setHeldItem(EnumHand.MAIN_HAND, resultStack)
                         val result = resultStack.onItemUse(player, worldS, pos.offset(facing), EnumHand.MAIN_HAND, facing.opposite, 0f, 0f, 0f)
@@ -184,29 +184,29 @@ class BlockInterface : BlockModContainer(LibNames.INTERFACE, Material.WOOD) {
 
                         if (resultStack.isNotEmpty) {
                             val item = EntityItem(worldS,
-                                    pos.x + 0.5 + facing.frontOffsetX * 0.625,
-                                    pos.y + 0.25 + facing.frontOffsetY * 0.625 + if (facing == EnumFacing.UP) 0.25 else 0.0,
-                                    pos.z + 0.5 + facing.frontOffsetZ * 0.625,
+                                    pos.x + 0.5 + facing.xOffset * 0.625,
+                                    pos.y + 0.25 + facing.yOffset * 0.625 + if (facing == EnumFacing.UP) 0.25 else 0.0,
+                                    pos.z + 0.5 + facing.zOffset * 0.625,
                                     resultStack)
-                            item.motionX = facing.frontOffsetX * 0.25
-                            item.motionY = facing.frontOffsetY * 0.25 + 0.05
-                            item.motionZ = facing.frontOffsetZ * 0.25
+                            item.motionX = facing.xOffset * 0.25
+                            item.motionY = facing.yOffset * 0.25 + 0.05
+                            item.motionZ = facing.zOffset * 0.25
                             world.spawnEntity(item)
 
-                            world.playEvent(2000, pos, facing.frontOffsetX + 1 + (facing.frontOffsetZ + 1) * 3)
+                            world.playEvent(2000, pos, facing.xOffset + 1 + (facing.zOffset + 1) * 3)
                         }
                     } else {
                         val item = EntityItem(worldS,
-                                pos.x + 0.5 + facing.frontOffsetX * 0.625,
-                                pos.y + 0.25 + facing.frontOffsetY * 0.625 + if (facing == EnumFacing.UP) 0.25 else 0.0,
-                                pos.z + 0.5 + facing.frontOffsetZ * 0.625,
+                                pos.x + 0.5 + facing.xOffset * 0.625,
+                                pos.y + 0.25 + facing.yOffset * 0.625 + if (facing == EnumFacing.UP) 0.25 else 0.0,
+                                pos.z + 0.5 + facing.zOffset * 0.625,
                                 stack)
-                        item.motionX = facing.frontOffsetX * 0.25
-                        item.motionY = facing.frontOffsetY * 0.375 + 0.05
-                        item.motionZ = facing.frontOffsetZ * 0.25
+                        item.motionX = facing.xOffset * 0.25
+                        item.motionY = facing.yOffset * 0.375 + 0.05
+                        item.motionZ = facing.zOffset * 0.25
                         world.spawnEntity(item)
 
-                        world.playEvent(2000, pos, facing.frontOffsetX + 1 + (facing.frontOffsetZ + 1) * 3)
+                        world.playEvent(2000, pos, facing.xOffset + 1 + (facing.zOffset + 1) * 3)
                     }
                 }
 

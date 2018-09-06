@@ -140,7 +140,6 @@ class ClientProxy : CommonProxy() {
                         ClientUtil.renderFluidCuboid(fluid.copy(), x1, y1, z1, x2, y2, z2)
                     }
                     GlStateManager.enableLighting()
-                    GlStateManager.disableBlend()
                     GlStateManager.popMatrix()
                 }
             }

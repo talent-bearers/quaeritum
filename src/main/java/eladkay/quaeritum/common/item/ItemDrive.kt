@@ -67,17 +67,17 @@ abstract class ItemDrive(name: String, val minTier: EnumAnimusTier) : ItemMod("$
         if (player is EntityPlayer && !player.world.isRemote) {
             if (AnimusHelper.Network.requestAnimus(player, 1, EnumAnimusTier.LUCIS, true)) {
                 val from = player.positionVector
-                        .addVector(0.0, player.getEyeHeight() * 0.75, 0.0)
+                        .add(0.0, player.getEyeHeight() * 0.75, 0.0)
                         .add(player.lookVec)
 
                 val cast = RaycastUtils.raycast(player, 16.0)
 
-                val vec = player.positionVector.addVector(0.0, player.getEyeHeight() / 2.0, 0.0)
+                val vec = player.positionVector.add(0.0, player.getEyeHeight() / 2.0, 0.0)
                 val dist = if (cast == null || cast.typeOfHit == RayTraceResult.Type.MISS) 16.0 else cast.hitVec.distanceTo(vec)
 
                 var motion = player.lookVec.scale(dist / 16.0) + Vec3d(0.0, player.getEyeHeight() * 0.01, 0.0).scale(0.5).add(player.motionVec)
                 if (player.onGround)
-                    motion = motion.addVector(0.0, 0.08, 0.0)
+                    motion = motion.add(0.0, 0.08, 0.0)
                 colors.forEach {
                     PacketHandler.NETWORK.sendToAllAround(MessageDriveEffect(from, motion, it),
                             player.world, from, 64)

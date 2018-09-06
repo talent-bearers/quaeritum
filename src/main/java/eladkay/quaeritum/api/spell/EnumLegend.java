@@ -1,8 +1,6 @@
 package eladkay.quaeritum.api.spell;
 
-import com.teamwizardry.librarianlib.core.client.ClientTickHandler;
 import eladkay.quaeritum.api.spell.render.*;
-import net.minecraft.util.math.MathHelper;
 
 import javax.annotation.Nullable;
 import java.awt.*;
@@ -128,18 +126,12 @@ public enum EnumLegend implements ISymbolCarrier {
 
     @Override
     public int color() {
-        if (color == null)
-            return Color.HSBtoRGB((ClientTickHandler.getTicksInGame() * 2L % 360L) / 360.0F, 0.8F, 1.0F);
+        return ISymbolCarrier.timeShift(color);
+    }
 
-        int c = color.getRGB();
-        int add = (int) (MathHelper.sin(ClientTickHandler.getTicksInGame() * 0.2f) * 24);
-        int r = (c & (0xff0000)) >> 16;
-        int g = (c & (0x00ff00)) >> 8;
-        int b = (c & (0x0000ff));
-        int newR = Math.max(Math.min(r + add, 255), 0);
-        int newG = Math.max(Math.min(g + add, 255), 0);
-        int newB = Math.max(Math.min(b + add, 255), 0);
-        return (newR << 16) | (newG << 8) | newB;
+    @Override
+    public int rawColor() {
+        return ISymbolCarrier.trueColor(color);
     }
 
     @Override

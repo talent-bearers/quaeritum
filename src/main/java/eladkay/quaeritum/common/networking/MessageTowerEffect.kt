@@ -24,7 +24,7 @@ class MessageTowerEffect(@Save var pos: Vec3d = Vec3d.ZERO, @Save var target: Ve
             val x = MathHelper.cos(angle) * 4.0
             val y = MathHelper.sin(angle) * 4.0
 
-            val from = pos.addVector(x, 0.125, y)
+            val from = pos.add(x, 0.125, y)
             val motion = target.subtract(from).scale(0.075)
 
             LibParticles.embers(10, 0.5f, from, Color(0xF0F040), 0.0, motion)

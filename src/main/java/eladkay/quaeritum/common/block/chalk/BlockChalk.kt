@@ -109,7 +109,7 @@ class BlockChalk : BlockModColored(LibNames.CHALK_BLOCK, Material.CIRCUITS), IBl
     }
 
     @SideOnly(Side.CLIENT)
-    override fun getBlockLayer(): BlockRenderLayer {
+    override fun getRenderLayer(): BlockRenderLayer {
         return BlockRenderLayer.CUTOUT
     }
 
@@ -170,7 +170,7 @@ class BlockChalk : BlockModColored(LibNames.CHALK_BLOCK, Material.CIRCUITS), IBl
             }
 
             override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
-                TooltipHelper.addToTooltip(tooltip, getUnlocalizedName(stack) + ".desc")
+                TooltipHelper.addToTooltip(tooltip, getTranslationKey(stack) + ".desc")
             }
 
             override fun onItemUse(player: EntityPlayer, worldIn: World, pos: BlockPos, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): EnumActionResult {

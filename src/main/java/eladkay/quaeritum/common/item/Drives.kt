@@ -1,7 +1,6 @@
-package eladkay.quaeritum.common
+package eladkay.quaeritum.common.item
 
 import eladkay.quaeritum.api.animus.EnumAnimusTier
-import eladkay.quaeritum.common.item.ItemDrive
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.projectile.EntityLargeFireball

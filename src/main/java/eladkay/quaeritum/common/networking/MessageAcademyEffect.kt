@@ -19,10 +19,10 @@ import java.awt.Color
 class MessageAcademyEffect(@Save var from: BlockPos = BlockPos.ORIGIN, @Save var to: Array<BlockPos> = arrayOf()) : PacketBase() {
     override fun handle(ctx: MessageContext) {
         ClientRunnable.run {
-            val cent = Vec3d(from).addVector(0.5, 1.5, 0.5)
+            val cent = Vec3d(from).add(0.5, 1.5, 0.5)
             to.forEach {
                 var dir = Vec3d(it).subtract(Vec3d(from))
-                dir = dir.addVector(0.0, -dir.y / 2, 0.0)
+                dir = dir.add(0.0, -dir.y / 2, 0.0)
                 dir = dir.normalize()
                 (0 until 10)
                         .map { cent.add(dir.scale(1.5 + it / 6.0)) }

@@ -13,7 +13,7 @@ import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 
 class BlockIronheartFlower : BlockModBush(LibNames.FLOWER + "_ironheart", Material.PLANTS) {
-    override fun onEntityCollidedWithBlock(worldIn: World?, pos: BlockPos?, state: IBlockState?, entityIn: Entity) {
+    override fun onEntityCollision(worldIn: World?, pos: BlockPos?, state: IBlockState?, entityIn: Entity) {
         if (entityIn is EntityLivingBase)
             entityIn.attackEntityFrom(DamageSource.CACTUS, 3.0f)
     }

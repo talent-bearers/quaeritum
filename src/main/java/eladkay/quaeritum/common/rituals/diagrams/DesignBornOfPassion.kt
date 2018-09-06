@@ -107,7 +107,7 @@ class DesignBornOfPassion : IDiagram {
     override fun onPrepUpdate(world: World, pos: BlockPos, tile: TileEntity, ticksRemaining: Int): Boolean {
         if (!IDiagram.Helper.consumeAnimusForRitual(tile, false, 500, EnumAnimusTier.FERRUS)) return false
 
-        val targetPos = Vec3d(pos).addVector(0.5, 0.0, 0.5)
+        val targetPos = Vec3d(pos).add(0.5, 0.0, 0.5)
         PacketHandler.NETWORK.sendToAllAround(PuffMessage(targetPos),
                 world, targetPos, 64)
 
@@ -136,7 +136,7 @@ class DesignBornOfPassion : IDiagram {
                     world.setBlockState(target, block.getStateFromMeta(meta))
                     world.playEvent(2001, target, Block.getIdFromBlock(block) + (meta shl 12))
                     world.playSound(null, target, SoundEvents.BLOCK_STONE_BREAK, SoundCategory.BLOCKS, 2f, 1f)
-                    val targetPos = Vec3d(target).addVector(0.5, 0.5, 0.5)
+                    val targetPos = Vec3d(target).add(0.5, 0.5, 0.5)
                     val color = if (stone) LibParticles.darkGray else Color(0x804020)
                     PacketHandler.NETWORK.sendToAllAround(PuffMessage(targetPos, color = color, amount = 100, verticalMin = 0.04, verticalMax = 0.07, lifetimeMax = 50, lifetimeMin = 40, scatter = 0.02),
                             world, targetPos, 64)
@@ -144,7 +144,7 @@ class DesignBornOfPassion : IDiagram {
                     IDiagram.Helper.consumeAnimusForRitual(te, true, 500, EnumAnimusTier.FERRUS)
                 }
             } else {
-                val targetPos = Vec3d(pos).addVector(0.5, 0.0, 0.5)
+                val targetPos = Vec3d(pos).add(0.5, 0.0, 0.5)
                 PacketHandler.NETWORK.sendToAllAround(PuffMessage(targetPos, color = Color(0xFF4040),
                         amount = 20, verticalMin = 0.04, verticalMax = 0.07, lifetimeMax = 50, lifetimeMin = 40, scatter = 0.1),
                         world, targetPos, 64)
